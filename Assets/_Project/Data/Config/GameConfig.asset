@@ -1,0 +1,28 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 86a0df78520670447aab2759ca11f411, type: 3}
+  m_Name: GameConfig
+  m_EditorClassIdentifier: GraceRun.Runtime::GraceRun.Core.GameConfig
+  _maxPlayers: 4
+  _port: 7777
+  _gameVersion: 0.1.0
+  _defaultAddress: 127.0.0.1
+  _playerColors:
+  - {r: 0.29803923, g: 0.5529412, b: 1, a: 1}
+  - {r: 1, g: 0.6039216, b: 0.23529412, a: 1}
+  - {r: 0.23529412, g: 0.79607844, b: 0.49803922, a: 1}
+  - {r: 1, g: 0.37254903, b: 0.65882355, a: 1}
+  _hatSprites:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
