@@ -1,5 +1,38 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!1 &647256650364479935
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 4586577459693935661}
+  m_Layer: 0
+  m_Name: Visuals
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &4586577459693935661
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 647256650364479935}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 5668630790098811024}
+  - {fileID: 8883622509725260482}
+  m_Father: {fileID: 8452402423896719734}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1216705844767872562
 GameObject:
   m_ObjectHideFlags: 0
@@ -30,7 +63,7 @@ Transform:
   m_LocalScale: {x: 1.5, y: 2.5, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 8452402423896719734}
+  m_Father: {fileID: 4586577459693935661}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!212 &8832951378157866332
 SpriteRenderer:
@@ -122,7 +155,7 @@ Transform:
   m_LocalScale: {x: 1, y: 0.15, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 8452402423896719734}
+  m_Father: {fileID: 4586577459693935661}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!212 &7721997635891557084
 SpriteRenderer:
@@ -418,6 +451,9 @@ GameObject:
   - component: {fileID: 5539826387145327542}
   - component: {fileID: 7998919962202180457}
   - component: {fileID: 1343383302286358959}
+  - component: {fileID: 3237998369874234035}
+  - component: {fileID: 1583267947289685945}
+  - component: {fileID: 8050882961274295411}
   m_Layer: 11
   m_Name: TrainingDummy
   m_TagString: Untagged
@@ -438,8 +474,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 5668630790098811024}
-  - {fileID: 8883622509725260482}
+  - {fileID: 4586577459693935661}
   - {fileID: 207373429728510363}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -635,6 +670,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: GraceRun.Runtime::GraceRun.Combat.Knockback
   ShowTopMostFoldoutHeaderGroup: 1
+  _hitstop: {fileID: 1583267947289685945}
 --- !u!114 &7998919962202180457
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -662,6 +698,54 @@ MonoBehaviour:
   m_EditorClassIdentifier: GraceRun.Runtime::GraceRun.Combat.TrainingDummy
   ShowTopMostFoldoutHeaderGroup: 1
   _data: {fileID: 11400000, guid: d5ce4d27ab48ea24d9ebe54eb076b7db, type: 2}
+--- !u!114 &3237998369874234035
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5053195406287751259}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c14bc7b04a81c094292c684e6225d5a3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: GraceRun.Runtime::GraceRun.Core.Juice.SpriteFlash
+  _renderers:
+  - {fileID: 8832951378157866332}
+  - {fileID: 7721997635891557084}
+  _flashColor: {r: 1, g: 1, b: 1, a: 1}
+--- !u!114 &1583267947289685945
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5053195406287751259}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 31e528f087e9c45469f89bf1093228cf, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: GraceRun.Runtime::GraceRun.Core.Juice.Hitstop
+  _visuals: {fileID: 4586577459693935661}
+  _body: {fileID: 401547121055542275}
+  _freezeBody: 0
+--- !u!114 &8050882961274295411
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5053195406287751259}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: af5ee3e1af41d0c47a6bb30317356a88, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: GraceRun.Runtime::GraceRun.Combat.HitFeedback
+  _data: {fileID: 11400000, guid: 328606fd0f0f08e4fa14cb6336e91240, type: 2}
+  _hitstop: {fileID: 1583267947289685945}
+  _flash: {fileID: 3237998369874234035}
+  _fxAnchor: {fileID: 8452402423896719734}
+  _hitArea: {fileID: 3890963771802129751}
 --- !u!1 &7453521252568706224
 GameObject:
   m_ObjectHideFlags: 0

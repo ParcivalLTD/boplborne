@@ -1,5 +1,6 @@
 using System;
 using GraceRun.Combat;
+using GraceRun.Core.Juice;
 using Unity.Netcode;
 using UnityEngine;
 
@@ -9,7 +10,7 @@ namespace GraceRun.Player
     /// The 3-hit light attack. The owner reads the press, pays stamina and detects hits through an
     /// attacker-side <see cref="Hitbox"/>; the server resolves them. Other PCs get the swing through
     /// <see cref="SwingRpc"/> and replay its timing for visuals only (their hitbox never reports).
-    /// A dodge cancels the swing.
+    /// A dodge cancels the swing; hitstop pauses it.
     /// </summary>
     public class PlayerLightAttack : NetworkBehaviour
     {
@@ -20,6 +21,7 @@ namespace GraceRun.Player
         [SerializeField] private PlayerDodge _dodge;
         [SerializeField] private Hitbox _hitbox;
         [SerializeField] private BoxCollider2D _hitboxShape;
+        [SerializeField] private Hitstop _hitstop;
 
         private LightAttackCombo _combo;
         private float _facing = 1f;
@@ -60,7 +62,7 @@ namespace GraceRun.Player
 
         private void FixedUpdate()
         {
-            if (IsSpawned) _combo.Tick(Time.fixedDeltaTime);
+            if (IsSpawned && !_hitstop.IsFrozen) _combo.Tick(Time.fixedDeltaTime);
         }
 
         /// <summary>Owner to everyone else: replay this swing locally.</summary>

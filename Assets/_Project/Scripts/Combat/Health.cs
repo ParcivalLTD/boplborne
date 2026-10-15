@@ -7,8 +7,8 @@ namespace GraceRun.Combat
     /// <summary>
     /// Hit points of a player, boss or dummy. Only the server writes HP (server-write
     /// NetworkVariable); every client gets <see cref="Changed"/> and <see cref="Died"/> from the
-    /// synced value. Hits arrive through <see cref="ReportHitRpc"/> and are resolved by
-    /// <see cref="DamageService"/>.
+    /// synced value. Hits arrive through <see cref="ReportHit"/> and are resolved by
+    /// <see cref="DamageService"/>; <see cref="HitTaken"/> drives the hit juice on every PC.
     /// </summary>
     public class Health : NetworkBehaviour
     {
@@ -30,6 +30,12 @@ namespace GraceRun.Combat
 
         /// <summary>Raised on every client (and the server) when HP reaches 0.</summary>
         public event Action Died;
+
+        /// <summary>
+        /// Raised once per landed hit on every PC, for cosmetics. The PC that detected the hit
+        /// raises it at once; the server echoes it to everyone else, so nobody waits or doubles up.
+        /// </summary>
+        public event Action<DamageInfo> HitTaken;
 
         public int Current => _current.Value;
         public int Max => _healthStats != null ? _healthStats.MaxHP : 1;
@@ -63,9 +69,22 @@ namespace GraceRun.Combat
             _current.OnValueChanged -= OnCurrentChanged;
         }
 
-        /// <summary>Sent by whichever PC detected the hit (attacker or victim side); the server resolves it.</summary>
-        [Rpc(SendTo.Server)]
-        public void ReportHitRpc(DamageInfo info) => DamageService.Apply(this, info);
+        /// <summary>
+        /// Called by whichever PC detected the hit (attacker or victim side): plays the hit
+        /// feedback here right away and sends the hit to the server, which resolves it.
+        /// </summary>
+        public void ReportHit(DamageInfo info)
+        {
+            if (!IsSpawned || IsDead) return;
+            if (!DamageService.IsIgnored(this, info)) HitTaken?.Invoke(info);
+            ReportHitRpc(info);
+        }
+
+        /// <summary>Server only: tells every PC except the reporter (who already played it) that a hit landed.</summary>
+        public void ServerBroadcastHit(DamageInfo info, ulong reporterClientId)
+        {
+            if (IsServer) HitTakenRpc(info, RpcTarget.Not(reporterClientId, RpcTargetUse.Temp));
+        }
 
         /// <summary>Debug: turns god mode on or off for this target.</summary>
         [Rpc(SendTo.Server)]
@@ -84,6 +103,13 @@ namespace GraceRun.Combat
 
         /// <summary>Server only: back to full HP.</summary>
         public void ServerRestoreFull() => ServerSetCurrent(Max);
+
+        [Rpc(SendTo.Server)]
+        private void ReportHitRpc(DamageInfo info, RpcParams rpcParams = default) =>
+            DamageService.Apply(this, info, rpcParams.Receive.SenderClientId);
+
+        [Rpc(SendTo.SpecifiedInParams)]
+        private void HitTakenRpc(DamageInfo info, RpcParams rpcParams) => HitTaken?.Invoke(info);
 
         private void OnCurrentChanged(int previous, int current)
         {

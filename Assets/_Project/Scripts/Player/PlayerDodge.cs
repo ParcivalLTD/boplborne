@@ -32,6 +32,12 @@ namespace GraceRun.Player
         /// <summary>Raised on the owner when a roll starts.</summary>
         public event Action Dodged;
 
+        /// <summary>
+        /// Raised on every PC when a roll starts, for cosmetics. Comes from the i-frame flag, so it
+        /// needs DodgeInvulnerableTime above 0.
+        /// </summary>
+        public event Action RollStarted;
+
         public bool IsDodging => _dodging;
 
         /// <summary>True during the i-frames at the start of a roll, on every client.</summary>
@@ -90,6 +96,10 @@ namespace GraceRun.Player
             if (_invulnerable.Value) _invulnerable.Value = false;
         }
 
-        private void OnInvulnerableChanged(bool previous, bool current) => _flash.SetHeld(current);
+        private void OnInvulnerableChanged(bool previous, bool current)
+        {
+            _flash.SetHeld(current);
+            if (current && !previous) RollStarted?.Invoke();
+        }
     }
 }

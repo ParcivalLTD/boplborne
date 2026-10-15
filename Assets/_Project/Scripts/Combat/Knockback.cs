@@ -1,4 +1,5 @@
 using System;
+using GraceRun.Core.Juice;
 using Unity.Netcode;
 using UnityEngine;
 
@@ -6,11 +7,15 @@ namespace GraceRun.Combat
 {
     /// <summary>
     /// Applies knockback on the PC that simulates the body: the owning player for a player, the
-    /// server for a boss or dummy. The server decides the push, the owner applies it.
+    /// server for a boss or dummy. The server decides the push, the owner applies it. While a
+    /// <see cref="Hitstop"/> holds the body still, the push waits until it thaws.
     /// </summary>
     [RequireComponent(typeof(Rigidbody2D))]
     public class Knockback : NetworkBehaviour
     {
+        [SerializeField, Tooltip("Optional. Delays the push until hitstop ends.")]
+        private Hitstop _hitstop;
+
         private Rigidbody2D _body;
 
         /// <summary>Raised on the owner when a push is applied.</summary>
@@ -25,7 +30,7 @@ namespace GraceRun.Combat
         [Rpc(SendTo.Owner)]
         public void PushRpc(Vector2 velocity)
         {
-            _body.linearVelocity = velocity;
+            if (_hitstop == null || !_hitstop.DeferVelocity(velocity)) _body.linearVelocity = velocity;
             Pushed?.Invoke(velocity);
         }
     }

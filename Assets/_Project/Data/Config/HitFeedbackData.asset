@@ -1,0 +1,25 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 601c25f60398acf418c7400ffa3048ce, type: 3}
+  m_Name: HitFeedbackData
+  m_EditorClassIdentifier: GraceRun.Runtime::GraceRun.Combat.HitFeedbackData
+  _heavyKnockback: 4
+  _lightHitstop: 0.05
+  _heavyHitstop: 0.11
+  _victimJitter: 0.08
+  _flashDuration: 0.08
+  _heavyHitShake: 0.5
+  _hurtShake: 0.7
+  _sparks: {fileID: 2440934937971166020, guid: 4e128ca4d39dd3c47aa7d479633411c6, type: 3}
+  _hitCue: {fileID: 11400000, guid: ee0ee6c0135fbb34ca784be2ba3c55e7, type: 2}
+  _heavyHitCue: {fileID: 11400000, guid: 89eb2800efff36148b610c31c7a024f1, type: 2}
+  _playerHurtCue: {fileID: 11400000, guid: ea6530d8c1f0ecb43ad0096f8193ff5d, type: 2}

@@ -58,7 +58,7 @@ namespace GraceRun.Combat
             if (target.NetworkObjectId == _attacker.NetworkObjectId) return;
             if (!DetectsHere(hurtbox) || !_alreadyHit.Add(target)) return;
 
-            target.ReportHitRpc(_damage);
+            target.ReportHit(_damage);
         }
 
         private bool DetectsHere(Hurtbox hurtbox) => _detection switch

@@ -1,0 +1,18 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 08fe8345ddb71344fbf5a7a728c05294, type: 3}
+  m_Name: PlayerFeedbackData
+  m_EditorClassIdentifier: GraceRun.Runtime::GraceRun.Player.PlayerFeedbackData
+  _swingCue: {fileID: 11400000, guid: 077d356729d9ba641b53925251264df4, type: 2}
+  _finisherCue: {fileID: 11400000, guid: 0e173589b2f6e3646aa523d98c6562a9, type: 2}
+  _dodgeCue: {fileID: 11400000, guid: abaee0e0db04a0b4ba785e724802d69e, type: 2}
+  _dodgeDust: {fileID: 5735265676757191501, guid: d4c52465e30b548429d571fab725554f, type: 3}

@@ -105,7 +105,7 @@ Everything tunable is here. Default values are the starting values in `docs/GDD.
 2. That PC sends a report to the server (`ReportHitRpc(targetId, attackRef)`).
 3. `DamageService` on the server computes damage (friendly-fire rules, minimum 1 HP from friends), writes `Health`, and triggers death → ghost if needed.
 4. Knockback is sent to the target's owner, who applies the impulse.
-5. Every client plays hit effects locally from the `Health` change event.
+5. Hit effects (flash, sparks, sound, hitstop, shake) come from `Health.HitTaken`: the PC that detected the hit plays them at once, then the server echoes the hit to every other PC (`RpcTarget.Not(reporter)`), so nobody waits for the network or plays it twice.
 
 ### Boss attack flow
 

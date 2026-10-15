@@ -28,7 +28,7 @@ namespace GraceRun.DebugTools
 
         /// <summary>Damages your own player. Goes through the same report RPC as a real hit.</summary>
         public static void DamageMe(Health self, int amount) =>
-            self.ReportHitRpc(DamageInfo.FromEnvironment(amount));
+            self.ReportHit(DamageInfo.FromEnvironment(amount));
 
         public static void HealMe(Health self) => self.RestoreFullRpc();
 
@@ -39,7 +39,7 @@ namespace GraceRun.DebugTools
         {
             var away = Mathf.Sign(dummy.transform.position.x - self.transform.position.x);
             var push = new Vector2(knockback.x * away, knockback.y);
-            dummy.ReportHitRpc(new DamageInfo(amount, push, self.NetworkObjectId, Team.Player));
+            dummy.ReportHit(new DamageInfo(amount, push, self.NetworkObjectId, Team.Player));
         }
     }
 }
