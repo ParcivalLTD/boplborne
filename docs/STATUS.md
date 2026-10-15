@@ -5,8 +5,8 @@ The agent updates this file at the end of every step. Humans may edit it too.
 ## Now
 
 - **Milestone:** M2 — Combat
-- **Done:** M0 complete; M1 complete (1.1–1.5); 2.1 health and damage pipeline
-- **Next step:** 2.2 — Light attack combo (see `docs/PROMPTS.md`)
+- **Done:** M0 complete; M1 complete (1.1–1.5); 2.1 health and damage pipeline; 2.2 light attack combo
+- **Next step:** 2.3 — Juice pass (see `docs/PROMPTS.md`)
 
 ## Milestones
 
@@ -52,7 +52,11 @@ The agent updates this file at the end of every step. Humans may edit it too.
 - Hit reports carry the damage numbers themselves (`DamageInfo`), not an attack id the server looks up. Fine between friends; switch to an attack reference if cheating ever matters.
 - HP bars are world-space placeholders (`HealthBar`, bone white) above every player and the dummy; the HUD (4.3) and boss bar replace them.
 - The training dummy is spawned by `TrainingDummySpawner` in the Game scene at (11, −3.5) and refills 1.5 s after reaching 0 HP. Remove the spawner (with the user's OK) when the hub/arenas exist.
-- `Hitbox` is built and was checked once with a temporary victim-side hitbox (one hit, 30 damage), but nothing uses it yet; the light attack (2.2) is its first real user.
+- **Friendly fire is off** through `CombatData.FriendlyFireEnabled` (false): `DamageService` drops player-on-player hits completely (no damage, no knockback). Step 4.1 turns it on.
+- No attack animation yet. Other players see a swing only with **Show hitboxes** on (F1): `SwingRpc` replays the swing timing on every non-owner PC, but nothing visible is attached to it except the debug box. `PlayerLightAttack.SwingStarted` (hit index, facing) is the hook for 2.3 / M8 swing visuals.
+- Light attacks work in the air too, with the same slowed steering (`MoveSpeedMultiplier`). There is no air-attack variant; decide in a playtest.
+- A dodge cancels a swing at any phase (startup, active or recovery) and resets the combo to hit 1. The stamina for the cancelled swing is not refunded.
+- The sprite still does not flip, so the only facing cue is the debug hitbox. The swing faces `PlayerMovement.Facing` at the moment it starts, so you can turn between hits.
 
 ## Playtest backlog
 
@@ -62,6 +66,7 @@ The agent updates this file at the end of every step. Humans may edit it too.
 
 | Date | Step | Note |
 | --- | --- | --- |
+| 2026-10-15 | 2.2 | `Player/`: `LightAttackHit` (struct per hit), `LightAttackData` + asset (3 hits, 8 dmg, 10 stamina, only hit 3 knocks back 10/5; input buffer 0.3 s, chain window 0.35 s, move ×0.2 while swinging), `LightAttackCombo` (pure state machine, 10 tests), `SwingPhase`, `PlayerLightAttack` (owner input + stamina, arms the attacker-side `Hitbox`, `SwingRpc`/`CancelSwingRpc` to the other PCs for replay, dodge cancels). `PlayerMovement.SpeedMultiplier`. `DebugTools/HitboxDebugView` + F1 "Show hitboxes". `CombatData.FriendlyFireEnabled` gate in `DamageService`. Player prefab: `AttackHitbox` child (PlayerAttack layer, BoxCollider2D trigger, Hitbox, debug view) + `PlayerLightAttack`. 61/61 EditMode tests pass. Host play mode: J spends 10 stamina; 3 buffered presses chained 0→1→2 from recovery, dummy 184→160, hit 3 pushed it from x 11.0 to 14.8; debug box visible over the dummy. Console clean. |
 | 2026-10-15 | 2.1 | `Combat/`: `Team`, `DamageInfo` (INetworkSerializable), `DamageMath` (pure, 10 tests incl. friendly fire floor at 1 HP), `CombatData` + asset, `Health` (server-write HP + god mode NetworkVariables, `ReportHitRpc`, `Changed`/`Died` on all clients), static `DamageService`, `Knockback` (owner RPC), `Hurtbox`, `Hitbox` (attacker- or victim-side), `HealthBar`, `TrainingDummy` + data asset + spawner. `PlayerStatsData` implements `IHealthStats`, `PlayerDodge` implements `IInvulnerability`. Player prefab: Health, Knockback, Hurtbox, HP bar. New `Prefabs/TrainingDummy.prefab` (Boss layer, server-auth NetworkTransform + NetworkRigidbody2D). Debug menu: HP readout, god mode, damage me 20, heal me, hit dummy 20. 51/51 EditMode tests pass. Host play mode: damage me 100→80, god mode blocks, 0 HP fires Died, heal works; hit dummy 200→180 with knockback into the wall; dummy refills after 1.5 s; bars shrink in the Game view. Console clean. |
 | 2026-10-15 | 1.5 | `Core/Juice/` `Shake` (static entry point + pure force math, 3 tests), `ShakeSource` (uniform Cinemachine impulse), `ShakeData` + asset (multiplier 1, base force 0.4, 0.25 s, Explosion shape). Game scene: `CinemachineBrain` on Main Camera, new `ArenaCamera` (CinemachineCamera ortho 11.25, CinemachinePixelPerfect, ImpulseListener, ShakeSource), camera raised to y 2 so the floor sits near the bottom. Debug menu: "Test shake". 41/41 EditMode tests pass. Host play mode at 1920×1080: whole arena visible at pixel ratio 3, crisp; test shake moves the camera up to ~0.4 units and settles back in 0.25 s. Console clean. |
 | 2026-10-15 | 1.4 | `PlayerStatsData` + asset (GDD values), `StaminaPool` (pure, 7 tests), `PlayerStamina` (owner-write NetworkVariable), `PlayerDodge` (owner roll; owner-write `_invulnerable` NetworkVariable drives the flash on every client), `Core/Juice/SpriteFlash`, `PlayerStaminaBar`. `PlayerMovement` gained `Facing` and `ControlSuspended`. Player prefab: new components, a `StaminaBar` child, and a zero-friction material on the collider. 38/38 EditMode tests pass. Host play mode: the roll holds 16 u/s for 0.35 s (5.8 units), 4 dodges empty stamina and the 5th is refused, it refills to 100 after the delay, the flash shows and the colors come back. Console clean. |

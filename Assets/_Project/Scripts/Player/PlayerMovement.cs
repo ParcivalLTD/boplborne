@@ -41,6 +41,9 @@ namespace GraceRun.Player
         /// <summary>While true another component (the dodge) owns horizontal velocity.</summary>
         public bool ControlSuspended { get; set; }
 
+        /// <summary>Scales the run speed, e.g. slowed while attacking. 1 is normal.</summary>
+        public float SpeedMultiplier { get; set; } = 1f;
+
         private void Awake()
         {
             _body = GetComponent<Rigidbody2D>();
@@ -98,7 +101,7 @@ namespace GraceRun.Player
             if (Mathf.Abs(inputX) > 0.01f) _facing = Mathf.Sign(inputX);
             if (ControlSuspended) return;
 
-            var wanted = inputX * _data.RunSpeed;
+            var wanted = inputX * _data.RunSpeed * SpeedMultiplier;
             var changing = Mathf.Abs(wanted) > 0.01f;
             var rate = changing ? _data.Acceleration : _data.Deceleration;
             if (!_grounded) rate *= _data.AirControl;

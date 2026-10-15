@@ -15,6 +15,8 @@ namespace GraceRun.Combat
 
             var combat = target.Combat;
             var friendly = DamageMath.IsFriendlyFire(info.AttackerTeam, info.AttackerId, target.Team, target.NetworkObjectId);
+            if (friendly && !combat.FriendlyFireEnabled) return;
+
             var hp = DamageMath.Resolve(target.Current, info.Amount, friendly,
                 combat.FriendlyFireDamageMultiplier, combat.FriendlyFireMinHP, target.GodMode);
             target.ServerSetCurrent(hp);

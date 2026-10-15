@@ -14,7 +14,7 @@ namespace GraceRun.DebugTools
         private const string MapName = "Debug";
         private const string ToggleActionName = "ToggleMenu";
         private const string Title = "Debug (F1)";
-        private static readonly Rect PanelRect = new Rect(10f, 10f, 260f, 320f);
+        private static readonly Rect PanelRect = new Rect(10f, 10f, 260f, 340f);
 
         [SerializeField] private InputActionAsset _controls;
         [SerializeField] private CombatData _combat;
@@ -24,6 +24,9 @@ namespace GraceRun.DebugTools
 
         public static DebugMenu Instance { get; private set; }
         public bool IsVisible { get; private set; }
+
+        /// <summary>Hitboxes draw a translucent box while armed (see HitboxDebugView).</summary>
+        public bool ShowHitboxes { get; private set; }
 
         private void Awake()
         {
@@ -66,6 +69,7 @@ namespace GraceRun.DebugTools
             GUILayout.BeginArea(PanelRect, Title, GUI.skin.window);
             DrawCombatCommands();
             DrawJuiceCommands();
+            if (GUILayout.Button($"Show hitboxes: {(ShowHitboxes ? "ON" : "off")}")) ShowHitboxes = !ShowHitboxes;
             GUILayout.EndArea();
         }
 
