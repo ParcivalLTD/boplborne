@@ -1,0 +1,5 @@
+{
+  "permissions": {
+    "allow": ["mcp__unity__package_add", "mcp__unity__package_resolve"]
+  }
+}
