@@ -43,6 +43,9 @@ namespace GraceRun.Net
             _net.OnClientDisconnectCallback -= ReleaseSlot;
         }
 
+        /// <summary>World position where the player in <paramref name="slot"/> starts.</summary>
+        public Vector3 SpawnPointFor(int slot) => _spawnPoints[Mathf.Max(0, slot) % _spawnPoints.Length].position;
+
         private void SpawnFor(ulong clientId)
         {
             if (_slots.Has(clientId)) return;
@@ -52,8 +55,7 @@ namespace GraceRun.Net
                 return;
             }
 
-            var point = _spawnPoints[slot % _spawnPoints.Length];
-            var player = Instantiate(_playerPrefab, point.position, Quaternion.identity);
+            var player = Instantiate(_playerPrefab, SpawnPointFor(slot), Quaternion.identity);
             player.SpawnAsPlayerObject(clientId);
             player.GetComponent<PlayerIdentity>().AssignIndex(slot);
         }

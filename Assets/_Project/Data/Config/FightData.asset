@@ -1,0 +1,17 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2914c19f0808eca4d8a61977bcc68a5c, type: 3}
+  m_Name: FightData
+  m_EditorClassIdentifier: GraceRun.Runtime::GraceRun.Run.FightData
+  _countdownSeconds: 3
+  _fightBannerSeconds: 1
+  _boss: {fileID: 11400000, guid: 243d465cef93a004d8ad3e878cf6e71b, type: 2}
