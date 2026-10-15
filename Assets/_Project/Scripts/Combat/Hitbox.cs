@@ -34,6 +34,12 @@ namespace GraceRun.Combat
 
         private void OnTriggerEnter2D(Collider2D other) => TryHit(other);
 
+        /// <summary>Victim side: a player still inside when their i-frames end gets hit then.</summary>
+        private void OnTriggerStay2D(Collider2D other)
+        {
+            if (IsArmed && _detection == HitDetection.VictimSide) TryHit(other);
+        }
+
         /// <summary>Starts a new swing: clears the hit list and enables the collider.</summary>
         public void Arm(int amount, Vector2 knockback)
         {

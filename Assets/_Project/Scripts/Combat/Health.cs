@@ -20,6 +20,9 @@ namespace GraceRun.Combat
         private readonly NetworkVariable<int> _current = new(
             0, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Server);
 
+        private readonly NetworkVariable<int> _maxOverride = new(
+            0, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Server);
+
         private readonly NetworkVariable<bool> _godMode = new(
             false, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Server);
 
@@ -38,7 +41,7 @@ namespace GraceRun.Combat
         public event Action<DamageInfo> HitTaken;
 
         public int Current => _current.Value;
-        public int Max => _healthStats != null ? _healthStats.MaxHP : 1;
+        public int Max => _maxOverride.Value > 0 ? _maxOverride.Value : _healthStats != null ? _healthStats.MaxHP : 1;
         public float Normalized => (float)_current.Value / Max;
         public bool IsDead => IsSpawned && _current.Value <= 0;
         public Team Team => _team;
@@ -93,6 +96,18 @@ namespace GraceRun.Combat
         /// <summary>Debug: refills HP.</summary>
         [Rpc(SendTo.Server)]
         public void RestoreFullRpc() => ServerRestoreFull();
+
+        /// <summary>Debug: sets HP (clamped to 0..Max).</summary>
+        [Rpc(SendTo.Server)]
+        public void DebugSetCurrentRpc(int value) => ServerSetCurrent(value);
+
+        /// <summary>Server only: replaces the stats max HP (boss HP scaling) and refills to it.</summary>
+        public void ServerSetMax(int max)
+        {
+            if (!IsServer) return;
+            _maxOverride.Value = Mathf.Max(1, max);
+            _current.Value = Max;
+        }
 
         /// <summary>Server only: sets HP, clamped to 0..Max.</summary>
         public void ServerSetCurrent(int value)

@@ -1,3 +1,4 @@
+using GraceRun.Bosses;
 using GraceRun.Combat;
 using Unity.Netcode;
 using UnityEngine;
@@ -40,6 +41,19 @@ namespace GraceRun.DebugTools
             var away = Mathf.Sign(dummy.transform.position.x - self.transform.position.x);
             var push = new Vector2(knockback.x * away, knockback.y);
             dummy.ReportHit(new DamageInfo(amount, push, self.NetworkObjectId, Team.Player));
+        }
+    
+        /// <summary>(Re)spawns boss <paramref name="index"/> of the scene's BossSpawner, through the server.</summary>
+        public static void SkipToBoss(int index)
+        {
+            if (BossSpawner.Instance != null) BossSpawner.Instance.SkipToBossRpc(index);
+        }
+
+        /// <summary>Sets the current boss's HP, through the server.</summary>
+        public static void SetBossHP(int value)
+        {
+            var boss = BossBrain.Active;
+            if (boss != null) boss.Health.DebugSetCurrentRpc(value);
         }
     }
 }

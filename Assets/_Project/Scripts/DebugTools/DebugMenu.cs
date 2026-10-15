@@ -1,3 +1,4 @@
+using GraceRun.Bosses;
 using GraceRun.Combat;
 using GraceRun.Core.Juice;
 using UnityEngine;
@@ -14,13 +15,14 @@ namespace GraceRun.DebugTools
         private const string MapName = "Debug";
         private const string ToggleActionName = "ToggleMenu";
         private const string Title = "Debug (F1)";
-        private static readonly Rect PanelRect = new Rect(10f, 10f, 260f, 340f);
+        private static readonly Rect PanelRect = new Rect(10f, 10f, 260f, 480f);
 
         [SerializeField] private InputActionAsset _controls;
         [SerializeField] private CombatData _combat;
 
         private InputActionAsset _actions;
         private InputAction _toggle;
+        private string _bossHpText = "100";
 
         public static DebugMenu Instance { get; private set; }
         public bool IsVisible { get; private set; }
@@ -68,6 +70,7 @@ namespace GraceRun.DebugTools
             if (!IsVisible) return;
             GUILayout.BeginArea(PanelRect, Title, GUI.skin.window);
             DrawCombatCommands();
+            DrawBossCommands();
             DrawJuiceCommands();
             if (GUILayout.Button($"Show hitboxes: {(ShowHitboxes ? "ON" : "off")}")) ShowHitboxes = !ShowHitboxes;
             GUILayout.EndArea();
@@ -94,6 +97,25 @@ namespace GraceRun.DebugTools
             if (GUILayout.Button($"Hit dummy {_combat.DebugDamage}"))
                 DebugCommands.HitDummy(self, dummy.Health, _combat.DebugDamage, _combat.DebugKnockback);
             GUI.enabled = true;
+        }
+
+        private void DrawBossCommands()
+        {
+            var spawner = BossSpawner.Instance;
+            if (spawner != null)
+            {
+                for (var i = 0; i < spawner.Bosses.Count; i++)
+                    if (GUILayout.Button($"Skip to {spawner.Bosses[i].DisplayName}")) DebugCommands.SkipToBoss(i);
+            }
+
+            var boss = BossBrain.Active;
+            if (boss == null || !boss.IsSpawned) return;
+
+            GUILayout.Label($"{boss.Data.DisplayName} HP {boss.Health.Current}/{boss.Health.Max}, phase {boss.Phase}, target {boss.TargetId}");
+            GUILayout.BeginHorizontal();
+            _bossHpText = GUILayout.TextField(_bossHpText, GUILayout.Width(70f));
+            if (GUILayout.Button("Set boss HP") && int.TryParse(_bossHpText, out var hp)) DebugCommands.SetBossHP(hp);
+            GUILayout.EndHorizontal();
         }
 
         private static void DrawJuiceCommands()

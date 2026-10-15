@@ -1,0 +1,50 @@
+using System.Collections.Generic;
+using Unity.Netcode;
+using UnityEngine;
+
+namespace GraceRun.Bosses
+{
+    /// <summary>
+    /// In-scene networked spawner for bosses. The server spawns a boss (replacing any current one)
+    /// at the spawn point; "Skip to boss" in the F1 menu asks for it through <see cref="SkipToBossRpc"/>.
+    /// Placeholder until RunManager swaps arena prefabs (M4/M6).
+    /// </summary>
+    public class BossSpawner : NetworkBehaviour
+    {
+        [SerializeField] private BossData[] _bosses;
+        [SerializeField] private Transform _spawnPoint;
+        [SerializeField, Tooltip("Spawn the first boss as soon as the Game scene starts. Off: use F1 > Skip to boss after everyone joined, so HP scales to the right player count.")]
+        private bool _spawnOnStart;
+
+        /// <summary>The spawner in the loaded Game scene on this PC, if any.</summary>
+        public static BossSpawner Instance { get; private set; }
+
+        public IReadOnlyList<BossData> Bosses => _bosses;
+
+        public override void OnNetworkSpawn()
+        {
+            Instance = this;
+            if (IsServer && _spawnOnStart && _bosses.Length > 0) ServerSpawn(0);
+        }
+
+        public override void OnNetworkDespawn()
+        {
+            if (Instance == this) Instance = null;
+        }
+
+        /// <summary>Debug: (re)spawns boss <paramref name="index"/> with HP scaled to the players connected now.</summary>
+        [Rpc(SendTo.Server)]
+        public void SkipToBossRpc(int index) => ServerSpawn(index);
+
+        private void ServerSpawn(int index)
+        {
+            if (index < 0 || index >= _bosses.Length || _bosses[index].Prefab == null) return;
+
+            var current = BossBrain.Active;
+            if (current != null && current.IsSpawned) current.NetworkObject.Despawn();
+
+            var boss = Instantiate(_bosses[index].Prefab, _spawnPoint.position, Quaternion.identity);
+            boss.GetComponent<NetworkObject>().Spawn(true);
+        }
+    }
+}

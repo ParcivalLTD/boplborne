@@ -5,7 +5,8 @@
         "Unity.Netcode.Runtime",
         "Unity.InputSystem",
         "Unity.Cinemachine",
-        "Unity.Collections"
+        "Unity.Collections",
+        "UnityEngine.UI"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],
