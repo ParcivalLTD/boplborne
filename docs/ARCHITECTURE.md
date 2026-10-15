@@ -77,7 +77,7 @@ Everything tunable is here. Default values are the starting values in `docs/GDD.
 | `AbilityData` | id, displayName, description, comboHook, icon, tags (flags), rarity, cooldown, minFloor, effectPrefab, level2 multipliers |
 | `ComboRules` | rules[]: sourceTag, targetTag, interaction (Absorb, Redirect, Pull, Push, Launch, Ricochet, Ignite…), parameters |
 | `BossData` | id, displayName, floor, baseHP, hpScalePerExtraPlayer (0.6), phase2Threshold (0.5), phase1Attacks[], phase2Attacks[], targetSwitchInterval, prefab, arenaPrefab, accentColor |
-| `AttackData` | id, windup, active, recovery, damage, knockback, telegraphType (Glow, GroundZone, Line, Projectile), punishWindow, weight, cooldown, minRange, maxRange, behaviour |
+| `AttackData` | id, windup, active, recovery, damage, knockback, telegraphType (Glow, GroundZone, Line, Projectile), punishWindow, lungeDistance/lungeTime, followUp (chained attack, same start tick), windupCue, weight, cooldown, minRange, maxRange, behaviour |
 | `RunConfig` | floors[] (boss pool per floor), restAfterFloors [2,4,6], currencyPerBoss, bonusNoDeaths, bonusFastKill, cardsOffered (3), rerollsPerRun (1), legendaryMinFloor (4), rarityWeights |
 
 ## Systems

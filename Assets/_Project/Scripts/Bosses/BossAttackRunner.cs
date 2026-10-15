@@ -10,6 +10,7 @@ namespace GraceRun.Bosses
     /// in <see cref="BossAttackState"/>: wind-up, active (victim-side hitbox armed), recovery.
     /// Because every PC times it from server time, all screens show the telegraph at the same
     /// moment and each player is only hit if they are in the hitbox on their own screen.
+    /// Follow-up attacks (<see cref="AttackData.FollowUp"/>) play straight after, from the same tick.
     /// </summary>
     public class BossAttackRunner : NetworkBehaviour
     {
@@ -21,20 +22,23 @@ namespace GraceRun.Bosses
         private readonly NetworkVariable<BossAttackState> _current = new(
             BossAttackState.None, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Server);
 
+        private AttackData _first;
         private AttackData _attack;
         private BossAttackState _playing = BossAttackState.None;
+        private double _firstStartTime;
         private double _startTime;
         private ushort _sequence;
 
         /// <summary>Raised on every PC when the attack moves to a new phase (None when it ends or is cancelled).</summary>
         public event Action<AttackPhase> PhaseChanged;
 
+        /// <summary>The link of the chain playing now (the first attack, or one of its follow-ups).</summary>
         public AttackData Attack => _attack;
         public AttackPhase Phase { get; private set; }
         public sbyte Facing => _playing.Facing;
         public int PlayingId => _playing.AttackId;
 
-        /// <summary>Seconds since the attack's start tick on this PC (negative while pending).</summary>
+        /// <summary>Seconds since the current link's start on this PC (negative while pending).</summary>
         public double Elapsed => _attack != null && IsSpawned ? NetworkManager.ServerTime.Time - _startTime : 0d;
 
         public override void OnNetworkSpawn()
@@ -51,9 +55,17 @@ namespace GraceRun.Bosses
 
         private void Update()
         {
-            if (_attack == null || !IsSpawned) return;
+            if (_first == null || !IsSpawned) return;
+            var link = AttackChain.LinkAt(_first, NetworkManager.ServerTime.Time - _firstStartTime, out var linkStart);
+            var linkChanged = link != _attack;
+            if (linkChanged)
+            {
+                _attack = link;
+                _startTime = _firstStartTime + linkStart;
+            }
+
             var phase = _attack.PhaseAt(Elapsed);
-            if (phase != Phase) SetPhase(phase);
+            if (phase != Phase || linkChanged) SetPhase(phase);
         }
 
         /// <summary>Server only: starts attack <paramref name="attackId"/> a little in the future (the start lead).</summary>
@@ -85,16 +97,19 @@ namespace GraceRun.Bosses
             Stop();
             if (state.IsNone) return;
 
-            _attack = _data.AttackById(state.AttackId);
-            if (_attack == null) return;
+            _first = _data.AttackById(state.AttackId);
+            if (_first == null) return;
+            _attack = _first;
             _playing = state;
-            _startTime = new NetworkTime(NetworkManager.ServerTime.TickRate, state.StartTick).Time;
+            _firstStartTime = new NetworkTime(NetworkManager.ServerTime.TickRate, state.StartTick).Time;
+            _startTime = _firstStartTime;
             Update();
         }
 
         private void Stop()
         {
             if (_attack != null && Phase != AttackPhase.None) SetPhase(AttackPhase.None);
+            _first = null;
             _attack = null;
             _playing = BossAttackState.None;
         }
@@ -106,7 +121,9 @@ namespace GraceRun.Bosses
             if (phase == AttackPhase.Active) ArmHitbox();
 
             PhaseChanged?.Invoke(phase);
-            if (phase == AttackPhase.None) _attack = null;
+            if (phase != AttackPhase.None) return;
+            _first = null;
+            _attack = null;
         }
 
         private void ArmHitbox()

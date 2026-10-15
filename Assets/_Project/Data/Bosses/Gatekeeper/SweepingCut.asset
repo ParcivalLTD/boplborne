@@ -1,0 +1,34 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cf49f4e03f190c242a10d63d36275ab9, type: 3}
+  m_Name: SweepingCut
+  m_EditorClassIdentifier: GraceRun.Runtime::GraceRun.Bosses.AttackData
+  _id: sweeping_cut
+  _windup: 1
+  _active: 0.2
+  _recovery: 0.9
+  _punishWindow: 0.7
+  _damage: 25
+  _knockback: {x: 10, y: 4}
+  _hitboxOffset: {x: 0, y: -2.2}
+  _hitboxSize: {x: 14, y: 1.6}
+  _telegraphType: 1
+  _glowPart: 0
+  _weakPointOffset: {x: 0, y: 1.2}
+  _lungeDistance: 0
+  _lungeTime: 0.2
+  _followUp: {fileID: 0}
+  _windupCue: {fileID: 11400000, guid: db44826c1c239b24b9a95d8b506368d3, type: 2}
+  _weight: 0.8
+  _cooldown: 3
+  _minRange: 0
+  _maxRange: 6

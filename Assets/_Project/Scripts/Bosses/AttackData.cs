@@ -1,3 +1,4 @@
+using GraceRun.Core.Audio;
 using UnityEngine;
 
 namespace GraceRun.Bosses
@@ -33,6 +34,18 @@ namespace GraceRun.Bosses
         [SerializeField, Tooltip("Where the gold weak point appears during recovery.")]
         private Vector2 _weakPointOffset = new(0f, 1f);
 
+        [Header("Lunge (server moves the boss during the active phase)")]
+        [SerializeField, Min(0f), Tooltip("Units the boss dashes forward. 0 = stands still.")]
+        private float _lungeDistance;
+        [SerializeField, Min(0f), Tooltip("Seconds the dash takes, from the start of the active phase. Keep it shorter than Active so the hitbox stays armed a moment after the boss stops (covers client interpolation).")]
+        private float _lungeTime = 0.2f;
+
+        [Header("Chain and sound")]
+        [SerializeField, Tooltip("Played right after this attack ends, on every PC, with no pause and no new pick. Same facing and target.")]
+        private AttackData _followUp;
+        [SerializeField, Tooltip("Telegraph sound played when the wind-up starts (one per boss telegraph).")]
+        private AudioCue _windupCue;
+
         [Header("Choice")]
         [SerializeField, Min(0f)] private float _weight = 1f;
         [SerializeField, Min(0f), Tooltip("Seconds after this attack ends before the brain may pick it again.")]
@@ -54,6 +67,10 @@ namespace GraceRun.Bosses
         public TelegraphType TelegraphType => _telegraphType;
         public int GlowPart => _glowPart;
         public Vector2 WeakPointOffset => _weakPointOffset;
+        public float LungeDistance => _lungeDistance;
+        public float LungeTime => Mathf.Min(_lungeTime, _active);
+        public AttackData FollowUp => _followUp;
+        public AudioCue WindupCue => _windupCue;
         public float Weight => _weight;
         public float Cooldown => _cooldown;
         public float MinRange => _minRange;

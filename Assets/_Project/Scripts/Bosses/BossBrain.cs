@@ -161,6 +161,7 @@ namespace GraceRun.Bosses
         private void OnAttackPhaseChanged(AttackPhase phase)
         {
             if (State == BossState.Dead) return;
+            if (phase == AttackPhase.Windup) State = BossState.Attacking;
             if (phase == AttackPhase.Recovery) State = BossState.Recovering;
             if (phase != AttackPhase.None || _attackId < 0) return;
 

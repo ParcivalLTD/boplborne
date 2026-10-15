@@ -19,6 +19,8 @@ namespace GraceRun.Bosses
 
         private Rigidbody2D _body;
         private float _moveDirection;
+        private float _dashVelocity;
+        private float _dashTimer;
 
         /// <summary>+1 facing right, -1 facing left.</summary>
         public sbyte Facing => _facing.Value;
@@ -41,7 +43,15 @@ namespace GraceRun.Bosses
 
         private void FixedUpdate()
         {
-            if (IsServer && IsSpawned) _body.linearVelocityX = _moveDirection * _data.WalkSpeed;
+            if (!IsServer || !IsSpawned) return;
+            if (_dashTimer > 0f)
+            {
+                _dashTimer -= Time.fixedDeltaTime;
+                _body.linearVelocityX = _dashVelocity;
+                return;
+            }
+
+            _body.linearVelocityX = _moveDirection * _data.WalkSpeed;
         }
 
         /// <summary>Server only: walks toward <paramref name="targetX"/> and faces it.</summary>
@@ -51,8 +61,20 @@ namespace GraceRun.Bosses
             ServerFace(_moveDirection);
         }
 
-        /// <summary>Server only: stands still.</summary>
-        public void ServerStop() => _moveDirection = 0f;
+        /// <summary>Server only: stands still (also ends a dash).</summary>
+        public void ServerStop()
+        {
+            _moveDirection = 0f;
+            _dashTimer = 0f;
+        }
+
+        /// <summary>Server only: moves at <paramref name="velocity"/> on x for <paramref name="duration"/> seconds, ignoring walking.</summary>
+        public void ServerDash(float velocity, float duration)
+        {
+            if (!IsServer) return;
+            _dashVelocity = velocity;
+            _dashTimer = duration;
+        }
 
         /// <summary>Server only: turns toward the sign of <paramref name="direction"/> (0 keeps the facing).</summary>
         public void ServerFace(float direction)

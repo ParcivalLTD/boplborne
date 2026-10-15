@@ -6,7 +6,8 @@ namespace GraceRun.Bosses
     /// Shows the current attack's warnings on every PC, from <see cref="BossAttackRunner"/>:
     /// a red glow pulsing faster and faster on the attacking boss part during the wind-up, an
     /// optional red zone over the area the hitbox will cover, and a gold weak point during the
-    /// punish window. Local cosmetic only.
+    /// punish window. The zone stays where the boss stood when the attack started and also covers
+    /// a lunge's path. Local cosmetic only.
     /// </summary>
     public class Telegraph : MonoBehaviour
     {
@@ -19,6 +20,8 @@ namespace GraceRun.Bosses
         [SerializeField] private SpriteRenderer _weakPoint;
 
         private Vector3 _weakPointScale;
+        private AttackData _anchoredFor;
+        private Vector3 _anchor;
 
         private void Awake()
         {
@@ -31,8 +34,15 @@ namespace GraceRun.Bosses
             var attack = _runner.Attack;
             if (attack == null)
             {
+                _anchoredFor = null;
                 HideAll();
                 return;
+            }
+
+            if (attack != _anchoredFor)
+            {
+                _anchoredFor = attack;
+                _anchor = transform.position;
             }
 
             var elapsed = (float)_runner.Elapsed;
@@ -91,8 +101,9 @@ namespace GraceRun.Bosses
             }
 
             var zone = _zone.transform;
-            zone.localPosition = new Vector3(attack.HitboxOffset.x * facing, attack.HitboxOffset.y, 0f);
-            zone.localScale = new Vector3(attack.HitboxSize.x, attack.HitboxSize.y, 1f);
+            var lunge = attack.LungeDistance;
+            zone.position = _anchor + new Vector3((attack.HitboxOffset.x + lunge * 0.5f) * facing, attack.HitboxOffset.y, 0f);
+            zone.localScale = new Vector3(attack.HitboxSize.x + lunge, attack.HitboxSize.y, 1f);
             _zone.color = WithAlpha(_look.TelegraphRed, alpha);
             _zone.enabled = true;
         }

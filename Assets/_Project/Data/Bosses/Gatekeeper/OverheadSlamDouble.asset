@@ -1,0 +1,34 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cf49f4e03f190c242a10d63d36275ab9, type: 3}
+  m_Name: OverheadSlamDouble
+  m_EditorClassIdentifier: GraceRun.Runtime::GraceRun.Bosses.AttackData
+  _id: overhead_slam_double
+  _windup: 0.9
+  _active: 0.15
+  _recovery: 0.2
+  _punishWindow: 0
+  _damage: 30
+  _knockback: {x: 9, y: 7}
+  _hitboxOffset: {x: 4.25, y: -1}
+  _hitboxSize: {x: 4.5, y: 4}
+  _telegraphType: 1
+  _glowPart: 1
+  _weakPointOffset: {x: 0.4, y: 1.2}
+  _lungeDistance: 0
+  _lungeTime: 0.2
+  _followUp: {fileID: 11400000, guid: 83696d36a2abdfd44bbd0084c6fbbf14, type: 2}
+  _windupCue: {fileID: 11400000, guid: 0b6d5438ea7f8c3458bfebd854492335, type: 2}
+  _weight: 1.4
+  _cooldown: 0
+  _minRange: 0
+  _maxRange: 6

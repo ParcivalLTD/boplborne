@@ -1,0 +1,37 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bf20e1d2ce098f341ba2663937059ed5, type: 3}
+  m_Name: GatekeeperData
+  m_EditorClassIdentifier: GraceRun.Runtime::GraceRun.Bosses.BossData
+  _id: gatekeeper
+  _displayName: The Gatekeeper
+  _floor: 1
+  _accentColor: {r: 0.6039216, g: 0.6392157, b: 0.70980394, a: 1}
+  _baseHP: 500
+  _hpScalePerExtraPlayer: 0.6
+  _phase2Threshold: 0.5
+  _phase1Attacks:
+  - {fileID: 11400000, guid: 0ae9fa12968a617499550f05fa02f413, type: 2}
+  - {fileID: 11400000, guid: 0324fcc9ab5935f48b3f3c139f911e5e, type: 2}
+  - {fileID: 11400000, guid: 18f7c4067b8f03445a8f8cc78eaddf4b, type: 2}
+  _phase2Attacks:
+  - {fileID: 11400000, guid: 75df526ee5b4c97438faa156622ed67c, type: 2}
+  - {fileID: 11400000, guid: b531b4e7ac3f13043a94e5c46bc61408, type: 2}
+  - {fileID: 11400000, guid: 0324fcc9ab5935f48b3f3c139f911e5e, type: 2}
+  - {fileID: 11400000, guid: 18f7c4067b8f03445a8f8cc78eaddf4b, type: 2}
+  _idleTime: 0.7
+  _targetSwitchInterval: 8
+  _walkSpeed: 3.5
+  _attackStartLead: 0.1
+  _despawnDelay: 1.5
+  _prefab: {fileID: 6321937765397557630, guid: 8339ee51facf69f43b8ab05af6b455cd, type: 3}
+  _arenaPrefab: {fileID: 7121268250761901515, guid: a802a69359850524abfc2255f6762f5b, type: 3}
