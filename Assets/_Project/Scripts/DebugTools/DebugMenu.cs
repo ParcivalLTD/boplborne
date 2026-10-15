@@ -1,3 +1,4 @@
+using GraceRun.Core.Juice;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -5,7 +6,7 @@ namespace GraceRun.DebugTools
 {
     /// <summary>
     /// Developer panel toggled with F1 (Debug/ToggleMenu in GraceRunControls).
-    /// Lives in Bootstrap and survives scene loads. Commands are added in later steps.
+    /// Lives in Bootstrap and survives scene loads.
     /// </summary>
     public class DebugMenu : MonoBehaviour
     {
@@ -61,10 +62,17 @@ namespace GraceRun.DebugTools
         {
             if (!IsVisible) return;
             GUILayout.BeginArea(PanelRect, Title, GUI.skin.window);
-            GUILayout.Label("No commands yet.");
+            DrawJuiceCommands();
             GUILayout.EndArea();
         }
 
         private void OnToggle(InputAction.CallbackContext _) => IsVisible = !IsVisible;
+
+        private static void DrawJuiceCommands()
+        {
+            GUI.enabled = Shake.IsAvailable;
+            if (GUILayout.Button("Test shake")) Shake.PlayTest();
+            GUI.enabled = true;
+        }
     }
 }

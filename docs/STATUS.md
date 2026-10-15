@@ -5,16 +5,16 @@ The agent updates this file at the end of every step. Humans may edit it too.
 ## Now
 
 - **Milestone:** M1 — Networked movement
-- **Done:** M0 complete (0.1–0.4 manual setup, 0.5 packages, 0.6 scaffold); 1.1 connection; 1.2 player spawn; 1.3 movement feel; 1.4 dodge and stamina
-- **Next step:** 1.5 — Camera and shake (see `docs/PROMPTS.md`)
+- **Done:** M0 complete (0.1–0.4 manual setup, 0.5 packages, 0.6 scaffold); 1.1 connection; 1.2 player spawn; 1.3 movement feel; 1.4 dodge and stamina; 1.5 camera and shake
+- **Next step:** 2.1 — Health and damage pipeline (M2 Combat) (see `docs/PROMPTS.md`)
 
 ## Milestones
 
 | Milestone | Status |
 | --- | --- |
 | M0 Project setup | done |
-| M1 Networked movement | in progress |
-| M2 Combat | not started |
+| M1 Networked movement | done |
+| M2 Combat | in progress |
 | M3 First boss | not started |
 | M4 Co-op rules | not started |
 | M5 Abilities and draft | not started |
@@ -43,6 +43,10 @@ The agent updates this file at the end of every step. Humans may edit it too.
 - You can jump during a roll and keep the roll speed in the air (a long jump). Left in on purpose for now; decide in a playtest.
 - Stamina publishes to its owner-write NetworkVariable every frame while it refills (only when the value changes). That's fine for 4 players; quantize it if network stats complain.
 - The stamina bar is an owner-only world-space placeholder above the player. The HUD step (4.3) replaces it.
+- The arena camera is one static `ArenaCamera` (CinemachineCamera, no follow) in the Game scene at (0, 2), framing 40×22.5 units. Bosses with other arena sizes will need their own camera or framing; that comes with arena prefabs (M4/M6).
+- Screen shake strength multiplier lives in `Data/Config/ShakeData.asset` until the Settings screen (and SaveSystem) exist; the slider should write it per player, not into the asset.
+- `Shake.Play` is a no-op outside the Game scene (no `ShakeSource`), so shakes in menus or on a server-only build are silently skipped. That is intended.
+- `capture_game_view` with a `save_path` writes inside `Assets/` (it made `Assets/Temp/`). Save screenshots outside `Assets/` or delete the folder afterwards.
 
 ## Playtest backlog
 
@@ -52,6 +56,7 @@ The agent updates this file at the end of every step. Humans may edit it too.
 
 | Date | Step | Note |
 | --- | --- | --- |
+| 2026-10-15 | 1.5 | `Core/Juice/` `Shake` (static entry point + pure force math, 3 tests), `ShakeSource` (uniform Cinemachine impulse), `ShakeData` + asset (multiplier 1, base force 0.4, 0.25 s, Explosion shape). Game scene: `CinemachineBrain` on Main Camera, new `ArenaCamera` (CinemachineCamera ortho 11.25, CinemachinePixelPerfect, ImpulseListener, ShakeSource), camera raised to y 2 so the floor sits near the bottom. Debug menu: "Test shake". 41/41 EditMode tests pass. Host play mode at 1920×1080: whole arena visible at pixel ratio 3, crisp; test shake moves the camera up to ~0.4 units and settles back in 0.25 s. Console clean. |
 | 2026-10-15 | 1.4 | `PlayerStatsData` + asset (GDD values), `StaminaPool` (pure, 7 tests), `PlayerStamina` (owner-write NetworkVariable), `PlayerDodge` (owner roll; owner-write `_invulnerable` NetworkVariable drives the flash on every client), `Core/Juice/SpriteFlash`, `PlayerStaminaBar`. `PlayerMovement` gained `Facing` and `ControlSuspended`. Player prefab: new components, a `StaminaBar` child, and a zero-friction material on the collider. 38/38 EditMode tests pass. Host play mode: the roll holds 16 u/s for 0.35 s (5.8 units), 4 dodges empty stamina and the 5th is refused, it refills to 100 after the delay, the flash shows and the colors come back. Console clean. |
 | 2026-10-15 | 1.3 | `PlayerMovementData` + asset, `PlayerMovement` (accel/decel, air control, variable jump, fall gravity, max fall speed), `JumpGate` (coyote + buffer, pure logic), `PlayerSquashStretch`. Player prefab gained `NetworkRigidbody2D`, a `Visuals` holder and a `GroundCheck` child; `PlayerOwnership` no longer sets `bodyType`. Test-arena platform lowered to y −2.5 so one jump reaches it. 31/31 EditMode tests pass, clean host run with no console errors; jump verified in play mode (tap = short hop, hold = full 3.5 units). |
 | 2026-10-15 | 1.2 | `Player/` (PlayerVisuals, PlayerIdentity, PlayerOwnership), `Net/` (PlayerSlots, PlayerSpawner). Player prefab: Rigidbody2D + CapsuleCollider2D on layer Player, NetworkObject, owner-auth NetworkTransform (interpolate), body/eye/hat sprites. Placeholder sprites generated into `Art/Characters/Placeholder` and `Art/Environment/Placeholder`; GameConfig hat sprites filled (plume, horns, crown, wizard hat). Game scene: grey test arena (floor, two walls, platform) + PlayerSpawner with 4 spawn points. 25/25 EditMode tests pass, console clean, 4 placeholders checked in the Game view. |
