@@ -24,6 +24,7 @@ namespace GraceRun.Player
         private ContactFilter2D _groundFilter;
         private bool _grounded;
         private bool _jumpHeld;
+        private float _facing = 1f;
 
         /// <summary>Raised on the owner the moment a jump leaves the ground.</summary>
         public event Action Jumped;
@@ -33,6 +34,12 @@ namespace GraceRun.Player
 
         /// <summary>True while the feet are on something solid.</summary>
         public bool IsGrounded => _grounded;
+
+        /// <summary>+1 or -1: the last horizontal direction the player pushed.</summary>
+        public float Facing => _facing;
+
+        /// <summary>While true another component (the dodge) owns horizontal velocity.</summary>
+        public bool ControlSuspended { get; set; }
 
         private void Awake()
         {
@@ -87,7 +94,11 @@ namespace GraceRun.Player
 
         private void ApplyHorizontal(float deltaTime)
         {
-            var wanted = Mathf.Clamp(_input.Move.x, -1f, 1f) * _data.RunSpeed;
+            var inputX = Mathf.Clamp(_input.Move.x, -1f, 1f);
+            if (Mathf.Abs(inputX) > 0.01f) _facing = Mathf.Sign(inputX);
+            if (ControlSuspended) return;
+
+            var wanted = inputX * _data.RunSpeed;
             var changing = Mathf.Abs(wanted) > 0.01f;
             var rate = changing ? _data.Acceleration : _data.Deceleration;
             if (!_grounded) rate *= _data.AirControl;

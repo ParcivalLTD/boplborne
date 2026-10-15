@@ -5,8 +5,8 @@ The agent updates this file at the end of every step. Humans may edit it too.
 ## Now
 
 - **Milestone:** M1 — Networked movement
-- **Done:** M0 complete (0.1–0.4 manual setup, 0.5 packages, 0.6 scaffold); 1.1 connection; 1.2 player spawn; 1.3 movement feel
-- **Next step:** 1.4 — Dodge and stamina (see `docs/PROMPTS.md`)
+- **Done:** M0 complete (0.1–0.4 manual setup, 0.5 packages, 0.6 scaffold); 1.1 connection; 1.2 player spawn; 1.3 movement feel; 1.4 dodge and stamina
+- **Next step:** 1.5 — Camera and shake (see `docs/PROMPTS.md`)
 
 ## Milestones
 
@@ -37,7 +37,12 @@ The agent updates this file at the end of every step. Humans may edit it too.
 - The test arena is a plain `Arena` GameObject in the Game scene, not an arena prefab yet. `RunManager` (M4/M6) is where arenas become swappable prefabs.
 - **A Rigidbody2D under a `NetworkTransform` needs `NetworkRigidbody2D` next to it** (with `UseRigidBodyForMotion` on), or netcode writes the transform every tick and silently eats every velocity you set — the player simply will not move. Found the hard way in 1.3. `NetworkRigidbody2D` also makes non-owners kinematic, so `PlayerOwnership` no longer touches `bodyType`.
 - Input only reaches the game while the **Game view has focus**. Unfocused, the Input System disables the device and the action map (`backgroundBehavior = ResetAndDisableNonBackgroundDevices`), so simulated keys do nothing and `PlayerInputReader` logs "Map must be contained in state" if a script toggles it then. Click the Game view before testing by hand.
-- Movement is only run and jump (1.3). No dodge, no facing flip, no attacks yet.
+- No facing flip on the sprite yet. `PlayerMovement.Facing` tracks the last pushed direction (used by the dodge) but nothing mirrors the visuals.
+- **The player collider now uses `Data/Player/PlayerNoFriction` (friction 0).** Without it, ground friction cut every grounded horizontal speed roughly in half per physics step (a 16 u/s roll moved at 8.4 u/s). This probably also slowed the 1.3 run while grounded, so running now feels faster and closer to the `RunSpeed` value. Re-check run feel in the next playtest.
+- `SpriteFlash` tints `SpriteRenderer.color` to white. That only works because the placeholder sprites are white shapes; real art (M8) needs a flash shader driven by a material property block (see `docs/ARCHITECTURE.md` Juice).
+- You can jump during a roll and keep the roll speed in the air (a long jump). Left in on purpose for now; decide in a playtest.
+- Stamina publishes to its owner-write NetworkVariable every frame while it refills (only when the value changes). That's fine for 4 players; quantize it if network stats complain.
+- The stamina bar is an owner-only world-space placeholder above the player. The HUD step (4.3) replaces it.
 
 ## Playtest backlog
 
@@ -47,6 +52,7 @@ The agent updates this file at the end of every step. Humans may edit it too.
 
 | Date | Step | Note |
 | --- | --- | --- |
+| 2026-10-15 | 1.4 | `PlayerStatsData` + asset (GDD values), `StaminaPool` (pure, 7 tests), `PlayerStamina` (owner-write NetworkVariable), `PlayerDodge` (owner roll; owner-write `_invulnerable` NetworkVariable drives the flash on every client), `Core/Juice/SpriteFlash`, `PlayerStaminaBar`. `PlayerMovement` gained `Facing` and `ControlSuspended`. Player prefab: new components, a `StaminaBar` child, and a zero-friction material on the collider. 38/38 EditMode tests pass. Host play mode: the roll holds 16 u/s for 0.35 s (5.8 units), 4 dodges empty stamina and the 5th is refused, it refills to 100 after the delay, the flash shows and the colors come back. Console clean. |
 | 2026-10-15 | 1.3 | `PlayerMovementData` + asset, `PlayerMovement` (accel/decel, air control, variable jump, fall gravity, max fall speed), `JumpGate` (coyote + buffer, pure logic), `PlayerSquashStretch`. Player prefab gained `NetworkRigidbody2D`, a `Visuals` holder and a `GroundCheck` child; `PlayerOwnership` no longer sets `bodyType`. Test-arena platform lowered to y −2.5 so one jump reaches it. 31/31 EditMode tests pass, clean host run with no console errors; jump verified in play mode (tap = short hop, hold = full 3.5 units). |
 | 2026-10-15 | 1.2 | `Player/` (PlayerVisuals, PlayerIdentity, PlayerOwnership), `Net/` (PlayerSlots, PlayerSpawner). Player prefab: Rigidbody2D + CapsuleCollider2D on layer Player, NetworkObject, owner-auth NetworkTransform (interpolate), body/eye/hat sprites. Placeholder sprites generated into `Art/Characters/Placeholder` and `Art/Environment/Placeholder`; GameConfig hat sprites filled (plume, horns, crown, wizard hat). Game scene: grey test arena (floor, two walls, platform) + PlayerSpawner with 4 spawn points. 25/25 EditMode tests pass, console clean, 4 placeholders checked in the Game view. |
 | 2026-10-15 | 0.5 | Added netcode.gameobjects 2.13.3, multiplayer.playmode 3.0.0, multiplayer.tools 2.2.12, cinemachine 6.6.0. inputsystem / 2d.animation / 2d.aseprite already came with the Universal 2D template. Active Input Handling was already "Input System Package (New)". Console clean. |
