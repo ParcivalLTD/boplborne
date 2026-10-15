@@ -4,9 +4,9 @@ The agent updates this file at the end of every step. Humans may edit it too.
 
 ## Now
 
-- **Milestone:** M1 — Networked movement
-- **Done:** M0 complete (0.1–0.4 manual setup, 0.5 packages, 0.6 scaffold); 1.1 connection; 1.2 player spawn; 1.3 movement feel; 1.4 dodge and stamina; 1.5 camera and shake
-- **Next step:** 2.1 — Health and damage pipeline (M2 Combat) (see `docs/PROMPTS.md`)
+- **Milestone:** M2 — Combat
+- **Done:** M0 complete; M1 complete (1.1–1.5); 2.1 health and damage pipeline
+- **Next step:** 2.2 — Light attack combo (see `docs/PROMPTS.md`)
 
 ## Milestones
 
@@ -47,6 +47,12 @@ The agent updates this file at the end of every step. Humans may edit it too.
 - Screen shake strength multiplier lives in `Data/Config/ShakeData.asset` until the Settings screen (and SaveSystem) exist; the slider should write it per player, not into the asset.
 - `Shake.Play` is a no-op outside the Game scene (no `ShakeSource`), so shakes in menus or on a server-only build are silently skipped. That is intended.
 - `capture_game_view` with a `save_path` writes inside `Assets/` (it made `Assets/Temp/`). Save screenshots outside `Assets/` or delete the folder afterwards.
+- A player at 0 HP gets the `Died` event but nothing happens yet: they keep moving and can be healed from the debug menu. Ghosts and gravestones come in 4.2.
+- Knockback on a player sets the body's velocity, but `PlayerMovement` keeps steering X toward the input, so horizontal knockback on players fades quickly (vertical survives). Add a short control lock on knockback when boss hits land (3.x) if it feels weak.
+- Hit reports carry the damage numbers themselves (`DamageInfo`), not an attack id the server looks up. Fine between friends; switch to an attack reference if cheating ever matters.
+- HP bars are world-space placeholders (`HealthBar`, bone white) above every player and the dummy; the HUD (4.3) and boss bar replace them.
+- The training dummy is spawned by `TrainingDummySpawner` in the Game scene at (11, −3.5) and refills 1.5 s after reaching 0 HP. Remove the spawner (with the user's OK) when the hub/arenas exist.
+- `Hitbox` is built and was checked once with a temporary victim-side hitbox (one hit, 30 damage), but nothing uses it yet; the light attack (2.2) is its first real user.
 
 ## Playtest backlog
 
@@ -56,6 +62,7 @@ The agent updates this file at the end of every step. Humans may edit it too.
 
 | Date | Step | Note |
 | --- | --- | --- |
+| 2026-10-15 | 2.1 | `Combat/`: `Team`, `DamageInfo` (INetworkSerializable), `DamageMath` (pure, 10 tests incl. friendly fire floor at 1 HP), `CombatData` + asset, `Health` (server-write HP + god mode NetworkVariables, `ReportHitRpc`, `Changed`/`Died` on all clients), static `DamageService`, `Knockback` (owner RPC), `Hurtbox`, `Hitbox` (attacker- or victim-side), `HealthBar`, `TrainingDummy` + data asset + spawner. `PlayerStatsData` implements `IHealthStats`, `PlayerDodge` implements `IInvulnerability`. Player prefab: Health, Knockback, Hurtbox, HP bar. New `Prefabs/TrainingDummy.prefab` (Boss layer, server-auth NetworkTransform + NetworkRigidbody2D). Debug menu: HP readout, god mode, damage me 20, heal me, hit dummy 20. 51/51 EditMode tests pass. Host play mode: damage me 100→80, god mode blocks, 0 HP fires Died, heal works; hit dummy 200→180 with knockback into the wall; dummy refills after 1.5 s; bars shrink in the Game view. Console clean. |
 | 2026-10-15 | 1.5 | `Core/Juice/` `Shake` (static entry point + pure force math, 3 tests), `ShakeSource` (uniform Cinemachine impulse), `ShakeData` + asset (multiplier 1, base force 0.4, 0.25 s, Explosion shape). Game scene: `CinemachineBrain` on Main Camera, new `ArenaCamera` (CinemachineCamera ortho 11.25, CinemachinePixelPerfect, ImpulseListener, ShakeSource), camera raised to y 2 so the floor sits near the bottom. Debug menu: "Test shake". 41/41 EditMode tests pass. Host play mode at 1920×1080: whole arena visible at pixel ratio 3, crisp; test shake moves the camera up to ~0.4 units and settles back in 0.25 s. Console clean. |
 | 2026-10-15 | 1.4 | `PlayerStatsData` + asset (GDD values), `StaminaPool` (pure, 7 tests), `PlayerStamina` (owner-write NetworkVariable), `PlayerDodge` (owner roll; owner-write `_invulnerable` NetworkVariable drives the flash on every client), `Core/Juice/SpriteFlash`, `PlayerStaminaBar`. `PlayerMovement` gained `Facing` and `ControlSuspended`. Player prefab: new components, a `StaminaBar` child, and a zero-friction material on the collider. 38/38 EditMode tests pass. Host play mode: the roll holds 16 u/s for 0.35 s (5.8 units), 4 dodges empty stamina and the 5th is refused, it refills to 100 after the delay, the flash shows and the colors come back. Console clean. |
 | 2026-10-15 | 1.3 | `PlayerMovementData` + asset, `PlayerMovement` (accel/decel, air control, variable jump, fall gravity, max fall speed), `JumpGate` (coyote + buffer, pure logic), `PlayerSquashStretch`. Player prefab gained `NetworkRigidbody2D`, a `Visuals` holder and a `GroundCheck` child; `PlayerOwnership` no longer sets `bodyType`. Test-arena platform lowered to y −2.5 so one jump reaches it. 31/31 EditMode tests pass, clean host run with no console errors; jump verified in play mode (tap = short hop, hold = full 3.5 units). |

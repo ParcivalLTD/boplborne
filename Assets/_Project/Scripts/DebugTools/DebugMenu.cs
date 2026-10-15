@@ -1,3 +1,4 @@
+using GraceRun.Combat;
 using GraceRun.Core.Juice;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -16,6 +17,7 @@ namespace GraceRun.DebugTools
         private static readonly Rect PanelRect = new Rect(10f, 10f, 260f, 320f);
 
         [SerializeField] private InputActionAsset _controls;
+        [SerializeField] private CombatData _combat;
 
         private InputActionAsset _actions;
         private InputAction _toggle;
@@ -62,11 +64,33 @@ namespace GraceRun.DebugTools
         {
             if (!IsVisible) return;
             GUILayout.BeginArea(PanelRect, Title, GUI.skin.window);
+            DrawCombatCommands();
             DrawJuiceCommands();
             GUILayout.EndArea();
         }
 
         private void OnToggle(InputAction.CallbackContext _) => IsVisible = !IsVisible;
+
+        private void DrawCombatCommands()
+        {
+            var self = DebugCommands.LocalPlayerHealth();
+            if (self == null || !self.IsSpawned)
+            {
+                GUILayout.Label("No local player.");
+                return;
+            }
+
+            GUILayout.Label($"HP {self.Current}/{self.Max}");
+            if (GUILayout.Button($"God mode: {(self.GodMode ? "ON" : "off")}")) DebugCommands.ToggleGodMode(self);
+            if (GUILayout.Button($"Damage me {_combat.DebugDamage}")) DebugCommands.DamageMe(self, _combat.DebugDamage);
+            if (GUILayout.Button("Heal me")) DebugCommands.HealMe(self);
+
+            var dummy = TrainingDummy.Active;
+            GUI.enabled = dummy != null;
+            if (GUILayout.Button($"Hit dummy {_combat.DebugDamage}"))
+                DebugCommands.HitDummy(self, dummy.Health, _combat.DebugDamage, _combat.DebugKnockback);
+            GUI.enabled = true;
+        }
 
         private static void DrawJuiceCommands()
         {

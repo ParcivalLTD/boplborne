@@ -317,6 +317,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: GraceRun.Runtime::GraceRun.DebugTools.DebugMenu
   _controls: {fileID: -944628639613478452, guid: 5ad295547269bf34f9824445c1399f4e, type: 3}
+  _combat: {fileID: 11400000, guid: 1fff848bdc59fce42bd0bde84bfaff90, type: 2}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0

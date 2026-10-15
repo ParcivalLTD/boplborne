@@ -1,0 +1,94 @@
+using System;
+using Unity.Netcode;
+using UnityEngine;
+
+namespace GraceRun.Combat
+{
+    /// <summary>
+    /// Hit points of a player, boss or dummy. Only the server writes HP (server-write
+    /// NetworkVariable); every client gets <see cref="Changed"/> and <see cref="Died"/> from the
+    /// synced value. Hits arrive through <see cref="ReportHitRpc"/> and are resolved by
+    /// <see cref="DamageService"/>.
+    /// </summary>
+    public class Health : NetworkBehaviour
+    {
+        [SerializeField, Tooltip("Any data asset that implements IHealthStats (PlayerStatsData, TrainingDummyData...).")]
+        private ScriptableObject _stats;
+        [SerializeField] private CombatData _combat;
+        [SerializeField] private Team _team = Team.Neutral;
+
+        private readonly NetworkVariable<int> _current = new(
+            0, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Server);
+
+        private readonly NetworkVariable<bool> _godMode = new(
+            false, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Server);
+
+        private IHealthStats _healthStats;
+
+        /// <summary>Raised on every client (and the server) when HP changes: previous, current.</summary>
+        public event Action<int, int> Changed;
+
+        /// <summary>Raised on every client (and the server) when HP reaches 0.</summary>
+        public event Action Died;
+
+        public int Current => _current.Value;
+        public int Max => _healthStats != null ? _healthStats.MaxHP : 1;
+        public float Normalized => (float)_current.Value / Max;
+        public bool IsDead => IsSpawned && _current.Value <= 0;
+        public Team Team => _team;
+        public bool GodMode => _godMode.Value;
+        public CombatData Combat => _combat;
+
+        private void Awake()
+        {
+            _healthStats = _stats as IHealthStats;
+            if (_healthStats == null) Debug.LogError($"{name}: Health needs a stats asset that implements IHealthStats.", this);
+        }
+
+        private void OnValidate()
+        {
+            if (_stats == null || _stats is IHealthStats) return;
+            Debug.LogWarning($"{_stats.name} does not implement IHealthStats.", this);
+            _stats = null;
+        }
+
+        public override void OnNetworkSpawn()
+        {
+            _current.OnValueChanged += OnCurrentChanged;
+            if (IsServer) _current.Value = Max;
+        }
+
+        public override void OnNetworkDespawn()
+        {
+            _current.OnValueChanged -= OnCurrentChanged;
+        }
+
+        /// <summary>Sent by whichever PC detected the hit (attacker or victim side); the server resolves it.</summary>
+        [Rpc(SendTo.Server)]
+        public void ReportHitRpc(DamageInfo info) => DamageService.Apply(this, info);
+
+        /// <summary>Debug: turns god mode on or off for this target.</summary>
+        [Rpc(SendTo.Server)]
+        public void SetGodModeRpc(bool on) => _godMode.Value = on;
+
+        /// <summary>Debug: refills HP.</summary>
+        [Rpc(SendTo.Server)]
+        public void RestoreFullRpc() => ServerRestoreFull();
+
+        /// <summary>Server only: sets HP, clamped to 0..Max.</summary>
+        public void ServerSetCurrent(int value)
+        {
+            if (!IsServer) return;
+            _current.Value = Mathf.Clamp(value, 0, Max);
+        }
+
+        /// <summary>Server only: back to full HP.</summary>
+        public void ServerRestoreFull() => ServerSetCurrent(Max);
+
+        private void OnCurrentChanged(int previous, int current)
+        {
+            Changed?.Invoke(previous, current);
+            if (previous > 0 && current <= 0) Died?.Invoke();
+        }
+    }
+}

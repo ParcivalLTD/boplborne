@@ -1,4 +1,5 @@
 using System;
+using GraceRun.Combat;
 using GraceRun.Core.Juice;
 using Unity.Netcode;
 using UnityEngine;
@@ -12,7 +13,7 @@ namespace GraceRun.Player
     /// victim-side hit detection can skip hits during i-frames.
     /// </summary>
     [RequireComponent(typeof(Rigidbody2D))]
-    public class PlayerDodge : NetworkBehaviour
+    public class PlayerDodge : NetworkBehaviour, IInvulnerability
     {
         [SerializeField] private PlayerStatsData _stats;
         [SerializeField] private PlayerInputReader _input;

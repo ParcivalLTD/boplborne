@@ -1,3 +1,4 @@
+using GraceRun.Combat;
 using UnityEngine;
 
 namespace GraceRun.Player
@@ -7,7 +8,7 @@ namespace GraceRun.Player
     /// Starting values come from docs/GDD.md; tune the asset under Data/Player, never the code.
     /// </summary>
     [CreateAssetMenu(menuName = "Grace Run/Player Stats Data", fileName = "PlayerStatsData")]
-    public class PlayerStatsData : ScriptableObject
+    public class PlayerStatsData : ScriptableObject, IHealthStats
     {
         [Header("Health")]
         [SerializeField, Min(1)] private int _maxHP = 100;
