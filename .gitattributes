@@ -1,0 +1,47 @@
+# Normalize line endings for text
+* text=auto
+
+# Code and text
+*.cs     text diff=csharp
+*.md     text
+*.json   text
+*.mdc    text
+*.shader text
+*.hlsl   text
+*.uss    text
+*.uxml   text
+*.inputactions text
+
+# Unity YAML: use Unity's merge tool for scenes, prefabs and assets
+*.unity       text merge=unityyamlmerge eol=lf
+*.prefab      text merge=unityyamlmerge eol=lf
+*.asset       text merge=unityyamlmerge eol=lf
+*.mat         text merge=unityyamlmerge eol=lf
+*.anim        text merge=unityyamlmerge eol=lf
+*.controller  text merge=unityyamlmerge eol=lf
+*.overrideController text merge=unityyamlmerge eol=lf
+*.physicsMaterial2D  text merge=unityyamlmerge eol=lf
+*.meta        text merge=unityyamlmerge eol=lf
+
+# Art (Git LFS)
+*.aseprite filter=lfs diff=lfs merge=lfs -text
+*.ase      filter=lfs diff=lfs merge=lfs -text
+*.png      filter=lfs diff=lfs merge=lfs -text
+*.jpg      filter=lfs diff=lfs merge=lfs -text
+*.jpeg     filter=lfs diff=lfs merge=lfs -text
+*.psd      filter=lfs diff=lfs merge=lfs -text
+*.gif      filter=lfs diff=lfs merge=lfs -text
+*.tga      filter=lfs diff=lfs merge=lfs -text
+*.exr      filter=lfs diff=lfs merge=lfs -text
+
+# Audio (Git LFS)
+*.wav  filter=lfs diff=lfs merge=lfs -text
+*.mp3  filter=lfs diff=lfs merge=lfs -text
+*.ogg  filter=lfs diff=lfs merge=lfs -text
+*.aif  filter=lfs diff=lfs merge=lfs -text
+
+# Fonts and other binaries (Git LFS)
+*.ttf  filter=lfs diff=lfs merge=lfs -text
+*.otf  filter=lfs diff=lfs merge=lfs -text
+*.dll  filter=lfs diff=lfs merge=lfs -text
+*.zip  filter=lfs diff=lfs merge=lfs -text

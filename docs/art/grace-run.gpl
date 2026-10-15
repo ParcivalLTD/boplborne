@@ -1,0 +1,44 @@
+GIMP Palette
+Name: Grace Run
+Columns: 8
+#
+ 18  15  24	Outline #120F18
+ 18  16  26	Night #12101A
+ 42  37  51	Stone #2A2533
+ 74  66  86	Stone light #4A4256
+140 132 160	Fog #8C84A0
+140 143 163	Steel #8C8FA3
+237 231 246	Bone #EDE7F6
+242 232 213	Horn bone #F2E8D5
+255 255 255	White #FFFFFF
+ 43  91 192	P1 blue dark #2B5BC0
+ 76 141 255	P1 blue #4C8DFF
+191 214 255	P1 blue light #BFD6FF
+194 102  26	P2 orange dark #C2661A
+255 154  60	P2 orange #FF9A3C
+255 217 176	P2 orange light #FFD9B0
+ 31 143  85	P3 green dark #1F8F55
+ 60 203 127	P3 green #3CCB7F
+185 240 210	P3 green light #B9F0D2
+194  49 119	P4 pink dark #C23177
+255  95 168	P4 pink #FF5FA8
+255 196 222	P4 pink light #FFC4DE
+255  59  59	Telegraph red (gameplay only) #FF3B3B
+255 201  74	Weak-point gold (gameplay only) #FFC94A
+168 200 255	Ghost blue #A8C8FF
+ 36  35  44	Gatekeeper ground #24232C
+154 163 181	Gatekeeper accent #9AA3B5
+ 28  34  25	Brood Mother ground #1C2219
+163 163  90	Brood Mother accent #A3A35A
+ 38  32  23	Bell Twins ground #262017
+184 146  90	Bell Twins accent #B8925A
+ 20  34  41	Storm Wyrm ground #142229
+ 95 184 176	Storm Wyrm accent #5FB8B0
+ 30  26  44	Mirror Duelist ground #1E1A2C
+185 166 255	Mirror Duelist accent #B9A6FF
+ 38  28  23	Clockwork Colossus ground #261C17
+176 122  90	Clockwork Colossus accent #B07A5A
+ 14  12  18	Lantern Witch ground #0E0C12
+232 220 192	Lantern Witch accent #E8DCC0
+ 28  18  22	Crowned Hollow ground #1C1216
+199 125 154	Crowned Hollow accent #C77D9A
