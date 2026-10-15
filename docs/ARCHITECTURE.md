@@ -71,7 +71,7 @@ Everything tunable is here. Default values are the starting values in `docs/GDD.
 | Asset | Key fields |
 | --- | --- |
 | `GameConfig` | maxPlayers (4), port (7777), gameVersion, playerColors[4], hat sprites[4] |
-| `PlayerMovementData` | runSpeed, acceleration, deceleration, airControl, jumpHeight, jumpCutMultiplier, gravityScale, fallGravityMultiplier, maxFallSpeed, coyoteTime, jumpBuffer |
+| `PlayerMovementData` | runSpeed, acceleration, deceleration, airControl, jumpHeight, jumpCutMultiplier, gravityScale, fallGravityMultiplier, maxFallSpeed, coyoteTime, jumpBuffer, groundCheckSize, jumpStretch, landSquash, squashRecoverTime |
 | `PlayerStatsData` | maxHP, maxStamina, staminaRegenPerSecond, regenDelay, dodgeCost, dodgeDuration, dodgeInvulnerableTime, dodgeSpeed, flaskCharges, flaskHeal |
 | `LightAttackData` | hits[3]: damage, knockback, hitbox size/offset, startup, active, recovery, staminaCost |
 | `AbilityData` | id, displayName, description, comboHook, icon, tags (flags), rarity, cooldown, minFloor, effectPrefab, level2 multipliers |
@@ -85,7 +85,7 @@ Everything tunable is here. Default values are the starting values in `docs/GDD.
 | System | Main classes | Runs on |
 | --- | --- | --- |
 | Connection | `ConnectionManager`, `ConnectionApproval` | server approves; clients connect |
-| Player movement | `PlayerMovement`, `PlayerDodge`, `PlayerInputReader` | owner |
+| Player movement | `PlayerMovement`, `JumpGate`, `PlayerDodge`, `PlayerInputReader` | owner |
 | Health and damage | `Health` (NetworkVariable), `DamageService` | server |
 | Player attacks | `Hitbox` on attacker | owner detects, server applies |
 | Boss AI | `BossBrain`, `BossAttackRunner` | server |

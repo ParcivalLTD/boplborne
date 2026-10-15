@@ -1,0 +1,128 @@
+using System;
+using GraceRun.Core;
+using Unity.Netcode;
+using UnityEngine;
+
+namespace GraceRun.Player
+{
+    /// <summary>
+    /// Running and jumping for the player you own: acceleration with air control, a variable
+    /// jump height, faster falling, coyote time and a jump buffer. Runs on the owner only;
+    /// everyone else sees the result through the owner-authoritative NetworkTransform.
+    /// </summary>
+    [RequireComponent(typeof(Rigidbody2D))]
+    public class PlayerMovement : NetworkBehaviour
+    {
+        [SerializeField] private PlayerMovementData _data;
+        [SerializeField] private PlayerInputReader _input;
+        [SerializeField] private Transform _groundCheck;
+
+        private readonly JumpGate _jumpGate = new();
+        private readonly Collider2D[] _groundHits = new Collider2D[4];
+
+        private Rigidbody2D _body;
+        private ContactFilter2D _groundFilter;
+        private bool _grounded;
+        private bool _jumpHeld;
+
+        /// <summary>Raised on the owner the moment a jump leaves the ground.</summary>
+        public event Action Jumped;
+
+        /// <summary>Raised on the owner the moment the feet touch the ground again.</summary>
+        public event Action Landed;
+
+        /// <summary>True while the feet are on something solid.</summary>
+        public bool IsGrounded => _grounded;
+
+        private void Awake()
+        {
+            _body = GetComponent<Rigidbody2D>();
+            _groundFilter = new ContactFilter2D
+            {
+                useLayerMask = true,
+                layerMask = Layers.Mask(Layers.GroundIndex),
+                useTriggers = false,
+            };
+        }
+
+        public override void OnNetworkSpawn()
+        {
+            enabled = IsOwner;
+            if (!IsOwner) return;
+
+            _input.JumpPressed += OnJumpPressed;
+            _input.JumpReleased += OnJumpReleased;
+            _body.gravityScale = _data.GravityScale;
+        }
+
+        public override void OnNetworkDespawn()
+        {
+            if (_input == null) return;
+            _input.JumpPressed -= OnJumpPressed;
+            _input.JumpReleased -= OnJumpReleased;
+        }
+
+        private void FixedUpdate()
+        {
+            var deltaTime = Time.fixedDeltaTime;
+            UpdateGrounded();
+            _jumpGate.SetGrounded(_grounded, _data.CoyoteTime);
+
+            ApplyHorizontal(deltaTime);
+            if (_jumpGate.TryConsume()) Jump();
+            ApplyGravity();
+
+            _jumpGate.Tick(deltaTime);
+        }
+
+        private void UpdateGrounded()
+        {
+            var hits = Physics2D.OverlapBox(
+                _groundCheck.position, _data.GroundCheckSize, 0f, _groundFilter, _groundHits);
+            var grounded = hits > 0 && _body.linearVelocityY <= 0.01f;
+
+            if (grounded && !_grounded) Landed?.Invoke();
+            _grounded = grounded;
+        }
+
+        private void ApplyHorizontal(float deltaTime)
+        {
+            var wanted = Mathf.Clamp(_input.Move.x, -1f, 1f) * _data.RunSpeed;
+            var changing = Mathf.Abs(wanted) > 0.01f;
+            var rate = changing ? _data.Acceleration : _data.Deceleration;
+            if (!_grounded) rate *= _data.AirControl;
+
+            var speed = Mathf.MoveTowards(_body.linearVelocityX, wanted, rate * deltaTime);
+            _body.linearVelocityX = speed;
+        }
+
+        private void Jump()
+        {
+            _body.linearVelocityY = _data.JumpVelocity;
+            _grounded = false;
+            Jumped?.Invoke();
+        }
+
+        private void ApplyGravity()
+        {
+            var rising = _body.linearVelocityY > 0.01f;
+            _body.gravityScale = rising && _jumpHeld
+                ? _data.GravityScale
+                : _data.GravityScale * _data.FallGravityMultiplier;
+
+            if (_body.linearVelocityY < -_data.MaxFallSpeed) _body.linearVelocityY = -_data.MaxFallSpeed;
+        }
+
+        private void OnJumpPressed()
+        {
+            _jumpHeld = true;
+            _jumpGate.Press(_data.JumpBuffer);
+        }
+
+        private void OnJumpReleased()
+        {
+            _jumpHeld = false;
+            if (_body.linearVelocityY > 0f) _body.linearVelocityY *= _data.JumpCutMultiplier;
+        }
+    }
+}

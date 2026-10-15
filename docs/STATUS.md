@@ -5,8 +5,8 @@ The agent updates this file at the end of every step. Humans may edit it too.
 ## Now
 
 - **Milestone:** M1 — Networked movement
-- **Done:** M0 complete (0.1–0.4 manual setup, 0.5 packages, 0.6 scaffold); 1.1 connection; 1.2 player spawn
-- **Next step:** 1.3 — Movement feel (see `docs/PROMPTS.md`)
+- **Done:** M0 complete (0.1–0.4 manual setup, 0.5 packages, 0.6 scaffold); 1.1 connection; 1.2 player spawn; 1.3 movement feel
+- **Next step:** 1.4 — Dodge and stamina (see `docs/PROMPTS.md`)
 
 ## Milestones
 
@@ -35,7 +35,9 @@ The agent updates this file at the end of every step. Humans may edit it too.
 - Pixel Perfect Camera needs the Game view at 640×360 or a whole multiple (e.g. 1920×1080) to show the intended framing; smaller views fall back to pixel ratio 1. An odd-numbered Game view size also prints a red "may not work properly" overlay.
 - The Player prefab is registered through `NetworkManager.NetworkConfig.PlayerPrefab`, but connection approval still sets `CreatePlayerObject = false`: `PlayerSpawner` spawns players itself so it can pick the spawn point and the slot. Netcode also auto-listed the prefab in `Assets/DefaultNetworkPrefabs.asset`.
 - The test arena is a plain `Arena` GameObject in the Game scene, not an arena prefab yet. `RunManager` (M4/M6) is where arenas become swappable prefabs.
-- The player body has no ground check or movement yet (1.3); it is a plain Rigidbody2D that falls onto the floor and can be pushed around only by physics.
+- **A Rigidbody2D under a `NetworkTransform` needs `NetworkRigidbody2D` next to it** (with `UseRigidBodyForMotion` on), or netcode writes the transform every tick and silently eats every velocity you set — the player simply will not move. Found the hard way in 1.3. `NetworkRigidbody2D` also makes non-owners kinematic, so `PlayerOwnership` no longer touches `bodyType`.
+- Input only reaches the game while the **Game view has focus**. Unfocused, the Input System disables the device and the action map (`backgroundBehavior = ResetAndDisableNonBackgroundDevices`), so simulated keys do nothing and `PlayerInputReader` logs "Map must be contained in state" if a script toggles it then. Click the Game view before testing by hand.
+- Movement is only run and jump (1.3). No dodge, no facing flip, no attacks yet.
 
 ## Playtest backlog
 
@@ -45,6 +47,7 @@ The agent updates this file at the end of every step. Humans may edit it too.
 
 | Date | Step | Note |
 | --- | --- | --- |
+| 2026-10-15 | 1.3 | `PlayerMovementData` + asset, `PlayerMovement` (accel/decel, air control, variable jump, fall gravity, max fall speed), `JumpGate` (coyote + buffer, pure logic), `PlayerSquashStretch`. Player prefab gained `NetworkRigidbody2D`, a `Visuals` holder and a `GroundCheck` child; `PlayerOwnership` no longer sets `bodyType`. Test-arena platform lowered to y −2.5 so one jump reaches it. 31/31 EditMode tests pass, clean host run with no console errors; jump verified in play mode (tap = short hop, hold = full 3.5 units). |
 | 2026-10-15 | 1.2 | `Player/` (PlayerVisuals, PlayerIdentity, PlayerOwnership), `Net/` (PlayerSlots, PlayerSpawner). Player prefab: Rigidbody2D + CapsuleCollider2D on layer Player, NetworkObject, owner-auth NetworkTransform (interpolate), body/eye/hat sprites. Placeholder sprites generated into `Art/Characters/Placeholder` and `Art/Environment/Placeholder`; GameConfig hat sprites filled (plume, horns, crown, wizard hat). Game scene: grey test arena (floor, two walls, platform) + PlayerSpawner with 4 spawn points. 25/25 EditMode tests pass, console clean, 4 placeholders checked in the Game view. |
 | 2026-10-15 | 0.5 | Added netcode.gameobjects 2.13.3, multiplayer.playmode 3.0.0, multiplayer.tools 2.2.12, cinemachine 6.6.0. inputsystem / 2d.animation / 2d.aseprite already came with the Universal 2D template. Active Input Handling was already "Input System Package (New)". Console clean. |
 | 2026-10-15 | 1.1 | `Net/` (CommandLineArgs, AddressParser, ConnectionPayload, ConnectionApproval, ConnectionManager), `UI/MainMenuScreen`, `Core/Scenes`. Bootstrap: NetworkManager + UnityTransport (approval on, scene management on) and ConnectionManager. MainMenu: Host / address field / Join / Quit / status. GameConfig gained `_connectTimeoutSeconds` (10). 21/21 EditMode tests pass; host reaches the Game scene, timeout and return-to-menu checked in play mode; console clean. |

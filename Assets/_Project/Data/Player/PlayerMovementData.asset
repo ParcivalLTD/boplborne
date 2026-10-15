@@ -1,0 +1,29 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aa5a0b18abf61ed4d9971dd694998d74, type: 3}
+  m_Name: PlayerMovementData
+  m_EditorClassIdentifier: GraceRun.Runtime::GraceRun.Player.PlayerMovementData
+  _runSpeed: 9
+  _acceleration: 90
+  _deceleration: 120
+  _airControl: 0.65
+  _jumpHeight: 3.5
+  _jumpCutMultiplier: 0.45
+  _gravityScale: 4
+  _fallGravityMultiplier: 1.6
+  _maxFallSpeed: 30
+  _coyoteTime: 0.1
+  _jumpBuffer: 0.1
+  _groundCheckSize: {x: 1.3, y: 0.2}
+  _jumpStretch: 0.18
+  _landSquash: 0.22
+  _squashRecoverTime: 0.12

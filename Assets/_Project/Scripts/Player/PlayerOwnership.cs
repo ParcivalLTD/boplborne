@@ -4,25 +4,20 @@ using UnityEngine;
 namespace GraceRun.Player
 {
     /// <summary>
-    /// Splits a spawned player into "mine" and "someone else's": the owner simulates physics and
-    /// reads input, everyone else only follows the owner-authoritative NetworkTransform.
+    /// Only the player you own reads input; everyone else's player is driven by the
+    /// owner-authoritative NetworkTransform. The rigidbody side is handled by NetworkRigidbody2D.
     /// </summary>
-    [RequireComponent(typeof(Rigidbody2D))]
     public class PlayerOwnership : NetworkBehaviour
     {
         [SerializeField] private PlayerInputReader _input;
 
-        private Rigidbody2D _body;
-
         private void Awake()
         {
-            _body = GetComponent<Rigidbody2D>();
             _input.enabled = false;
         }
 
         public override void OnNetworkSpawn()
         {
-            _body.bodyType = IsOwner ? RigidbodyType2D.Dynamic : RigidbodyType2D.Kinematic;
             _input.enabled = IsOwner;
         }
 
