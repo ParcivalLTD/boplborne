@@ -13,6 +13,7 @@ namespace GraceRun.Core
         [SerializeField, Range(1, 65535)] private int _port;
         [SerializeField] private string _gameVersion;
         [SerializeField] private string _defaultAddress;
+        [SerializeField, Min(1f)] private float _connectTimeoutSeconds = 10f;
         [SerializeField] private Color[] _playerColors;
         [SerializeField] private Sprite[] _hatSprites;
 
@@ -20,6 +21,9 @@ namespace GraceRun.Core
         public ushort Port => (ushort)_port;
         public string GameVersion => _gameVersion;
         public string DefaultAddress => _defaultAddress;
+
+        /// <summary>How long the Join button waits for the host before giving up.</summary>
+        public float ConnectTimeoutSeconds => _connectTimeoutSeconds;
 
         /// <summary>Color for player index 0-3 (P1 blue, P2 orange, P3 green, P4 pink).</summary>
         public Color GetPlayerColor(int playerIndex) => _playerColors[playerIndex];

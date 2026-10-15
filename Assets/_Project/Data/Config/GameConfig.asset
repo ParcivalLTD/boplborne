@@ -16,6 +16,7 @@ MonoBehaviour:
   _port: 7777
   _gameVersion: 0.1.0
   _defaultAddress: 127.0.0.1
+  _connectTimeoutSeconds: 10
   _playerColors:
   - {r: 0.29803923, g: 0.5529412, b: 1, a: 1}
   - {r: 1, g: 0.6039216, b: 0.23529412, a: 1}
