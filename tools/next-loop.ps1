@@ -51,10 +51,16 @@ for ($i = 1; $i -le $MaxSteps; $i++) {
         "--allowedTools") + $allowed + @("--disallowedTools") + $blocked
     if ($Model) { $cliArgs += @("--model", $Model) }
 
-    & $claude @cliArgs 2>&1 | Tee-Object -FilePath $log
+    # Windows PowerShell turns every stderr line of a native program into an error record, and
+    # claude prints harmless warnings there (e.g. MCP OAuth notices). Keep them in their own log
+    # and don't let them stop the script; the exit code decides success.
+    $errLog = [IO.Path]::ChangeExtension($log, ".stderr.txt")
+    $ErrorActionPreference = "Continue"
+    & $claude @cliArgs 2> $errLog | Tee-Object -FilePath $log
     $exit = $LASTEXITCODE
+    $ErrorActionPreference = "Stop"
 
-    if ($exit -ne 0) { Write-Host "Stopped: claude exited with $exit. See $log"; break }
+    if ($exit -ne 0) { Write-Host "Stopped: claude exited with $exit. See $log and $errLog"; break }
     if (Select-String -Path $log -Pattern "NEEDS-HUMAN" -SimpleMatch -Quiet) {
         Write-Host "Stopped: this step needs you. Read the end of $log"; break
     }
