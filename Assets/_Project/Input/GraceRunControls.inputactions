@@ -110,7 +110,7 @@
                     "isPartOfComposite": false
                 },
                 {
-                    "name": "Keyboard AD",
+                    "name": "Keyboard WASD",
                     "id": "b292d76b-66ba-4d6c-8bf0-d594552480ac",
                     "path": "2DVector",
                     "interactions": "",
@@ -119,6 +119,28 @@
                     "action": "Move",
                     "isComposite": true,
                     "isPartOfComposite": false
+                },
+                {
+                    "name": "up",
+                    "id": "4083bb85-c354-41ac-a101-e03a323ccf91",
+                    "path": "<Keyboard>/w",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Keyboard",
+                    "action": "Move",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "down",
+                    "id": "aaadb4c7-5766-4b4b-8968-aa43637dc533",
+                    "path": "<Keyboard>/s",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Keyboard",
+                    "action": "Move",
+                    "isComposite": false,
+                    "isPartOfComposite": true
                 },
                 {
                     "name": "left",

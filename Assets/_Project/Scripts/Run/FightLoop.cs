@@ -31,6 +31,7 @@ namespace GraceRun.Run
             FightRules.NoLeader, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Server);
 
         private readonly Dictionary<ulong, Health> _healthById = new();
+        private readonly Dictionary<ulong, ReviveSystem> _reviveById = new();
 
         /// <summary>The fight loop in the loaded Game scene on this PC, if any.</summary>
         public static FightLoop Instance { get; private set; }
@@ -107,6 +108,7 @@ namespace GraceRun.Run
                 var player = client.PlayerObject;
                 if (player == null) continue;
                 if (TryGetHealth(player, out var health)) health.ServerRestoreFull();
+                if (TryGetRevive(player, out var revive)) revive.ServerResetForFloor();
                 var slot = player.GetComponent<PlayerIdentity>().PlayerIndex;
                 player.GetComponent<PlayerRespawn>().TeleportRpc(_playerSpawner.SpawnPointFor(slot));
             }
@@ -121,7 +123,8 @@ namespace GraceRun.Run
                 var player = client.PlayerObject;
                 if (player == null || !TryGetHealth(player, out var health)) continue;
                 players++;
-                if (!health.IsDead) living++;
+                // A solo extra life already bringing the player back does not count as down.
+                if (!health.IsDead || (TryGetRevive(player, out var revive) && revive.ServerWillRevive)) living++;
             }
         }
 
@@ -134,6 +137,17 @@ namespace GraceRun.Run
                 _healthById[id] = health;
             }
             return health != null;
+        }
+
+        private bool TryGetRevive(NetworkObject player, out ReviveSystem revive)
+        {
+            var id = player.NetworkObjectId;
+            if (!_reviveById.TryGetValue(id, out revive) || revive == null)
+            {
+                revive = player.GetComponent<ReviveSystem>();
+                _reviveById[id] = revive;
+            }
+            return revive != null;
         }
 
         private void UpdateLeader()

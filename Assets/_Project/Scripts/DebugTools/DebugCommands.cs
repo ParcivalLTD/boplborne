@@ -31,6 +31,9 @@ namespace GraceRun.DebugTools
         public static void DamageMe(Health self, int amount) =>
             self.ReportHit(DamageInfo.FromEnvironment(amount));
 
+        /// <summary>Takes your own player to 0 HP (ignores god mode), to test ghosts and revives.</summary>
+        public static void KillMe(Health self) => self.DebugSetCurrentRpc(0);
+
         public static void HealMe(Health self) => self.RestoreFullRpc();
 
         public static void ToggleGodMode(Health self) => self.SetGodModeRpc(!self.GodMode);

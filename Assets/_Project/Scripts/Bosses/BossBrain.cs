@@ -102,6 +102,15 @@ namespace GraceRun.Bosses
             }
         }
 
+        /// <summary>Server only: a ghost's poke holds an idle or walking boss in place a moment. Attacks run on.</summary>
+        public void ServerStagger(float seconds)
+        {
+            if (!IsServer || (State != BossState.Idle && State != BossState.Approaching)) return;
+            State = BossState.Idle;
+            _idleTimer = Mathf.Max(_idleTimer, seconds);
+            _motor.ServerStop();
+        }
+
         private void Choose()
         {
             var target = _targets.Target;

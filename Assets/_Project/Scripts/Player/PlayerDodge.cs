@@ -64,6 +64,11 @@ namespace GraceRun.Player
             if (_flash != null) _flash.SetHeld(false);
         }
 
+        private void OnDisable()
+        {
+            if (_dodging) EndDodge();
+        }
+
         private void FixedUpdate()
         {
             if (!_dodging) return;
@@ -77,7 +82,7 @@ namespace GraceRun.Player
 
         private void OnDodgePressed()
         {
-            if (_dodging || !_stamina.TrySpend(_stats.DodgeCost)) return;
+            if (!enabled || _dodging || !_stamina.TrySpend(_stats.DodgeCost)) return;
 
             var inputX = _input.Move.x;
             _direction = Mathf.Abs(inputX) > 0.01f ? Mathf.Sign(inputX) : _movement.Facing;

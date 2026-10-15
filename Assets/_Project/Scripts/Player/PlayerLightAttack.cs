@@ -60,6 +60,9 @@ namespace GraceRun.Player
             if (_dodge != null) _dodge.Dodged -= OnDodged;
         }
 
+        /// <summary>Disabled (ghost): the swing in progress stops and nothing new starts.</summary>
+        private void OnDisable() => _combo?.Cancel();
+
         private void FixedUpdate()
         {
             if (IsSpawned && !_hitstop.IsFrozen) _combo.Tick(Time.fixedDeltaTime);
@@ -80,7 +83,7 @@ namespace GraceRun.Player
         private void OnAttackPressed() => _combo.Press();
 
         private bool CanStart(int hitIndex) =>
-            !_dodge.IsDodging && _stamina.TrySpend(_data.Hits[hitIndex].StaminaCost);
+            enabled && !_dodge.IsDodging && _stamina.TrySpend(_data.Hits[hitIndex].StaminaCost);
 
         private void OnDodged()
         {

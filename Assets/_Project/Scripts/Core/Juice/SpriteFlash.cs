@@ -40,6 +40,7 @@ namespace GraceRun.Core.Juice
         /// <summary>Shows the flash for <paramref name="duration"/> seconds.</summary>
         public void Flash(float duration)
         {
+            if (!isActiveAndEnabled) return;
             _timeLeft = Mathf.Max(_timeLeft, duration);
             Refresh();
         }
@@ -47,6 +48,7 @@ namespace GraceRun.Core.Juice
         /// <summary>Keeps the flash on until called again with false.</summary>
         public void SetHeld(bool held)
         {
+            if (!isActiveAndEnabled) return;
             _held = held;
             Refresh();
         }

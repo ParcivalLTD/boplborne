@@ -90,7 +90,10 @@ namespace GraceRun.DebugTools
             GUILayout.Label($"HP {self.Current}/{self.Max}");
             if (GUILayout.Button($"God mode: {(self.GodMode ? "ON" : "off")}")) DebugCommands.ToggleGodMode(self);
             if (GUILayout.Button($"Damage me {_combat.DebugDamage}")) DebugCommands.DamageMe(self, _combat.DebugDamage);
+            GUILayout.BeginHorizontal();
             if (GUILayout.Button("Heal me")) DebugCommands.HealMe(self);
+            if (GUILayout.Button("Kill me")) DebugCommands.KillMe(self);
+            GUILayout.EndHorizontal();
 
             var dummy = TrainingDummy.Active;
             GUI.enabled = dummy != null;
