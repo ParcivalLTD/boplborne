@@ -69,7 +69,7 @@ namespace GraceRun.Combat
 
         private bool DetectsHere(Hurtbox hurtbox) => _detection switch
         {
-            HitDetection.AttackerSide => _attacker.IsOwner,
+            HitDetection.AttackerSide => _attacker.IsOwner && !hurtbox.IsInvulnerable,
             HitDetection.VictimSide => hurtbox.Health.IsOwner && !hurtbox.IsInvulnerable,
             _ => false
         };

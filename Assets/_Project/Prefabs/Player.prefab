@@ -1087,6 +1087,7 @@ GameObject:
   - component: {fileID: 4427859693992278617}
   - component: {fileID: 4873021002574194731}
   - component: {fileID: 2044170315674731346}
+  - component: {fileID: 403750353964914042}
   m_Layer: 9
   m_Name: Player
   m_TagString: Untagged
@@ -1544,3 +1545,19 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: GraceRun.Runtime::GraceRun.Player.PlayerRespawn
   ShowTopMostFoldoutHeaderGroup: 1
+--- !u!114 &403750353964914042
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9178268518804516864}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4f8da624170c0d24dbb2e1ce663fe26f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: GraceRun.Runtime::GraceRun.Player.PlayerKnockbackLock
+  ShowTopMostFoldoutHeaderGroup: 1
+  _knockback: {fileID: 5153238957733540801}
+  _movement: {fileID: 1396830838873508324}
+  _data: {fileID: 11400000, guid: 0fe31f0176e15644d981caa1bbb17738, type: 2}

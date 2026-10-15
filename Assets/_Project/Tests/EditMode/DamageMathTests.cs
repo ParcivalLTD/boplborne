@@ -76,5 +76,36 @@ namespace GraceRun.Tests
             Assert.IsFalse(DamageMath.IsFriendlyFire(Team.Boss, 1, Team.Player, 2));
             Assert.IsFalse(DamageMath.IsFriendlyFire(Team.Neutral, DamageInfo.NoAttacker, Team.Player, 2));
         }
+
+        [Test]
+        public void FriendlyFireIsDroppedOnlyWhileSwitchedOff()
+        {
+            Assert.IsTrue(DamageMath.IsDropped(false, true));
+            Assert.IsFalse(DamageMath.IsDropped(true, true));
+            Assert.IsFalse(DamageMath.IsDropped(false, false), "boss and dummy hits always count");
+        }
+
+        [Test]
+        public void FriendlyFireScalesEachHitSize()
+        {
+            Assert.AreEqual(1, DamageMath.DamageDealt(8, true, FriendlyMultiplier), "light attack");
+            Assert.AreEqual(3, DamageMath.DamageDealt(30, true, FriendlyMultiplier), "boss-sized hit");
+            Assert.AreEqual(10, DamageMath.DamageDealt(100, true, FriendlyMultiplier));
+        }
+
+        [Test]
+        public void ManyFriendlyHitsNeverKill()
+        {
+            var hp = 100;
+            for (var i = 0; i < 500; i++) hp = Resolve(hp, 50, friendly: true);
+            Assert.AreEqual(FriendlyMinHP, hp);
+        }
+
+        [Test]
+        public void EnemyHitStillKillsAfterFriendlyFloor()
+        {
+            var hp = Resolve(5, 100, friendly: true);
+            Assert.AreEqual(0, Resolve(hp, 8), "a friend leaves you at 1 HP, the boss can still finish you");
+        }
     }
 }

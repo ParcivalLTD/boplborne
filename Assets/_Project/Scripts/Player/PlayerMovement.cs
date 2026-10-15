@@ -25,6 +25,7 @@ namespace GraceRun.Player
         private bool _grounded;
         private bool _jumpHeld;
         private float _facing = 1f;
+        private float _lockTimer;
 
         /// <summary>Raised on the owner the moment a jump leaves the ground.</summary>
         public event Action Jumped;
@@ -40,6 +41,9 @@ namespace GraceRun.Player
 
         /// <summary>While true another component (the dodge) owns horizontal velocity.</summary>
         public bool ControlSuspended { get; set; }
+
+        /// <summary>True while a knockback lock keeps input from steering (see <see cref="LockControl"/>).</summary>
+        public bool ControlLocked => _lockTimer > 0f;
 
         /// <summary>Scales the run speed, e.g. slowed while attacking. 1 is normal.</summary>
         public float SpeedMultiplier { get; set; } = 1f;
@@ -83,6 +87,13 @@ namespace GraceRun.Player
             ApplyGravity();
 
             _jumpGate.Tick(deltaTime);
+            if (_lockTimer > 0f) _lockTimer -= deltaTime;
+        }
+
+        /// <summary>Owner only. Input stops steering for <paramref name="seconds"/>, so a push carries the body.</summary>
+        public void LockControl(float seconds)
+        {
+            _lockTimer = Mathf.Max(_lockTimer, seconds);
         }
 
         private void UpdateGrounded()
@@ -99,7 +110,7 @@ namespace GraceRun.Player
         {
             var inputX = Mathf.Clamp(_input.Move.x, -1f, 1f);
             if (Mathf.Abs(inputX) > 0.01f) _facing = Mathf.Sign(inputX);
-            if (ControlSuspended) return;
+            if (ControlSuspended || ControlLocked) return;
 
             var wanted = inputX * _data.RunSpeed * SpeedMultiplier;
             var changing = Mathf.Abs(wanted) > 0.01f;

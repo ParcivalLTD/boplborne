@@ -26,6 +26,10 @@ namespace GraceRun.Player
         [SerializeField, Min(0f)] private float _coyoteTime = 0.1f;
         [SerializeField, Min(0f)] private float _jumpBuffer = 0.1f;
 
+        [Header("Knockback")]
+        [SerializeField, Min(0f), Tooltip("After a push, input can't steer for this long, so the push carries the body.")]
+        private float _knockbackControlLock = 0.4f;
+
         [Header("Ground check")]
         [SerializeField] private Vector2 _groundCheckSize = new(1.3f, 0.2f);
 
@@ -61,6 +65,9 @@ namespace GraceRun.Player
 
         /// <summary>How long before landing a jump press is remembered.</summary>
         public float JumpBuffer => _jumpBuffer;
+
+        /// <summary>Seconds after a knockback during which input does not steer horizontally.</summary>
+        public float KnockbackControlLock => _knockbackControlLock;
 
         /// <summary>Box probed under the feet to decide whether the player is grounded.</summary>
         public Vector2 GroundCheckSize => _groundCheckSize;

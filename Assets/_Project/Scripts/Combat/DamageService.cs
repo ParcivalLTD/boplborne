@@ -9,10 +9,11 @@ namespace GraceRun.Combat
     /// </summary>
     public static class DamageService
     {
-        /// <summary>True when the rules drop this hit completely (friendly fire while it is off). Any PC.</summary>
+        /// <summary>True when the rules drop this hit completely (friendly fire while it is off). Any PC.
+        /// A friendly hit that gets through keeps its full knockback; only the damage is scaled.</summary>
         public static bool IsIgnored(Health target, DamageInfo info) =>
-            !target.Combat.FriendlyFireEnabled &&
-            DamageMath.IsFriendlyFire(info.AttackerTeam, info.AttackerId, target.Team, target.NetworkObjectId);
+            DamageMath.IsDropped(target.Combat.FriendlyFireEnabled,
+                DamageMath.IsFriendlyFire(info.AttackerTeam, info.AttackerId, target.Team, target.NetworkObjectId));
 
         /// <summary>Server only. Ignores hits on dead targets. <paramref name="reporterClientId"/> already played the feedback.</summary>
         public static void Apply(Health target, DamageInfo info, ulong reporterClientId)

@@ -13,6 +13,9 @@ namespace GraceRun.Combat
         public static bool IsFriendlyFire(Team attackerTeam, ulong attackerId, Team targetTeam, ulong targetId) =>
             attackerTeam == Team.Player && targetTeam == Team.Player && attackerId != targetId;
 
+        /// <summary>True when the rules drop a hit completely: friendly fire while it is switched off.</summary>
+        public static bool IsDropped(bool friendlyFireEnabled, bool friendlyFire) => friendlyFire && !friendlyFireEnabled;
+
         /// <summary>Damage after the friendly-fire multiplier. A friendly hit still does at least 1 unless the multiplier is 0.</summary>
         public static int DamageDealt(int amount, bool friendlyFire, float friendlyFireMultiplier)
         {

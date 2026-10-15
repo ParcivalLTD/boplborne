@@ -23,6 +23,7 @@ MonoBehaviour:
   _maxFallSpeed: 30
   _coyoteTime: 0.1
   _jumpBuffer: 0.1
+  _knockbackControlLock: 0.4
   _groundCheckSize: {x: 1.3, y: 0.2}
   _jumpStretch: 0.18
   _landSquash: 0.22

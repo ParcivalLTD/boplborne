@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 89adbcd6bb1d2bb44b17a464e756c0a1, type: 3}
   m_Name: CombatData
   m_EditorClassIdentifier: GraceRun.Runtime::GraceRun.Combat.CombatData
+  _friendlyFireEnabled: 1
   _friendlyFireDamageMultiplier: 0.1
   _friendlyFireMinHP: 1
   _debugDamage: 20

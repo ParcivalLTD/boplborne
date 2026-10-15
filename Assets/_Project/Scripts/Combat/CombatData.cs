@@ -10,8 +10,8 @@ namespace GraceRun.Combat
     public class CombatData : ScriptableObject
     {
         [Header("Friendly fire")]
-        [SerializeField, Tooltip("Off until step 4.1: hits from a teammate are ignored completely.")]
-        private bool _friendlyFireEnabled;
+        [SerializeField, Tooltip("GDD: on. When off, hits from a teammate are ignored completely.")]
+        private bool _friendlyFireEnabled = true;
         [SerializeField, Range(0f, 1f)] private float _friendlyFireDamageMultiplier = 0.1f;
         [SerializeField, Min(0)] private int _friendlyFireMinHP = 1;
 
