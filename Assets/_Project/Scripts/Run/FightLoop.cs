@@ -77,20 +77,25 @@ namespace GraceRun.Run
         }
 
         /// <summary>
-        /// Leader only: starts the fight from the waiting room, or restarts it after a victory or
-        /// defeat. Every player is healed and moved back to their spawn point, then the countdown runs.
+        /// Leader only: starts the fight from the waiting room, or restarts it after a defeat. Every player is healed and moved back to their spawn point, then the countdown runs.
         /// </summary>
         [Rpc(SendTo.Server)]
         public void StartFightRpc(RpcParams rpcParams = default)
         {
             if (rpcParams.Receive.SenderClientId != _leader.Value) return;
-            var phase = _phase.Value;
-            if (phase == FightPhase.Countdown || phase == FightPhase.Fighting) return;
+            if (!FightRules.CanStart(_phase.Value)) return;
 
             _bossSpawner.ServerDespawnCurrent();
             ResetPlayers();
             _countdownEnd.Value = NetworkManager.ServerTime.Time + _data.CountdownSeconds;
             SetPhase(FightPhase.Countdown);
+        }
+
+        /// <summary>Server only: the draft opens (from a victory) or closes (back to waiting).</summary>
+        public void ServerSetDraftPhase(bool open)
+        {
+            if (!IsServer) return;
+            SetPhase(open ? FightPhase.Draft : FightPhase.Waiting);
         }
 
         private void BeginFight()

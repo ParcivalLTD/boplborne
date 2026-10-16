@@ -6,7 +6,7 @@ namespace GraceRun.UI
 {
     /// <summary>
     /// Full-screen fight overlay on every PC: the 3-2-1 countdown, "FIGHT!", the victory and defeat
-    /// screens, and the Start / Restart button for the fight leader. Reads the synced
+    /// screens, and the Start / Restart button for the fight leader (hidden during the draft, which has its own screen). Reads the synced
     /// <see cref="FightLoop"/> phase; placeholder look until the HUD (4.3) and art pass (M8).
     /// </summary>
     public class FightScreen : MonoBehaviour
@@ -16,7 +16,7 @@ namespace GraceRun.UI
         private const string DefeatText = "DEFEAT";
         private const string WaitingLeaderText = "Press Start when everyone has joined.";
         private const string WaitingOtherText = "Waiting for the host to start the fight.";
-        private const string VictorySubText = "The boss falls.";
+        private const string VictorySubText = "The boss falls. The draft is coming.";
         private const string DefeatSubText = "Everyone is down.";
         private const string RestartOtherText = "Waiting for the host to restart.";
         private const string StartLabel = "Start fight";
@@ -52,6 +52,7 @@ namespace GraceRun.UI
             if (phase != _shownPhase || leader != _shownLeader) Show(phase, leader);
             if (phase == FightPhase.Countdown) ShowCountdown(loop.CountdownRemaining);
             if (phase == FightPhase.Fighting && Time.time - _fightShownAt >= loop.Data.FightBannerSeconds) _root.SetActive(false);
+            if (phase == FightPhase.Draft) _root.SetActive(false);
         }
 
         private void Show(FightPhase phase, bool leader)
@@ -74,7 +75,7 @@ namespace GraceRun.UI
                     Set(FightText, string.Empty, false, null);
                     break;
                 case FightPhase.Victory:
-                    Set(VictoryText, leader ? VictorySubText : $"{VictorySubText} {RestartOtherText}", leader, RestartLabel);
+                    Set(VictoryText, VictorySubText, false, null);
                     break;
                 case FightPhase.Defeat:
                     Set(DefeatText, leader ? DefeatSubText : $"{DefeatSubText} {RestartOtherText}", leader, RestartLabel);

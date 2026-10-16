@@ -1,0 +1,30 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 91b6aa15de387124c98208eac37b27fa, type: 3}
+  m_Name: RunConfig
+  m_EditorClassIdentifier: GraceRun.Runtime::GraceRun.Run.RunConfig
+  _cardsOffered: 3
+  _rerollsPerRun: 1
+  _legendaryMinFloor: 4
+  _rarityWeights:
+    Common: 70
+    Rare: 25
+    Legendary: 5
+  _draftPool:
+  - {fileID: 11400000, guid: ca10fdee88a28a94a9cd6207f59deb6f, type: 2}
+  - {fileID: 11400000, guid: eb60efbc667f0ba41976e4c048ecfa7c, type: 2}
+  - {fileID: 11400000, guid: ba85103ff52b74541a1091a514974a36, type: 2}
+  - {fileID: 11400000, guid: fe5447732f91efb4abe0cda0b828371c, type: 2}
+  - {fileID: 11400000, guid: 93affec10b9f2c14e95202afd56311e4, type: 2}
+  - {fileID: 11400000, guid: cf5c2982eb00ccb4ba5093b63dc5b379, type: 2}
+  _draftOpenDelay: 2
+  _draftCloseDelay: 2

@@ -39,8 +39,18 @@ namespace GraceRun.Tests
         [TestCase(FightPhase.Fighting, true)]
         [TestCase(FightPhase.Victory, false)]
         [TestCase(FightPhase.Defeat, false)]
+        [TestCase(FightPhase.Draft, false)]
         public void OnlyCountdownAndFightBlockJoining(FightPhase phase, bool blocks) =>
             Assert.AreEqual(blocks, FightRules.BlocksJoining(phase));
+
+        [TestCase(FightPhase.Waiting, true)]
+        [TestCase(FightPhase.Defeat, true)]
+        [TestCase(FightPhase.Victory, false)]
+        [TestCase(FightPhase.Draft, false)]
+        [TestCase(FightPhase.Countdown, false)]
+        [TestCase(FightPhase.Fighting, false)]
+        public void FightStartsOnlyFromWaitingOrDefeat(FightPhase phase, bool canStart) =>
+            Assert.AreEqual(canStart, FightRules.CanStart(phase));
 
         [Test]
         public void EmptyFightIsAbandoned() =>

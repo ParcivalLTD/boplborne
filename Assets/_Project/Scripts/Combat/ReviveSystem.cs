@@ -85,6 +85,12 @@ namespace GraceRun.Combat
             ServerCancel();
         }
 
+        /// <summary>Server only: a downed player comes back at once with the revive share (ghosts revive at the draft).</summary>
+        public void ServerReviveNow()
+        {
+            if (IsServer && _health.IsDead) ServerCompleteRevive();
+        }
+
         /// <summary>
         /// A living player's PC says it started (<paramref name="holding"/> true) or stopped holding
         /// Interact on this gravestone. The server checks the reviver is alive and close enough.

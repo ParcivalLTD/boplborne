@@ -31,6 +31,12 @@ namespace GraceRun.Run
             phase == FightPhase.Countdown || phase == FightPhase.Fighting;
 
         /// <summary>
+        /// Phases the leader may start a fight from: the waiting room and the defeat screen.
+        /// A victory always leads into the draft, which ends in the waiting room.
+        /// </summary>
+        public static bool CanStart(FightPhase phase) => phase == FightPhase.Waiting || phase == FightPhase.Defeat;
+
+        /// <summary>
         /// True when every player left during the countdown or the fight. The loop then goes back to
         /// waiting, so a server-only build does not stay locked with nobody left to finish the fight.
         /// </summary>
