@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using GraceRun.Core;
 using Unity.Netcode;
 using UnityEngine;
@@ -16,11 +17,20 @@ namespace GraceRun.Player
 
         [SerializeField] private GameConfig _config;
 
+        private static readonly List<PlayerIdentity> _all = new();
+
         private readonly NetworkVariable<int> _playerIndex = new(Unassigned);
 
         private PlayerVisuals _visuals;
 
+        /// <summary>
+        /// Every spawned player on this PC. Clients can't read the server's connected-client list,
+        /// so the HUD finds players here.
+        /// </summary>
+        public static IReadOnlyList<PlayerIdentity> All => _all;
+
         public int PlayerIndex => _playerIndex.Value;
+        public GameConfig Config => _config;
 
         private void Awake()
         {
@@ -29,12 +39,14 @@ namespace GraceRun.Player
 
         public override void OnNetworkSpawn()
         {
+            _all.Add(this);
             _playerIndex.OnValueChanged += OnPlayerIndexChanged;
             if (_playerIndex.Value != Unassigned) _visuals.Apply(_config, _playerIndex.Value);
         }
 
         public override void OnNetworkDespawn()
         {
+            _all.Remove(this);
             _playerIndex.OnValueChanged -= OnPlayerIndexChanged;
         }
 

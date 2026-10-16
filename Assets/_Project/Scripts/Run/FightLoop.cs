@@ -109,6 +109,8 @@ namespace GraceRun.Run
                 if (player == null) continue;
                 if (TryGetHealth(player, out var health)) health.ServerRestoreFull();
                 if (TryGetRevive(player, out var revive)) revive.ServerResetForFloor();
+                // Flasks refill at rest stops (GDD); until RunManager has them, every fight start refills.
+                if (player.TryGetComponent<PlayerFlask>(out var flask)) flask.ServerRefill();
                 var slot = player.GetComponent<PlayerIdentity>().PlayerIndex;
                 player.GetComponent<PlayerRespawn>().TeleportRpc(_playerSpawner.SpawnPointFor(slot));
             }
