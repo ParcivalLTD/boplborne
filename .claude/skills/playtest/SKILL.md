@@ -1,11 +1,11 @@
 ---
 name: playtest
-description: Turn playtest notes into a ranked backlog
+description: Use only when the user types /playtest. Turns playtest notes into a ranked backlog.
 argument-hint: <notes>
 disable-model-invocation: true
 ---
 
-Turn playtest notes into work. The user's notes: $ARGUMENTS
+Turn playtest notes into work. The user's notes are the text they wrote after the command.
 
 1. Sort every note into: bug, tuning, missing feature, or idea.
 2. For each bug and tuning item, name the system and the data asset or script involved.

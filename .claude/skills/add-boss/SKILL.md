@@ -1,11 +1,11 @@
 ---
 name: add-boss
-description: Add a boss or a boss attack from data
+description: Use only when the user types /add-boss. Adds a boss or a boss attack built from data.
 argument-hint: <boss or attack idea>
 disable-model-invocation: true
 ---
 
-Add a boss, or an attack to an existing boss. The user's idea: $ARGUMENTS
+Add a boss, or an attack to an existing boss. The user's idea is the text they wrote after the command.
 
 1. Read the boss rules and boss table in `docs/GDD.md` and the boss framework in `docs/ARCHITECTURE.md`.
 2. Write a short spec first: what the boss tests, 3–4 attacks (each with wind-up, active and recovery times and the punish window), phase 2 twist at 50% HP, arena layout. Every attack must be telegraphed and dodgeable.

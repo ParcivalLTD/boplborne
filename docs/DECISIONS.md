@@ -17,4 +17,4 @@ Settled. Don't re-open these unless the user explicitly asks. New decisions get 
 | 11 | 8 bosses at launch: 7 floors plus a final boss | Scope for version 1. |
 | 12 | Pixel art, 640×360, 16 PPU, one fixed palette | Consistent look; AI-generated sprites must be palette-locked and cleaned. |
 | 13 | Free Windows release on GitHub | No store approval; Steam stays possible later. |
-| 14 | Claude Code + Unity's MCP server (`unity mcp` from the Unity CLI) | Claude can read the console, run play mode and see the scene; `.mcp.json` works on every PC without per-user paths. |
+| 14 | Claude Code (desktop app) as the main agent, Antigravity supported; Unity's MCP server (`unity mcp` from the Unity CLI) for both | The agent can read the console, run play mode and see the scene. `AGENTS.md`, `docs/CODE_STYLE.md` and the skills are shared, so either agent follows the same rules. |

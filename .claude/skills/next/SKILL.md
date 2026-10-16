@@ -1,6 +1,6 @@
 ---
 name: next
-description: Do the next build step from docs/STATUS.md
+description: Use only when the user types /next. Does the next build step from docs/STATUS.md.
 disable-model-invocation: true
 ---
 

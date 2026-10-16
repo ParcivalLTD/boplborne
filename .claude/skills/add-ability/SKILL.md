@@ -1,11 +1,11 @@
 ---
 name: add-ability
-description: Add a new ability from data
+description: Use only when the user types /add-ability. Adds a new ability built from data.
 argument-hint: <ability idea>
 disable-model-invocation: true
 ---
 
-Add a new ability. The user's idea: $ARGUMENTS
+Add a new ability. The user's idea is the text they wrote after the command.
 
 1. Read the abilities section of `docs/GDD.md` and the ability framework in `docs/ARCHITECTURE.md`.
 2. Write a one-paragraph spec: name, tags (Projectile, Movement, Area, Summon), rarity, cooldown, effect, and at least two combos it creates with existing abilities through the tag rules. If it needs a new tag interaction, propose adding it to `ComboRules` instead of special-casing.

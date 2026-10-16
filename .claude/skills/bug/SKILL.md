@@ -1,11 +1,11 @@
 ---
 name: bug
-description: Reproduce and fix a bug
+description: Use only when the user types /bug. Reproduces and fixes a bug the user describes.
 argument-hint: <what happened>
 disable-model-invocation: true
 ---
 
-Fix a bug. The user's description: $ARGUMENTS
+Fix a bug. The user's description is the text they wrote after the command.
 
 1. Restate the bug in one line and say which systems are involved (check `docs/ARCHITECTURE.md` and, for anything multiplayer, `docs/NETWORKING.md`).
 2. Reproduce it: read the Unity console through MCP, enter play mode, and add temporary `Debug.Log` lines if needed. If it only happens with several players, say exactly how the user should reproduce it in Multiplayer Play Mode.

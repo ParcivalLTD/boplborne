@@ -69,6 +69,23 @@ It should list your scene's objects.
 
 **Alternative MCP server (Unity AI, included in your Student plan):** install the package `com.unity.ai.assistant`, open **Edit → Project Settings → AI → Unity MCP Server**, and use the relay at `C:\Users\<you>\.unity\relay\relay_win.exe` with the argument `--mcp` (replace the `unity` entry in `.mcp.json` with it). Click **Allow** on the pending connection in Unity. Use **one** server, not both.
 
+## 4b. Using Antigravity (optional, instead of or alongside Claude)
+
+The kit works in Antigravity too. It reads `AGENTS.md` and the skills in `.agents/skills/` on its own.
+
+1. Open the folder `R:\dev\boplborne` in Antigravity (Unity running, as above).
+2. **Connect it to Unity.** The kit includes `.agents/mcp_config.json` with the `unity` MCP server. Check it shows up under the agent panel's **…** menu → **MCP Servers** → **Manage MCP Servers**. If it doesn't, run this once in PowerShell, then restart Antigravity:
+   ```
+   unity mcp configure antigravity --project-path R:\dev\boplborne
+   ```
+3. Test with the same prompt as above (list the scene's GameObjects and read the console).
+4. Type `/next` to work exactly like in Claude.
+
+**Differences from Claude Code:**
+- Unity's Claude Code plugin (its extra Unity skills) is built for Claude Code. In Antigravity you get the Unity MCP tools and this kit's own skills, not Unity's extra skills. `unity skill install --list` shows whether the Unity CLI can install its own Unity skill for Antigravity on your version.
+- Antigravity can pick a skill on its own when it seems relevant. The descriptions tell it to run them only when you type the command, but if it ever starts one you didn't ask for, stop it.
+- Use one agent at a time. Switch only after a commit, and start the new agent with `/next` so it reads `docs/STATUS.md` first.
+
 ## 5. Multiplayer Play Mode
 
 After step 0.5 installs it: **Window → Multiplayer → Multiplayer Play Mode**. Activate Players 2–4 when a step asks you to test with several players. One player hosts; the others join `127.0.0.1`.

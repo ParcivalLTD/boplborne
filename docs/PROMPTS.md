@@ -2,7 +2,7 @@
 
 Every step of the project in order. For each step:
 
-1. Start a **new session** in the Claude app's Code tab.
+1. Start a **new agent session** (Claude app's Code tab, or Antigravity).
 2. Type `/next` (it finds the step in `docs/STATUS.md`), or paste the step's prompt.
 3. Check the **Done when** line yourself in Unity.
 4. If it passes, type `commit`.

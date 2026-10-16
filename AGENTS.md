@@ -35,7 +35,7 @@ You are building **Grace Run**, a 2D side-view online co-op (1–4 players) boss
   - Every gameplay feature must work as Host, as Client, and with a Server-only build. Guard logic with `IsServer`, `IsOwner`, `IsClient`.
 - **Combos go through ability tags and the `ComboRules` asset**, never one-off special cases between two abilities.
 - **One job per component.** Keep scripts under about 200 lines; split when they grow.
-- Code style is in `.claude/rules/csharp-unity.md`; networking rules in `.claude/rules/netcode.md`. Follow them.
+- **Before writing or editing any C#, read `docs/CODE_STYLE.md`** (code style plus networking authority rules) and follow it.
 - Put new files in the folders from `docs/ARCHITECTURE.md`. Never create top-level folders in `Assets/` outside `_Project`.
 - **Do not**:
   - install, remove or upgrade packages without asking first
@@ -50,3 +50,12 @@ You are building **Grace Run**, a 2D side-view online co-op (1–4 players) boss
 ## When stuck
 
 If the same error survives two fix attempts: stop, explain what you tried, list 2–3 hypotheses, and ask the user which to try. Suggest `git restore .` if the code got messy.
+
+## Environment
+
+- The project is `R:\dev\boplborne` on Windows. Run shell commands from the project root.
+- **Unity Editor access:** use the tools from the `unity` MCP server. If they are missing or fail, run `unity status` to check that the Editor is running and ready. If the Editor is in Safe Mode because of compile errors, fix the errors in the C# files, then ask the user to restart Unity.
+- **Slash commands** (`/next`, `/bug`, `/tune`, `/playtest`, `/add-ability`, `/add-boss`, `/explain`) are skills. Run one only when the user types it. They exist in two identical copies: `.claude/skills/` (Claude Code) and `.agents/skills/` (Antigravity). When you change one, change the other the same way; only the frontmatter differs.
+- **Git:** commit only when the user says so (e.g. "commit"), using the message you suggested. Never push unless asked.
+- **One step per session.** The user starts a new agent session after each committed step.
+- Only one AI agent works on the project at a time. Never assume another agent's half-finished changes are correct: check `git status` and `docs/STATUS.md` first.

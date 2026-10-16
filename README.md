@@ -2,7 +2,7 @@
 
 A 2D online co-op boss-rush roguelite for 1–4 friends. Climb a tower of souls-style bosses, draft abilities between fights, and combine them in ways that break the game.
 
-Built in **Unity 6** with **Claude Code** connected to the Unity Editor through **Unity's MCP server**. Friends play together over **Hamachi**: one person hosts, everyone else joins their IP.
+Built in **Unity 6** with an AI agent (**Claude Code** or **Antigravity**) connected to the Unity Editor through **Unity's MCP server**. Friends play together over **Hamachi**: one person hosts, everyone else joins their IP.
 
 ---
 
@@ -10,11 +10,13 @@ Built in **Unity 6** with **Claude Code** connected to the Unity Editor through 
 
 | Path | What it is |
 | --- | --- |
-| `AGENTS.md` | The rules the AI agent follows. |
-| `CLAUDE.md` | Loads `AGENTS.md` plus Claude Code specifics. Claude reads it automatically. |
-| `.claude/rules/` | Extra rules for C# and networking, loaded when Claude touches matching files. |
-| `.claude/skills/` | One-word prompts: `/next`, `/bug`, `/tune`, `/playtest`, `/add-ability`, `/add-boss`, `/explain`. |
-| `.mcp.json` | Connects Claude Code to the Unity Editor through Unity's MCP server (`unity mcp`). |
+| `AGENTS.md` | The rules every AI agent follows. Claude Code and Antigravity both read it. |
+| `CLAUDE.md` | Loads `AGENTS.md` plus a few Claude Code specifics. |
+| `.claude/skills/` | The one-word commands for Claude Code: `/next`, `/bug`, `/tune`, `/playtest`, `/add-ability`, `/add-boss`, `/explain`. |
+| `.agents/skills/` | The same commands for Antigravity. |
+| `.mcp.json` | Connects Claude Code to the Unity Editor (`unity mcp`). |
+| `.agents/mcp_config.json` | Connects Antigravity to the Unity Editor. |
+| `docs/CODE_STYLE.md` | C# conventions and networking authority rules. |
 | `docs/STATUS.md` | Where the project is right now and what comes next. The agent updates it after every step. |
 | `docs/PROMPTS.md` | Every development step in order, each with a ready-to-paste prompt and a "done when" check. |
 | `docs/SETUP.md` | One-time setup: installs, project creation, packages, MCP, git. |
@@ -32,11 +34,11 @@ Follow `docs/SETUP.md` from top to bottom. It takes about an hour.
 
 ## Daily loop
 
-1. Open the project in Unity, then open the Claude app → **Code** tab → a new **Local** session on `R:\dev\boplborne`.
+1. Open the project in Unity, then start a new agent session on `R:\dev\boplborne` (Claude app → **Code** tab → **Local**, or Antigravity).
 2. Type **`/next`**.
 3. The agent builds the step, checks the Unity console and play mode through MCP, and updates `docs/STATUS.md`.
 4. You play it and check the step's **Done when** line.
-5. If it passes, type **`commit`** and Claude commits with the message it suggested. (Or run `git add -A` and `git commit -m "<message>"` yourself in the app's terminal, **Ctrl+`**.)
+5. If it passes, type **`commit`** and the agent commits with the message it suggested. (Or run `git add -A` and `git commit -m "<message>"` yourself in a terminal.)
 6. Start a **new session** for the next step. Fresh context stays focused and uses fewer tokens.
 
 ## Other shortcuts
@@ -58,5 +60,6 @@ The host clicks **Host** in the main menu (or runs the server build). Friends jo
 
 - One step per session. If a request feels big, it is two steps.
 - Commit after every step that passes. Git is your undo button.
-- If Claude goes in circles for more than two tries, run `git restore .`, start a new session, and ask for a smaller step.
+- If the agent goes in circles for more than two tries, run `git restore .`, start a new session, and ask for a smaller step.
 - Tune numbers yourself in the Inspector. Everything tunable lives in data assets under `Assets/_Project/Data`.
+- Use one agent at a time. Switching between Claude Code and Antigravity is fine between steps (after a commit), never in the middle of one.
