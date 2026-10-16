@@ -47,6 +47,13 @@ namespace GraceRun.Abilities
             _slots[slot] = new AbilitySlotState(_catalog.IdOf(ability), 0d);
         }
 
+        /// <summary>Server only: empties all slots (new run in the hub).</summary>
+        public void ServerClear()
+        {
+            if (!IsServer) return;
+            for (var i = 0; i < _slots.Count; i++) _slots[i] = AbilitySlotState.Empty;
+        }
+
         /// <summary>Server only: the ability in <paramref name="slot"/> is next usable at <paramref name="readyAt"/>.</summary>
         public void ServerStartCooldown(int slot, double readyAt)
         {

@@ -1,15 +1,29 @@
+using System.Collections.Generic;
 using GraceRun.Abilities;
 using UnityEngine;
 
 namespace GraceRun.Run
 {
     /// <summary>
-    /// Run tuning (docs/ARCHITECTURE.md). For now only the draft part; floors, rest stops and
-    /// currency join it with RunManager (M6). Lives under Data/Config.
+    /// Run tuning (docs/ARCHITECTURE.md): the hub arena, the boss pool per floor, which floors are
+    /// followed by a rest stop, shared currency awards, and the draft rules. Lives under Data/Config.
     /// </summary>
     [CreateAssetMenu(menuName = "Grace Run/Run Config", fileName = "RunConfig")]
     public class RunConfig : ScriptableObject
     {
+        [Header("Run")]
+        [SerializeField, Tooltip("Arena prefab spawned in the hub and at rest stops.")]
+        private GameObject _hubArenaPrefab;
+        [SerializeField, Tooltip("One entry per floor, in order; the last entry is the final boss floor.")]
+        private FloorPool[] _floors;
+        [SerializeField, Tooltip("1-based floor numbers followed by a rest stop after their draft (GDD: 2, 4, 6).")]
+        private int[] _restAfterFloors = { 2, 4, 6 };
+
+        [Header("Currency")]
+        [SerializeField, Min(0)] private int _currencyPerBoss = 100;
+        [SerializeField, Min(0)] private int _bonusNoDeaths = 50;
+        [SerializeField, Min(0)] private int _bonusFastKill = 50;
+
         [Header("Draft")]
         [SerializeField, Range(1, 4), Tooltip("Cards each player is offered per draft.")]
         private int _cardsOffered = 3;
@@ -24,6 +38,12 @@ namespace GraceRun.Run
         [SerializeField, Min(0f), Tooltip("Seconds everyone's picks stay on screen after the last pick.")]
         private float _draftCloseDelay = 2f;
 
+        public GameObject HubArenaPrefab => _hubArenaPrefab;
+        public IReadOnlyList<FloorPool> Floors => _floors;
+        public IReadOnlyList<int> RestAfterFloors => _restAfterFloors;
+        public int CurrencyPerBoss => _currencyPerBoss;
+        public int BonusNoDeaths => _bonusNoDeaths;
+        public int BonusFastKill => _bonusFastKill;
         public int CardsOffered => _cardsOffered;
         public int RerollsPerRun => _rerollsPerRun;
         public int LegendaryMinFloor => _legendaryMinFloor;

@@ -14,8 +14,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: GraceRun.Runtime::GraceRun.Bosses.BossData
   _id: test_boss
   _displayName: Test Boss
-  _floor: 1
-  _accentColor: {r: 0.54901963, g: 0.5176471, b: 0.627451, a: 1}
+  _floor: 2
+  _accentColor: {r: 0.639, g: 0.639, b: 0.353, a: 1}
   _baseHP: 600
   _hpScalePerExtraPlayer: 0.6
   _phase2Threshold: 0.5
@@ -29,4 +29,4 @@ MonoBehaviour:
   _attackStartLead: 0.1
   _despawnDelay: 1.5
   _prefab: {fileID: 6321937765397557630, guid: 21dfd16ea9a0aea48aee17bc9ec5c812, type: 3}
-  _arenaPrefab: {fileID: 0}
+  _arenaPrefab: {fileID: 7121268250761901515, guid: e6f690843c49e114f8f52cfc7f7c5045, type: 3}

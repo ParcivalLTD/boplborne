@@ -1,0 +1,32 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bf20e1d2ce098f341ba2663937059ed5, type: 3}
+  m_Name: FinalTestBossData
+  m_EditorClassIdentifier: GraceRun.Runtime::GraceRun.Bosses.BossData
+  _id: final_test_boss
+  _displayName: Final Test Boss
+  _floor: 3
+  _accentColor: {r: 0.722, g: 0.573, b: 0.353, a: 1}
+  _baseHP: 700
+  _hpScalePerExtraPlayer: 0.6
+  _phase2Threshold: 0.5
+  _phase1Attacks:
+  - {fileID: 11400000, guid: 11ca156b5cd40194e94811e606efc7a8, type: 2}
+  _phase2Attacks:
+  - {fileID: 11400000, guid: bb15385f2d97c3b4e856767285ca4d58, type: 2}
+  _idleTime: 0.8
+  _targetSwitchInterval: 8
+  _walkSpeed: 3
+  _attackStartLead: 0.1
+  _despawnDelay: 1.5
+  _prefab: {fileID: 6321937765397557630, guid: 86b05b7b3f39a364c9884b0b2f05883a, type: 3}
+  _arenaPrefab: {fileID: 7121268250761901515, guid: 36e011f4089452747843a5771825a1d4, type: 3}

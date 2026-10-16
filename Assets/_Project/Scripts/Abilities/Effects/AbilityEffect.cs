@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using Unity.Netcode;
 using UnityEngine;
 
@@ -10,6 +11,8 @@ namespace GraceRun.Abilities.Effects
     /// </summary>
     public class AbilityEffect : NetworkBehaviour
     {
+        private static readonly List<AbilityEffect> _active = new();
+
         [SerializeField] private AbilityData _ability;
         [SerializeField, Tooltip("Asked when this effect meets another tagged thing. Empty = no combos.")]
         private ComboRules _combos;
@@ -40,10 +43,16 @@ namespace GraceRun.Abilities.Effects
 
         public override void OnNetworkSpawn()
         {
+            _active.Add(this);
             _age = 0f;
             if (!IsServer) return;
             _casterId.Value = _pendingCasterId;
             _aim.Value = _pendingAim;
+        }
+
+        public override void OnNetworkDespawn()
+        {
+            _active.Remove(this);
         }
 
         private void Update()
@@ -58,6 +67,16 @@ namespace GraceRun.Abilities.Effects
         {
             _pendingCasterId = casterId;
             _pendingAim = aim;
+        }
+
+        /// <summary>Server only: despawns every active ability effect (used when swapping arenas).</summary>
+        public static void ServerDespawnAll()
+        {
+            for (var i = _active.Count - 1; i >= 0; i--)
+            {
+                var effect = _active[i];
+                if (effect != null && effect.IsServer && effect.IsSpawned) effect.NetworkObject.Despawn();
+            }
         }
     }
 }

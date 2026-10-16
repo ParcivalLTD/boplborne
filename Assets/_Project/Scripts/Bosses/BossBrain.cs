@@ -29,6 +29,8 @@ namespace GraceRun.Bosses
         private BossMotor _motor;
         private BossTargetSelector _targets;
         private System.Random _random;
+        private int _seed;
+        private bool _hasSeed;
         private float[] _readyAt;
         private float _idleTimer;
         private int _attackId = -1;
@@ -58,6 +60,13 @@ namespace GraceRun.Bosses
             _targets = GetComponent<BossTargetSelector>();
         }
 
+        /// <summary>Server only, before Spawn: sets the random seed for this floor's boss.</summary>
+        public void ServerSetSeed(int seed)
+        {
+            _seed = seed;
+            _hasSeed = true;
+        }
+
         public override void OnNetworkSpawn()
         {
             _phase.OnValueChanged += OnPhaseValueChanged;
@@ -65,7 +74,7 @@ namespace GraceRun.Bosses
             ActiveChanged?.Invoke(this);
             if (!IsServer) return;
 
-            _random = new System.Random(Environment.TickCount);
+            _random = new System.Random(_hasSeed ? _seed : Environment.TickCount);
             _readyAt = new float[CountAttackIds()];
             var players = Mathf.Max(1, NetworkManager.ConnectedClientsIds.Count);
             _health.ServerSetMax(BossMath.ScaledMaxHP(_data.MaxHP, _data.HpScalePerExtraPlayer, players));

@@ -17,6 +17,7 @@ namespace GraceRun.UI
     public class DraftScreen : MonoBehaviour
     {
         private const string ChooseText = "Pick one ability.";
+        private const string HubChooseText = "Hub: pick a starter ability.";
         private const string WaitText = "Waiting for the others...";
         private const string DealingText = "Dealing your cards...";
         private const string ChoosingStatus = "choosing...";
@@ -102,7 +103,8 @@ namespace GraceRun.UI
                     hand.Picked == i, hand.HasPicked);
             }
 
-            _hint.text = !hasHand ? DealingText : hand.HasPicked ? WaitText : ChooseText;
+            var inHub = RunManager.Instance != null && RunManager.Instance.InHub;
+            _hint.text = !hasHand ? DealingText : hand.HasPicked ? WaitText : (inHub ? HubChooseText : ChooseText);
             _reroll.gameObject.SetActive(hasHand && !hand.HasPicked && hand.RerollsLeft > 0);
             _rerollLabel.text = $"Reroll ({hand.RerollsLeft})";
             if (hand.HasPicked) CloseReplace();

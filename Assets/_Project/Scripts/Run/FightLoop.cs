@@ -33,6 +33,7 @@ namespace GraceRun.Run
 
         private readonly Dictionary<ulong, Health> _healthById = new();
         private readonly Dictionary<ulong, ReviveSystem> _reviveById = new();
+        private BossData _currentBoss;
 
         /// <summary>The fight loop in the loaded Game scene on this PC, if any.</summary>
         public static FightLoop Instance { get; private set; }
@@ -77,21 +78,41 @@ namespace GraceRun.Run
         }
 
         /// <summary>
-        /// Leader only: starts the fight from the waiting room, or restarts it after a defeat. Every player is healed and moved back to their spawn point, then the countdown runs.
+        /// Leader only: advances the run through <see cref="RunManager"/> when present, or starts /
+        /// restarts a standalone fight.
         /// </summary>
         [Rpc(SendTo.Server)]
         public void StartFightRpc(RpcParams rpcParams = default)
         {
             if (rpcParams.Receive.SenderClientId != _leader.Value) return;
+            if (RunManager.Instance != null && RunManager.Instance.IsSpawned)
+            {
+                RunManager.Instance.ServerAdvance();
+                return;
+            }
             if (!FightRules.CanStart(_phase.Value)) return;
 
             _bossSpawner.ServerDespawnCurrent();
             ResetPlayers();
+            ServerBeginCountdown(_data.Boss);
+        }
+
+        /// <summary>Server only: starts the countdown for <paramref name="boss"/>.</summary>
+        public void ServerBeginCountdown(BossData boss)
+        {
+            if (!IsServer) return;
+            _currentBoss = boss;
             _countdownEnd.Value = NetworkManager.ServerTime.Time + _data.CountdownSeconds;
             SetPhase(FightPhase.Countdown);
         }
 
-        /// <summary>Server only: the draft opens (from a victory) or closes (back to waiting).</summary>
+        /// <summary>Server only: sets the current phase directly (used by <see cref="RunManager"/> and <see cref="DraftManager"/>).</summary>
+        public void ServerSetPhase(FightPhase phase)
+        {
+            if (IsServer) SetPhase(phase);
+        }
+
+        /// <summary>Server only: the draft opens (from a victory or hub) or closes (back to waiting).</summary>
         public void ServerSetDraftPhase(bool open)
         {
             if (!IsServer) return;
@@ -100,8 +121,10 @@ namespace GraceRun.Run
 
         private void BeginFight()
         {
-            if (_data.Boss == null) Debug.LogError("FightData has no boss to fight.", _data);
-            _bossSpawner.ServerSpawn(_data.Boss);
+            var boss = _currentBoss != null ? _currentBoss : _data.Boss;
+            if (boss == null) Debug.LogError("No boss configured for fight.", this);
+            var run = RunManager.Instance;
+            _bossSpawner.ServerSpawn(boss, run != null && run.IsSpawned ? run.FloorSeed : (int?)null);
             SetPhase(FightPhase.Fighting);
         }
 
@@ -120,7 +143,10 @@ namespace GraceRun.Run
             CountPlayers(out var players, out _);
             if (!FightRules.IsAbandoned(_phase.Value, players)) return false;
             _bossSpawner.ServerDespawnCurrent();
-            SetPhase(FightPhase.Waiting);
+            if (RunManager.Instance != null && RunManager.Instance.IsSpawned)
+                RunManager.Instance.ServerAbandonToHub();
+            else
+                SetPhase(FightPhase.Waiting);
             return true;
         }
 
@@ -153,7 +179,6 @@ namespace GraceRun.Run
                 if (player == null) continue;
                 if (TryGetHealth(player, out var health)) health.ServerRestoreFull();
                 if (TryGetRevive(player, out var revive)) revive.ServerResetForFloor();
-                // Flasks refill at rest stops (GDD); until RunManager has them, every fight start refills.
                 if (player.TryGetComponent<PlayerFlask>(out var flask)) flask.ServerRefill();
                 var slot = player.GetComponent<PlayerIdentity>().PlayerIndex;
                 player.GetComponent<PlayerRespawn>().TeleportRpc(_playerSpawner.SpawnPointFor(slot));

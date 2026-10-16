@@ -12,6 +12,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 91b6aa15de387124c98208eac37b27fa, type: 3}
   m_Name: RunConfig
   m_EditorClassIdentifier: GraceRun.Runtime::GraceRun.Run.RunConfig
+  _hubArenaPrefab: {fileID: 7121268250761901515, guid: 5b46507407b717041a2c7d66c2e638ce, type: 3}
+  _floors:
+  - _bosses:
+    - {fileID: 11400000, guid: 243d465cef93a004d8ad3e878cf6e71b, type: 2}
+  - _bosses:
+    - {fileID: 11400000, guid: 9d3ef6ca9fd68cf40a9dfd7e4c8ff63f, type: 2}
+  - _bosses:
+    - {fileID: 11400000, guid: ef1765043403a9647a49be110e4e2c99, type: 2}
+  _restAfterFloors: 020000000400000006000000i
+  _currencyPerBoss: 100
+  _bonusNoDeaths: 50
+  _bonusFastKill: 50
   _cardsOffered: 3
   _rerollsPerRun: 1
   _legendaryMinFloor: 4

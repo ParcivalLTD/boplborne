@@ -37,11 +37,12 @@ namespace GraceRun.Bosses
         public void SkipToBossRpc(int index) => ServerSpawn(index);
 
         /// <summary>Server only: (re)spawns <paramref name="boss"/> with HP scaled to the players connected now.</summary>
-        public void ServerSpawn(BossData boss)
+        public void ServerSpawn(BossData boss, int? seed = null)
         {
             if (!IsServer || boss == null || boss.Prefab == null) return;
             ServerDespawnCurrent();
             var instance = Instantiate(boss.Prefab, _spawnPoint.position, Quaternion.identity);
+            if (seed.HasValue && instance.TryGetComponent<BossBrain>(out var brain)) brain.ServerSetSeed(seed.Value);
             instance.GetComponent<NetworkObject>().Spawn(true);
         }
 

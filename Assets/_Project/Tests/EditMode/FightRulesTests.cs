@@ -40,6 +40,7 @@ namespace GraceRun.Tests
         [TestCase(FightPhase.Victory, false)]
         [TestCase(FightPhase.Defeat, false)]
         [TestCase(FightPhase.Draft, false)]
+        [TestCase(FightPhase.RestStop, false)]
         public void OnlyCountdownAndFightBlockJoining(FightPhase phase, bool blocks) =>
             Assert.AreEqual(blocks, FightRules.BlocksJoining(phase));
 

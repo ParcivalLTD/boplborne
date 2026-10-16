@@ -116,27 +116,54 @@ namespace GraceRun.Run
             _hands[index] = hand;
         }
 
+        /// <summary>Server only: resets the dealer and reroll counts for a new run with <paramref name="seed"/>.</summary>
+        public void ServerStartRun(int seed)
+        {
+            if (!IsServer) return;
+            _dealer = new DraftDealer(_config, _catalog, seed);
+            _rerollsUsed.Clear();
+            _hands.Clear();
+            _pendingJoins.Clear();
+            _openAt = -1d;
+            _closeAt = -1d;
+        }
+
+        /// <summary>Server only: opens a draft on <paramref name="floor"/> (0 = hub starter draft, dealt with floor 1 rules).</summary>
+        public void ServerOpen(int floor)
+        {
+            if (!IsServer) return;
+            _openAt = -1d;
+            _closeAt = -1d;
+            _floor = Mathf.Max(1, floor);
+            _hands.Clear();
+            _pendingJoins.Clear();
+            foreach (var client in NetworkManager.ConnectedClientsList)
+            {
+                if (client.PlayerObject == null || !client.PlayerObject.IsSpawned)
+                {
+                    _pendingJoins.Add(client.ClientId);
+                    continue;
+                }
+                if (client.PlayerObject.TryGetComponent<ReviveSystem>(out var revive)) revive.ServerReviveNow();
+                AddHand(client.PlayerObject);
+            }
+            _fightLoop.ServerSetDraftPhase(true);
+        }
+
         private void OnServerPhaseChanged(FightPhase phase)
         {
-            _openAt = phase == FightPhase.Victory ? Now + _config.DraftOpenDelay : -1d;
+            var run = RunManager.Instance;
+            var shouldDraft = phase == FightPhase.Victory && (run == null || !run.IsFinalFloor);
+            _openAt = shouldDraft ? Now + _config.DraftOpenDelay : -1d;
             if (phase != FightPhase.Draft && _hands.Count > 0) _hands.Clear();
         }
 
         private void Open()
         {
-            _openAt = -1d;
-            _closeAt = -1d;
-            var boss = _fightLoop.Data.Boss;
-            _floor = boss != null ? boss.Floor : 1;
-            _hands.Clear();
-            _pendingJoins.Clear();
-            foreach (var client in NetworkManager.ConnectedClientsList)
-            {
-                if (client.PlayerObject == null) continue;
-                if (client.PlayerObject.TryGetComponent<ReviveSystem>(out var revive)) revive.ServerReviveNow();
-                AddHand(client.PlayerObject);
-            }
-            _fightLoop.ServerSetDraftPhase(true);
+            var run = RunManager.Instance;
+            var boss = run != null && run.CurrentBoss != null ? run.CurrentBoss : _fightLoop.Data.Boss;
+            var floor = run != null && run.Floor > 0 ? run.Floor : (boss != null ? boss.Floor : 1);
+            ServerOpen(floor);
         }
 
         private void UpdateOpenDraft()
@@ -148,7 +175,14 @@ namespace GraceRun.Run
                 return;
             }
             if (_closeAt < 0d) _closeAt = Now + _config.DraftCloseDelay;
-            else if (Now >= _closeAt) _fightLoop.ServerSetDraftPhase(false);
+            else if (Now >= _closeAt)
+            {
+                _closeAt = -1d;
+                if (RunManager.Instance != null && RunManager.Instance.IsSpawned)
+                    RunManager.Instance.ServerOnDraftClosed();
+                else
+                    _fightLoop.ServerSetDraftPhase(false);
+            }
         }
 
         private void AddHand(NetworkObject player)
@@ -193,7 +227,17 @@ namespace GraceRun.Run
 
         private void OnServerClientConnected(ulong clientId)
         {
-            if (_fightLoop.Phase == FightPhase.Draft) _pendingJoins.Add(clientId);
+            if (_fightLoop.Phase == FightPhase.Draft)
+            {
+                _pendingJoins.Add(clientId);
+            }
+            else if (RunManager.Instance != null && RunManager.Instance.InHub && _fightLoop.Phase == FightPhase.Waiting)
+            {
+                _floor = 1;
+                _closeAt = -1d;
+                _pendingJoins.Add(clientId);
+                _fightLoop.ServerSetDraftPhase(true);
+            }
         }
 
         private void OnServerClientDisconnected(ulong clientId)
