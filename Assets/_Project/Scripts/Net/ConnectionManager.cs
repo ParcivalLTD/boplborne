@@ -24,13 +24,14 @@ namespace GraceRun.Net
         [SerializeField] private NetworkManager _networkManager;
 
         private Coroutine _timeout;
+        private bool _leaving;
 
         public static ConnectionManager Instance { get; private set; }
 
         /// <summary>Why the last session ended; shown once by the main menu.</summary>
         public static string LastMessage { get; set; }
 
-        /// <summary>Set by the run systems later; while true the server refuses new players.</summary>
+        /// <summary>Set by the fight loop on the server; while true the server refuses new players.</summary>
         public bool FightInProgress { get; set; }
 
         public GameConfig Config => _config;
@@ -120,6 +121,10 @@ namespace GraceRun.Net
         public void Leave(string message = null)
         {
             StopTimeout();
+            FightInProgress = false;
+            // Shutdown finishes a frame later and can report our own disconnect, which is not
+            // "Host left the game". Ignore disconnects until the next session starts.
+            _leaving = true;
             if (_networkManager.IsListening) _networkManager.Shutdown();
             LastMessage = message;
             if (SceneManager.GetActiveScene().name != Scenes.MainMenu) SceneManager.LoadScene(Scenes.MainMenu);
@@ -128,6 +133,7 @@ namespace GraceRun.Net
 
         private void Configure(string address, ushort port)
         {
+            _leaving = false;
             var transport = _networkManager.GetComponent<UnityTransport>();
             transport.SetConnectionData(address, port, ListenAddress);
             _networkManager.NetworkConfig.ConnectionData = ConnectionPayload.Serialize(_config.GameVersion);
@@ -165,6 +171,7 @@ namespace GraceRun.Net
                 return;
             }
 
+            if (_leaving) return;
             StopTimeout();
             var reason = _networkManager.DisconnectReason;
             Leave(string.IsNullOrEmpty(reason) ? HostLeftMessage : reason);

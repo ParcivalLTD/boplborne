@@ -13,7 +13,8 @@ namespace GraceRun.Run
     /// Single-fight loop (until RunManager, M6): waiting → countdown → fight → victory or defeat,
     /// then restart. The server owns the phase; the leader (host, or the first client on a
     /// server-only build) starts and restarts through <see cref="StartFightRpc"/>.
-    /// Lives in the Game scene as an in-scene NetworkObject.
+    /// Lives in the Game scene as an in-scene NetworkObject. On the server it also tells
+    /// <see cref="ConnectionManager"/> when new players must be refused (countdown and fight).
     /// </summary>
     public class FightLoop : NetworkBehaviour
     {
@@ -52,18 +53,25 @@ namespace GraceRun.Run
         {
             Instance = this;
             _phase.OnValueChanged += OnPhaseValueChanged;
+            if (!IsServer) return;
+            NetworkManager.OnClientConnectedCallback += OnServerClientConnected;
+            UpdateJoinGate();
         }
 
         public override void OnNetworkDespawn()
         {
             _phase.OnValueChanged -= OnPhaseValueChanged;
             if (Instance == this) Instance = null;
+            if (!IsServer) return;
+            NetworkManager.OnClientConnectedCallback -= OnServerClientConnected;
+            if (ConnectionManager.Instance != null) ConnectionManager.Instance.FightInProgress = false;
         }
 
         private void Update()
         {
             if (!IsServer || !IsSpawned) return;
             UpdateLeader();
+            if (FightRules.BlocksJoining(_phase.Value) && CheckAbandoned()) return;
             if (_phase.Value == FightPhase.Countdown && CountdownRemaining <= 0d) BeginFight();
             else if (_phase.Value == FightPhase.Fighting) CheckOutcome();
         }
@@ -82,14 +90,14 @@ namespace GraceRun.Run
             _bossSpawner.ServerDespawnCurrent();
             ResetPlayers();
             _countdownEnd.Value = NetworkManager.ServerTime.Time + _data.CountdownSeconds;
-            _phase.Value = FightPhase.Countdown;
+            SetPhase(FightPhase.Countdown);
         }
 
         private void BeginFight()
         {
             if (_data.Boss == null) Debug.LogError("FightData has no boss to fight.", _data);
             _bossSpawner.ServerSpawn(_data.Boss);
-            _phase.Value = FightPhase.Fighting;
+            SetPhase(FightPhase.Fighting);
         }
 
         private void CheckOutcome()
@@ -98,7 +106,38 @@ namespace GraceRun.Run
             var bossDefeated = boss == null || boss.Health.IsDead;
             CountPlayers(out var players, out var living);
             var outcome = FightRules.Outcome(bossDefeated, players, living);
-            if (outcome != FightPhase.Fighting) _phase.Value = outcome;
+            if (outcome != FightPhase.Fighting) SetPhase(outcome);
+        }
+
+        /// <summary>Everyone left mid-fight: clear the arena and wait, so new players can join again.</summary>
+        private bool CheckAbandoned()
+        {
+            CountPlayers(out var players, out _);
+            if (!FightRules.IsAbandoned(_phase.Value, players)) return false;
+            _bossSpawner.ServerDespawnCurrent();
+            SetPhase(FightPhase.Waiting);
+            return true;
+        }
+
+        /// <summary>
+        /// A player joined between fights. After a defeat the boss is still standing there idle;
+        /// remove it, or it would go after the newcomer outside any fight.
+        /// </summary>
+        private void OnServerClientConnected(ulong clientId)
+        {
+            if (_phase.Value == FightPhase.Defeat) _bossSpawner.ServerDespawnCurrent();
+        }
+
+        private void SetPhase(FightPhase phase)
+        {
+            _phase.Value = phase;
+            UpdateJoinGate();
+        }
+
+        private void UpdateJoinGate()
+        {
+            var connection = ConnectionManager.Instance;
+            if (connection != null) connection.FightInProgress = FightRules.BlocksJoining(_phase.Value);
         }
 
         private void ResetPlayers()

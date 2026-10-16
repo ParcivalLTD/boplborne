@@ -33,7 +33,7 @@ namespace GraceRun.Net
             ApprovalResult.BadPayload => "The host could not read your connection request.",
             ApprovalResult.VersionMismatch => $"Host is on version {serverVersion}, you are on {clientVersion}.",
             ApprovalResult.ServerFull => "The game is full.",
-            ApprovalResult.FightInProgress => "Wait for the fight to end.",
+            ApprovalResult.FightInProgress => "A fight is in progress. Wait for the fight to end, then join again.",
             _ => "Connection refused."
         };
     }

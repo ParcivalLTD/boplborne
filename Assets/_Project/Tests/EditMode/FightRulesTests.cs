@@ -34,6 +34,30 @@ namespace GraceRun.Tests
         public void CountdownShowsWholeSecondsRoundedUp(double remaining, int expected) =>
             Assert.AreEqual(expected, FightRules.CountdownNumber(remaining));
 
+        [TestCase(FightPhase.Waiting, false)]
+        [TestCase(FightPhase.Countdown, true)]
+        [TestCase(FightPhase.Fighting, true)]
+        [TestCase(FightPhase.Victory, false)]
+        [TestCase(FightPhase.Defeat, false)]
+        public void OnlyCountdownAndFightBlockJoining(FightPhase phase, bool blocks) =>
+            Assert.AreEqual(blocks, FightRules.BlocksJoining(phase));
+
+        [Test]
+        public void EmptyFightIsAbandoned() =>
+            Assert.IsTrue(FightRules.IsAbandoned(FightPhase.Fighting, 0));
+
+        [Test]
+        public void EmptyCountdownIsAbandoned() =>
+            Assert.IsTrue(FightRules.IsAbandoned(FightPhase.Countdown, 0));
+
+        [Test]
+        public void FightWithAPlayerLeftIsNotAbandoned() =>
+            Assert.IsFalse(FightRules.IsAbandoned(FightPhase.Fighting, 1));
+
+        [Test]
+        public void EmptyWaitingRoomIsNotAbandoned() =>
+            Assert.IsFalse(FightRules.IsAbandoned(FightPhase.Waiting, 0));
+
         [Test]
         public void HostLeads() =>
             Assert.AreEqual(0ul, FightRules.Leader(true, 0, new ulong[] { 0, 1, 2 }));

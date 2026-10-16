@@ -23,6 +23,19 @@ namespace GraceRun.Run
             return FightPhase.Fighting;
         }
 
+        /// <summary>
+        /// New players are refused from the countdown until the fight ends (docs/NETWORKING.md);
+        /// the waiting room and the victory or defeat screen let them in.
+        /// </summary>
+        public static bool BlocksJoining(FightPhase phase) =>
+            phase == FightPhase.Countdown || phase == FightPhase.Fighting;
+
+        /// <summary>
+        /// True when every player left during the countdown or the fight. The loop then goes back to
+        /// waiting, so a server-only build does not stay locked with nobody left to finish the fight.
+        /// </summary>
+        public static bool IsAbandoned(FightPhase phase, int players) => BlocksJoining(phase) && players <= 0;
+
         /// <summary>The number to show for <paramref name="remaining"/> seconds left: 3, 2, 1, then 0.</summary>
         public static int CountdownNumber(double remaining) =>
             remaining <= 0d ? 0 : Mathf.CeilToInt((float)remaining);

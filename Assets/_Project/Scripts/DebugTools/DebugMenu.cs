@@ -1,6 +1,7 @@
 using GraceRun.Bosses;
 using GraceRun.Combat;
 using GraceRun.Core.Juice;
+using GraceRun.Net;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -73,6 +74,7 @@ namespace GraceRun.DebugTools
             DrawBossCommands();
             DrawJuiceCommands();
             if (GUILayout.Button($"Show hitboxes: {(ShowHitboxes ? "ON" : "off")}")) ShowHitboxes = !ShowHitboxes;
+            DrawSessionCommands();
             GUILayout.EndArea();
         }
 
@@ -119,6 +121,14 @@ namespace GraceRun.DebugTools
             _bossHpText = GUILayout.TextField(_bossHpText, GUILayout.Width(70f));
             if (GUILayout.Button("Set boss HP") && int.TryParse(_bossHpText, out var hp)) DebugCommands.SetBossHP(hp);
             GUILayout.EndHorizontal();
+        }
+
+        /// <summary>Leave without closing the game, to test leaving mid-fight (no pause menu yet).</summary>
+        private static void DrawSessionCommands()
+        {
+            var connection = ConnectionManager.Instance;
+            if (connection == null || !connection.IsBusy) return;
+            if (GUILayout.Button("Leave game")) connection.Leave();
         }
 
         private static void DrawJuiceCommands()
