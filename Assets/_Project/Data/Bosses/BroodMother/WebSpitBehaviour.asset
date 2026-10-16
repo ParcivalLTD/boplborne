@@ -1,0 +1,20 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b2c879377e49c5d45ac08104de2a3a27, type: 3}
+  m_Name: WebSpitBehaviour
+  m_EditorClassIdentifier: GraceRun.Runtime::GraceRun.Bosses.Behaviours.WebSpitBehaviour
+  _webZonePrefab: {fileID: 6720474580210896420, guid: cfa8cbc0f6cf573498a916d71943a28b, type: 3}
+  _floorY: -4.9
+  _arenaHalfWidth: 14.5
+  _mergeDistance: 2
+  _soloSecondOffset: 5
+  _maxZonesPerCast: 4

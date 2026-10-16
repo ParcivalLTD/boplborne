@@ -1,0 +1,35 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cf49f4e03f190c242a10d63d36275ab9, type: 3}
+  m_Name: SpawnCrawlers
+  m_EditorClassIdentifier: GraceRun.Runtime::GraceRun.Bosses.AttackData
+  _id: spawn_crawlers
+  _windup: 1
+  _active: 0.2
+  _recovery: 1.2
+  _punishWindow: 1
+  _damage: 20
+  _knockback: {x: 10, y: 5}
+  _hitboxOffset: {x: 0, y: -1.5}
+  _hitboxSize: {x: 8, y: 3}
+  _telegraphType: 1
+  _glowPart: 2
+  _weakPointOffset: {x: -1.2, y: 1}
+  _lungeDistance: 0
+  _lungeTime: 0.2
+  _followUp: {fileID: 0}
+  _behaviour: {fileID: 11400000, guid: f3b51484f0793b54580e9b8b66458d21, type: 2}
+  _windupCue: {fileID: 11400000, guid: 5a5d7fd882b1832429e1125c3e83cc9c, type: 2}
+  _weight: 0.9
+  _cooldown: 6.5
+  _minRange: 0
+  _maxRange: 28

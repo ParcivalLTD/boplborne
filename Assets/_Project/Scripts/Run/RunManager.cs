@@ -67,11 +67,13 @@ namespace GraceRun.Run
         {
             Instance = this;
             _floor.OnValueChanged += OnFloorValueChanged;
+            if (IsServer && _bossSpawner != null) _bossSpawner.BossSkipped += OnBossSkipped;
         }
 
         public override void OnNetworkDespawn()
         {
             _floor.OnValueChanged -= OnFloorValueChanged;
+            if (_bossSpawner != null) _bossSpawner.BossSkipped -= OnBossSkipped;
             if (Instance == this) Instance = null;
             _hubInitialized = false;
         }
@@ -232,6 +234,12 @@ namespace GraceRun.Run
                 netObj.Spawn(true);
                 _activeArena = netObj;
             }
+        }
+
+        private void OnBossSkipped(BossData boss)
+        {
+            if (!IsServer || boss == null || boss.ArenaPrefab == null) return;
+            SwapArena(boss.ArenaPrefab);
         }
 
         private void OnFloorValueChanged(int previous, int current) => FloorChanged?.Invoke(current);

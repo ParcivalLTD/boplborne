@@ -19,6 +19,9 @@ namespace GraceRun.Bosses
         /// <summary>The spawner in the loaded Game scene on this PC, if any.</summary>
         public static BossSpawner Instance { get; private set; }
 
+        /// <summary>Raised on the server when a debug skip spawns a boss.</summary>
+        public event System.Action<BossData> BossSkipped;
+
         public IReadOnlyList<BossData> Bosses => _bosses;
 
         public override void OnNetworkSpawn()
@@ -34,7 +37,13 @@ namespace GraceRun.Bosses
 
         /// <summary>Debug: (re)spawns boss <paramref name="index"/> with HP scaled to the players connected now.</summary>
         [Rpc(SendTo.Server)]
-        public void SkipToBossRpc(int index) => ServerSpawn(index);
+        public void SkipToBossRpc(int index)
+        {
+            if (index < 0 || index >= _bosses.Length) return;
+            var boss = _bosses[index];
+            BossSkipped?.Invoke(boss);
+            ServerSpawn(boss);
+        }
 
         /// <summary>Server only: (re)spawns <paramref name="boss"/> with HP scaled to the players connected now.</summary>
         public void ServerSpawn(BossData boss, int? seed = null)
@@ -46,11 +55,14 @@ namespace GraceRun.Bosses
             instance.GetComponent<NetworkObject>().Spawn(true);
         }
 
-        /// <summary>Server only: removes the current boss, if any.</summary>
+        /// <summary>Server only: removes the current boss (and any boss-spawned minions or hazard zones).</summary>
         public void ServerDespawnCurrent()
         {
+            if (!IsServer) return;
+            Behaviours.BroodCrawler.ServerDespawnAll();
+            Behaviours.WebZone.ServerDespawnAll();
             var current = BossBrain.Active;
-            if (IsServer && current != null && current.IsSpawned) current.NetworkObject.Despawn();
+            if (current != null && current.IsSpawned) current.NetworkObject.Despawn();
         }
 
         private void ServerSpawn(int index)

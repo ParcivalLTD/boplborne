@@ -36,6 +36,7 @@ namespace GraceRun.Bosses
         public AttackData Attack => _attack;
         public AttackPhase Phase { get; private set; }
         public sbyte Facing => _playing.Facing;
+        public ulong TargetId => _playing.TargetId;
         public int PlayingId => _playing.AttackId;
 
         /// <summary>Seconds since the current link's start on this PC (negative while pending).</summary>
@@ -60,6 +61,8 @@ namespace GraceRun.Bosses
             var linkChanged = link != _attack;
             if (linkChanged)
             {
+                if (_attack != null && _attack.Behaviour != null)
+                    _attack.Behaviour.OnPhaseChanged(this, _attack, AttackPhase.None);
                 _attack = link;
                 _startTime = _firstStartTime + linkStart;
             }
@@ -119,6 +122,8 @@ namespace GraceRun.Bosses
             if (Phase == AttackPhase.Active) _hitbox.Disarm();
             Phase = phase;
             if (phase == AttackPhase.Active) ArmHitbox();
+            if (_attack != null && _attack.Behaviour != null)
+                _attack.Behaviour.OnPhaseChanged(this, _attack, phase);
 
             PhaseChanged?.Invoke(phase);
             if (phase != AttackPhase.None) return;

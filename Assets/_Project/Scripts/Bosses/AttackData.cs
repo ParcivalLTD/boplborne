@@ -40,9 +40,11 @@ namespace GraceRun.Bosses
         [SerializeField, Min(0f), Tooltip("Seconds the dash takes, from the start of the active phase. Keep it shorter than Active so the hitbox stays armed a moment after the boss stops (covers client interpolation).")]
         private float _lungeTime = 0.2f;
 
-        [Header("Chain and sound")]
+        [Header("Chain, behaviour and sound")]
         [SerializeField, Tooltip("Played right after this attack ends, on every PC, with no pause and no new pick. Same facing and target.")]
         private AttackData _followUp;
+        [SerializeField, Tooltip("Optional boss-specific behaviour (spawning minions, sticky webs, ceiling drop).")]
+        private BossAttackBehaviour _behaviour;
         [SerializeField, Tooltip("Telegraph sound played when the wind-up starts (one per boss telegraph).")]
         private AudioCue _windupCue;
 
@@ -70,6 +72,7 @@ namespace GraceRun.Bosses
         public float LungeDistance => _lungeDistance;
         public float LungeTime => Mathf.Min(_lungeTime, _active);
         public AttackData FollowUp => _followUp;
+        public BossAttackBehaviour Behaviour => _behaviour;
         public AudioCue WindupCue => _windupCue;
         public float Weight => _weight;
         public float Cooldown => _cooldown;

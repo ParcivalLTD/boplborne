@@ -22,10 +22,12 @@ namespace GraceRun.Bosses
         private Vector3 _weakPointScale;
         private AttackData _anchoredFor;
         private Vector3 _anchor;
+        private float _groundY;
 
         private void Awake()
         {
             _weakPointScale = _weakPoint.transform.localScale;
+            _groundY = transform.position.y;
             HideAll();
         }
 
@@ -42,7 +44,11 @@ namespace GraceRun.Bosses
             if (attack != _anchoredFor)
             {
                 _anchoredFor = attack;
-                _anchor = transform.position;
+                _anchor = new Vector3(transform.position.x, _groundY, 0f);
+            }
+            else if (_runner.Phase == AttackPhase.Windup && attack.LungeDistance <= 0f)
+            {
+                _anchor.x = transform.position.x;
             }
 
             var elapsed = (float)_runner.Elapsed;

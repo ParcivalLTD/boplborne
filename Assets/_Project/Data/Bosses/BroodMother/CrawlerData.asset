@@ -1,0 +1,23 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 32cbe99c2a18e9945b6774bed3cac7ee, type: 3}
+  m_Name: CrawlerData
+  m_EditorClassIdentifier: GraceRun.Runtime::GraceRun.Bosses.Behaviours.CrawlerData
+  _maxHP: 24
+  _moveSpeed: 4.2
+  _hopRange: 2.6
+  _hopVelocity: {x: 6.5, y: 6.5}
+  _biteCooldown: 1.1
+  _damage: 15
+  _knockback: {x: 7, y: 5}
+  _knockbackStunTime: 0.35
+  _despawnDelay: 0.25

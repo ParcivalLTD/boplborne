@@ -1,0 +1,35 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cf49f4e03f190c242a10d63d36275ab9, type: 3}
+  m_Name: FangBiteDouble
+  m_EditorClassIdentifier: GraceRun.Runtime::GraceRun.Bosses.AttackData
+  _id: fang_bite_double
+  _windup: 0.6
+  _active: 0.22
+  _recovery: 0.18
+  _punishWindow: 0
+  _damage: 25
+  _knockback: {x: 9, y: 4}
+  _hitboxOffset: {x: 3, y: -1}
+  _hitboxSize: {x: 4, y: 3.5}
+  _telegraphType: 1
+  _glowPart: 1
+  _weakPointOffset: {x: 0.8, y: 0.8}
+  _lungeDistance: 3
+  _lungeTime: 0.14
+  _followUp: {fileID: 11400000, guid: 075d6e9bd29b77045b2b13f864289a99, type: 2}
+  _behaviour: {fileID: 0}
+  _windupCue: {fileID: 11400000, guid: a7f5a764c24fa2d419f9465bc840fca1, type: 2}
+  _weight: 1.1
+  _cooldown: 1.5
+  _minRange: 0
+  _maxRange: 9

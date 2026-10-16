@@ -18,9 +18,14 @@ namespace GraceRun.Bosses
             1, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Server);
 
         private Rigidbody2D _body;
+        private float _defaultGravity;
         private float _moveDirection;
         private float _dashVelocity;
         private float _dashTimer;
+        private bool _perched;
+        private Vector2 _perchPosition;
+        private float _dropVelocity;
+        private float _dropTimer;
 
         /// <summary>+1 facing right, -1 facing left.</summary>
         public sbyte Facing => _facing.Value;
@@ -28,6 +33,7 @@ namespace GraceRun.Bosses
         private void Awake()
         {
             _body = GetComponent<Rigidbody2D>();
+            _defaultGravity = _body.gravityScale;
         }
 
         public override void OnNetworkSpawn()
@@ -44,6 +50,18 @@ namespace GraceRun.Bosses
         private void FixedUpdate()
         {
             if (!IsServer || !IsSpawned) return;
+            if (_perched)
+            {
+                _body.linearVelocity = Vector2.zero;
+                _body.MovePosition(_perchPosition);
+                return;
+            }
+            if (_dropTimer > 0f)
+            {
+                _dropTimer -= Time.fixedDeltaTime;
+                _body.linearVelocity = new Vector2(0f, _dropVelocity);
+                return;
+            }
             if (_dashTimer > 0f)
             {
                 _dashTimer -= Time.fixedDeltaTime;
@@ -61,11 +79,12 @@ namespace GraceRun.Bosses
             ServerFace(_moveDirection);
         }
 
-        /// <summary>Server only: stands still (also ends a dash).</summary>
+        /// <summary>Server only: stands still (also ends a dash or perch).</summary>
         public void ServerStop()
         {
             _moveDirection = 0f;
             _dashTimer = 0f;
+            ServerClearVertical();
         }
 
         /// <summary>Server only: moves at <paramref name="velocity"/> on x for <paramref name="duration"/> seconds, ignoring walking.</summary>
@@ -74,6 +93,40 @@ namespace GraceRun.Bosses
             if (!IsServer) return;
             _dashVelocity = velocity;
             _dashTimer = duration;
+        }
+
+        /// <summary>Server only: holds the boss at <paramref name="position"/> (e.g. ceiling perch during wind-up) with gravity off.</summary>
+        public void ServerPerch(Vector2 position)
+        {
+            if (!IsServer) return;
+            _perched = true;
+            _perchPosition = position;
+            _dropTimer = 0f;
+            _dashTimer = 0f;
+            _moveDirection = 0f;
+            _body.gravityScale = 0f;
+            _body.linearVelocity = Vector2.zero;
+            _body.position = position;
+            transform.position = position;
+        }
+
+        /// <summary>Server only: releases a perch and slams straight down at <paramref name="downSpeed"/> for <paramref name="duration"/> seconds.</summary>
+        public void ServerDrop(float downSpeed, float duration)
+        {
+            if (!IsServer) return;
+            _perched = false;
+            _body.gravityScale = _defaultGravity;
+            _dropVelocity = -Mathf.Abs(downSpeed);
+            _dropTimer = duration;
+        }
+
+        /// <summary>Server only: restores normal gravity and clears any ceiling perch or vertical drop.</summary>
+        public void ServerClearVertical()
+        {
+            if (!IsServer) return;
+            _perched = false;
+            _dropTimer = 0f;
+            if (_body != null) _body.gravityScale = _defaultGravity;
         }
 
         /// <summary>Server only: turns toward the sign of <paramref name="direction"/> (0 keeps the facing).</summary>

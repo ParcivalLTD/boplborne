@@ -20,12 +20,19 @@ namespace GraceRun.Player
         private readonly JumpGate _jumpGate = new();
         private readonly Collider2D[] _groundHits = new Collider2D[4];
 
+        private static readonly System.Collections.Generic.List<PlayerMovement> Owned = new();
+
         private Rigidbody2D _body;
         private ContactFilter2D _groundFilter;
         private bool _grounded;
         private bool _jumpHeld;
         private float _facing = 1f;
         private float _lockTimer;
+        private float _slowTimer;
+        private float _slowMultiplier = 1f;
+
+        /// <summary>Every player movement component simulated on this PC (owner).</summary>
+        public static System.Collections.Generic.IReadOnlyList<PlayerMovement> AllOwned => Owned;
 
         /// <summary>Raised on the owner the moment a jump leaves the ground.</summary>
         public event Action Jumped;
@@ -44,6 +51,9 @@ namespace GraceRun.Player
 
         /// <summary>True while a knockback lock keeps input from steering (see <see cref="LockControl"/>).</summary>
         public bool ControlLocked => _lockTimer > 0f;
+
+        /// <summary>True while a hazard (such as a sticky web zone) is slowing horizontal movement.</summary>
+        public bool IsSlowed => _slowTimer > 0f;
 
         /// <summary>Scales the run speed, e.g. slowed while attacking. 1 is normal.</summary>
         public float SpeedMultiplier { get; set; } = 1f;
@@ -64,6 +74,7 @@ namespace GraceRun.Player
             enabled = IsOwner;
             if (!IsOwner) return;
 
+            if (!Owned.Contains(this)) Owned.Add(this);
             _input.JumpPressed += OnJumpPressed;
             _input.JumpReleased += OnJumpReleased;
             _body.gravityScale = _data.GravityScale;
@@ -71,6 +82,7 @@ namespace GraceRun.Player
 
         public override void OnNetworkDespawn()
         {
+            Owned.Remove(this);
             if (_input == null) return;
             _input.JumpPressed -= OnJumpPressed;
             _input.JumpReleased -= OnJumpReleased;
@@ -88,12 +100,25 @@ namespace GraceRun.Player
 
             _jumpGate.Tick(deltaTime);
             if (_lockTimer > 0f) _lockTimer -= deltaTime;
+            if (_slowTimer > 0f)
+            {
+                _slowTimer -= deltaTime;
+                if (_slowTimer <= 0f) _slowMultiplier = 1f;
+            }
         }
 
         /// <summary>Owner only. Input stops steering for <paramref name="seconds"/>, so a push carries the body.</summary>
         public void LockControl(float seconds)
         {
             _lockTimer = Mathf.Max(_lockTimer, seconds);
+        }
+
+        /// <summary>Owner only. Scales run speed by <paramref name="multiplier"/> for <paramref name="seconds"/>.</summary>
+        public void ApplySlow(float multiplier, float seconds)
+        {
+            if (seconds <= 0f) return;
+            _slowMultiplier = _slowTimer > 0f ? Mathf.Min(_slowMultiplier, multiplier) : multiplier;
+            _slowTimer = Mathf.Max(_slowTimer, seconds);
         }
 
         private void UpdateGrounded()
@@ -112,7 +137,8 @@ namespace GraceRun.Player
             if (Mathf.Abs(inputX) > 0.01f) _facing = Mathf.Sign(inputX);
             if (ControlSuspended || ControlLocked) return;
 
-            var wanted = inputX * _data.RunSpeed * SpeedMultiplier;
+            var slow = _slowTimer > 0f ? _slowMultiplier : 1f;
+            var wanted = inputX * _data.RunSpeed * SpeedMultiplier * slow;
             var changing = Mathf.Abs(wanted) > 0.01f;
             var rate = changing ? _data.Acceleration : _data.Deceleration;
             if (!_grounded) rate *= _data.AirControl;
