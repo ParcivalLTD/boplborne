@@ -169,6 +169,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: GraceRun.Runtime::GraceRun.Abilities.Effects.AbilityEffect
   ShowTopMostFoldoutHeaderGroup: 1
   _ability: {fileID: 11400000, guid: cf5c2982eb00ccb4ba5093b63dc5b379, type: 2}
+  _combos: {fileID: 11400000, guid: cd22695927cf80c41bfac06e89384efd, type: 2}
 --- !u!114 &545313770964961892
 MonoBehaviour:
   m_ObjectHideFlags: 0

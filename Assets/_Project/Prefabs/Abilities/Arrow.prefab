@@ -81,6 +81,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: GraceRun.Runtime::GraceRun.Abilities.Effects.AbilityEffect
   ShowTopMostFoldoutHeaderGroup: 1
   _ability: {fileID: 11400000, guid: ba85103ff52b74541a1091a514974a36, type: 2}
+  _combos: {fileID: 11400000, guid: cd22695927cf80c41bfac06e89384efd, type: 2}
 --- !u!50 &2902705747103429123
 Rigidbody2D:
   serializedVersion: 5

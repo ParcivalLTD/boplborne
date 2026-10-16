@@ -1,0 +1,35 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1e3006c932b943f4aa10f53b09e85100, type: 3}
+  m_Name: ComboRules
+  m_EditorClassIdentifier: GraceRun.Runtime::GraceRun.Abilities.ComboRules
+  _rules:
+  - _source: 1
+    _target: 4
+    _interaction: 1
+    _strength: 1
+    _maxRepeats: 0
+  - _source: 2
+    _target: 8
+    _interaction: 2
+    _strength: 1
+    _maxRepeats: 0
+  - _source: 4
+    _target: 16
+    _interaction: 1
+    _strength: 1
+    _maxRepeats: 0
+  - _source: 1
+    _target: 8
+    _interaction: 3
+    _strength: 0.8
+    _maxRepeats: 2

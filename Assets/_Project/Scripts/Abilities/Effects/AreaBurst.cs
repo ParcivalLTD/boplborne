@@ -8,7 +8,8 @@ namespace GraceRun.Abilities.Effects
 {
     /// <summary>
     /// Bomb: when the projectile impacts, the server hits every living target within the ability's
-    /// radius (teammates too, at friendly-fire damage; not the caster) and pushes it away from the
+    /// radius (not the caster; teammates when an Area → Teammate combo rule allows it, at
+    /// friendly-fire damage and the rule's force) and pushes it away from the
     /// blast, then every PC plays the burst visual.
     /// </summary>
     [RequireComponent(typeof(Projectile))]
@@ -51,9 +52,9 @@ namespace GraceRun.Abilities.Effects
                 if (!_hits[i].TryGetComponent(out Hurtbox hurtbox) || hurtbox.IsInvulnerable) continue;
                 var target = hurtbox.Health;
                 if (target == null || !target.IsSpawned || target.IsDead || target.NetworkObjectId == effect.CasterId) continue;
-                if (!_hitThisBurst.Add(target)) continue;
+                if (!ComboForce.OnTarget(effect, target, out var strength) || !_hitThisBurst.Add(target)) continue;
 
-                var push = AbilityMath.PushAway(point, target.transform.position, ability.Knockback, ability.KnockbackLift);
+                var push = AbilityMath.PushAway(point, target.transform.position, ability.Knockback, ability.KnockbackLift) * strength;
                 target.ReportHit(new DamageInfo(ability.Damage, push, effect.CasterId, Team.Player));
             }
             BurstRpc(point);

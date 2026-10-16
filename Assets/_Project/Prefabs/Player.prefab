@@ -1755,3 +1755,4 @@ MonoBehaviour:
   _movement: {fileID: 1396830838873508324}
   _movementData: {fileID: 11400000, guid: 0fe31f0176e15644d981caa1bbb17738, type: 2}
   _health: {fileID: 2285578246583526149}
+  _combos: {fileID: 11400000, guid: cd22695927cf80c41bfac06e89384efd, type: 2}

@@ -11,6 +11,8 @@ namespace GraceRun.Abilities.Effects
     public class AbilityEffect : NetworkBehaviour
     {
         [SerializeField] private AbilityData _ability;
+        [SerializeField, Tooltip("Asked when this effect meets another tagged thing. Empty = no combos.")]
+        private ComboRules _combos;
 
         private readonly NetworkVariable<ulong> _casterId = new();
         private readonly NetworkVariable<Vector2> _aim = new();
@@ -21,6 +23,7 @@ namespace GraceRun.Abilities.Effects
 
         public AbilityData Ability => _ability;
         public AbilityTags Tags => _ability.Tags;
+        public ComboRules Combos => _combos;
 
         /// <summary>NetworkObjectId of the player who cast it.</summary>
         /// <remarks>On the server this is valid from the moment the effect spawns.</remarks>

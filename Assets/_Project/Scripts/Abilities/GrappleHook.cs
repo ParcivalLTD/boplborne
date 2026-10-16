@@ -1,3 +1,4 @@
+using GraceRun.Abilities.Effects;
 using GraceRun.Combat;
 using GraceRun.Core;
 using GraceRun.Player;
@@ -8,7 +9,8 @@ namespace GraceRun.Abilities
 {
     /// <summary>
     /// The grapple, on the Player prefab. The owner casts the hook along the aim: a wall, the boss
-    /// or a summon pulls the caster to the hit point; a living teammate is yanked toward the caster
+    /// or an ability object it may latch onto (a Movement → Summon combo rule) pulls the caster to
+    /// the hit point; other ability objects are passed through; a living teammate is yanked toward the caster
     /// instead (the server sends that push to the teammate's owner). The rope is synced through
     /// owner-write NetworkVariables so every PC can draw it.
     /// </summary>
@@ -18,6 +20,8 @@ namespace GraceRun.Abilities
         [SerializeField] private PlayerMovement _movement;
         [SerializeField] private PlayerMovementData _movementData;
         [SerializeField] private Health _health;
+        [SerializeField, Tooltip("Decides which ability objects (summons) the hook can latch onto.")]
+        private ComboRules _combos;
 
         private readonly NetworkVariable<Vector2> _anchor = new(
             default, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Owner);
@@ -92,12 +96,19 @@ namespace GraceRun.Abilities
             var count = Physics2D.Raycast(_body.position, aim, _filter, _hits, ability.Range);
             for (var i = 0; i < count; i++)
             {
-                if (_hits[i].rigidbody == _body) continue;
+                if (_hits[i].rigidbody == _body || !CanLatch(ability, _hits[i].collider)) continue;
                 found = _hits[i];
                 return true;
             }
             found = default;
             return false;
+        }
+
+        private bool CanLatch(AbilityData ability, Collider2D collider)
+        {
+            if (collider.gameObject.layer != Layers.AbilityIndex) return true;
+            var effect = collider.GetComponentInParent<AbilityEffect>();
+            return effect != null && ComboRules.Match(_combos, ability.Tags, effect.Tags, ComboInteraction.Latch, out _);
         }
 
         private static Health Teammate(RaycastHit2D hit)
