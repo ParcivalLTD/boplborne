@@ -6,7 +6,7 @@ namespace GraceRun.UI
     /// <summary>
     /// One ability slot in a <see cref="PlayerPanel"/>: an icon (hidden while the slot is empty)
     /// and a dark cooldown shade that drains from the top as the cooldown runs out.
-    /// The ability framework (M5) feeds it; until then every slot stays empty.
+    /// <see cref="PlayerPanel"/> feeds it from the player's ability loadout.
     /// </summary>
     public class AbilitySlotView : MonoBehaviour
     {

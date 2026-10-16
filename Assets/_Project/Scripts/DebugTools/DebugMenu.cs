@@ -16,13 +16,14 @@ namespace GraceRun.DebugTools
         private const string MapName = "Debug";
         private const string ToggleActionName = "ToggleMenu";
         private const string Title = "Debug (F1)";
-        private static readonly Rect PanelRect = new Rect(10f, 10f, 260f, 480f);
+        private static readonly Rect PanelRect = new Rect(10f, 10f, 260f, 700f);
 
         [SerializeField] private InputActionAsset _controls;
         [SerializeField] private CombatData _combat;
 
         private InputActionAsset _actions;
         private InputAction _toggle;
+        private readonly DebugAbilityPanel _abilityPanel = new();
         private string _bossHpText = "100";
 
         public static DebugMenu Instance { get; private set; }
@@ -71,6 +72,7 @@ namespace GraceRun.DebugTools
             if (!IsVisible) return;
             GUILayout.BeginArea(PanelRect, Title, GUI.skin.window);
             DrawCombatCommands();
+            _abilityPanel.Draw();
             DrawBossCommands();
             DrawJuiceCommands();
             if (GUILayout.Button($"Show hitboxes: {(ShowHitboxes ? "ON" : "off")}")) ShowHitboxes = !ShowHitboxes;

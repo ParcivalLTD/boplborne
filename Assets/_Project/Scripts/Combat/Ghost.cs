@@ -1,4 +1,5 @@
 using System;
+using GraceRun.Abilities;
 using GraceRun.Core;
 using GraceRun.Core.Juice;
 using GraceRun.Player;
@@ -10,7 +11,7 @@ namespace GraceRun.Combat
     /// <summary>
     /// Turns a player at 0 HP into a ghost on every PC, and back when revived: the body moves to
     /// the Ghost layer (nothing hits it, it passes through everything), the sprites go ghost blue,
-    /// and the living controls (run, dodge, attack) hand over to <see cref="GhostMovement"/> and
+    /// and the living controls (run, dodge, attack, abilities) hand over to <see cref="GhostMovement"/> and
     /// <see cref="GhostPoke"/>. Follows the server's HP, so it needs no messages of its own.
     /// </summary>
     [RequireComponent(typeof(Rigidbody2D))]
@@ -21,6 +22,7 @@ namespace GraceRun.Combat
         [SerializeField] private PlayerMovement _movement;
         [SerializeField] private PlayerDodge _dodge;
         [SerializeField] private PlayerLightAttack _attack;
+        [SerializeField] private AbilityRunner _abilities;
         [SerializeField] private GhostMovement _ghostMovement;
         [SerializeField] private GhostPoke _ghostPoke;
         [SerializeField] private SpriteFlash _flash;
@@ -76,6 +78,7 @@ namespace GraceRun.Combat
             SetTint(ghost);
 
             _attack.enabled = !ghost;
+            _abilities.enabled = !ghost;
             _movement.enabled = !ghost && IsOwner;
             _dodge.enabled = !ghost && IsOwner;
             _ghostMovement.enabled = ghost && IsOwner;

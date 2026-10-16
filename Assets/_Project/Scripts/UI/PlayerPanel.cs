@@ -1,3 +1,4 @@
+using GraceRun.Abilities;
 using GraceRun.Combat;
 using GraceRun.Player;
 using UnityEngine;
@@ -37,6 +38,8 @@ namespace GraceRun.UI
         private PlayerStamina _stamina;
         private PlayerFlask _flask;
         private Ghost _ghost;
+        private AbilityLoadout _loadout;
+        private AbilityRunner _abilities;
         private int _shownIndex = PlayerIdentity.Unassigned;
         private Image[] _pips = new Image[0];
         private bool _bound;
@@ -63,6 +66,8 @@ namespace GraceRun.UI
             _stamina = player.GetComponent<PlayerStamina>();
             _flask = player.GetComponent<PlayerFlask>();
             _ghost = player.GetComponent<Ghost>();
+            _loadout = player.GetComponent<AbilityLoadout>();
+            _abilities = player.GetComponent<AbilityRunner>();
             foreach (var slot in _abilitySlots) slot.Show(null, 0f);
             BuildPips(_flask != null ? _flask.MaxCharges : 0);
         }
@@ -80,6 +85,8 @@ namespace GraceRun.UI
             SetFill(_hpFill, _health != null && _health.IsSpawned ? _health.Normalized : 0f);
             SetFill(_staminaFill, _stamina != null && !down ? _stamina.Normalized : 0f);
 
+            RefreshAbilities();
+
             var charges = _flask != null ? _flask.Charges : 0;
             for (var i = 0; i < _pips.Length; i++) _pips[i].color = i < charges ? _flaskFull : _flaskEmpty;
         }
@@ -92,6 +99,17 @@ namespace GraceRun.UI
             _colorStrip.color = config.GetPlayerColor(index);
             _hat.sprite = config.GetHatSprite(index);
             _name.text = NamePrefix + (index + 1);
+        }
+
+        private void RefreshAbilities()
+        {
+            if (_loadout == null || !_loadout.IsSpawned) return;
+            for (var i = 0; i < _abilitySlots.Length; i++)
+            {
+                var ability = _loadout.Get(i);
+                var cooldown = _abilities != null ? _abilities.CooldownRemaining01(i) : 0f;
+                _abilitySlots[i].Show(ability != null ? ability.Icon : null, cooldown);
+            }
         }
 
         private void BuildPips(int count)

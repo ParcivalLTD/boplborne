@@ -990,6 +990,8 @@ GameObject:
   - component: {fileID: 7899080419694322077}
   - component: {fileID: 4886432173965129126}
   - component: {fileID: 3409207527696181384}
+  - component: {fileID: 519515005530860394}
+  - component: {fileID: 6459800373725729568}
   m_Layer: 9
   m_Name: Player
   m_TagString: Untagged
@@ -1524,6 +1526,7 @@ MonoBehaviour:
   _movement: {fileID: 1396830838873508324}
   _dodge: {fileID: 4801282400668150400}
   _attack: {fileID: 2042001691053674803}
+  _abilities: {fileID: 6459800373725729568}
   _ghostMovement: {fileID: 1893664614958934481}
   _ghostPoke: {fileID: 7899080419694322077}
   _flash: {fileID: 1555494797150833464}
@@ -1547,3 +1550,33 @@ MonoBehaviour:
   ShowTopMostFoldoutHeaderGroup: 1
   _stats: {fileID: 11400000, guid: a8d314f02ca76654bb4e20068643a9cd, type: 2}
   _input: {fileID: 1201089126174767330}
+--- !u!114 &519515005530860394
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9178268518804516864}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2158949f8a7678e4fa542841e54b012d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: GraceRun.Runtime::GraceRun.Abilities.AbilityLoadout
+  ShowTopMostFoldoutHeaderGroup: 1
+  _catalog: {fileID: 11400000, guid: 6c0a49eea99eb904a8de5adcea5a99a3, type: 2}
+--- !u!114 &6459800373725729568
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9178268518804516864}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d5e5bb5ab9017624d88b16efefea5101, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: GraceRun.Runtime::GraceRun.Abilities.AbilityRunner
+  ShowTopMostFoldoutHeaderGroup: 1
+  _input: {fileID: 1201089126174767330}
+  _movement: {fileID: 1396830838873508324}
+  _dodge: {fileID: 4801282400668150400}
