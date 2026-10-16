@@ -23,8 +23,14 @@ namespace GraceRun.Abilities.Effects
         public AbilityTags Tags => _ability.Tags;
 
         /// <summary>NetworkObjectId of the player who cast it.</summary>
-        public ulong CasterId => _casterId.Value;
-        public Vector2 Aim => _aim.Value;
+        /// <remarks>On the server this is valid from the moment the effect spawns.</remarks>
+        public ulong CasterId => IsServer ? _pendingCasterId : _casterId.Value;
+
+        /// <summary>Unit direction the effect was launched in (projectiles fly along it).</summary>
+        public Vector2 Aim => IsServer ? _pendingAim : _aim.Value;
+
+        /// <summary>Seconds since this PC spawned the effect.</summary>
+        public float Age => _age;
 
         /// <summary>0 at spawn to 1 at the end of its lifetime (0 when it has none).</summary>
         public float Age01 => _ability.EffectLifetime > 0f ? Mathf.Clamp01(_age / _ability.EffectLifetime) : 0f;

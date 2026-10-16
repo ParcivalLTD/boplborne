@@ -60,8 +60,11 @@ namespace GraceRun.Abilities
             var ability = _loadout.Get(slot);
             if (ability == null || !AbilityCooldown.IsReady(ReadyAt(slot), Now)) return;
 
+            var aim = AbilityMath.CasterAim(_movement.Facing, _input.Move.y);
+            if (ability.CasterAction != null && !ability.CasterAction.OwnerUse(this, ability, aim)) return;
+
             _predictedReadyAt[slot] = AbilityCooldown.NextReadyAt(Now, ability.Cooldown);
-            UseAbilityRpc((byte)slot, new Vector2(_movement.Facing, 0f));
+            UseAbilityRpc((byte)slot, aim);
         }
 
         [Rpc(SendTo.Server)]
@@ -76,7 +79,7 @@ namespace GraceRun.Abilities
             }
 
             _loadout.ServerStartCooldown(slot, AbilityCooldown.NextReadyAt(Now, ability.Cooldown));
-            if (ability.EffectPrefab != null) SpawnEffect(ability, aim.normalized);
+            if (ability.EffectPrefab != null) SpawnEffect(ability, aim);
         }
 
         /// <summary>Server to owner: the use was refused, so drop the predicted cooldown.</summary>
@@ -93,9 +96,13 @@ namespace GraceRun.Abilities
             var side = aim.x < 0f ? -1f : 1f;
             var offset = new Vector2(ability.SpawnOffset.x * side, ability.SpawnOffset.y);
             var position = (Vector2)transform.position + offset;
-            var effect = Instantiate(ability.EffectPrefab, position, Quaternion.identity);
-            effect.ServerSetup(NetworkObjectId, aim);
-            effect.NetworkObject.Spawn(true);
+            for (var i = 0; i < ability.Count; i++)
+            {
+                var direction = AbilityMath.LaunchDirection(side, ability.LaunchAngle, ability.Spread, i, ability.Count);
+                var effect = Instantiate(ability.EffectPrefab, position, Quaternion.identity);
+                effect.ServerSetup(NetworkObjectId, direction);
+                effect.NetworkObject.Spawn(true);
+            }
         }
     }
 }

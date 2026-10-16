@@ -14,4 +14,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: GraceRun.Runtime::GraceRun.Abilities.AbilityCatalog
   _abilities:
   - {fileID: 11400000, guid: c85eec942a42c3f42b5d022457bc56d4, type: 2}
+  - {fileID: 11400000, guid: ca10fdee88a28a94a9cd6207f59deb6f, type: 2}
+  - {fileID: 11400000, guid: eb60efbc667f0ba41976e4c048ecfa7c, type: 2}
+  - {fileID: 11400000, guid: ba85103ff52b74541a1091a514974a36, type: 2}
+  - {fileID: 11400000, guid: fe5447732f91efb4abe0cda0b828371c, type: 2}
+  - {fileID: 11400000, guid: 93affec10b9f2c14e95202afd56311e4, type: 2}
+  - {fileID: 11400000, guid: cf5c2982eb00ccb4ba5093b63dc5b379, type: 2}
   _cooldownTolerance: 0.15

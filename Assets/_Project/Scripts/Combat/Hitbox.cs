@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using GraceRun.Core;
 using Unity.Netcode;
 using UnityEngine;
 
@@ -16,6 +17,8 @@ namespace GraceRun.Combat
         [SerializeField] private NetworkObject _attacker;
         [SerializeField] private Team _team = Team.Player;
         [SerializeField] private HitDetection _detection = HitDetection.AttackerSide;
+
+        private static readonly RaycastHit2D[] BlockHits = new RaycastHit2D[4];
 
         private readonly HashSet<Health> _alreadyHit = new();
         private Collider2D _collider;
@@ -62,9 +65,26 @@ namespace GraceRun.Combat
             var target = hurtbox.Health;
             if (target == null || !target.IsSpawned || target.IsDead) return;
             if (target.NetworkObjectId == _attacker.NetworkObjectId) return;
-            if (!DetectsHere(hurtbox) || !_alreadyHit.Add(target)) return;
+            if (_alreadyHit.Contains(target) || !DetectsHere(hurtbox)) return;
+            if (_detection == HitDetection.VictimSide && IsBlocked(target.transform.position)) return;
+            _alreadyHit.Add(target);
 
             target.ReportHit(_damage);
+        }
+
+        /// <summary>True when an <see cref="AttackBlocker"/> stands between the attacker and <paramref name="targetPosition"/>.</summary>
+        private bool IsBlocked(Vector2 targetPosition)
+        {
+            var filter = new ContactFilter2D
+            {
+                useLayerMask = true,
+                layerMask = Layers.Mask(Layers.AbilityIndex),
+                useTriggers = false,
+            };
+            var count = Physics2D.Linecast(_attacker.transform.position, targetPosition, filter, BlockHits);
+            for (var i = 0; i < count; i++)
+                if (BlockHits[i].collider.TryGetComponent(out AttackBlocker _)) return true;
+            return false;
         }
 
         private bool DetectsHere(Hurtbox hurtbox) => _detection switch
