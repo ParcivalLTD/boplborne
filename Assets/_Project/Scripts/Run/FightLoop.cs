@@ -140,9 +140,9 @@ namespace GraceRun.Run
             var outcome = FightRules.Outcome(bossDefeated, players, living);
             if (outcome != FightPhase.Fighting)
             {
+                var run = RunManager.Instance;
                 if (outcome == FightPhase.Victory)
                 {
-                    var run = RunManager.Instance;
                     if (run != null && run.IsSpawned)
                     {
                         run.ServerConsumeBuff();
@@ -156,7 +156,12 @@ namespace GraceRun.Run
                                 config.CurrencyPerBoss, noDeaths, config.BonusNoDeaths, fastKill, config.BonusFastKill);
                             run.ServerAwardCurrency(reward);
                         }
+                        if (run.IsFinalFloor) run.ServerFinalizeRunResult(true);
                     }
+                }
+                else if (outcome == FightPhase.Defeat)
+                {
+                    if (run != null && run.IsSpawned) run.ServerFinalizeRunResult(false);
                 }
                 SetPhase(outcome);
             }

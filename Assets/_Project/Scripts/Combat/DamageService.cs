@@ -27,12 +27,26 @@ namespace GraceRun.Combat
 
             var hp = DamageMath.Resolve(target.Current, amount, friendly,
                 combat.FriendlyFireDamageMultiplier, combat.FriendlyFireMinHP, target.GodMode);
+            var dealt = target.Current - hp;
             target.ServerSetCurrent(hp);
 
             if (info.Knockback != Vector2.zero && target.TryGetComponent(out Knockback knockback))
                 knockback.PushRpc(info.Knockback);
 
             target.ServerBroadcastHit(info, reporterClientId);
+
+            var run = Run.RunManager.Instance;
+            if (run != null && run.IsSpawned)
+            {
+                if (friendly)
+                {
+                    if (info.Knockback != Vector2.zero) run.ServerRecordFriendlyKnockback(info.AttackerId);
+                }
+                else if (info.AttackerTeam == Team.Player && dealt > 0)
+                {
+                    run.ServerRecordDamage(info.AttackerId, dealt);
+                }
+            }
         }
     }
 }

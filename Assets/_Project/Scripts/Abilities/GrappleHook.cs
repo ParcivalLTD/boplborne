@@ -146,6 +146,9 @@ namespace GraceRun.Abilities
             var toCaster = ((Vector2)transform.position - (Vector2)target.transform.position).normalized;
             var power = PowerMultiplierFor(ability);
             knockback.PushRpc(toCaster * (ability.Knockback * power) + Vector2.up * (ability.KnockbackLift * power));
+
+            var run = Run.RunManager.Instance;
+            if (run != null && run.IsSpawned) run.ServerRecordFriendlyKnockback(NetworkObjectId);
         }
     }
 }

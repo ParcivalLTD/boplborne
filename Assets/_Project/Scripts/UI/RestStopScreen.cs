@@ -52,10 +52,21 @@ namespace GraceRun.UI
             if (_root != null) _root.SetActive(false);
         }
 
-        [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.AfterSceneLoad)]
-        private static void OnSceneLoaded()
+        [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.BeforeSceneLoad)]
+        private static void Init()
         {
-            if (SceneManager.GetActiveScene().name != "Game") return;
+            SceneManager.sceneLoaded += OnSceneLoaded;
+        }
+
+        private static void OnSceneLoaded(Scene scene, LoadSceneMode mode)
+        {
+            if (scene.name != "Game") return;
+            EnsureCanvas();
+        }
+
+        /// <summary>Ensures the RestStopScreen host canvas exists in the Game scene.</summary>
+        public static void EnsureCanvas()
+        {
             if (FindAnyObjectByType<RestStopScreen>() == null)
             {
                 var host = new GameObject("RestStopScreenCanvas");

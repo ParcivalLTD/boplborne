@@ -39,6 +39,14 @@ namespace GraceRun.Run
         private readonly NetworkVariable<PartyBuff> _activeBuff = new(
             PartyBuff.None, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Server);
 
+        private readonly NetworkVariable<RunResultData> _runResult = new(
+            default, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Server);
+
+        private readonly int[] _damageBySlot = new int[4];
+        private readonly int[] _knockbacksBySlot = new int[4];
+        private double _runStartTime;
+        private bool _isRunActive;
+
         private NetworkObject _activeArena;
         private bool _hubInitialized;
 
@@ -54,6 +62,9 @@ namespace GraceRun.Run
         /// <summary>Raised on every PC when the active party buff changes.</summary>
         public event Action<PartyBuff> ActiveBuffChanged;
 
+        /// <summary>Raised on every PC when the run results change (e.g. at run victory or defeat).</summary>
+        public event Action<RunResultData> RunResultChanged;
+
         public RunConfig Config => _config;
         public int Floor => _floor.Value;
         public int TotalFloors => _config != null && _config.Floors != null ? _config.Floors.Count : 0;
@@ -63,6 +74,7 @@ namespace GraceRun.Run
         public bool IsFinalFloor => RunRules.IsFinalFloor(_floor.Value, TotalFloors);
         public int SharedCurrency => _currency.Value;
         public PartyBuff ActiveBuff => _activeBuff.Value;
+        public RunResultData RunResult => _runResult.Value;
 
         /// <summary>The boss chosen for the current floor, or null in the hub.</summary>
         public BossData CurrentBoss
@@ -83,7 +95,13 @@ namespace GraceRun.Run
             _floor.OnValueChanged += OnFloorValueChanged;
             _currency.OnValueChanged += OnCurrencyValueChanged;
             _activeBuff.OnValueChanged += OnBuffValueChanged;
+            _runResult.OnValueChanged += OnRunResultValueChanged;
             if (IsServer && _bossSpawner != null) _bossSpawner.BossSkipped += OnBossSkipped;
+            if (!Application.isBatchMode)
+            {
+                UI.ResultScreen.EnsureCanvas();
+                UI.RestStopScreen.EnsureCanvas();
+            }
         }
 
         public override void OnNetworkDespawn()
@@ -91,6 +109,7 @@ namespace GraceRun.Run
             _floor.OnValueChanged -= OnFloorValueChanged;
             _currency.OnValueChanged -= OnCurrencyValueChanged;
             _activeBuff.OnValueChanged -= OnBuffValueChanged;
+            _runResult.OnValueChanged -= OnRunResultValueChanged;
             if (_bossSpawner != null) _bossSpawner.BossSkipped -= OnBossSkipped;
             if (Instance == this) Instance = null;
             _hubInitialized = false;
@@ -150,6 +169,8 @@ namespace GraceRun.Run
             _seed.Value = Environment.TickCount;
             _floor.Value = RunRules.HubFloor;
             _bossPoolIndex.Value = 0;
+            _isRunActive = false;
+            _runResult.Value = default;
 
             _bossSpawner.ServerDespawnCurrent();
             AbilityEffect.ServerDespawnAll();
@@ -187,6 +208,14 @@ namespace GraceRun.Run
             if (floor < 1 || floor > TotalFloors) return;
             var firstFloor = InHub;
             _floor.Value = floor;
+            if (firstFloor)
+            {
+                _runStartTime = NetworkManager.ServerTime.Time;
+                _isRunActive = true;
+                Array.Clear(_damageBySlot, 0, 4);
+                Array.Clear(_knockbacksBySlot, 0, 4);
+                _runResult.Value = default;
+            }
 
             var pool = _config.Floors[floor - 1].Bosses;
             var rng = new System.Random(FloorSeed);
@@ -329,6 +358,62 @@ namespace GraceRun.Run
             SwapArena(boss.ArenaPrefab);
         }
 
+        /// <summary>Server only: records damage dealt to enemies by player <paramref name="attackerId"/>.</summary>
+        public void ServerRecordDamage(ulong attackerId, int amount)
+        {
+            if (!IsServer || amount <= 0 || !_isRunActive) return;
+            var slot = ResolvePlayerSlot(attackerId);
+            if (slot >= 0 && slot < 4) _damageBySlot[slot] += amount;
+        }
+
+        /// <summary>Server only: records a friendly-fire knockback caused by player <paramref name="attackerId"/>.</summary>
+        public void ServerRecordFriendlyKnockback(ulong attackerId)
+        {
+            if (!IsServer || !_isRunActive) return;
+            var slot = ResolvePlayerSlot(attackerId);
+            if (slot >= 0 && slot < 4) _knockbacksBySlot[slot]++;
+        }
+
+        /// <summary>Server only: finalizes the run stats and publishes <see cref="RunResultData"/> to all PCs.</summary>
+        public void ServerFinalizeRunResult(bool isVictory)
+        {
+            if (!IsServer) return;
+            var elapsed = _runStartTime > 0d ? (float)(NetworkManager.ServerTime.Time - _runStartTime) : 0f;
+            _runResult.Value = new RunResultData
+            {
+                IsValid = true,
+                IsVictory = isVictory,
+                FloorReached = _floor.Value,
+                TotalFloors = TotalFloors,
+                ElapsedSeconds = elapsed,
+                DamageP1 = _damageBySlot[0],
+                DamageP2 = _damageBySlot[1],
+                DamageP3 = _damageBySlot[2],
+                DamageP4 = _damageBySlot[3],
+                KnockbacksP1 = _knockbacksBySlot[0],
+                KnockbacksP2 = _knockbacksBySlot[1],
+                KnockbacksP3 = _knockbacksBySlot[2],
+                KnockbacksP4 = _knockbacksBySlot[3],
+            };
+            _isRunActive = false;
+        }
+
+        private int ResolvePlayerSlot(ulong networkId)
+        {
+            if (NetworkManager.Singleton != null &&
+                NetworkManager.Singleton.SpawnManager.SpawnedObjects.TryGetValue(networkId, out var obj))
+            {
+                if (obj.TryGetComponent<PlayerIdentity>(out var identity))
+                    return identity.PlayerIndex;
+            }
+            if (NetworkManager.ConnectedClients.TryGetValue(networkId, out var client) && client.PlayerObject != null)
+            {
+                if (client.PlayerObject.TryGetComponent<PlayerIdentity>(out var identity))
+                    return identity.PlayerIndex;
+            }
+            return -1;
+        }
+
         private void OnFloorValueChanged(int previous, int current) => FloorChanged?.Invoke(current);
 
         private void OnCurrencyValueChanged(int previous, int current)
@@ -338,5 +423,7 @@ namespace GraceRun.Run
         }
 
         private void OnBuffValueChanged(PartyBuff previous, PartyBuff current) => ActiveBuffChanged?.Invoke(current);
+
+        private void OnRunResultValueChanged(RunResultData previous, RunResultData current) => RunResultChanged?.Invoke(current);
     }
 }

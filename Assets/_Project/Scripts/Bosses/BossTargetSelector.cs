@@ -40,15 +40,22 @@ namespace GraceRun.Bosses
         public override void OnNetworkSpawn()
         {
             if (!IsServer) return;
-            _random = new System.Random(System.Environment.TickCount ^ (int)NetworkObjectId);
+            EnsureRandom();
             Switch();
         }
 
         private void Update()
         {
             if (!IsServer || !IsSpawned) return;
+            EnsureRandom();
             _switchTimer -= Time.deltaTime;
             if (!HasTarget || (_switchTimer <= 0f && AllowSwitch)) Switch();
+        }
+
+        private void EnsureRandom()
+        {
+            if (_random == null)
+                _random = new System.Random(System.Environment.TickCount ^ (int)NetworkObjectId);
         }
 
         /// <summary>Server only: forces an immediate target re-evaluation (e.g. after linking twins).</summary>
@@ -59,6 +66,7 @@ namespace GraceRun.Bosses
 
         private void Switch()
         {
+            EnsureRandom();
             CollectLiving();
             var partnerTarget = PartnerSelector != null && PartnerSelector.IsSpawned
                 ? PartnerSelector.TargetId
