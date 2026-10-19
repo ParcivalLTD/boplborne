@@ -30,7 +30,10 @@ namespace GraceRun.Player
         private InputAction _pause;
         private InputAction _aim;
         private Camera _camera;
-        private int _pendingPointerSlots;
+        private PointerPressTracker _pointer;
+        private Action<int> _onPointerPressed;
+        private Action<int> _onPointerReleased;
+        private Action<int> _onPointerFire;
 
         public event Action JumpPressed;
         public event Action JumpReleased;
@@ -38,10 +41,15 @@ namespace GraceRun.Player
         /// <summary>Raised on the attack press; true when it came from keyboard or mouse (aim at the cursor).</summary>
         public event Action<bool> AttackPressed;
         /// <summary>
-        /// Raised with ability slot 0, 1 or 2, and true when a mouse button pressed it (aim at the
-        /// cursor). Mouse presses over UI (draft cards, buttons) are dropped.
+        /// Raised to use ability slot 0, 1 or 2; true when a mouse button did it (aim at the cursor).
+        /// Keys and gamepad fire on press; mouse buttons fire on release, unless the hold was claimed
+        /// (<see cref="ClaimPointerPress"/>) or began over UI (draft cards, buttons).
         /// </summary>
         public event Action<int, bool> AbilityPressed;
+        /// <summary>A mouse ability button went down (not over UI): slot 0, 1 or 2.</summary>
+        public event Action<int> PointerAbilityPressed;
+        /// <summary>That mouse button came back up; handlers may still claim the hold.</summary>
+        public event Action<int> PointerAbilityReleased;
         public event Action FlaskPressed;
         public event Action InteractPressed;
         public event Action InteractReleased;
@@ -50,6 +58,12 @@ namespace GraceRun.Player
         public Vector2 Move => _move.ReadValue<Vector2>();
         public bool JumpHeld => _jump.IsPressed();
         public bool InteractHeld => _interact.IsPressed();
+
+        /// <summary>True while the mouse button for <paramref name="slot"/> is held (pressed outside UI).</summary>
+        public bool IsPointerAbilityHeld(int slot) => _pointer.IsHeld(slot);
+
+        /// <summary>The current mouse hold of <paramref name="slot"/> will not fire its ability on release (the slice took it).</summary>
+        public void ClaimPointerPress(int slot) => _pointer.Claim(slot);
 
         /// <summary>The mouse cursor in world space, through the main camera.</summary>
         public bool TryGetCursorWorld(out Vector2 world)
@@ -79,18 +93,18 @@ namespace GraceRun.Player
             _interact = _map.FindAction("Interact", true);
             _pause = _map.FindAction("Pause", true);
             _aim = _map.FindAction("Aim", true);
+            _pointer = new PointerPressTracker(AbilitySlots);
+            _onPointerPressed = slot => PointerAbilityPressed?.Invoke(slot);
+            _onPointerReleased = slot => PointerAbilityReleased?.Invoke(slot);
+            _onPointerFire = slot => AbilityPressed?.Invoke(slot, true);
         }
 
         // Mouse presses wait for Update: asking the EventSystem about the pointer from inside an
         // input callback reads last frame's UI state.
         private void Update()
         {
-            if (_pendingPointerSlots == 0) return;
-            var slots = _pendingPointerSlots;
-            _pendingPointerSlots = 0;
-            if (EventSystem.current != null && EventSystem.current.IsPointerOverGameObject()) return;
-            for (var slot = 0; slot < AbilitySlots; slot++)
-                if ((slots & (1 << slot)) != 0) AbilityPressed?.Invoke(slot, true);
+            var overUi = EventSystem.current != null && EventSystem.current.IsPointerOverGameObject();
+            _pointer.Flush(overUi, _onPointerPressed, _onPointerReleased, _onPointerFire);
         }
 
         private void OnEnable()
@@ -102,6 +116,9 @@ namespace GraceRun.Player
             _ability1.performed += OnAbility1;
             _ability2.performed += OnAbility2;
             _ability3.performed += OnAbility3;
+            _ability1.canceled += OnAbility1Up;
+            _ability2.canceled += OnAbility2Up;
+            _ability3.canceled += OnAbility3Up;
             _flask.performed += OnFlask;
             _interact.performed += OnInteractPerformed;
             _interact.canceled += OnInteractCanceled;
@@ -119,6 +136,9 @@ namespace GraceRun.Player
             _ability1.performed -= OnAbility1;
             _ability2.performed -= OnAbility2;
             _ability3.performed -= OnAbility3;
+            _ability1.canceled -= OnAbility1Up;
+            _ability2.canceled -= OnAbility2Up;
+            _ability3.canceled -= OnAbility3Up;
             _flask.performed -= OnFlask;
             _interact.performed -= OnInteractPerformed;
             _interact.canceled -= OnInteractCanceled;
@@ -139,10 +159,19 @@ namespace GraceRun.Player
         private void OnAbility2(InputAction.CallbackContext context) => OnAbility(1, context);
         private void OnAbility3(InputAction.CallbackContext context) => OnAbility(2, context);
 
+        private void OnAbility1Up(InputAction.CallbackContext context) => OnAbilityUp(0, context);
+        private void OnAbility2Up(InputAction.CallbackContext context) => OnAbilityUp(1, context);
+        private void OnAbility3Up(InputAction.CallbackContext context) => OnAbilityUp(2, context);
+
         private void OnAbility(int slot, InputAction.CallbackContext context)
         {
-            if (context.control.device is Pointer) _pendingPointerSlots |= 1 << slot;
+            if (context.control.device is Pointer) _pointer.QueueDown(slot);
             else AbilityPressed?.Invoke(slot, false);
+        }
+
+        private void OnAbilityUp(int slot, InputAction.CallbackContext context)
+        {
+            if (context.control.device is Pointer) _pointer.QueueUp(slot);
         }
         private void OnFlask(InputAction.CallbackContext _) => FlaskPressed?.Invoke();
         private void OnInteractPerformed(InputAction.CallbackContext _) => InteractPressed?.Invoke();
