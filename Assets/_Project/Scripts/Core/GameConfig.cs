@@ -16,11 +16,16 @@ namespace GraceRun.Core
         [SerializeField, Min(1f)] private float _connectTimeoutSeconds = 10f;
         [SerializeField] private Color[] _playerColors;
         [SerializeField] private Sprite[] _hatSprites;
+        [SerializeField, Tooltip("Defaults and limits for the settings screen.")]
+        private global::GraceRun.Core.Settings.SettingsData _settings;
 
         public int MaxPlayers => _maxPlayers;
         public ushort Port => (ushort)_port;
         public string GameVersion => _gameVersion;
         public string DefaultAddress => _defaultAddress;
+
+        /// <summary>Defaults for the player-facing settings (volumes, shake, display).</summary>
+        public global::GraceRun.Core.Settings.SettingsData Settings => _settings;
 
         /// <summary>How long the Join button waits for the host before giving up.</summary>
         public float ConnectTimeoutSeconds => _connectTimeoutSeconds;

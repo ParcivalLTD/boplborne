@@ -24,6 +24,8 @@ namespace GraceRun.Combat
             var friendly = DamageMath.IsFriendlyFire(info.AttackerTeam, info.AttackerId, target.Team, target.NetworkObjectId);
             var buff = Run.RunManager.Instance != null ? Run.RunManager.Instance.ActiveBuff : Run.PartyBuff.None;
             var amount = Run.RestStopRules.BuffedDamage(info.Amount, friendly, info.AttackerTeam, buff);
+            if (amount > 0 && StatusEffects.TryFind(info.AttackerId, out var attackerStatus))
+                amount = DamageMath.Scaled(amount, attackerStatus.OutgoingDamageMultiplier);
 
             var hp = DamageMath.Resolve(target.Current, amount, friendly,
                 combat.FriendlyFireDamageMultiplier, combat.FriendlyFireMinHP, target.GodMode);

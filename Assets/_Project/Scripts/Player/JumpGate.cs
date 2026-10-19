@@ -32,6 +32,17 @@ namespace GraceRun.Player
             return true;
         }
 
+        /// <summary>
+        /// True once when a press arrives in the air while a wall is in reach; spends the press but
+        /// no air jump. Check <see cref="TryConsume"/> first, and this before <see cref="TryConsumeAirJump"/>.
+        /// </summary>
+        public bool TryConsumeWallJump(bool wallInReach)
+        {
+            if (!wallInReach || _bufferLeft <= 0f || _coyoteLeft > 0f) return false;
+            _bufferLeft = 0f;
+            return true;
+        }
+
         /// <summary>Refills coyote time while grounded; it drains once the feet leave the floor.</summary>
         public void SetGrounded(bool grounded, float coyoteTime)
         {

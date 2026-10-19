@@ -31,7 +31,7 @@ namespace GraceRun.Core.Audio
             _next = (_next + 1) % VoiceCount;
 
             voice.clip = clip;
-            voice.volume = volume;
+            voice.volume = volume * Settings.GameSettings.SfxVolume;
             voice.pitch = pitch;
             voice.Play();
         }

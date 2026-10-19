@@ -92,6 +92,10 @@ Everything tunable is here. Default values are the starting values in `docs/GDD.
 | Boss AI | `BossBrain`, `BossAttackRunner` | server |
 | Boss telegraphs and hitboxes | `Telegraph`, `BossAttackRunner` client side | every client, from the broadcast start tick |
 | Abilities | `AbilityLoadout` (NetworkList), `AbilityRunner`, effect prefabs | owner requests, server spawns |
+| Movement abilities | `AbilityMotion` (blink, dash) via `BlinkAction` / `DashAction` | owner |
+| Status effects | `StatusEffects` (slow, shrink; server-write NetworkVariables) | server decides, every PC shows; the body's simulator applies the slow |
+| Settings | `Core/Settings/GameSettings` (PlayerPrefs) + `SettingsData` defaults | local only |
+| Menus | `UI/Menus` (`MenuKit`, `MenuPages`, `SettingsPage`, `ControlsPage`), `MainMenuScreen`, `PauseMenu` | local only |
 | Combos | `ComboRules` + tag checks in effect components | server |
 | Revive, ghosts | `ReviveSystem`, `Ghost` | server decides, all show |
 | Run, draft, currency | `RunManager`, `DraftManager`, `Currency` | server |
@@ -127,6 +131,11 @@ Everything tunable is here. Default values are the starting values in `docs/GDD.
 - Screen shake through Cinemachine impulse, scaled by the settings slider.
 - Flash: white sprite flash via a material property block.
 - Squash and stretch on jump, land, dodge.
+
+## Content builders (editor)
+
+- **Grace Run → Build Extra Abilities** (`Scripts/Editor/Content/ExtraAbilitiesBuilder`) writes the 20 abilities in `ExtraAbilitySpecs` (AbilityData, effect prefabs from the Arrow / Bomb / Gust templates, placeholder icons) and lists them in the catalog, draft pool and network prefab list. Re-running it **overwrites the tuning** on those assets; tune the assets, then stop running it.
+- **Grace Run → Set Up Player And Boss Prefabs** adds `AbilityMotion`, `StatusEffects` and `PlayerPlatformDrop` where missing.
 
 ## Debug menu (F1)
 

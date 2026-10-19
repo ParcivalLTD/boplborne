@@ -67,6 +67,31 @@ namespace GraceRun.Abilities
         }
 
         /// <summary>
+        /// Where an aim-point ability lands: along <paramref name="aim"/> from <paramref name="from"/>,
+        /// <paramref name="distance"/> away (the cursor) but never past <paramref name="range"/>.
+        /// A distance of 0 or less (keys, gamepad) uses the full range.
+        /// </summary>
+        public static Vector2 AimPoint(Vector2 from, Vector2 aim, float distance, float range)
+        {
+            var reach = distance > 0f ? Mathf.Min(distance, range) : range;
+            return from + SafeAim(aim) * Mathf.Max(0f, reach);
+        }
+
+        /// <summary>
+        /// Direction of child <paramref name="index"/> out of <paramref name="count"/>, fanned
+        /// <paramref name="spread"/> degrees apart around <paramref name="around"/>.
+        /// </summary>
+        public static Vector2 FanDirection(Vector2 around, float spread, int index, int count)
+        {
+            var offset = count > 1 ? spread * (index - (count - 1) * 0.5f) : 0f;
+            var radians = offset * Mathf.Deg2Rad;
+            var dir = SafeAim(around);
+            var cos = Mathf.Cos(radians);
+            var sin = Mathf.Sin(radians);
+            return new Vector2(dir.x * cos - dir.y * sin, dir.x * sin + dir.y * cos);
+        }
+
+        /// <summary>
         /// Velocity a pull field wants a body to have: toward the centre at <paramref name="speed"/>,
         /// easing to 0 inside <paramref name="calmRadius"/> so bodies settle instead of overshooting.
         /// </summary>

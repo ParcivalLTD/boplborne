@@ -2,7 +2,10 @@
     "name": "GraceRun.Editor",
     "rootNamespace": "GraceRun.Editor",
     "references": [
-        "GraceRun.Runtime"
+        "GraceRun.Runtime",
+        "Unity.Netcode.Runtime",
+        "Unity.2D.Aseprite.Editor",
+        "Unity.2D.Sprite.Editor"
     ],
     "includePlatforms": [
         "Editor"

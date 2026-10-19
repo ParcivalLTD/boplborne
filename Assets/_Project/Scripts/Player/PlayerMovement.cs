@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using GraceRun.Core;
 using Unity.Netcode;
 using UnityEngine;
@@ -7,34 +8,44 @@ namespace GraceRun.Player
 {
     /// <summary>
     /// Running and jumping for the player you own: acceleration with air control, a variable
-    /// jump height, air jumps, faster falling, coyote time and a jump buffer. Runs on the owner only;
-    /// everyone else sees the result through the owner-authoritative NetworkTransform.
+    /// jump height with a short hang at the top, air jumps, wall slides and wall jumps, fast falls
+    /// (hold down), dropping through one-way ledges (down + jump), coyote time and a jump buffer.
+    /// Runs on the owner only; everyone else sees the result through the owner-authoritative
+    /// NetworkTransform.
     /// </summary>
-    [RequireComponent(typeof(Rigidbody2D))]
+    [RequireComponent(typeof(Rigidbody2D), typeof(Collider2D))]
     public class PlayerMovement : NetworkBehaviour
     {
         [SerializeField] private PlayerMovementData _data;
         [SerializeField] private PlayerInputReader _input;
         [SerializeField] private Transform _groundCheck;
+        [SerializeField, Tooltip("Optional. Lets down + jump fall through one-way ledges.")]
+        private PlayerPlatformDrop _platformDrop;
+
+        private static readonly List<PlayerMovement> Owned = new();
 
         private readonly JumpGate _jumpGate = new();
+        private readonly WallProbe _wallProbe = new();
         private readonly Collider2D[] _groundHits = new Collider2D[4];
 
-        private static readonly System.Collections.Generic.List<PlayerMovement> Owned = new();
-
         private Rigidbody2D _body;
+        private Collider2D _collider;
         private ContactFilter2D _groundFilter;
+        private ContactFilter2D _solidGroundFilter;
         private bool _grounded;
         private bool _jumpHeld;
         private float _facing = 1f;
         private float _lockTimer;
         private float _slowTimer;
         private float _slowMultiplier = 1f;
+        private float _wallSide;
+        private float _lastWallSide;
+        private float _wallCoyote;
 
         /// <summary>Every player movement component simulated on this PC (owner).</summary>
-        public static System.Collections.Generic.IReadOnlyList<PlayerMovement> AllOwned => Owned;
+        public static IReadOnlyList<PlayerMovement> AllOwned => Owned;
 
-        /// <summary>Raised on the owner the moment a jump leaves the ground.</summary>
+        /// <summary>Raised on the owner the moment a jump leaves the ground (or a wall).</summary>
         public event Action Jumped;
 
         /// <summary>Raised on the owner the moment the feet touch the ground again.</summary>
@@ -42,6 +53,9 @@ namespace GraceRun.Player
 
         /// <summary>True while the feet are on something solid.</summary>
         public bool IsGrounded => _grounded;
+
+        /// <summary>True while sliding down a wall (in the air, pushing into it, falling).</summary>
+        public bool IsWallSliding { get; private set; }
 
         /// <summary>+1 or -1: the last horizontal direction the player pushed.</summary>
         public float Facing => _facing;
@@ -61,20 +75,20 @@ namespace GraceRun.Player
         /// <summary>Scales the run speed, e.g. slowed while attacking. 1 is normal.</summary>
         public float SpeedMultiplier { get; set; } = 1f;
 
+        private bool DownHeld => _input.Move.y < -_data.DownInputThreshold;
+
         private void Awake()
         {
             _body = GetComponent<Rigidbody2D>();
-            _groundFilter = new ContactFilter2D
-            {
-                useLayerMask = true,
-                layerMask = Layers.StandableMask,
-                useTriggers = false,
-            };
+            _collider = GetComponent<Collider2D>();
+            _groundFilter = new ContactFilter2D { useLayerMask = true, layerMask = Layers.StandableMask, useTriggers = false };
+            _solidGroundFilter = new ContactFilter2D { useLayerMask = true, layerMask = Layers.Mask(Layers.GroundIndex), useTriggers = false };
         }
 
         public override void OnNetworkSpawn()
         {
             enabled = IsOwner;
+            if (_platformDrop != null) _platformDrop.enabled = IsOwner;
             if (!IsOwner) return;
 
             if (!Owned.Contains(this)) Owned.Add(this);
@@ -95,11 +109,13 @@ namespace GraceRun.Player
         {
             var deltaTime = Time.fixedDeltaTime;
             UpdateGrounded();
+            UpdateWall(deltaTime);
             _jumpGate.SetGrounded(_grounded, _data.CoyoteTime);
             if (_grounded) _jumpGate.RefillAirJumps(_data.AirJumps);
 
             ApplyHorizontal(deltaTime);
             if (_jumpGate.TryConsume()) Jump(_data.JumpVelocity);
+            else if (!ControlSuspended && _jumpGate.TryConsumeWallJump(_wallCoyote > 0f)) WallJump();
             else if (_jumpGate.TryConsumeAirJump()) Jump(_data.AirJumpVelocity);
             ApplyGravity();
 
@@ -128,12 +144,28 @@ namespace GraceRun.Player
 
         private void UpdateGrounded()
         {
+            var dropping = _platformDrop != null && _platformDrop.IsDropping;
             var hits = Physics2D.OverlapBox(
-                _groundCheck.position, _data.GroundCheckSize, 0f, _groundFilter, _groundHits);
+                _groundCheck.position, _data.GroundCheckSize, 0f, dropping ? _solidGroundFilter : _groundFilter, _groundHits);
             var grounded = hits > 0 && _body.linearVelocityY <= 0.01f;
 
             if (grounded && !_grounded) Landed?.Invoke();
             _grounded = grounded;
+        }
+
+        private void UpdateWall(float deltaTime)
+        {
+            _wallSide = _grounded ? 0f : _wallProbe.Probe(_collider.bounds, _data.WallCheckSize);
+            if (_wallSide != 0f)
+            {
+                _lastWallSide = _wallSide;
+                _wallCoyote = _data.WallCoyoteTime;
+            }
+            else
+            {
+                _wallCoyote = Mathf.Max(0f, _wallCoyote - deltaTime);
+            }
+            IsWallSliding = _wallSide != 0f && _body.linearVelocityY < 0f && _input.Move.x * _wallSide > 0.5f;
         }
 
         private void ApplyHorizontal(float deltaTime)
@@ -160,6 +192,16 @@ namespace GraceRun.Player
             Jumped?.Invoke();
         }
 
+        private void WallJump()
+        {
+            var away = -_lastWallSide;
+            _body.linearVelocity = new Vector2(away * _data.WallJumpPush, _data.WallJumpVelocity);
+            _facing = away;
+            _wallCoyote = 0f;
+            LockControl(_data.WallJumpControlLock);
+            Jumped?.Invoke();
+        }
+
         private void ApplyGravity()
         {
             if (GravitySuspended)
@@ -167,16 +209,27 @@ namespace GraceRun.Player
                 _body.gravityScale = 0f;
                 return;
             }
-            var rising = _body.linearVelocityY > 0.01f;
-            _body.gravityScale = rising && _jumpHeld
-                ? _data.GravityScale
-                : _data.GravityScale * _data.FallGravityMultiplier;
+            var velocityY = _body.linearVelocityY;
+            var rising = velocityY > 0.01f;
+            var scale = rising && _jumpHeld ? _data.GravityScale : _data.GravityScale * _data.FallGravityMultiplier;
+            if (_jumpHeld && !_grounded && Mathf.Abs(velocityY) < _data.ApexThreshold)
+                scale = _data.GravityScale * _data.ApexGravityMultiplier;
 
-            if (_body.linearVelocityY < -_data.MaxFallSpeed) _body.linearVelocityY = -_data.MaxFallSpeed;
+            var fastFall = !_grounded && velocityY < 0f && DownHeld;
+            if (fastFall) scale = _data.GravityScale * _data.FallGravityMultiplier * _data.FastFallGravityMultiplier;
+            _body.gravityScale = scale;
+
+            var maxFall = fastFall ? _data.FastFallMaxSpeed : IsWallSliding ? _data.WallSlideSpeed : _data.MaxFallSpeed;
+            if (velocityY < -maxFall) _body.linearVelocityY = -maxFall;
         }
 
         private void OnJumpPressed()
         {
+            if (_grounded && DownHeld && _platformDrop != null && _platformDrop.TryDrop())
+            {
+                _grounded = false;
+                return;
+            }
             _jumpHeld = true;
             _jumpGate.Press(_data.JumpBuffer);
         }

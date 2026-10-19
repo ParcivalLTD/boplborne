@@ -1,4 +1,5 @@
 using GraceRun.Abilities.Effects;
+using GraceRun.Combat;
 using UnityEngine;
 
 namespace GraceRun.Abilities
@@ -35,6 +36,10 @@ namespace GraceRun.Abilities
         private float _effectRadius = 1f;
         [SerializeField, Tooltip("Optional. Runs on the caster's own PC first (e.g. the grapple); if it finds nothing to do, the ability is not used.")]
         private CasterAction _casterAction;
+        [SerializeField, Tooltip("Where the effect appears: at the caster (plus the offset), at the aim point, or high above the aim point (falling).")]
+        private AbilitySpawnMode _spawnMode = AbilitySpawnMode.AtCaster;
+        [SerializeField, Min(0f), Tooltip("AboveAimPoint: how high above the aim point the effect starts.")]
+        private float _dropHeight = 12f;
 
         [Header("Launch")]
         [SerializeField, Min(1), Tooltip("How many effects one use spawns (arrows in a volley).")]
@@ -65,8 +70,28 @@ namespace GraceRun.Abilities
         [SerializeField, Min(0f), Tooltip("Grapple: how far the hook reaches. Walls: how far down they look for the floor.")]
         private float _range;
 
+        [Header("Extra")]
+        [SerializeField, Min(0.01f), Tooltip("Zones, totems and turrets: seconds between ticks. Bounce pads: seconds before the same body bounces again.")]
+        private float _tickInterval = 0.5f;
+        [SerializeField, Min(0f), Tooltip("Homing / boomerang: how fast the flight turns (units per second squared).")]
+        private float _steerRate;
+        [SerializeField, Min(0f), Tooltip("Boomerang: seconds of flight before it turns back to the caster.")]
+        private float _turnTime = 0.5f;
+        [SerializeField, Tooltip("Projectiles: fly through targets, hitting each one once, instead of stopping on the first.")]
+        private bool _piercing;
+        [SerializeField, Tooltip("Status a hit puts on its target.")]
+        private StatusKind _status;
+        [SerializeField, Min(0f)] private float _statusDuration;
+        [SerializeField, Min(0f), Tooltip("Slow: speed multiplier (0.5 = half speed). Shrink: size multiplier.")]
+        private float _statusStrength = 1f;
+        [SerializeField, Tooltip("Spawned on impact (cluster bomblets, fire pools) or fired (turret bolts). Has its own AbilityData.")]
+        private AbilityEffect _childEffect;
+        [SerializeField, Min(0)] private int _childCount = 1;
+        [SerializeField, Tooltip("Degrees between neighbouring children, fanned around the launch direction.")]
+        private float _childSpread;
+
         [Header("Look")]
-        [SerializeField, Tooltip("Walls: width and height in units. Pull fields: x is the calm radius where the pull eases off.")]
+        [SerializeField, Tooltip("Walls: width and height in units. Pull fields: x is the calm radius where the pull eases off. Dash: x is the share of the dash speed kept when it ends.")]
         private Vector2 _size = Vector2.one;
         [SerializeField, Min(0f), Tooltip("Seconds a visual takes: the wall rising, the explosion ring, the grapple rope after a yank.")]
         private float _visualTime = 0.25f;
@@ -89,6 +114,18 @@ namespace GraceRun.Abilities
         public float EffectLifetime => _effectLifetime;
         public float EffectRadius => _effectRadius;
         public CasterAction CasterAction => _casterAction;
+        public AbilitySpawnMode SpawnMode => _spawnMode;
+        public float DropHeight => _dropHeight;
+        public float TickInterval => _tickInterval;
+        public float SteerRate => _steerRate;
+        public float TurnTime => _turnTime;
+        public bool Piercing => _piercing;
+        public StatusKind Status => _status;
+        public float StatusDuration => _statusDuration;
+        public float StatusStrength => _statusStrength;
+        public AbilityEffect ChildEffect => _childEffect;
+        public int ChildCount => _childCount;
+        public float ChildSpread => _childSpread;
         public int Count => _count;
         public float Spread => _spread;
         public float LaunchAngle => _launchAngle;

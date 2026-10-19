@@ -727,6 +727,7 @@ GameObject:
   - component: {fileID: 1084412461097713272}
   - component: {fileID: 4169773383214887035}
   - component: {fileID: 6907028792279783466}
+  - component: {fileID: 4188153084636779005}
   m_Layer: 11
   m_Name: BellTwins
   m_TagString: Untagged
@@ -1226,6 +1227,19 @@ MonoBehaviour:
   _enrageRenderers:
   - {fileID: 673581712713550414}
   - {fileID: 662971159277673397}
+--- !u!114 &4188153084636779005
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5488232915260887801}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 63ed8580bb3efc641908bd49193de358, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: GraceRun.Runtime::GraceRun.Combat.StatusEffects
+  ShowTopMostFoldoutHeaderGroup: 1
 --- !u!1 &5941306798649959956
 GameObject:
   m_ObjectHideFlags: 0

@@ -557,6 +557,7 @@ GameObject:
   - component: {fileID: 4798855029321508014}
   - component: {fileID: 7021051515583677663}
   - component: {fileID: 3753177132908193066}
+  - component: {fileID: 5959446102672346228}
   m_Layer: 11
   m_Name: Gatekeeper
   m_TagString: Untagged
@@ -928,6 +929,19 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: GraceRun.Runtime::GraceRun.Bosses.BossAttackAudio
   _runner: {fileID: 4384900965606046679}
+--- !u!114 &5959446102672346228
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6321937765397557630}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 63ed8580bb3efc641908bd49193de358, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: GraceRun.Runtime::GraceRun.Combat.StatusEffects
+  ShowTopMostFoldoutHeaderGroup: 1
 --- !u!1 &6686473490969096057
 GameObject:
   m_ObjectHideFlags: 0

@@ -28,6 +28,9 @@ namespace GraceRun.Bosses
         private float _dropTimer;
         private float _speedMultiplier = 1f;
 
+        /// <summary>Server only: walking speed scale from status effects (a frost slow). 1 is normal.</summary>
+        public float StatusSpeedMultiplier { get; set; } = 1f;
+
         /// <summary>+1 facing right, -1 facing left.</summary>
         public sbyte Facing => _facing.Value;
 
@@ -71,7 +74,7 @@ namespace GraceRun.Bosses
                 return;
             }
 
-            _body.linearVelocityX = _moveDirection * (_data.WalkSpeed * _speedMultiplier);
+            _body.linearVelocityX = _moveDirection * (_data.WalkSpeed * _speedMultiplier * StatusSpeedMultiplier);
         }
 
         /// <summary>Server only: scales walking speed (e.g. when a surviving Bell Twin enrages).</summary>

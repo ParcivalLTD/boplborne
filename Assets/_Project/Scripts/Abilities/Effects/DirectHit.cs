@@ -16,9 +16,14 @@ namespace GraceRun.Abilities.Effects
         {
             _projectile = GetComponent<Projectile>();
             _projectile.Impacted += OnImpacted;
+            _projectile.PiercedThrough += OnImpacted;
         }
 
-        private void OnDestroy() => _projectile.Impacted -= OnImpacted;
+        private void OnDestroy()
+        {
+            _projectile.Impacted -= OnImpacted;
+            _projectile.PiercedThrough -= OnImpacted;
+        }
 
         private void OnImpacted(Vector2 point, Vector2 velocity, Health target)
         {

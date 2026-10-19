@@ -15,6 +15,12 @@ namespace GraceRun.Combat
         [SerializeField, Range(0f, 1f)] private float _friendlyFireDamageMultiplier = 0.1f;
         [SerializeField, Min(0)] private int _friendlyFireMinHP = 1;
 
+        [Header("Status effects")]
+        [SerializeField, Range(0f, 1f), Tooltip("A shrunk attacker's hits deal this share of their damage.")]
+        private float _shrunkDamageMultiplier = 0.5f;
+        [SerializeField, Min(0.01f), Tooltip("How fast a shrinking or growing body changes size (scale per second).")]
+        private float _statusScaleSpeed = 4f;
+
         [Header("Debug commands")]
         [SerializeField, Min(0)] private int _debugDamage = 20;
         [SerializeField] private Vector2 _debugKnockback = new(8f, 6f);
@@ -27,6 +33,12 @@ namespace GraceRun.Combat
 
         /// <summary>A teammate's hit can never take you below this HP.</summary>
         public int FriendlyFireMinHP => _friendlyFireMinHP;
+
+        /// <summary>Share of the damage a shrunk attacker deals.</summary>
+        public float ShrunkDamageMultiplier => _shrunkDamageMultiplier;
+
+        /// <summary>Scale change per second while a shrink starts or wears off.</summary>
+        public float StatusScaleSpeed => _statusScaleSpeed;
 
         public int DebugDamage => _debugDamage;
 

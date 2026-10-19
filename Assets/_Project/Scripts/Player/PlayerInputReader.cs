@@ -55,9 +55,15 @@ namespace GraceRun.Player
         public event Action InteractReleased;
         public event Action PausePressed;
 
-        public Vector2 Move => _move.ReadValue<Vector2>();
-        public bool JumpHeld => _jump.IsPressed();
-        public bool InteractHeld => _interact.IsPressed();
+        /// <summary>Raised when the local player (the only enabled reader) presses Pause, for the pause menu.</summary>
+        public static event Action LocalPausePressed;
+
+        /// <summary>While true (a menu is open) gameplay input is ignored: no movement, jumps, attacks or abilities. Pause still works.</summary>
+        public static bool GameplayBlocked { get; set; }
+
+        public Vector2 Move => GameplayBlocked ? Vector2.zero : _move.ReadValue<Vector2>();
+        public bool JumpHeld => !GameplayBlocked && _jump.IsPressed();
+        public bool InteractHeld => !GameplayBlocked && _interact.IsPressed();
 
         /// <summary>True while the mouse button for <paramref name="slot"/> is held (pressed outside UI).</summary>
         public bool IsPointerAbilityHeld(int slot) => _pointer.IsHeld(slot);
@@ -103,7 +109,7 @@ namespace GraceRun.Player
         // input callback reads last frame's UI state.
         private void Update()
         {
-            var overUi = EventSystem.current != null && EventSystem.current.IsPointerOverGameObject();
+            var overUi = GameplayBlocked || (EventSystem.current != null && EventSystem.current.IsPointerOverGameObject());
             _pointer.Flush(overUi, _onPointerPressed, _onPointerReleased, _onPointerFire);
         }
 
@@ -150,11 +156,20 @@ namespace GraceRun.Player
             Destroy(_actions);
         }
 
-        private void OnJumpPerformed(InputAction.CallbackContext _) => JumpPressed?.Invoke();
+        [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.SubsystemRegistration)]
+        private static void ResetStatics()
+        {
+            GameplayBlocked = false;
+            LocalPausePressed = null;
+        }
+
+        private void OnJumpPerformed(InputAction.CallbackContext _) { if (!GameplayBlocked) JumpPressed?.Invoke(); }
         private void OnJumpCanceled(InputAction.CallbackContext _) => JumpReleased?.Invoke();
-        private void OnDodge(InputAction.CallbackContext _) => DodgePressed?.Invoke();
-        private void OnAttack(InputAction.CallbackContext context) =>
-            AttackPressed?.Invoke(context.control.device is Keyboard || context.control.device is Pointer);
+        private void OnDodge(InputAction.CallbackContext _) { if (!GameplayBlocked) DodgePressed?.Invoke(); }
+        private void OnAttack(InputAction.CallbackContext context)
+        {
+            if (!GameplayBlocked) AttackPressed?.Invoke(context.control.device is Keyboard || context.control.device is Pointer);
+        }
         private void OnAbility1(InputAction.CallbackContext context) => OnAbility(0, context);
         private void OnAbility2(InputAction.CallbackContext context) => OnAbility(1, context);
         private void OnAbility3(InputAction.CallbackContext context) => OnAbility(2, context);
@@ -165,6 +180,7 @@ namespace GraceRun.Player
 
         private void OnAbility(int slot, InputAction.CallbackContext context)
         {
+            if (GameplayBlocked) return;
             if (context.control.device is Pointer) _pointer.QueueDown(slot);
             else AbilityPressed?.Invoke(slot, false);
         }
@@ -173,9 +189,13 @@ namespace GraceRun.Player
         {
             if (context.control.device is Pointer) _pointer.QueueUp(slot);
         }
-        private void OnFlask(InputAction.CallbackContext _) => FlaskPressed?.Invoke();
-        private void OnInteractPerformed(InputAction.CallbackContext _) => InteractPressed?.Invoke();
+        private void OnFlask(InputAction.CallbackContext _) { if (!GameplayBlocked) FlaskPressed?.Invoke(); }
+        private void OnInteractPerformed(InputAction.CallbackContext _) { if (!GameplayBlocked) InteractPressed?.Invoke(); }
         private void OnInteractCanceled(InputAction.CallbackContext _) => InteractReleased?.Invoke();
-        private void OnPause(InputAction.CallbackContext _) => PausePressed?.Invoke();
+        private void OnPause(InputAction.CallbackContext _)
+        {
+            PausePressed?.Invoke();
+            LocalPausePressed?.Invoke();
+        }
     }
 }

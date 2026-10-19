@@ -32,7 +32,7 @@ namespace GraceRun.Core.Juice
         /// <summary>Fires one shake in a random direction.</summary>
         public void Play(float strength)
         {
-            var force = Shake.ComputeForce(strength, _data.StrengthMultiplier, _data.BaseForce);
+            var force = Shake.ComputeForce(strength, _data.StrengthMultiplier * Settings.GameSettings.ShakeMultiplier, _data.BaseForce);
             if (force <= 0f) return;
             var direction = Random.insideUnitCircle.normalized;
             if (direction == Vector2.zero) direction = Vector2.down;

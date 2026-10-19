@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace GraceRun.Combat
@@ -9,9 +10,12 @@ namespace GraceRun.Combat
     [RequireComponent(typeof(Collider2D))]
     public class Hurtbox : MonoBehaviour
     {
+        private static readonly Dictionary<Collider2D, Hurtbox> ByCollider = new();
+
         [SerializeField] private Health _health;
 
         private IInvulnerability _invulnerability;
+        private Collider2D _collider;
 
         public Health Health => _health;
         public bool IsInvulnerable => _invulnerability != null && _invulnerability.IsInvulnerable;
@@ -19,6 +23,20 @@ namespace GraceRun.Combat
         private void Awake()
         {
             _invulnerability = _health.GetComponent<IInvulnerability>();
+            _collider = GetComponent<Collider2D>();
+            ByCollider[_collider] = this;
+        }
+
+        private void OnDestroy()
+        {
+            if (_collider != null) ByCollider.Remove(_collider);
+        }
+
+        /// <summary>The hurtbox on <paramref name="collider"/>, without a GetComponent call (safe in FixedUpdate).</summary>
+        public static bool TryFind(Collider2D collider, out Hurtbox hurtbox)
+        {
+            hurtbox = null;
+            return collider != null && ByCollider.TryGetValue(collider, out hurtbox) && hurtbox != null;
         }
     }
 }

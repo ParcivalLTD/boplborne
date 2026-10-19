@@ -26,8 +26,18 @@ namespace GraceRun.Bosses
 
         public ulong TargetId => _targetId.Value;
 
-        /// <summary>Server only: the target's transform, or null when nobody is alive.</summary>
-        public Transform Target => HasTarget ? _target : null;
+        /// <summary>
+        /// Server only: what the boss goes after: the nearest standing decoy while there is one,
+        /// otherwise the target player, or null when nobody is alive.
+        /// </summary>
+        public Transform Target
+        {
+            get
+            {
+                if (!HasTarget) return null;
+                return Abilities.Effects.Decoy.TryNearest(transform.position, out var decoy) ? decoy : _target;
+            }
+        }
 
         /// <summary>Server only: false while the boss is attacking, so the target stays put.</summary>
         public bool AllowSwitch { get; set; } = true;

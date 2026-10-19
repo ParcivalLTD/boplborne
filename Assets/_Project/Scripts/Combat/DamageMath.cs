@@ -33,6 +33,16 @@ namespace GraceRun.Combat
         }
 
         /// <summary>The whole rule set: god mode, friendly-fire scaling and the friendly-fire HP floor.</summary>
+        /// <summary>
+        /// <paramref name="amount"/> times <paramref name="multiplier"/>, rounded; a hit that dealt damage
+        /// still deals at least 1 (a shrunk attacker's weak hit).
+        /// </summary>
+        public static int Scaled(int amount, float multiplier)
+        {
+            if (amount <= 0) return 0;
+            return Mathf.Max(1, Mathf.RoundToInt(amount * Mathf.Max(0f, multiplier)));
+        }
+
         public static int Resolve(int current, int amount, bool friendlyFire, float friendlyFireMultiplier,
             int friendlyFireMinHP, bool godMode)
         {

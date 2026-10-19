@@ -21,6 +21,9 @@ namespace GraceRun.Combat
 
         private Rigidbody2D _body;
 
+        /// <summary>The body's current velocity as this PC simulates it.</summary>
+        public Vector2 Velocity => _body.linearVelocity;
+
         /// <summary>Raised on the owner when a push is applied.</summary>
         public event Action<Vector2> Pushed;
 

@@ -26,10 +26,14 @@ namespace GraceRun.Abilities.Effects
         private Rigidbody2D _body;
         private float _flightTime;
         private int _bounces;
+        private readonly HashSet<Health> _pierced = new();
         private bool _done;
 
         /// <summary>Server only: impact point, velocity at impact, and the target hit directly (null for ground, walls, time-out).</summary>
         public event Action<Vector2, Vector2, Health> Impacted;
+
+        /// <summary>Server only, piercing projectiles: a target was hit and the projectile flies on (same arguments as <see cref="Impacted"/>).</summary>
+        public event Action<Vector2, Vector2, Health> PiercedThrough;
 
         public AbilityEffect Effect => _effect;
 
@@ -51,6 +55,7 @@ namespace GraceRun.Abilities.Effects
             _done = false;
             _flightTime = 0f;
             _bounces = 0;
+            _pierced.Clear();
             if (!IsServer) return;
             _body.gravityScale = _effect.Ability.GravityScale;
             _body.linearVelocity = _effect.Aim * _effect.Ability.LaunchSpeed;
@@ -76,7 +81,9 @@ namespace GraceRun.Abilities.Effects
             if (other.TryGetComponent(out Hurtbox hurtbox))
             {
                 var target = hurtbox.Health;
-                if (target != null && target.IsSpawned && !target.IsDead && !hurtbox.IsInvulnerable) Impact(target);
+                if (target == null || !target.IsSpawned || target.IsDead || hurtbox.IsInvulnerable) return;
+                if (!_effect.Ability.Piercing) Impact(target);
+                else if (_pierced.Add(target)) PiercedThrough?.Invoke(_body.position, _body.linearVelocity, target);
                 return;
             }
             if (other.isTrigger) return;
@@ -108,6 +115,14 @@ namespace GraceRun.Abilities.Effects
             if (!IsServer || _done || push.sqrMagnitude < 0.0001f) return;
             var speed = Mathf.Max(_body.linearVelocity.magnitude, push.magnitude);
             _body.linearVelocity = push.normalized * speed;
+        }
+
+        /// <summary>Server: ends the flight without an impact (a boomerang back in the caster's hand).</summary>
+        public void ServerFinish()
+        {
+            if (!IsServer || _done) return;
+            _done = true;
+            NetworkObject.Despawn();
         }
 
         private bool TryCombo(Collider2D blocker)

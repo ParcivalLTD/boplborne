@@ -26,6 +26,36 @@ namespace GraceRun.Player
         [SerializeField, Min(0f), Tooltip("Height of an air jump held all the way, in units.")]
         private float _airJumpHeight = 3f;
 
+        [Header("Air feel")]
+        [SerializeField, Min(0f), Tooltip("Near the top of a held jump (vertical speed below this), gravity eases off.")]
+        private float _apexThreshold = 2f;
+        [SerializeField, Range(0.1f, 1f), Tooltip("Gravity multiplier at the top of a held jump: a short hang for aiming.")]
+        private float _apexGravityMultiplier = 0.55f;
+        [SerializeField, Min(1f), Tooltip("Hold down while falling: extra gravity on top of the fall gravity.")]
+        private float _fastFallGravityMultiplier = 1.8f;
+        [SerializeField, Min(0f), Tooltip("Top falling speed while holding down.")]
+        private float _fastFallMaxSpeed = 32f;
+        [SerializeField, Range(0.1f, 1f), Tooltip("How far down the stick or keys must be held to count as down.")]
+        private float _downInputThreshold = 0.5f;
+
+        [Header("Walls")]
+        [SerializeField, Min(0f), Tooltip("Top falling speed while pushing into a wall in the air.")]
+        private float _wallSlideSpeed = 4f;
+        [SerializeField, Min(0f), Tooltip("Height of a wall jump, in units.")]
+        private float _wallJumpHeight = 3.2f;
+        [SerializeField, Min(0f), Tooltip("Sideways speed a wall jump kicks away with.")]
+        private float _wallJumpPush = 11f;
+        [SerializeField, Min(0f), Tooltip("After a wall jump, input can't steer for this long, so the kick carries you off the wall.")]
+        private float _wallJumpControlLock = 0.15f;
+        [SerializeField, Min(0f), Tooltip("How long after leaving a wall a wall jump still counts.")]
+        private float _wallCoyoteTime = 0.1f;
+        [SerializeField, Tooltip("Box probed on each side to find a wall: width and height in units.")]
+        private Vector2 _wallCheckSize = new(0.15f, 1.2f);
+
+        [Header("One-way platforms")]
+        [SerializeField, Min(0f), Tooltip("Down + jump on a ledge: how long the ledge lets you fall through.")]
+        private float _dropThroughTime = 0.3f;
+
         [Header("Forgiveness")]
         [SerializeField, Min(0f)] private float _coyoteTime = 0.1f;
         [SerializeField, Min(0f)] private float _jumpBuffer = 0.1f;
@@ -66,6 +96,21 @@ namespace GraceRun.Player
 
         /// <summary>Extra jumps in the air before touching the ground again.</summary>
         public int AirJumps => _airJumps;
+
+        public float ApexThreshold => _apexThreshold;
+        public float ApexGravityMultiplier => _apexGravityMultiplier;
+        public float FastFallGravityMultiplier => _fastFallGravityMultiplier;
+        public float FastFallMaxSpeed => _fastFallMaxSpeed;
+        public float DownInputThreshold => _downInputThreshold;
+        public float WallSlideSpeed => _wallSlideSpeed;
+        public float WallJumpPush => _wallJumpPush;
+        public float WallJumpControlLock => _wallJumpControlLock;
+        public float WallCoyoteTime => _wallCoyoteTime;
+        public Vector2 WallCheckSize => _wallCheckSize;
+        public float DropThroughTime => _dropThroughTime;
+
+        /// <summary>Upward speed of a wall jump.</summary>
+        public float WallJumpVelocity => VelocityFor(_wallJumpHeight);
 
         /// <summary>How long after walking off a ledge a jump still counts.</summary>
         public float CoyoteTime => _coyoteTime;

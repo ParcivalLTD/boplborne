@@ -43,7 +43,7 @@ Grace Run is a 1–4 player online co-op roguelite. Friends climb a tower of sou
 | Dodge | costs 25 stamina, lasts 0.35 s, invulnerable for the first 0.25 s |
 | Light attack | costs 10 stamina, 8 damage per hit, final hit knocks back |
 | Flask | 2 charges per player, heals 40, refilled at rest stops |
-| Movement | fast and airy (Bopl-like): run 12, jump 4.5 high + 1 air jump 3 high, air control 0.9, coyote 0.12 s, jump buffer 0.12 s |
+| Movement | fast and airy (Bopl-like): run 12, jump 4.5 high + 1 air jump 3 high, air control 0.9, coyote 0.12 s, jump buffer 0.12 s; short hang at the top of a held jump; wall slide + wall jump (doesn't spend the air jump); hold down to fast-fall; down + jump drops through one-way ledges |
 
 ## Abilities
 
@@ -74,6 +74,27 @@ Each player has 3 slots. Abilities use cooldowns, not stamina. Every ability has
 | Meteor | Projectile, Area | Legendary | 20 s | Slow, huge impact after a delay | Hits everyone underneath, friends too |
 | Shrink Ray | Projectile | Rare | 10 s | Shrinks whatever it hits for a few seconds | Shrunk teammates are harder to hit, hit weaker |
 | Spike Trap | Summon, Area | Rare | 12 s | Floor spikes that hurt anything on top | Push enemies in with Gust or Black Hole |
+
+### Extra set (added 2026-10-19; all 12 above plus these are in the draft pool)
+
+| Ability | Tags | Rarity | Cooldown | Effect | Combo hook |
+| --- | --- | --- | --- | --- | --- |
+| Comet Dash | Movement | Common | 4.5 s | Burst along the aim, hitting what you pass | Dash onto a Bounce Pad for a huge launch |
+| Frost Bolt | Projectile | Common | 5 s | Icy bolt that slows (players and bosses) | Slowed bosses walk into Spike Traps |
+| Wisp Swarm | Projectile | Rare | 9 s | 4 homing wisps | Wisps through a Black Hole swirl around it |
+| Boomerang | Projectile | Common | 5 s | Piercing blade that flies out and comes back | Gust it back early for a double hit |
+| Firebomb | Projectile, Area | Common | 9 s | Lobbed flask that leaves a burning pool | The fire burns friends too |
+| Gravity Grenade | Projectile, Area | Rare | 12 s | Lobbed grenade that opens a small black hole | Gathers projectiles, minions and teammates |
+| Cluster Bomb | Projectile, Area | Rare | 11 s | Bomb that bursts into 3 bomblets | Bomblets launch teammates everywhere |
+| Grace Totem | Summon, Area | Rare | 18 s | Heals every player near it | Plant it next to a gravestone while reviving |
+| Sentry | Summon | Rare (floor 2+) | 15 s | Turret that shoots the nearest enemy | Its bolts pick up Area effects |
+| Blade Ring | Area | Rare | 12 s | Blades circle you and cut anything close | Hug a friend and they get cut too |
+| Thunderclap | Area | Common | 7 s | Blast that throws everything around you away | Clap teammates out of a slam |
+| Proximity Mine | Summon, Area | Common | 8 s | Mine that blows when anything steps near | Teammates set it off too |
+| Tornado | Area | Rare | 12 s | Slow rolling pull | Drags projectiles and teammates along |
+| Spear Throw | Projectile | Common | 6 s | Fast spear that pierces a whole line | Line up the boss and its minions |
+
+Statuses: Frost Bolt slows, Shrink Ray shrinks (smaller body, half damage dealt). Both last a few seconds and show on every screen.
 
 ### Draft
 
