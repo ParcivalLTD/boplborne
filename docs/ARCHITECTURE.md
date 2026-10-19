@@ -95,6 +95,8 @@ Everything tunable is here. Default values are the starting values in `docs/GDD.
 | Movement abilities | `AbilityMotion` (blink, dash) via `BlinkAction` / `DashAction` | owner |
 | Status effects | `StatusEffects` (slow, shrink; server-write NetworkVariables) | server decides, every PC shows; the body's simulator applies the slow |
 | Settings | `Core/Settings/GameSettings` (PlayerPrefs) + `SettingsData` defaults | local only |
+| Control schemes | `Core/Settings/ControlScheme`, `ControlChoices`, `ControlLayout`, `ControlSchemeRules` (pure); `PlayerInputReader.ApplyLayout` overrides the keyboard / mouse bindings of Attack and Ability1-3; `PlayerSlice` rides `SliceSlot` | owner, local only |
+| Nicknames | `Net/NicknameRules` (pure), `ConnectionPayload.Nickname`, `ConnectionManager.NicknameOf` (server), `PlayerIdentity` (synced name) | server sanitises and uniquifies, every PC shows |
 | Menus | `UI/Menus` (`MenuKit`, `MenuPages`, `SettingsPage`, `ControlsPage`), `MainMenuScreen`, `PauseMenu` | local only |
 | Combos | `ComboRules` + tag checks in effect components | server |
 | Revive, ghosts | `ReviveSystem`, `Ghost` | server decides, all show |

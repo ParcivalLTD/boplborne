@@ -18,9 +18,16 @@ namespace GraceRun.Core.Settings
         private const string VSyncKey = "settings.vsync";
         private const string WidthKey = "settings.width";
         private const string HeightKey = "settings.height";
+        private const string NicknameKey = "settings.nickname";
+        private const string SchemeKey = "settings.controlScheme";
+        private const string CustomAttackKey = "settings.custom.attack";
+        private const string CustomAbilityKey = "settings.custom.ability";
+        private const string CustomSliceKey = "settings.custom.slice";
+        private const string CustomAimKey = "settings.custom.aimKeys";
 
         private static readonly List<Vector2Int> ResolutionList = new();
         private static SettingsData _defaults;
+        private static ControlLayout _layout;
 
         /// <summary>Raised after any value changes.</summary>
         public static event Action Changed;
@@ -33,6 +40,17 @@ namespace GraceRun.Core.Settings
 
         /// <summary>Chosen resolution; (0, 0) means the current screen size.</summary>
         public static Vector2Int Resolution { get; private set; }
+
+        /// <summary>The name shown for this player online; empty to be shown as P1-P4. Never longer than the nickname limit.</summary>
+        public static string Nickname { get; private set; } = string.Empty;
+
+        public static ControlScheme Scheme { get; private set; } = ControlScheme.Mixed;
+
+        /// <summary>The player's own picks, used while <see cref="Scheme"/> is Custom (kept for later when it is not).</summary>
+        public static CustomControls Custom { get; private set; } = CustomControls.Default;
+
+        /// <summary>What attacks and abilities are bound to right now.</summary>
+        public static ControlLayout Layout => _layout ??= ControlSchemeRules.Build(Scheme, Custom);
 
         public static SettingsData Defaults => _defaults;
         public static bool IsLoaded => _defaults != null;
@@ -64,6 +82,8 @@ namespace GraceRun.Core.Settings
             Fullscreen = PlayerPrefs.GetInt(FullscreenKey, defaults.Fullscreen ? 1 : 0) == 1;
             VSync = PlayerPrefs.GetInt(VSyncKey, defaults.VSync ? 1 : 0) == 1;
             Resolution = new Vector2Int(PlayerPrefs.GetInt(WidthKey, 0), PlayerPrefs.GetInt(HeightKey, 0));
+            Nickname = GraceRun.Net.NicknameRules.Sanitize(PlayerPrefs.GetString(NicknameKey, string.Empty));
+            LoadControls();
             Apply(true);
         }
 
@@ -74,7 +94,27 @@ namespace GraceRun.Core.Settings
         public static void SetFullscreen(bool on) => Change(() => Fullscreen = on, true);
         public static void SetResolution(Vector2Int size) => Change(() => Resolution = size, true);
 
-        /// <summary>Back to the SettingsData defaults (and the current screen size).</summary>
+        /// <summary>Sets the nickname (cleaned up; empty means "shown as P1-P4"). Takes effect the next time you join.</summary>
+        public static void SetNickname(string value) =>
+            Change(() => Nickname = GraceRun.Net.NicknameRules.Sanitize(value));
+
+        public static void SetScheme(ControlScheme scheme) => Change(() => Scheme = scheme);
+
+        /// <summary>
+        /// Edits your custom controls with <paramref name="edit"/> and switches to Custom. When another
+        /// scheme was active, the edit starts from what that scheme bound, so one change keeps the rest.
+        /// </summary>
+        public static void EditCustom(Action<CustomControls> edit)
+        {
+            Change(() =>
+            {
+                if (Scheme != ControlScheme.Custom) Custom = ControlSchemeRules.CustomFrom(Layout);
+                edit(Custom);
+                Scheme = ControlScheme.Custom;
+            });
+        }
+
+        /// <summary>Back to the SettingsData defaults (and the current screen size). Keeps your nickname.</summary>
         public static void ResetToDefaults()
         {
             if (!IsLoaded) return;
@@ -86,12 +126,15 @@ namespace GraceRun.Core.Settings
                 Fullscreen = _defaults.Fullscreen;
                 VSync = _defaults.VSync;
                 Resolution = Vector2Int.zero;
+                Scheme = ControlScheme.Mixed;
+                Custom = CustomControls.Default;
             }, true);
         }
 
         private static void Change(Action set, bool screen = false)
         {
             set();
+            _layout = null;
             Apply(screen);
             Save();
             Changed?.Invoke();
@@ -117,8 +160,31 @@ namespace GraceRun.Core.Settings
             PlayerPrefs.SetInt(VSyncKey, VSync ? 1 : 0);
             PlayerPrefs.SetInt(WidthKey, Resolution.x);
             PlayerPrefs.SetInt(HeightKey, Resolution.y);
+            PlayerPrefs.SetString(NicknameKey, Nickname);
+            PlayerPrefs.SetInt(SchemeKey, (int)Scheme);
+            PlayerPrefs.SetInt(CustomAttackKey, Custom.Attack);
+            for (var i = 0; i < Custom.Abilities.Length; i++) PlayerPrefs.SetInt(CustomAbilityKey + i, Custom.Abilities[i]);
+            PlayerPrefs.SetInt(CustomSliceKey, Custom.Slice);
+            PlayerPrefs.SetInt(CustomAimKey, Custom.CursorAimKeys ? 1 : 0);
             PlayerPrefs.Save();
         }
+
+        private static void LoadControls()
+        {
+            var scheme = PlayerPrefs.GetInt(SchemeKey, (int)ControlScheme.Mixed);
+            Scheme = Enum.IsDefined(typeof(ControlScheme), scheme) ? (ControlScheme)scheme : ControlScheme.Mixed;
+
+            var custom = CustomControls.Default;
+            custom.Attack = ClampChoice(PlayerPrefs.GetInt(CustomAttackKey, custom.Attack));
+            for (var i = 0; i < custom.Abilities.Length; i++)
+                custom.Abilities[i] = ClampChoice(PlayerPrefs.GetInt(CustomAbilityKey + i, custom.Abilities[i]));
+            custom.Slice = Mathf.Clamp(PlayerPrefs.GetInt(CustomSliceKey, custom.Slice), -1, ControlLayout.AbilitySlots - 1);
+            custom.CursorAimKeys = PlayerPrefs.GetInt(CustomAimKey, custom.CursorAimKeys ? 1 : 0) == 1;
+            Custom = custom;
+            _layout = null;
+        }
+
+        private static int ClampChoice(int index) => index >= 0 && index < ControlChoices.Count ? index : 0;
 
         [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.SubsystemRegistration)]
         private static void ResetStatics()
@@ -126,6 +192,10 @@ namespace GraceRun.Core.Settings
             _defaults = null;
             ResolutionList.Clear();
             MasterVolume = SfxVolume = ShakeMultiplier = 1f;
+            Nickname = string.Empty;
+            Scheme = ControlScheme.Mixed;
+            Custom = CustomControls.Default;
+            _layout = null;
             Changed = null;
         }
     }

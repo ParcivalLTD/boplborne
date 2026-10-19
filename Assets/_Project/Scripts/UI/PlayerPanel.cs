@@ -13,7 +13,6 @@ namespace GraceRun.UI
     /// </summary>
     public class PlayerPanel : MonoBehaviour
     {
-        private const string NamePrefix = "P";
 
         [SerializeField] private Image _colorStrip;
         [SerializeField] private Image _hat;
@@ -41,6 +40,7 @@ namespace GraceRun.UI
         private AbilityLoadout _loadout;
         private AbilityRunner _abilities;
         private int _shownIndex = PlayerIdentity.Unassigned;
+        private string _shownName = string.Empty;
         private Image[] _pips = new Image[0];
         private bool _bound;
 
@@ -76,7 +76,7 @@ namespace GraceRun.UI
         public void Refresh()
         {
             if (_player == null || !_player.IsSpawned) return;
-            if (_player.PlayerIndex != _shownIndex) ShowIdentity(_player.PlayerIndex);
+            if (_player.PlayerIndex != _shownIndex || _player.DisplayName != _shownName) ShowIdentity(_player.PlayerIndex);
 
             var down = _ghost != null && _ghost.IsGhost;
             _content.alpha = down ? _downAlpha : 1f;
@@ -98,7 +98,8 @@ namespace GraceRun.UI
             var config = _player.Config;
             _colorStrip.color = config.GetPlayerColor(index);
             _hat.sprite = config.GetHatSprite(index);
-            _name.text = NamePrefix + (index + 1);
+            _shownName = _player.DisplayName;
+            _name.text = _shownName;
         }
 
         private void RefreshAbilities()

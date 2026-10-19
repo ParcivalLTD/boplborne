@@ -20,6 +20,9 @@ namespace GraceRun.UI.Menus
             var maxShake = defaults != null ? defaults.MaxScreenShake : 2f;
             var rows = new List<MenuOptionRow>();
 
+            var controls = ControlsSettingsPage.Build(parent, pages, out var controlsFirst);
+            pages.Add(controls, controlsFirst);
+
             var column = MenuKit.Column(parent, "Settings", MenuStyle.PanelWidth);
             MenuKit.Label(column, "SETTINGS", MenuStyle.HeadingSize, MenuStyle.Gold);
             rows.Add(MenuKit.Option(column, "Master volume", () => SettingsRules.Percent(GameSettings.MasterVolume),
@@ -34,6 +37,7 @@ namespace GraceRun.UI.Menus
             rows.Add(MenuKit.Option(column, "VSync", () => SettingsRules.OnOff(GameSettings.VSync),
                 _ => GameSettings.SetVSync(!GameSettings.VSync)));
 
+            MenuKit.Button(column, "Controls setup", () => pages.Open(controls));
             MenuKit.Button(column, "Reset to defaults", () =>
             {
                 GameSettings.ResetToDefaults();

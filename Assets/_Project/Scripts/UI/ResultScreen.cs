@@ -43,6 +43,7 @@ namespace GraceRun.UI
         private readonly Text[] _playerDamageTexts = new Text[4];
         private readonly Text[] _playerKnockbackTexts = new Text[4];
         private readonly Text[] _playerBadges = new Text[4];
+        private readonly Text[] _playerHeaders = new Text[4];
 
         private Text _funStatTitleText;
         private Text _funStatHighlightText;
@@ -144,6 +145,9 @@ namespace GraceRun.UI
 
             for (var i = 0; i < 4; i++)
             {
+                if (_playerHeaders[i] != null)
+                    _playerHeaders[i].text = PlayerIdentity.NameOfSlot(i).ToUpperInvariant();
+
                 if (_playerDamageTexts[i] != null)
                     _playerDamageTexts[i].text = $"{damageList[i]:N0} DMG";
 
@@ -169,7 +173,7 @@ namespace GraceRun.UI
             {
                 if (topCulpritSlot >= 0)
                 {
-                    _funStatHighlightText.text = $"<color=#{ColorUtility.ToHtmlStringRGB(GoldColor)}>👑 Most Dangerous Teammate:</color>  P{topCulpritSlot + 1} with {knockbackList[topCulpritSlot]} friendly pushes!";
+                    _funStatHighlightText.text = $"<color=#{ColorUtility.ToHtmlStringRGB(GoldColor)}>👑 Most Dangerous Teammate:</color>  {PlayerIdentity.NameOfSlot(topCulpritSlot)} with {knockbackList[topCulpritSlot]} friendly pushes!";
                 }
                 else
                 {
@@ -179,7 +183,7 @@ namespace GraceRun.UI
 
             if (_funStatDetailText != null)
             {
-                _funStatDetailText.text = $"Total Friendly-Fire Pushes: {totalKnockbacks}  |  P1: {result.KnockbacksP1}  P2: {result.KnockbacksP2}  P3: {result.KnockbacksP3}  P4: {result.KnockbacksP4}";
+                _funStatDetailText.text = $"Total Friendly-Fire Pushes: {totalKnockbacks}  |  {PlayerIdentity.NameOfSlot(0)}: {result.KnockbacksP1}  {PlayerIdentity.NameOfSlot(1)}: {result.KnockbacksP2}  {PlayerIdentity.NameOfSlot(2)}: {result.KnockbacksP3}  {PlayerIdentity.NameOfSlot(3)}: {result.KnockbacksP4}";
             }
 
             // Return to Hub Button
@@ -247,7 +251,7 @@ namespace GraceRun.UI
                 var stripe = CreatePanel($"Stripe{i}", card.transform, new Vector2(0f, 0.94f), new Vector2(1f, 1f), Vector2.zero, Vector2.zero, playerColor);
 
                 // Player Header
-                var pHeader = CreateText($"P{i}Header", card.transform, $"PLAYER {i + 1}", 24, FontStyle.Bold, TextAnchor.MiddleCenter, playerColor, new Vector2(0.5f, 0.80f), new Vector2(cardWidth - 40, 32));
+                _playerHeaders[i] = CreateText($"P{i}Header", card.transform, $"PLAYER {i + 1}", 24, FontStyle.Bold, TextAnchor.MiddleCenter, playerColor, new Vector2(0.5f, 0.80f), new Vector2(cardWidth - 40, 32));
 
                 // Badge
                 _playerBadges[i] = CreateText($"P{i}Badge", card.transform, string.Empty, 14, FontStyle.Bold, TextAnchor.MiddleCenter, GoldColor, new Vector2(0.5f, 0.65f), new Vector2(cardWidth - 40, 24));

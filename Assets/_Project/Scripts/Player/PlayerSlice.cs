@@ -7,7 +7,7 @@ using UnityEngine;
 namespace GraceRun.Player
 {
     /// <summary>
-    /// The mouse slice: hold left mouse and drag the cursor across a target, like a blade. Once the
+    /// The mouse slice: hold the slice button (left mouse by default) and drag the cursor across a target, like a blade. Once the
     /// press becomes a drag it is claimed, so Ability 1 (also on left mouse) does not fire on
     /// release. Hits are detected on the owner's PC along the cursor path, inside the player's
     /// reach, one per target per stroke, and reported to the server like every player attack.
@@ -16,7 +16,6 @@ namespace GraceRun.Player
     [RequireComponent(typeof(Health))]
     public class PlayerSlice : NetworkBehaviour
     {
-        private const int Slot = 0;
         private const int MaxHitsPerCut = 8;
 
         [SerializeField] private SliceData _data;
@@ -32,6 +31,7 @@ namespace GraceRun.Player
         private Health _health;
         private bool _pressing;
         private bool _stroking;
+        private int _slot;
         private Vector2 _pressPoint;
         private Vector2 _last;
         private float _strokeTime;
@@ -75,7 +75,8 @@ namespace GraceRun.Player
 
         private void OnPressed(int slot)
         {
-            if (slot != Slot || _health.IsDead || !_input.TryGetCursorWorld(out _pressPoint)) return;
+            if (slot != _input.SliceSlot || _health.IsDead || !_input.TryGetCursorWorld(out _pressPoint)) return;
+            _slot = slot;
             _pressing = true;
             _last = _pressPoint;
         }
@@ -83,7 +84,7 @@ namespace GraceRun.Player
         /// <summary>A flick between two frames still counts: the release gets one last look at the cursor.</summary>
         private void OnReleased(int slot)
         {
-            if (slot != Slot || !_pressing) return;
+            if (slot != _slot || !_pressing) return;
             if (_input.TryGetCursorWorld(out var cursor)) Follow(cursor);
             Stop();
         }
@@ -93,7 +94,7 @@ namespace GraceRun.Player
             if (!_stroking)
             {
                 if (!SliceMath.IsDrag(_pressPoint, cursor, _data.StartDistance)) return;
-                _input.ClaimPointerPress(Slot);
+                _input.ClaimPointerPress(_slot);
                 if (!TryStartStroke())
                 {
                     _pressing = false;

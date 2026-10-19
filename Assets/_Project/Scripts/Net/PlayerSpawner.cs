@@ -57,7 +57,9 @@ namespace GraceRun.Net
 
             var player = Instantiate(_playerPrefab, SpawnPointFor(slot), Quaternion.identity);
             player.SpawnAsPlayerObject(clientId);
-            player.GetComponent<PlayerIdentity>().AssignIndex(slot);
+            var identity = player.GetComponent<PlayerIdentity>();
+            identity.AssignIndex(slot);
+            identity.AssignNickname(ConnectionManager.Instance != null ? ConnectionManager.Instance.NicknameOf(clientId) : string.Empty);
         }
 
         private void ReleaseSlot(ulong clientId) => _slots.Release(clientId);

@@ -12,8 +12,11 @@ namespace GraceRun.Net
     {
         public string GameVersion;
 
-        public static byte[] Serialize(string gameVersion) =>
-            Encoding.UTF8.GetBytes(JsonUtility.ToJson(new ConnectionPayload { GameVersion = gameVersion }));
+        /// <summary>The joining player's nickname. Anything can arrive here; the server cleans it (<see cref="NicknameRules"/>).</summary>
+        public string Nickname;
+
+        public static byte[] Serialize(string gameVersion, string nickname = "") =>
+            Encoding.UTF8.GetBytes(JsonUtility.ToJson(new ConnectionPayload { GameVersion = gameVersion, Nickname = nickname }));
 
         public static bool TryDeserialize(byte[] data, out ConnectionPayload payload)
         {

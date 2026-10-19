@@ -24,6 +24,7 @@ namespace GraceRun.UI
         private Text _status;
         private Text _busyText;
         private InputField _address;
+        private InputField _nickname;
         private ConnectionManager _connection;
         private (GameObject join, GameObject settings, GameObject controls) _mainPages;
 
@@ -93,7 +94,14 @@ namespace GraceRun.UI
         private GameObject BuildMain(Transform parent)
         {
             var column = MenuKit.Column(parent, "Main", MenuStyle.PanelWidth - 160f);
-            var host = MenuKit.Button(column, "Host game", () => _connection.Host());
+            MenuKit.Label(column, "Your name (shown to the others)", MenuStyle.SmallSize, MenuStyle.Fog);
+            _nickname = MenuKit.Field(column, GameSettings.Nickname, NicknameRules.MaxLength);
+            _nickname.onEndEdit.AddListener(_ => CommitNickname());
+            var host = MenuKit.Button(column, "Host game", () =>
+            {
+                CommitNickname();
+                _connection.Host();
+            });
             MenuKit.Button(column, "Join game", () => _pages.Open(_mainPages.join));
             MenuKit.Button(column, "Settings", () => _pages.Open(_mainPages.settings));
             MenuKit.Button(column, "Controls", () => _pages.Open(_mainPages.controls));
@@ -109,7 +117,11 @@ namespace GraceRun.UI
             MenuKit.Label(column, "JOIN A GAME", MenuStyle.HeadingSize, MenuStyle.Gold);
             MenuKit.Label(column, "Host address (ip or ip:port)", MenuStyle.SmallSize, MenuStyle.Fog);
             _address = MenuKit.Field(column, _connection.Config.DefaultAddress);
-            var connect = MenuKit.Button(column, "Connect", () => _connection.Join(_address.text));
+            var connect = MenuKit.Button(column, "Connect", () =>
+            {
+                CommitNickname();
+                _connection.Join(_address.text);
+            });
             MenuKit.Button(column, "Back", _pages.Back);
             MenuKit.ChainVertical(column);
             first = connect;
@@ -142,6 +154,14 @@ namespace GraceRun.UI
             rect.anchorMax = new Vector2(1f, anchorY);
             rect.sizeDelta = new Vector2(0f, height);
             rect.anchoredPosition = Vector2.zero;
+        }
+
+        /// <summary>Saves what is in the name field (cleaned up) and shows the cleaned name back.</summary>
+        private void CommitNickname()
+        {
+            if (_nickname == null) return;
+            GameSettings.SetNickname(_nickname.text);
+            _nickname.text = GameSettings.Nickname;
         }
 
         private void OnStatusChanged(string message) => ShowStatus(message);

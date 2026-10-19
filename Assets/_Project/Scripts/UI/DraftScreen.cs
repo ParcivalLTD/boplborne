@@ -1,5 +1,6 @@
 using GraceRun.Abilities;
 using GraceRun.Core;
+using GraceRun.Player;
 using GraceRun.Run;
 using Unity.Netcode;
 using UnityEngine;
@@ -21,7 +22,6 @@ namespace GraceRun.UI
         private const string WaitText = "Waiting for the others...";
         private const string DealingText = "Dealing your cards...";
         private const string ChoosingStatus = "choosing...";
-        private const string NamePrefix = "P";
 
         [SerializeField] private GameConfig _gameConfig;
         [SerializeField] private GameObject _root;
@@ -87,6 +87,8 @@ namespace GraceRun.UI
             if (_manager != null) _manager.HandsChanged -= MarkDirty;
             _manager = manager;
             if (_manager != null) _manager.HandsChanged += MarkDirty;
+            PlayerIdentity.Renamed -= MarkDirty;
+            PlayerIdentity.Renamed += MarkDirty;
             _dirty = true;
         }
 
@@ -120,7 +122,7 @@ namespace GraceRun.UI
                 if (hand.PlayerIndex < 0 || hand.PlayerIndex >= _chips.Length) continue;
                 var picked = _manager.Catalog.Get(hand.PickedAbility);
                 _chips[hand.PlayerIndex].Show(_gameConfig.GetPlayerColor(hand.PlayerIndex),
-                    NamePrefix + (hand.PlayerIndex + 1), picked != null ? picked.DisplayName : ChoosingStatus, picked != null);
+                    PlayerIdentity.NameOfSlot(hand.PlayerIndex), picked != null ? picked.DisplayName : ChoosingStatus, picked != null);
             }
         }
 

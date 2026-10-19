@@ -1,6 +1,8 @@
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using GraceRun.Core;
+using GraceRun.Core.Settings;
 using Unity.Netcode;
 using Unity.Netcode.Transports.UTP;
 using UnityEngine;
@@ -25,6 +27,7 @@ namespace GraceRun.Net
 
         private Coroutine _timeout;
         private bool _leaving;
+        private readonly Dictionary<ulong, string> _nicknames = new();
 
         public static ConnectionManager Instance { get; private set; }
 
@@ -78,6 +81,9 @@ namespace GraceRun.Net
             _networkManager.OnServerStarted -= OnServerStarted;
             _networkManager.OnClientDisconnectCallback -= OnClientDisconnect;
         }
+
+        /// <summary>Server only: the cleaned, unique nickname <paramref name="clientId"/> joined with, or empty for none (shown as P1-P4).</summary>
+        public string NicknameOf(ulong clientId) => _nicknames.TryGetValue(clientId, out var name) ? name : string.Empty;
 
         /// <summary>Starts a server that also plays (the normal way to play with friends).</summary>
         public void Host()
@@ -134,9 +140,10 @@ namespace GraceRun.Net
         private void Configure(string address, ushort port)
         {
             _leaving = false;
+            _nicknames.Clear();
             var transport = _networkManager.GetComponent<UnityTransport>();
             transport.SetConnectionData(address, port, ListenAddress);
-            _networkManager.NetworkConfig.ConnectionData = ConnectionPayload.Serialize(_config.GameVersion);
+            _networkManager.NetworkConfig.ConnectionData = ConnectionPayload.Serialize(_config.GameVersion, GameSettings.Nickname);
         }
 
         private void ApprovalCheck(
@@ -150,6 +157,8 @@ namespace GraceRun.Net
                 : ApprovalResult.BadPayload;
 
             response.Approved = result == ApprovalResult.Approved;
+            if (response.Approved)
+                _nicknames[request.ClientNetworkId] = NicknameRules.Unique(NicknameRules.Sanitize(payload.Nickname), _nicknames.Values);
             response.CreatePlayerObject = false;
             response.Pending = false;
             if (response.Approved) return;
@@ -165,6 +174,7 @@ namespace GraceRun.Net
 
         private void OnClientDisconnect(ulong clientId)
         {
+            _nicknames.Remove(clientId);
             if (_networkManager.IsServer)
             {
                 if (clientId != _networkManager.LocalClientId) Debug.Log($"Client {clientId} left; a slot opened.");

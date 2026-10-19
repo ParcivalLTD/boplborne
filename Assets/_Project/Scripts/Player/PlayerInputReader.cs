@@ -1,4 +1,5 @@
 using System;
+using GraceRun.Core.Settings;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
@@ -34,6 +35,7 @@ namespace GraceRun.Player
         private Action<int> _onPointerPressed;
         private Action<int> _onPointerReleased;
         private Action<int> _onPointerFire;
+        private ControlLayout _layout = ControlLayout.Default;
 
         public event Action JumpPressed;
         public event Action JumpReleased;
@@ -63,6 +65,9 @@ namespace GraceRun.Player
 
         public Vector2 Move => GameplayBlocked ? Vector2.zero : _move.ReadValue<Vector2>();
         public bool JumpHeld => !GameplayBlocked && _jump.IsPressed();
+        /// <summary>Ability slot (0-2) whose mouse button also slices when dragged, or -1 when the control scheme has no slice.</summary>
+        public int SliceSlot => _layout.SliceSlot;
+
         public bool InteractHeld => !GameplayBlocked && _interact.IsPressed();
 
         /// <summary>True while the mouse button for <paramref name="slot"/> is held (pressed outside UI).</summary>
@@ -103,6 +108,7 @@ namespace GraceRun.Player
             _onPointerPressed = slot => PointerAbilityPressed?.Invoke(slot);
             _onPointerReleased = slot => PointerAbilityReleased?.Invoke(slot);
             _onPointerFire = slot => AbilityPressed?.Invoke(slot, true);
+            ApplyLayout(GameSettings.Layout);
         }
 
         // Mouse presses wait for Update: asking the EventSystem about the pointer from inside an
@@ -115,6 +121,7 @@ namespace GraceRun.Player
 
         private void OnEnable()
         {
+            GameSettings.Changed += OnSettingsChanged;
             _jump.performed += OnJumpPerformed;
             _jump.canceled += OnJumpCanceled;
             _dodge.performed += OnDodge;
@@ -134,6 +141,7 @@ namespace GraceRun.Player
 
         private void OnDisable()
         {
+            GameSettings.Changed -= OnSettingsChanged;
             _map.Disable();
             _jump.performed -= OnJumpPerformed;
             _jump.canceled -= OnJumpCanceled;
@@ -156,6 +164,44 @@ namespace GraceRun.Player
             Destroy(_actions);
         }
 
+        private void OnSettingsChanged() => ApplyLayout(GameSettings.Layout);
+
+        /// <summary>
+        /// Points the attack and ability actions at the keys and mouse buttons the control scheme
+        /// asks for, by overriding the first keyboard and the first mouse binding of each action
+        /// (an empty path switches a binding off). Gamepad bindings stay as they are.
+        /// </summary>
+        private void ApplyLayout(ControlLayout layout)
+        {
+            _layout = layout;
+            Rebind(_attack, layout.AttackPath, null);
+            Rebind(_ability1, layout.KeyPaths[0], layout.PointerPaths[0]);
+            Rebind(_ability2, layout.KeyPaths[1], layout.PointerPaths[1]);
+            Rebind(_ability3, layout.KeyPaths[2], layout.PointerPaths[2]);
+        }
+
+        private static void Rebind(InputAction action, string keyPath, string pointerPath)
+        {
+            var keyDone = false;
+            var pointerDone = pointerPath == null;
+            var bindings = action.bindings;
+            for (var i = 0; i < bindings.Count; i++)
+            {
+                var binding = bindings[i];
+                if (binding.isComposite || binding.isPartOfComposite) continue;
+                if (!keyDone && ControlChoices.IsKey(binding.path))
+                {
+                    action.ApplyBindingOverride(i, keyPath);
+                    keyDone = true;
+                }
+                else if (!pointerDone && ControlChoices.IsPointer(binding.path))
+                {
+                    action.ApplyBindingOverride(i, pointerPath);
+                    pointerDone = true;
+                }
+            }
+        }
+
         [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.SubsystemRegistration)]
         private static void ResetStatics()
         {
@@ -168,7 +214,7 @@ namespace GraceRun.Player
         private void OnDodge(InputAction.CallbackContext _) { if (!GameplayBlocked) DodgePressed?.Invoke(); }
         private void OnAttack(InputAction.CallbackContext context)
         {
-            if (!GameplayBlocked) AttackPressed?.Invoke(context.control.device is Keyboard || context.control.device is Pointer);
+            if (!GameplayBlocked) AttackPressed?.Invoke(context.control.device is Pointer || (context.control.device is Keyboard && _layout.CursorAimKeys));
         }
         private void OnAbility1(InputAction.CallbackContext context) => OnAbility(0, context);
         private void OnAbility2(InputAction.CallbackContext context) => OnAbility(1, context);

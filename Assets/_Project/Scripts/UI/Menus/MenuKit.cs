@@ -111,7 +111,7 @@ namespace GraceRun.UI.Menus
         }
 
         /// <summary>A single-line text field (the join address).</summary>
-        public static InputField Field(Transform parent, string value)
+        public static InputField Field(Transform parent, string value, int characterLimit = 0)
         {
             var rect = Rect(parent, "Field");
             rect.gameObject.AddComponent<LayoutElement>().minHeight = MenuStyle.RowHeight;
@@ -125,6 +125,7 @@ namespace GraceRun.UI.Menus
             text.supportRichText = false;
             Stretch(text.rectTransform, new Vector2(16f, 0f), new Vector2(-16f, 0f));
             field.textComponent = text;
+            field.characterLimit = characterLimit;
             field.text = value;
             return field;
         }

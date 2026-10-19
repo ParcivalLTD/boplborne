@@ -27,10 +27,12 @@ Grace Run is a 1–4 player online co-op roguelite. Friends climb a tower of sou
 | Jump (hold = higher; press again in the air for 1 air jump) | South (A / Cross) | Space |
 | Dodge roll (i-frames), any direction of the move input; one roll in the air until you land | East (B / Circle) | Left Shift |
 | Attack (3-hit combo) | West (X / Square), facing way | J, aimed at the mouse cursor |
-| Slice (mouse) | — | Hold left mouse and drag the cursor across a target (within reach of your player) |
+| Slice (mouse) | — | Hold the slice button (left mouse by default) and drag the cursor across a target (within reach of your player) |
 | Ability 1 / 2 / 3 | North / LB / RB | Left / middle / right mouse, fired on release toward the cursor (a left-mouse drag is a slice and fires nothing); K / L / ; fire on press, aimed by facing |
 | Flask (heal) | D-pad up | R |
 | Interact (revive) | D-pad down | E |
+
+Attack, abilities and the slice can be rebound in **Settings → Controls setup**: Keyboard + mouse (the layout above), Keyboard only (J / K / L / ; aimed by facing, no mouse in combat), Mouse only (slice for melee, the three mouse buttons for abilities), or Custom (a key or mouse button per action, which ability slot slices, whether keys aim at the cursor). Changing any row switches to Custom.
 | Pause | Start | Esc |
 
 ### Starting values (tune in data assets, not code)
