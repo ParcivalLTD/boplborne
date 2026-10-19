@@ -20,6 +20,7 @@ namespace GraceRun.Bosses
         private Rigidbody2D _body;
         private float _defaultGravity;
         private float _moveDirection;
+        private float _moveTargetX;
         private float _dashVelocity;
         private float _dashTimer;
         private bool _perched;
@@ -74,7 +75,8 @@ namespace GraceRun.Bosses
                 return;
             }
 
-            _body.linearVelocityX = _moveDirection * (_data.WalkSpeed * _speedMultiplier * StatusSpeedMultiplier);
+            var chase = BossMath.ChaseSpeedMultiplier(Mathf.Abs(_moveTargetX - _body.position.x), _data.ChaseDistance, _data.ChaseSpeedMultiplier);
+            _body.linearVelocityX = _moveDirection * (_data.WalkSpeed * _speedMultiplier * chase * StatusSpeedMultiplier);
         }
 
         /// <summary>Server only: scales walking speed (e.g. when a surviving Bell Twin enrages).</summary>
@@ -86,6 +88,7 @@ namespace GraceRun.Bosses
         /// <summary>Server only: walks toward <paramref name="targetX"/> and faces it.</summary>
         public void ServerMoveToward(float targetX)
         {
+            _moveTargetX = targetX;
             _moveDirection = Mathf.Sign(targetX - _body.position.x);
             ServerFace(_moveDirection);
         }

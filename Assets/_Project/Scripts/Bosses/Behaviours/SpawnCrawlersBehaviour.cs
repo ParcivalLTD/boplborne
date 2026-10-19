@@ -1,3 +1,4 @@
+using GraceRun.Core.Framing;
 using Unity.Netcode;
 using UnityEngine;
 
@@ -29,7 +30,7 @@ namespace GraceRun.Bosses.Behaviours
             for (var i = 0; i < toSpawn; i++)
             {
                 var side = (sbyte)((i % 2 == 0 ? 1 : -1) * facing);
-                var x = BroodMotherMath.ClampArenaX(origin.x + side * _spawnOffsetX, _arenaHalfWidth);
+                var x = BroodMotherMath.ClampArenaX(origin.x + side * _spawnOffsetX, ArenaBounds.WidenedHalfWidth(_arenaHalfWidth));
                 var spawnPos = new Vector3(x, origin.y + _spawnOffsetY, 0f);
                 var instance = Instantiate(_crawlerPrefab, spawnPos, Quaternion.identity);
                 instance.GetComponent<NetworkObject>().Spawn(true);

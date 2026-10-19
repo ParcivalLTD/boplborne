@@ -32,6 +32,7 @@ Everyone is a friend, so we trust clients where it makes the game feel better.
 | Run state, floor, currency, draft cards and picks | **Server** | NetworkVariables / NetworkLists |
 | Random numbers | **Server** seed per run | Sent to clients when they need it |
 | Particles, sounds, shake, hitstop | **Every PC locally** | Triggered from synced state changes |
+| Camera position, zoom, off-screen markers | **Every PC locally** | Read from synced player, gravestone and boss state; nothing is sent |
 
 ## Connection rules
 

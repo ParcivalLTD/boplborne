@@ -6,7 +6,7 @@ This is the source of truth for **what** we build. The longer living design doc:
 
 Grace Run is a 1–4 player online co-op roguelite. Friends climb a tower of souls-style boss arenas and draft chaotic, combinable abilities between fights. Elden Ring's bosses meet Bopl Battle's ability combos, with the friend-group chaos of How to Fish.
 
-- 2D side-view, one screen per arena, no scrolling.
+- 2D side-view. The hub fits one screen; boss arenas are wider (and one is taller) than the 640×360 view, and a camera pans to follow the group. Each player sees their own view; markers on the screen edge show teammates, gravestones and the boss when they are off screen.
 - 1–4 players, each on their own PC. One hosts, the others join over Hamachi.
 - Run: 7 floors plus a final boss (8 bosses), about 25–40 minutes.
 - Windows, free download on GitHub. Controllers first, keyboard supported.
@@ -115,7 +115,7 @@ Rules for every boss:
 3. Phase 2 at 50% HP remixes known attacks.
 4. The boss switches targets regularly.
 5. HP scaling: `BossHP = BaseHP × (1 + 0.6 × (players − 1))`.
-6. No attack from off-screen; no undodgeable attack.
+6. No undodgeable attack. The camera always keeps your own player at least 7 units inside the view edge and keeps a nearby boss in view, so an attack aimed at you starts on your screen; an attack on a far-away teammate is announced by the boss marker on the screen edge. Bosses walk twice as fast when more than 12 units from their target, so a wide arena never means a long wait.
 
 | Floor | Boss | Tests | Signature attacks | Phase 2 | Arena accent |
 | --- | --- | --- | --- | --- | --- |

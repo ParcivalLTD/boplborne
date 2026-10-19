@@ -32,6 +32,10 @@ namespace GraceRun.Bosses
         private float _idleTime = 0.8f;
         [SerializeField, Min(0f)] private float _targetSwitchInterval = 8f;
         [SerializeField, Min(0f)] private float _walkSpeed = 3f;
+        [SerializeField, Min(0f), Tooltip("Farther than this from its target (units), the boss walks faster so a wide arena does not mean a long wait.")]
+        private float _chaseDistance = 12f;
+        [SerializeField, Min(1f), Tooltip("Walk speed multiplier beyond Chase Distance.")]
+        private float _chaseSpeedMultiplier = 2f;
         [SerializeField, Min(0f), Tooltip("The server schedules each attack this many seconds ahead, so clients get it before it starts.")]
         private float _attackStartLead = 0.1f;
         [SerializeField, Min(0f), Tooltip("Seconds at 0 HP before the boss despawns.")]
@@ -52,6 +56,8 @@ namespace GraceRun.Bosses
         public float IdleTime => _idleTime;
         public float TargetSwitchInterval => _targetSwitchInterval;
         public float WalkSpeed => _walkSpeed;
+        public float ChaseDistance => _chaseDistance;
+        public float ChaseSpeedMultiplier => _chaseSpeedMultiplier;
         public float AttackStartLead => _attackStartLead;
         public float DespawnDelay => _despawnDelay;
         public GameObject Prefab => _prefab;

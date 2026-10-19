@@ -1,3 +1,4 @@
+using GraceRun.Core.Framing;
 using System.Collections.Generic;
 using GraceRun.Core;
 using GraceRun.Player;
@@ -40,7 +41,7 @@ namespace GraceRun.Bosses.Behaviours
                 _playerX.Add(runner.transform.position.x + runner.Facing * _soloSecondOffset);
 
             BroodMotherMath.CollectWebZoneX(
-                _playerX, runner.Facing, _soloSecondOffset, _mergeDistance, _arenaHalfWidth, _maxZonesPerCast, _zoneX);
+                _playerX, runner.Facing, _soloSecondOffset, _mergeDistance, ArenaBounds.WidenedHalfWidth(_arenaHalfWidth), _maxZonesPerCast, _zoneX);
 
             for (var i = 0; i < _zoneX.Count; i++)
             {

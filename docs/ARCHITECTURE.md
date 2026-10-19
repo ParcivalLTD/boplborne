@@ -10,7 +10,7 @@ The repo root **is** the Unity project root (`Assets/`, `Packages/`, `ProjectSet
 Assets/
   _Project/
     Scripts/
-      Core/          Bootstrap, GameConfig, Layers, Juice (hitstop, shake, flash), AudioCue, SaveSystem
+      Core/          Bootstrap, GameConfig, Layers, Juice (hitstop, shake, flash), Framing (follow camera, arena bounds, edge-marker math), AudioCue, SaveSystem
       Net/           ConnectionManager, ConnectionApproval, CommandLineArgs, NetworkClock helpers
       Player/        PlayerController, PlayerMovement, PlayerDodge, PlayerStamina, PlayerInputReader, PlayerVisuals
       Combat/        Health, DamageInfo, Hitbox, Hurtbox, DamageService, Knockback, ReviveSystem, Ghost
@@ -79,7 +79,16 @@ Everything tunable is here. Default values are the starting values in `docs/GDD.
 | `ComboRules` | rules[]: sourceTag, targetTag, interaction (Absorb, Redirect, Pull, Push, Launch, Ricochet, Ignite…), parameters |
 | `BossData` | id, displayName, floor, baseHP, hpScalePerExtraPlayer (0.6), phase2Threshold (0.5), phase1Attacks[], phase2Attacks[], targetSwitchInterval, prefab, arenaPrefab, accentColor |
 | `AttackData` | id, windup, active, recovery, damage, knockback, telegraphType (Glow, GroundZone, Line, Projectile), punishWindow, lungeDistance/lungeTime, followUp (chained attack, same start tick), windupCue, weight, cooldown, minRange, maxRange, behaviour |
+| `CameraFollowData` | smoothTime, localMargin (7), guardMargin, bossFocusRange (22), snapDistance, edge-marker hideMargin / edgeInset / size / pulse / colours |
 | `RunConfig` | floors[] (boss pool per floor), restAfterFloors [2,4,6], currencyPerBoss, bonusNoDeaths, bonusFastKill, cardsOffered (3), rerollsPerRun (1), legendaryMinFloor (4), rarityWeights |
+
+## Arenas and the camera
+
+- An arena prefab is centred on x = 0 and carries `ArenaBounds`: the **play area** (inside faces of walls, floor top to ceiling) and the **camera area** (what the view may show). Bosses' behaviours that clamp to the arena (`ShockwaveData`, web spit, crawler spawn, ceiling drop) keep their authored half width for the original 32-wide arena and widen it by `ArenaBounds.WidenedHalfWidth`.
+- **Grace Run → Lay Out Wide Arenas** (`Editor/Content/ArenaLayoutSetup`) lays the floor, walls, extra pillars and one-way platforms of all six arenas from the table in that file (hub 32 wide; Gatekeeper and Test Boss 56; Brood Mother 64; Bell Twins 80; Final Test Boss 72 wide and 10 units taller) and sets their `ArenaBounds`. Re-running it re-lays them. **Grace Run → Set Up Follow Camera** adds `ArenaCameraRig` and `OffscreenIndicators` to the Game scene's `ArenaCamera`.
+- The view is a fixed 40 × 22.5 units (Pixel Perfect Camera, zoom never changes). `ArenaCameraRig` aims at the box around the living players (ghosts only when everyone is down) and a boss within `BossFocusRange` of the local player, then keeps the local player `LocalMargin` inside the edge, clamps to the camera area and glides with SmoothDamp. A new arena or a jump farther than `SnapDistance` (respawn) snaps instead.
+- Cursor aim uses the real main camera, so it follows the panning view. Ghosts are clamped to the current view.
+- Bosses chase at `ChaseSpeedMultiplier` (2×) when farther than `ChaseDistance` (12) from their target.
 
 ## Systems
 
@@ -104,6 +113,8 @@ Everything tunable is here. Default values are the starting values in `docs/GDD.
 | Run, draft, currency | `RunManager`, `DraftManager`, `Currency` | server |
 | UI | `HUD`, `DraftScreen`, `BossBar` | every client, reads NetworkVariables |
 | Juice | `Juice` static helpers | local only |
+| Follow camera | `Core/Framing/ArenaCameraRig` (on the Game scene's `ArenaCamera`; pure `ArenaFraming`), `ArenaBounds` (component on each arena prefab: play area + camera area, `Current` = the arena enabled last), `CameraFollowData` | every PC with a camera, local only; the server build never runs it |
+| Off-screen markers | `UI/OffscreenIndicators` (own overlay canvas, sort order 6; pure `EdgeIndicatorMath`) | every PC, local only; reads `PlayerIdentity.All`, `ReviveSystem.All`, `BossBrain.All` |
 
 ### Damage flow
 
@@ -131,7 +142,7 @@ Everything tunable is here. Default values are the starting values in `docs/GDD.
 ## Game feel helpers (`Juice`)
 
 - **Hitstop never touches `Time.timeScale`** (on the host that would slow the server). It freezes the animators and sprites of the two entities involved for a few frames.
-- Screen shake through Cinemachine impulse, scaled by the settings slider.
+- Screen shake through Cinemachine impulse, scaled by the settings slider. The impulse listener sits on the same `ArenaCamera` that `ArenaCameraRig` moves, so shake and panning add up.
 - Flash: white sprite flash via a material property block.
 - Squash and stretch on jump, land, dodge.
 

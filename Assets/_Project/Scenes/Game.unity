@@ -3755,6 +3755,8 @@ GameObject:
   - component: {fileID: 869891193}
   - component: {fileID: 869891192}
   - component: {fileID: 869891191}
+  - component: {fileID: 869891198}
+  - component: {fileID: 869891197}
   m_Layer: 0
   m_Name: ArenaCamera
   m_TagString: Untagged
@@ -3922,6 +3924,32 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &869891197
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 869891190}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 98977a0593eb3bc48ad316d093a99003, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: GraceRun.Runtime::GraceRun.UI.OffscreenIndicators
+  _data: {fileID: 11400000, guid: ce623b3a0bd6336498e5a99c0515118e, type: 2}
+--- !u!114 &869891198
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 869891190}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 20a478676fa477a4982125c38e81b83f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: GraceRun.Runtime::GraceRun.Core.Framing.ArenaCameraRig
+  _data: {fileID: 11400000, guid: ce623b3a0bd6336498e5a99c0515118e, type: 2}
 --- !u!1 &883776452
 GameObject:
   m_ObjectHideFlags: 0

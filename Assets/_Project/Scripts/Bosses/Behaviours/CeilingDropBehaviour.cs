@@ -1,3 +1,4 @@
+using GraceRun.Core.Framing;
 using GraceRun.Player;
 using UnityEngine;
 
@@ -25,7 +26,7 @@ namespace GraceRun.Bosses.Behaviours
             switch (phase)
             {
                 case AttackPhase.Windup:
-                    var dropX = BroodMotherMath.ClampArenaX(ResolveTargetX(runner), _arenaHalfWidth);
+                    var dropX = BroodMotherMath.ClampArenaX(ResolveTargetX(runner), ArenaBounds.WidenedHalfWidth(_arenaHalfWidth));
                     motor.ServerPerch(new Vector2(dropX, _ceilingY));
                     break;
                 case AttackPhase.Active:

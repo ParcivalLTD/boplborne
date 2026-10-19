@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4dee08011d266994db13fac7c37842af, type: 3}
   m_Name: BellTwinData
   m_EditorClassIdentifier: GraceRun.Runtime::GraceRun.Bosses.Behaviours.BellTwinData
-  _spawnSeparationX: 6.5
+  _spawnSeparationX: 16
   _tetherOffset: {x: 0, y: 0.8}
   _tetherWidth: 0.14
   _tetherColor: {r: 0.88, g: 0.72, b: 0.42, a: 0.75}

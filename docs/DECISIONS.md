@@ -4,7 +4,7 @@ Settled. Don't re-open these unless the user explicitly asks. New decisions get 
 
 | # | Decision | Why |
 | --- | --- | --- |
-| 1 | 2D side-view, one screen per arena | Bopl-style physics chaos, readable bosses, every player always sees the whole fight; 2D is far easier for AI to build and debug. |
+| 1 | 2D side-view, one screen per arena (**superseded by 22**) | Bopl-style physics chaos, readable bosses, every player always sees the whole fight; 2D is far easier for AI to build and debug. |
 | 2 | Online co-op with Netcode for GameObjects, built in from day one | Players are on separate PCs. Adding networking later would mean rewriting most systems. |
 | 3 | Direct IP over Hamachi; the host (or a server-only build) runs the server | Free, no cloud services or accounts; 4 friends fit the free Hamachi plan. |
 | 4 | Owner-authoritative player movement; server-authoritative everything that matters | Controls feel instant; HP, bosses, draft and run state stay consistent. Friends don't cheat. |
@@ -25,3 +25,4 @@ Settled. Don't re-open these unless the user explicitly asks. New decisions get 
 | 19 | Attack and ability controls are a player setting (Settings → Controls setup): keyboard + mouse (default), keyboard only, mouse only, or custom per action | Some people play with one hand on the mouse, some without a mouse; a custom scheme covers everyone else. The scheme is local to each player and never networked. |
 | 20 | Nicknames: typed in the main menu, sent with the join request, cleaned and made unique by the server, synced as a player NetworkVariable; empty means P1-P4 | A client can send anything, so the server decides the final name. Names are for display only; slots (colour, hat) stay the identity. |
 | 21 | Reopened on purpose by the user (2026-10-19): bigger maps with a panning camera, and Brawlhalla-style weapons, are wanted; decision 1 (one screen per arena) no longer holds for future arenas | Backlog items, not built yet. |
+| 22 | Arenas are bigger than one screen, with a panning follow camera (2026-10-19). The camera frames the living players (plus a boss within `BossFocusRange`), never lets the local player get closer than `LocalMargin` to the view edge, is clamped to the arena prefab's `ArenaBounds`, stays pixel perfect at a fixed zoom, and is local presentation only. Edge markers show off-screen teammates, gravestones and bosses. The hub stays one screen. | Replaces decision 1. Wide arenas need the group to be able to spread out; a fixed zoom keeps the 16 PPU pixel art crisp and the view size identical for everyone, so telegraph readability does not depend on zoom. |

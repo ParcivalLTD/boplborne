@@ -1,3 +1,4 @@
+using GraceRun.Core.Framing;
 using System.Collections.Generic;
 using GraceRun.Combat;
 using GraceRun.Core;
@@ -84,7 +85,7 @@ namespace GraceRun.Bosses.Behaviours
 
             if (!IsServer) return;
             if (_age >= _data.Lifetime ||
-                Mathf.Abs(transform.position.x) >= _data.ArenaHalfWidth ||
+                Mathf.Abs(transform.position.x) >= ArenaBounds.WidenedHalfWidth(_data.ArenaHalfWidth) ||
                 BossBrain.AreAllDefeated ||
                 HitBlocker(dir))
             {
