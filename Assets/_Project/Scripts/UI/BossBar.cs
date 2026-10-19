@@ -29,7 +29,7 @@ namespace GraceRun.UI
         private void LateUpdate()
         {
             if (_boss == null || !_boss.Health.IsSpawned) return;
-            _fill.localScale = new Vector3(Mathf.Clamp01(_boss.Health.Normalized), 1f, 1f);
+            _fill.localScale = new Vector3(BossBrain.EncounterNormalizedHP, 1f, 1f);
         }
 
         private void Bind(BossBrain boss)
@@ -43,7 +43,7 @@ namespace GraceRun.UI
             _phaseTick.anchorMin = new Vector2(threshold, 0f);
             _phaseTick.anchorMax = new Vector2(threshold, 1f);
             _phaseTick.anchoredPosition = Vector2.zero;
-            _fill.localScale = Vector3.one;
+            _fill.localScale = new Vector3(BossBrain.EncounterNormalizedHP, 1f, 1f);
         }
     }
 }

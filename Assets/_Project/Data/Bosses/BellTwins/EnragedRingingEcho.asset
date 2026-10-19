@@ -1,0 +1,35 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cf49f4e03f190c242a10d63d36275ab9, type: 3}
+  m_Name: EnragedRingingEcho
+  m_EditorClassIdentifier: GraceRun.Runtime::GraceRun.Bosses.AttackData
+  _id: enraged_ringing_echo
+  _windup: 0.6
+  _active: 0.2
+  _recovery: 1.25
+  _punishWindow: 1.05
+  _damage: 25
+  _knockback: {x: 11, y: 6}
+  _hitboxOffset: {x: 0, y: -1.5}
+  _hitboxSize: {x: 7.5, y: 3}
+  _telegraphType: 1
+  _glowPart: 0
+  _weakPointOffset: {x: 0, y: 1.2}
+  _lungeDistance: 0
+  _lungeTime: 0.2
+  _followUp: {fileID: 0}
+  _behaviour: {fileID: 11400000, guid: 520a8d1ca9ec8e443af03333ac562eba, type: 2}
+  _windupCue: {fileID: 11400000, guid: 59902163e854b8d4b9a2d698e00a9eb4, type: 2}
+  _weight: 0
+  _cooldown: 0
+  _minRange: 0
+  _maxRange: 28

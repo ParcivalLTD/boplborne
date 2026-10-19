@@ -55,14 +55,19 @@ namespace GraceRun.Bosses
             instance.GetComponent<NetworkObject>().Spawn(true);
         }
 
-        /// <summary>Server only: removes the current boss (and any boss-spawned minions or hazard zones).</summary>
+        /// <summary>Server only: removes all active boss bodies (and any boss-spawned minions or hazard zones).</summary>
         public void ServerDespawnCurrent()
         {
             if (!IsServer) return;
             Behaviours.BroodCrawler.ServerDespawnAll();
             Behaviours.WebZone.ServerDespawnAll();
-            var current = BossBrain.Active;
-            if (current != null && current.IsSpawned) current.NetworkObject.Despawn();
+            Behaviours.BellShockwave.ServerDespawnAll();
+            var all = BossBrain.All;
+            for (var i = all.Count - 1; i >= 0; i--)
+            {
+                var boss = all[i];
+                if (boss != null && boss.IsSpawned) boss.NetworkObject.Despawn();
+            }
         }
 
         private void ServerSpawn(int index)

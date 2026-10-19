@@ -52,11 +52,15 @@ namespace GraceRun.DebugTools
             if (BossSpawner.Instance != null) BossSpawner.Instance.SkipToBossRpc(index);
         }
 
-        /// <summary>Sets the current boss's HP, through the server.</summary>
+        /// <summary>Sets the current boss's (or linked twins') HP, through the server.</summary>
         public static void SetBossHP(int value)
         {
             var boss = BossBrain.Active;
-            if (boss != null) boss.Health.DebugSetCurrentRpc(value);
+            if (boss == null) return;
+            if (boss.TryGetComponent< GraceRun.Bosses.Behaviours.BellTwinLink>(out var link))
+                link.SetEncounterHPRpc(value);
+            else
+                boss.Health.DebugSetCurrentRpc(value);
         }
     }
 }

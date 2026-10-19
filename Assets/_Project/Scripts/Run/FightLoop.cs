@@ -130,8 +130,7 @@ namespace GraceRun.Run
 
         private void CheckOutcome()
         {
-            var boss = BossBrain.Active;
-            var bossDefeated = boss == null || boss.Health.IsDead;
+            var bossDefeated = BossBrain.AreAllDefeated;
             CountPlayers(out var players, out var living);
             var outcome = FightRules.Outcome(bossDefeated, players, living);
             if (outcome != FightPhase.Fighting) SetPhase(outcome);

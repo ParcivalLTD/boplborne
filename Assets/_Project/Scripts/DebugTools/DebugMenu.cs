@@ -118,7 +118,7 @@ namespace GraceRun.DebugTools
             var boss = BossBrain.Active;
             if (boss == null || !boss.IsSpawned) return;
 
-            GUILayout.Label($"{boss.Data.DisplayName} HP {boss.Health.Current}/{boss.Health.Max}, phase {boss.Phase}, target {boss.TargetId}");
+            GUILayout.Label($"{boss.Data.DisplayName} HP {BossBrain.EncounterCurrentHP}/{BossBrain.EncounterMaxHP}, phase {boss.Phase}, target {boss.TargetId}");
             GUILayout.BeginHorizontal();
             _bossHpText = GUILayout.TextField(_bossHpText, GUILayout.Width(70f));
             if (GUILayout.Button("Set boss HP") && int.TryParse(_bossHpText, out var hp)) DebugCommands.SetBossHP(hp);

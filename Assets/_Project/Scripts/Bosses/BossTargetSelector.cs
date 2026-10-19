@@ -32,13 +32,15 @@ namespace GraceRun.Bosses
         /// <summary>Server only: false while the boss is attacking, so the target stays put.</summary>
         public bool AllowSwitch { get; set; } = true;
 
+        /// <summary>Server only: optional linked twin selector whose target this boss avoids when 2+ players are alive.</summary>
+        public BossTargetSelector PartnerSelector { get; set; }
+
         private bool HasTarget => _target != null && _targetHealth != null && _targetHealth.IsSpawned && !_targetHealth.IsDead;
 
         public override void OnNetworkSpawn()
         {
             if (!IsServer) return;
-            // No run seed yet (RunManager, M6): a per-boss seed from the clock.
-            _random = new System.Random(System.Environment.TickCount);
+            _random = new System.Random(System.Environment.TickCount ^ (int)NetworkObjectId);
             Switch();
         }
 
@@ -49,10 +51,21 @@ namespace GraceRun.Bosses
             if (!HasTarget || (_switchTimer <= 0f && AllowSwitch)) Switch();
         }
 
+        /// <summary>Server only: forces an immediate target re-evaluation (e.g. after linking twins).</summary>
+        public void ServerReselect()
+        {
+            if (IsServer && IsSpawned) Switch();
+        }
+
         private void Switch()
         {
             CollectLiving();
-            var id = BossTargeting.Choose(_targetId.Value, _living, _random.Next());
+            var partnerTarget = PartnerSelector != null && PartnerSelector.IsSpawned
+                ? PartnerSelector.TargetId
+                : BossTargeting.NoTarget;
+            var id = partnerTarget != BossTargeting.NoTarget
+                ? Behaviours.BellTwinMath.ChooseSplitTarget(_targetId.Value, partnerTarget, _living, _random.Next())
+                : BossTargeting.Choose(_targetId.Value, _living, _random.Next());
             _targetId.Value = id;
             _switchTimer = _data.TargetSwitchInterval;
 

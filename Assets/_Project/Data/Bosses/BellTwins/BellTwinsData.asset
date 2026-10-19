@@ -1,0 +1,37 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bf20e1d2ce098f341ba2663937059ed5, type: 3}
+  m_Name: BellTwinsData
+  m_EditorClassIdentifier: GraceRun.Runtime::GraceRun.Bosses.BossData
+  _id: bell_twins
+  _displayName: The Bell Twins
+  _floor: 3
+  _accentColor: {r: 0.722, g: 0.573, b: 0.353, a: 1}
+  _baseHP: 720
+  _hpScalePerExtraPlayer: 0.6
+  _phase2Threshold: 0.5
+  _phase1Attacks:
+  - {fileID: 11400000, guid: 2b611db936a9b4f429a4b191728e4c5d, type: 2}
+  - {fileID: 11400000, guid: 596e231ee44d74d44ab3abc11c66d163, type: 2}
+  - {fileID: 11400000, guid: affd2cebefa63164e88236070e76f230, type: 2}
+  _phase2Attacks:
+  - {fileID: 11400000, guid: 9b0c9641eb04cd94f83b1440e08dc72f, type: 2}
+  - {fileID: 11400000, guid: 941b92de6379dcf43b492ac66ad72c11, type: 2}
+  - {fileID: 11400000, guid: affd2cebefa63164e88236070e76f230, type: 2}
+  - {fileID: 11400000, guid: 2b611db936a9b4f429a4b191728e4c5d, type: 2}
+  _idleTime: 0.75
+  _targetSwitchInterval: 7
+  _walkSpeed: 3.6
+  _attackStartLead: 0.1
+  _despawnDelay: 1.5
+  _prefab: {fileID: 5488232915260887801, guid: 5bb827f20e773bb4e84a4356826c0bb0, type: 3}
+  _arenaPrefab: {fileID: 3417632794565641142, guid: e77e1e1386af3f7489dcd0205645ba75, type: 3}

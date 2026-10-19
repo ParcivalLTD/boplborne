@@ -26,6 +26,7 @@ namespace GraceRun.Bosses
         private Vector2 _perchPosition;
         private float _dropVelocity;
         private float _dropTimer;
+        private float _speedMultiplier = 1f;
 
         /// <summary>+1 facing right, -1 facing left.</summary>
         public sbyte Facing => _facing.Value;
@@ -38,6 +39,7 @@ namespace GraceRun.Bosses
 
         public override void OnNetworkSpawn()
         {
+            _speedMultiplier = 1f;
             _facing.OnValueChanged += OnFacingChanged;
             ApplyFacing(_facing.Value);
         }
@@ -69,7 +71,13 @@ namespace GraceRun.Bosses
                 return;
             }
 
-            _body.linearVelocityX = _moveDirection * _data.WalkSpeed;
+            _body.linearVelocityX = _moveDirection * (_data.WalkSpeed * _speedMultiplier);
+        }
+
+        /// <summary>Server only: scales walking speed (e.g. when a surviving Bell Twin enrages).</summary>
+        public void ServerSetSpeedMultiplier(float multiplier)
+        {
+            if (IsServer) _speedMultiplier = Mathf.Max(0.1f, multiplier);
         }
 
         /// <summary>Server only: walks toward <paramref name="targetX"/> and faces it.</summary>

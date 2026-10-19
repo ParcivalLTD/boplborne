@@ -19,8 +19,13 @@ namespace GraceRun.Bosses
     {
         [SerializeField] private BossData _data;
 
+        private static readonly List<BossBrain> AllActive = new();
+
         private readonly NetworkVariable<byte> _phase = new(
             1, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Server);
+
+        private readonly NetworkVariable<int> _encounterMaxHP = new(
+            0, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Server);
 
         private readonly List<AttackOption> _options = new();
         private readonly List<bool> _ready = new();
@@ -31,15 +36,61 @@ namespace GraceRun.Bosses
         private System.Random _random;
         private int _seed;
         private bool _hasSeed;
+        private bool _isLinkedBody;
+        private float _idleMultiplier = 1f;
         private float[] _readyAt;
         private float _idleTimer;
         private int _attackId = -1;
 
-        /// <summary>The spawned boss on this PC, if any.</summary>
+        /// <summary>The primary living (or last spawned) boss on this PC, if any.</summary>
         public static BossBrain Active { get; private set; }
 
-        /// <summary>Raised on every PC when a boss spawns or despawns (null).</summary>
+        /// <summary>All currently spawned boss bodies on this PC (1 for normal bosses, 2 for The Bell Twins).</summary>
+        public static IReadOnlyList<BossBrain> All => AllActive;
+
+        /// <summary>Raised on every PC when the active boss changes or despawns (null).</summary>
         public static event Action<BossBrain> ActiveChanged;
+
+        /// <summary>True when no boss is spawned or every spawned boss body has reached 0 HP.</summary>
+        public static bool AreAllDefeated
+        {
+            get
+            {
+                if (AllActive.Count == 0) return true;
+                for (var i = 0; i < AllActive.Count; i++)
+                    if (AllActive[i] != null && AllActive[i].IsSpawned && !AllActive[i]._health.IsDead) return false;
+                return true;
+            }
+        }
+
+        /// <summary>Sum of current HP across all spawned boss bodies on this PC.</summary>
+        public static int EncounterCurrentHP
+        {
+            get
+            {
+                var sum = 0;
+                for (var i = 0; i < AllActive.Count; i++)
+                    if (AllActive[i] != null && AllActive[i]._health.IsSpawned) sum += Mathf.Max(0, AllActive[i]._health.Current);
+                return sum;
+            }
+        }
+
+        /// <summary>Total encounter max HP (shared across linked twins even after the first twin despawns).</summary>
+        public static int EncounterMaxHP
+        {
+            get
+            {
+                if (Active != null && Active._encounterMaxHP.Value > 0) return Active._encounterMaxHP.Value;
+                var sum = 0;
+                for (var i = 0; i < AllActive.Count; i++)
+                    if (AllActive[i] != null && AllActive[i]._health.IsSpawned) sum += AllActive[i]._health.Max;
+                return Mathf.Max(1, sum);
+            }
+        }
+
+        /// <summary>Normalized 0..1 HP for the top boss bar across one or multiple linked boss bodies.</summary>
+        public static float EncounterNormalizedHP =>
+            AllActive.Count > 0 ? Mathf.Clamp01((float)EncounterCurrentHP / EncounterMaxHP) : 0f;
 
         /// <summary>Raised on every PC when the phase changes (1 or 2).</summary>
         public event Action<int> PhaseChanged;
@@ -70,14 +121,20 @@ namespace GraceRun.Bosses
         public override void OnNetworkSpawn()
         {
             _phase.OnValueChanged += OnPhaseValueChanged;
-            Active = this;
-            ActiveChanged?.Invoke(this);
+            if (!AllActive.Contains(this)) AllActive.Add(this);
+            RefreshActive();
             if (!IsServer) return;
 
+            _idleMultiplier = 1f;
             _random = new System.Random(_hasSeed ? _seed : Environment.TickCount);
             _readyAt = new float[CountAttackIds()];
-            var players = Mathf.Max(1, NetworkManager.ConnectedClientsIds.Count);
-            _health.ServerSetMax(BossMath.ScaledMaxHP(_data.MaxHP, _data.HpScalePerExtraPlayer, players));
+            if (!_isLinkedBody)
+            {
+                var players = Mathf.Max(1, NetworkManager.ConnectedClientsIds.Count);
+                var scaled = BossMath.ScaledMaxHP(_data.MaxHP, _data.HpScalePerExtraPlayer, players);
+                _health.ServerSetMax(scaled);
+                _encounterMaxHP.Value = scaled;
+            }
             _health.Changed += OnHealthChanged;
             _health.Died += OnDied;
             _runner.PhaseChanged += OnAttackPhaseChanged;
@@ -90,9 +147,8 @@ namespace GraceRun.Bosses
             _health.Changed -= OnHealthChanged;
             _health.Died -= OnDied;
             _runner.PhaseChanged -= OnAttackPhaseChanged;
-            if (Active != this) return;
-            Active = null;
-            ActiveChanged?.Invoke(null);
+            AllActive.Remove(this);
+            RefreshActive();
         }
 
         private void Update()
@@ -109,6 +165,24 @@ namespace GraceRun.Bosses
                     Choose();
                     break;
             }
+        }
+
+        /// <summary>Server only: configures this boss body as part of a multi-body linked encounter (The Bell Twins).</summary>
+        public void ServerConfigureLinkedBody(int bodyMaxHP, int totalEncounterMaxHP)
+        {
+            if (!IsServer) return;
+            _isLinkedBody = true;
+            _encounterMaxHP.Value = Mathf.Max(1, totalEncounterMaxHP);
+            _health.ServerSetMax(bodyMaxHP);
+        }
+
+        /// <summary>Server only: enters Phase 2 and speeds up movement and attack cadence (surviving Bell Twin).</summary>
+        public void ServerEnrage(float speedMultiplier, float idleMultiplier)
+        {
+            if (!IsServer || State == BossState.Dead) return;
+            _phase.Value = 2;
+            _idleMultiplier = Mathf.Clamp(idleMultiplier, 0.2f, 1f);
+            _motor.ServerSetSpeedMultiplier(speedMultiplier);
         }
 
         /// <summary>Server only: a ghost's poke holds an idle or walking boss in place a moment. Attacks run on.</summary>
@@ -166,7 +240,7 @@ namespace GraceRun.Bosses
         private void EnterIdle()
         {
             State = BossState.Idle;
-            _idleTimer = _data.IdleTime;
+            _idleTimer = _data.IdleTime * _idleMultiplier;
             _motor.ServerStop();
         }
 
@@ -191,15 +265,37 @@ namespace GraceRun.Bosses
 
         private void OnHealthChanged(int previous, int current)
         {
-            if (_phase.Value < 2 && BossMath.IsInPhase2(current, _health.Max, _data.Phase2Threshold)) _phase.Value = 2;
+            if (!_isLinkedBody && _phase.Value < 2 && BossMath.IsInPhase2(current, _health.Max, _data.Phase2Threshold))
+                _phase.Value = 2;
         }
 
         private void OnDied()
         {
+            RefreshActive();
+            if (!IsServer) return;
             State = BossState.Dead;
             _motor.ServerStop();
             _runner.ServerCancel();
             StartCoroutine(DespawnAfterDelay());
+        }
+
+        private static void RefreshActive()
+        {
+            BossBrain next = null;
+            for (var i = 0; i < AllActive.Count; i++)
+            {
+                var candidate = AllActive[i];
+                if (candidate == null || !candidate.IsSpawned) continue;
+                if (next == null) next = candidate;
+                if (!candidate._health.IsDead)
+                {
+                    next = candidate;
+                    break;
+                }
+            }
+            if (Active == next) return;
+            Active = next;
+            ActiveChanged?.Invoke(Active);
         }
 
         private IEnumerator DespawnAfterDelay()
