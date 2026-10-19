@@ -1,0 +1,109 @@
+name: Build & Release Windows Single-EXE
+
+on:
+  push:
+    branches:
+      - main
+      - master
+    tags:
+      - 'v*'
+  workflow_dispatch:
+    inputs:
+      release_tag:
+        description: 'Release tag name (e.g. v0.1.0, latest)'
+        required: false
+        default: 'latest'
+
+permissions:
+  contents: write
+
+jobs:
+  build-and-release:
+    name: Build Unity Windows & Publish Single EXE
+    runs-on: windows-latest
+    timeout-minutes: 60
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          lfs: true
+
+      - name: Read game version from GameConfig.asset
+        id: version
+        shell: pwsh
+        run: |
+          $assetPath = "Assets/_Project/Data/Config/GameConfig.asset"
+          $version = "0.1.0"
+          if (Test-Path $assetPath) {
+            $match = Select-String -Path $assetPath -Pattern "_gameVersion:\s*(.+)"
+            if ($match) {
+              $version = $match.Matches[0].Groups[1].Value.Trim().Trim('"').Trim("'")
+            }
+          }
+          if ("${{ github.ref_type }}" -eq "tag") {
+            $tagName = "${{ github.ref_name }}"
+          } elseif ("${{ inputs.release_tag }}" -ne "" -and "${{ inputs.release_tag }}" -ne "latest") {
+            $tagName = "${{ inputs.release_tag }}"
+          } else {
+            $tagName = "v$version"
+          }
+          echo "game_version=$version" >> $env:GITHUB_OUTPUT
+          echo "tag_name=$tagName" >> $env:GITHUB_OUTPUT
+          Write-Host "Detected GameVersion: $version (Release Tag: $tagName)"
+
+      - name: Cache Unity Library
+        uses: actions/cache@v4
+        with:
+          path: Library
+          key: Library-Windows-${{ hashFiles('Assets/**', 'Packages/**', 'ProjectSettings/**') }}
+          restore-keys: |
+            Library-Windows-
+
+      - name: Build Unity StandaloneWindows64
+        uses: game-ci/unity-builder@v4
+        env:
+          UNITY_LICENSE: ${{ secrets.UNITY_LICENSE }}
+          UNITY_SERIAL: ${{ secrets.UNITY_SERIAL }}
+          UNITY_EMAIL: ${{ secrets.UNITY_EMAIL }}
+          UNITY_PASSWORD: ${{ secrets.UNITY_PASSWORD }}
+        with:
+          targetPlatform: StandaloneWindows64
+          buildMethod: GraceRun.Editor.BuildMenu.BuildWindowsCli
+          buildsPath: Builds
+          buildName: GraceRun
+
+      - name: Package into single self-extracting GraceRun.exe
+        id: package
+        shell: pwsh
+        run: |
+          $version = "${{ steps.version.outputs.game_version }}"
+          pwsh -NoProfile -ExecutionPolicy Bypass -File .github/scripts/Pack-SingleExe.ps1 -Version $version
+          echo "single_exe=Builds/Release/GraceRun_v${version}_SingleFile.exe" >> $env:GITHUB_OUTPUT
+          echo "portable_zip=Builds/Release/GraceRun_v${version}_Portable.zip" >> $env:GITHUB_OUTPUT
+
+      - name: Upload Single-EXE Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: GraceRun-v${{ steps.version.outputs.game_version }}-SingleFile
+          path: ${{ steps.package.outputs.single_exe }}
+
+      - name: Publish to GitHub Releases
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: ${{ steps.version.outputs.tag_name }}
+          name: Grace Run ${{ steps.version.outputs.tag_name }}
+          body: |
+            ## Grace Run ${{ steps.version.outputs.tag_name }}
+            Automated build from commit `${{ github.sha }}`.
+
+            ### Downloads
+            - **`GraceRun_v${{ steps.version.outputs.game_version }}_SingleFile.exe`**: Single-file executable — download and double-click to play immediately (also forwards command-line flags like `-screen-fullscreen 0 -screen-width 1280 -screen-height 720` or `-connect <ip>`).
+            - **`GraceRun_v${{ steps.version.outputs.game_version }}_Portable.zip`**: Standard portable folder archive.
+          draft: false
+          prerelease: false
+          make_latest: true
+          files: |
+            ${{ steps.package.outputs.single_exe }}
+            ${{ steps.package.outputs.portable_zip }}

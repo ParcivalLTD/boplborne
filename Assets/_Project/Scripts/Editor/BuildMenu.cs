@@ -1,17 +1,19 @@
 using System;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using GraceRun.Core;
 using UnityEditor;
 using UnityEditor.Build.Reporting;
 using UnityEngine;
+using Debug = UnityEngine.Debug;
 
 namespace GraceRun.Editor
 {
     /// <summary>
-    /// Editor build tools (docs/ARCHITECTURE.md, docs/PROMPTS.md 6.5):
-    /// builds the client to Builds/Windows with the version from GameConfig in the folder name.
-    /// Accessible via the editor menu "Grace Run → Build Windows".
+    /// Editor build tools (docs/ARCHITECTURE.md, docs/PROMPTS.md 6.5 / 9.1):
+    /// builds the client to Builds/Windows with the version from GameConfig in the folder name,
+    /// and can package a single-file executable into Builds/Release.
     /// </summary>
     [InitializeOnLoad]
     public static class BuildMenu
@@ -45,27 +47,26 @@ namespace GraceRun.Editor
         }
 
         /// <summary>
+        /// CLI entrypoint for CI/CD batchmode builds (-executeMethod GraceRun.Editor.BuildMenu.BuildWindowsCli).
+        /// Exits with code 0 on success or 1 on failure.
+        /// </summary>
+        public static void BuildWindowsCli()
+        {
+            var report = BuildWindows();
+            if (Application.isBatchMode)
+            {
+                EditorApplication.Exit(report.summary.result == BuildResult.Succeeded ? 0 : 1);
+            }
+        }
+
+        /// <summary>
         /// Menu item "Grace Run → Build Windows": builds the client to Builds/Windows with
         /// the version from GameConfig in the folder name.
         /// </summary>
         [MenuItem("Grace Run/Build Windows")]
         public static BuildReport BuildWindows()
         {
-            var config = AssetDatabase.LoadAssetAtPath<GameConfig>("Assets/_Project/Data/Config/GameConfig.asset");
-            if (config == null)
-            {
-                var guids = AssetDatabase.FindAssets("t:GameConfig");
-                if (guids.Length > 0)
-                {
-                    var path = AssetDatabase.GUIDToAssetPath(guids[0]);
-                    config = AssetDatabase.LoadAssetAtPath<GameConfig>(path);
-                }
-            }
-
-            var version = config != null && !string.IsNullOrWhiteSpace(config.GameVersion)
-                ? config.GameVersion.Trim()
-                : DefaultVersion;
-
+            var version = ReadGameVersion();
             var folderName = $"GraceRun_v{version}";
             var outputDir = Path.Combine(BuildFolderRoot, folderName);
             Directory.CreateDirectory(outputDir);
@@ -109,6 +110,70 @@ namespace GraceRun.Editor
             }
 
             return report;
+        }
+
+        /// <summary>
+        /// Menu item "Grace Run → Build Windows (Single EXE)": builds the Windows client and packages it
+        /// into a single self-extracting executable at Builds/Release/GraceRun_v{version}_SingleFile.exe.
+        /// </summary>
+        [MenuItem("Grace Run/Build Windows (Single EXE)")]
+        public static void BuildWindowsSingleExe()
+        {
+            var report = BuildWindows();
+            if (report.summary.result != BuildResult.Succeeded) return;
+
+            var version = ReadGameVersion();
+            var scriptPath = Path.GetFullPath(".github/scripts/Pack-SingleExe.ps1");
+            if (!File.Exists(scriptPath))
+            {
+                Debug.LogError($"[BuildMenu] Packaging script not found at '{scriptPath}'.");
+                return;
+            }
+
+            var psi = new ProcessStartInfo
+            {
+                FileName = "powershell",
+                Arguments = $"-NoProfile -ExecutionPolicy Bypass -File \"{scriptPath}\" -Version \"{version}\"",
+                WorkingDirectory = Path.GetFullPath("."),
+                UseShellExecute = false,
+                RedirectStandardOutput = true,
+                RedirectStandardError = true,
+                CreateNoWindow = true
+            };
+
+            using var proc = Process.Start(psi);
+            if (proc == null) return;
+            var stdout = proc.StandardOutput.ReadToEnd();
+            var stderr = proc.StandardError.ReadToEnd();
+            proc.WaitForExit();
+
+            if (proc.ExitCode == 0)
+            {
+                Debug.Log($"[BuildMenu] Single-EXE packaged successfully:\n{stdout.Trim()}");
+                EditorUtility.RevealInFinder(Path.GetFullPath($"Builds/Release/GraceRun_v{version}_SingleFile.exe"));
+            }
+            else
+            {
+                Debug.LogError($"[BuildMenu] Single-EXE packaging failed (exit {proc.ExitCode}):\n{stderr}\n{stdout}");
+            }
+        }
+
+        private static string ReadGameVersion()
+        {
+            var config = AssetDatabase.LoadAssetAtPath<GameConfig>("Assets/_Project/Data/Config/GameConfig.asset");
+            if (config == null)
+            {
+                var guids = AssetDatabase.FindAssets("t:GameConfig");
+                if (guids.Length > 0)
+                {
+                    var path = AssetDatabase.GUIDToAssetPath(guids[0]);
+                    config = AssetDatabase.LoadAssetAtPath<GameConfig>(path);
+                }
+            }
+
+            return config != null && !string.IsNullOrWhiteSpace(config.GameVersion)
+                ? config.GameVersion.Trim()
+                : DefaultVersion;
         }
     }
 }
