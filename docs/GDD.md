@@ -27,7 +27,7 @@ Grace Run is a 1–4 player online co-op roguelite. Friends climb a tower of sou
 | Jump (hold = higher) | South (A / Cross) | Space |
 | Dodge roll (i-frames) | East (B / Circle) | Left Shift |
 | Attack (3-hit combo) | West (X / Square) | J |
-| Ability 1 / 2 / 3 | North / LB / RB | K / L / ; |
+| Ability 1 / 2 / 3 | North / LB / RB | Left / middle / right mouse, aimed at the cursor (K / L / ; also work, aimed by facing) |
 | Flask (heal) | D-pad up | R |
 | Interact (revive) | D-pad down | E |
 | Pause | Start | Esc |

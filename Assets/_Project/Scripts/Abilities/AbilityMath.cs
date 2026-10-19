@@ -30,6 +30,43 @@ namespace GraceRun.Abilities
         }
 
         /// <summary>
+        /// Aim from <paramref name="from"/> toward the mouse cursor. A cursor on top of the caster
+        /// falls back to the facing side.
+        /// </summary>
+        public static Vector2 CursorAim(Vector2 from, Vector2 cursor, float facing)
+        {
+            var toCursor = cursor - from;
+            return toCursor.sqrMagnitude > 0.0001f ? toCursor.normalized : new Vector2(SideOf(facing), 0f);
+        }
+
+        /// <summary>A unit aim from any vector the network handed us; zero or NaN becomes straight right.</summary>
+        public static Vector2 SafeAim(Vector2 aim)
+        {
+            if (float.IsNaN(aim.x) || float.IsNaN(aim.y) || aim.sqrMagnitude < 0.0001f) return Vector2.right;
+            return aim.normalized;
+        }
+
+        /// <summary>+1 when <paramref name="x"/> points right or straight up/down, -1 when it points left.</summary>
+        public static float SideOf(float x) => x < 0f ? -1f : 1f;
+
+        /// <summary>Degrees above the horizontal on the aim's own side: -90 (down) to 90 (up).</summary>
+        public static float Elevation(Vector2 aim) =>
+            Mathf.Asin(Mathf.Clamp(SafeAim(aim).y, -1f, 1f)) * Mathf.Rad2Deg;
+
+        /// <summary>
+        /// A spawn offset authored for aiming right, turned up by <paramref name="elevation"/> degrees
+        /// and mirrored to <paramref name="side"/>. Elevation 0 just mirrors x, as before cursor aim.
+        /// </summary>
+        public static Vector2 AimedOffset(Vector2 offset, float side, float elevation)
+        {
+            var radians = elevation * Mathf.Deg2Rad;
+            var cos = Mathf.Cos(radians);
+            var sin = Mathf.Sin(radians);
+            var turned = new Vector2(offset.x * cos - offset.y * sin, offset.x * sin + offset.y * cos);
+            return new Vector2(turned.x * SideOf(side), turned.y);
+        }
+
+        /// <summary>
         /// Velocity a pull field wants a body to have: toward the centre at <paramref name="speed"/>,
         /// easing to 0 inside <paramref name="calmRadius"/> so bodies settle instead of overshooting.
         /// </summary>

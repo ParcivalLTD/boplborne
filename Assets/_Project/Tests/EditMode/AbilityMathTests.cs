@@ -77,5 +77,53 @@ namespace GraceRun.Tests
             var straightDown = AbilityMath.PushAway(new Vector2(0f, 2f), Vector2.zero, 10f, 5f);
             Assert.AreEqual(15f, straightDown.y, Tolerance);
         }
+
+        [Test]
+        public void CursorAimPointsAtTheCursor()
+        {
+            var aim = AbilityMath.CursorAim(new Vector2(1f, 1f), new Vector2(-2f, 5f), 1f);
+            Assert.AreEqual(-0.6f, aim.x, Tolerance);
+            Assert.AreEqual(0.8f, aim.y, Tolerance);
+        }
+
+        [Test]
+        public void CursorOnTheCasterFallsBackToFacing() =>
+            Assert.AreEqual(Vector2.left, AbilityMath.CursorAim(Vector2.one, Vector2.one, -1f));
+
+        [Test]
+        public void SafeAimTurnsZeroAndNaNIntoRight()
+        {
+            Assert.AreEqual(Vector2.right, AbilityMath.SafeAim(Vector2.zero));
+            Assert.AreEqual(Vector2.right, AbilityMath.SafeAim(new Vector2(float.NaN, 1f)));
+            Assert.AreEqual(1f, AbilityMath.SafeAim(new Vector2(3f, 4f)).magnitude, Tolerance);
+        }
+
+        [Test]
+        public void ElevationIsMeasuredOnTheAimsOwnSide()
+        {
+            Assert.AreEqual(45f, AbilityMath.Elevation(new Vector2(-1f, 1f)), Tolerance);
+            Assert.AreEqual(-90f, AbilityMath.Elevation(Vector2.down), Tolerance);
+        }
+
+        [Test]
+        public void AimedOffsetWithoutElevationOnlyMirrors() =>
+            Assert.AreEqual(new Vector2(-4f, 1.5f), AbilityMath.AimedOffset(new Vector2(4f, 1.5f), -1f, 0f));
+
+        [Test]
+        public void AimedOffsetTurnsTowardTheAim()
+        {
+            var up = AbilityMath.AimedOffset(new Vector2(4f, 0f), 1f, 90f);
+            Assert.AreEqual(0f, up.x, Tolerance);
+            Assert.AreEqual(4f, up.y, Tolerance);
+        }
+
+        [Test]
+        public void CursorAimedLaunchMatchesTheCursor()
+        {
+            var aim = new Vector2(-1f, 1f).normalized;
+            var direction = AbilityMath.LaunchDirection(AbilityMath.SideOf(aim.x), AbilityMath.Elevation(aim), 0f, 0, 1);
+            Assert.AreEqual(aim.x, direction.x, Tolerance);
+            Assert.AreEqual(aim.y, direction.y, Tolerance);
+        }
     }
 }

@@ -60,21 +60,29 @@ namespace GraceRun.Abilities
             return IsOwner ? Math.Max(synced, _predictedReadyAt[slot]) : synced;
         }
 
-        private void OnAbilityPressed(int slot)
+        private void OnAbilityPressed(int slot, bool atCursor)
         {
             if (!enabled || _dodge.IsDodging) return;
             var ability = _loadout.Get(slot);
             if (ability == null || !AbilityCooldown.IsReady(ReadyAt(slot), Now)) return;
 
-            var aim = AbilityMath.CasterAim(_movement.Facing, _input.Move.y);
+            var cursor = Vector2.zero;
+            var cursorAimed = atCursor && _input.TryGetCursorWorld(out cursor);
+            var aim = cursorAimed
+                ? AbilityMath.CursorAim(transform.position, cursor, _movement.Facing)
+                : AbilityMath.CasterAim(_movement.Facing, _input.Move.y);
             if (ability.CasterAction != null && !ability.CasterAction.OwnerUse(this, ability, aim)) return;
 
             _predictedReadyAt[slot] = AbilityCooldown.NextReadyAt(Now, CooldownFor(slot, ability));
-            UseAbilityRpc((byte)slot, aim);
+            UseAbilityRpc((byte)slot, aim, cursorAimed);
         }
 
+        /// <summary>
+        /// Owner to server. <paramref name="cursorAimed"/>: the effect goes straight along
+        /// <paramref name="aim"/>; otherwise only its side counts and the ability's launch angle applies.
+        /// </summary>
         [Rpc(SendTo.Server)]
-        private void UseAbilityRpc(byte slot, Vector2 aim)
+        private void UseAbilityRpc(byte slot, Vector2 aim, bool cursorAimed)
         {
             var ability = _loadout.Get(slot);
             var tolerance = _loadout.Catalog.CooldownTolerance;
@@ -86,7 +94,7 @@ namespace GraceRun.Abilities
 
             _loadout.ServerStartCooldown(slot, AbilityCooldown.NextReadyAt(Now, CooldownFor(slot, ability)));
             var power = _loadout.Level(slot) >= 2 ? ability.Level2PowerMultiplier : 1f;
-            if (ability.EffectPrefab != null) SpawnEffect(ability, aim, power);
+            if (ability.EffectPrefab != null) SpawnEffect(ability, AbilityMath.SafeAim(aim), cursorAimed, power);
         }
 
         /// <summary>Server to owner: the use was refused, so drop the predicted cooldown.</summary>
@@ -98,14 +106,15 @@ namespace GraceRun.Abilities
             if (slot >= 0 && slot < _predictedReadyAt.Length) _predictedReadyAt[slot] = 0d;
         }
 
-        private void SpawnEffect(AbilityData ability, Vector2 aim, float powerMultiplier)
+        private void SpawnEffect(AbilityData ability, Vector2 aim, bool cursorAimed, float powerMultiplier)
         {
-            var side = aim.x < 0f ? -1f : 1f;
-            var offset = new Vector2(ability.SpawnOffset.x * side, ability.SpawnOffset.y);
-            var position = (Vector2)transform.position + offset;
+            var side = AbilityMath.SideOf(aim.x);
+            var elevation = cursorAimed ? AbilityMath.Elevation(aim) : 0f;
+            var launchAngle = cursorAimed ? elevation : ability.LaunchAngle;
+            var position = (Vector2)transform.position + AbilityMath.AimedOffset(ability.SpawnOffset, side, elevation);
             for (var i = 0; i < ability.Count; i++)
             {
-                var direction = AbilityMath.LaunchDirection(side, ability.LaunchAngle, ability.Spread, i, ability.Count);
+                var direction = AbilityMath.LaunchDirection(side, launchAngle, ability.Spread, i, ability.Count);
                 var effect = Instantiate(ability.EffectPrefab, position, Quaternion.identity);
                 effect.ServerSetup(NetworkObjectId, direction, powerMultiplier);
                 effect.NetworkObject.Spawn(true);
