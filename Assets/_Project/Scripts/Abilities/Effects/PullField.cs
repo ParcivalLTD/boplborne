@@ -25,12 +25,13 @@ namespace GraceRun.Abilities.Effects
             if (!_effect.IsSpawned) return;
             var ability = _effect.Ability;
             var centre = (Vector2)transform.position;
-            var maxChange = ability.ForceRate * Time.fixedDeltaTime;
+            var power = _effect.PowerMultiplier;
+            var maxChange = ability.ForceRate * power * Time.fixedDeltaTime;
 
             foreach (var body in _bodies.Find(centre, ability.EffectRadius, _effect.CasterId))
             {
                 if (!ComboForce.OnBody(_effect, body, out var strength)) continue;
-                var target = AbilityMath.PullVelocity(body.transform.position, centre, ability.ForceSpeed * strength, ability.Size.x);
+                var target = AbilityMath.PullVelocity(body.transform.position, centre, ability.ForceSpeed * power * strength, ability.Size.x);
                 body.Steer(target, maxChange * strength);
             }
 
@@ -38,7 +39,7 @@ namespace GraceRun.Abilities.Effects
             foreach (var projectile in _projectiles.Find(centre, ability.EffectRadius))
             {
                 if (!ComboForce.OnProjectile(_effect, projectile, out var strength)) continue;
-                var target = AbilityMath.PullVelocity(projectile.transform.position, centre, ability.ForceSpeed * strength, ability.Size.x);
+                var target = AbilityMath.PullVelocity(projectile.transform.position, centre, ability.ForceSpeed * power * strength, ability.Size.x);
                 projectile.ServerSteer(target, maxChange * strength);
             }
         }

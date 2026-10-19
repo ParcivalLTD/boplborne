@@ -24,6 +24,9 @@ namespace GraceRun.Run
         private readonly NetworkList<DraftHand> _hands = new(
             null, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Server);
 
+        private readonly NetworkVariable<int> _extraRerolls = new(
+            0, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Server);
+
         private readonly Dictionary<ulong, int> _rerollsUsed = new();
         private readonly List<ulong> _pendingJoins = new();
         private DraftDealer _dealer;
@@ -41,6 +44,8 @@ namespace GraceRun.Run
         public bool IsOpen => IsSpawned && _fightLoop.Phase == FightPhase.Draft;
         public int HandCount => _hands.Count;
         public DraftHand GetHand(int index) => _hands[index];
+        public int ExtraRerolls => _extraRerolls.Value;
+        public int TotalRerollsAllowed => _config != null ? _config.RerollsPerRun + _extraRerolls.Value : 0;
 
         private double Now => NetworkManager.ServerTime.Time;
 
@@ -112,8 +117,22 @@ namespace GraceRun.Run
             var previous = hand.Cards;
             hand.Cards = Deal(LoadoutOf(hand.ClientId), previous);
             if (hand.Cards.Length < previous.Length) hand.Cards = Deal(LoadoutOf(hand.ClientId), default);
-            hand.RerollsLeft = (byte)DraftRules.RerollsLeft(_config.RerollsPerRun, used + 1);
+            hand.RerollsLeft = (byte)DraftRules.RerollsLeft(TotalRerollsAllowed, used + 1);
             _hands[index] = hand;
+        }
+
+        /// <summary>Server only: grants extra team rerolls (purchased at a rest stop).</summary>
+        public void ServerAddRerolls(int count = 1)
+        {
+            if (!IsServer || count <= 0) return;
+            _extraRerolls.Value += count;
+            for (var i = 0; i < _hands.Count; i++)
+            {
+                var hand = _hands[i];
+                _rerollsUsed.TryGetValue(hand.ClientId, out var used);
+                hand.RerollsLeft = (byte)DraftRules.RerollsLeft(TotalRerollsAllowed, used);
+                _hands[i] = hand;
+            }
         }
 
         /// <summary>Server only: resets the dealer and reroll counts for a new run with <paramref name="seed"/>.</summary>
@@ -121,6 +140,7 @@ namespace GraceRun.Run
         {
             if (!IsServer) return;
             _dealer = new DraftDealer(_config, _catalog, seed);
+            _extraRerolls.Value = 0;
             _rerollsUsed.Clear();
             _hands.Clear();
             _pendingJoins.Clear();
@@ -195,7 +215,7 @@ namespace GraceRun.Run
                 PlayerIndex = player.GetComponent<PlayerIdentity>().PlayerIndex,
                 Cards = Deal(player.GetComponent<AbilityLoadout>(), default),
                 Picked = DraftHand.NoPick,
-                RerollsLeft = (byte)DraftRules.RerollsLeft(_config.RerollsPerRun, used),
+                RerollsLeft = (byte)DraftRules.RerollsLeft(TotalRerollsAllowed, used),
             });
         }
 

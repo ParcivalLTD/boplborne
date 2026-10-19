@@ -70,7 +70,7 @@ namespace GraceRun.Abilities
                 Release(true);
                 return;
             }
-            _body.linearVelocity = toAnchor.normalized * _pulling.ForceSpeed;
+            _body.linearVelocity = toAnchor.normalized * (_pulling.ForceSpeed * PowerMultiplierFor(_pulling));
             _movement.LockControl(Time.fixedDeltaTime * 2f);
         }
 
@@ -125,6 +125,15 @@ namespace GraceRun.Abilities
             if (keepMomentum) _movement.LockControl(_movementData.KnockbackControlLock);
         }
 
+        private float PowerMultiplierFor(AbilityData ability)
+        {
+            if (_loadout == null || ability == null) return 1f;
+            for (var i = 0; i < AbilityLoadout.SlotCount; i++)
+                if (_loadout.Get(i) == ability && _loadout.Level(i) >= 2)
+                    return ability.Level2PowerMultiplier;
+            return 1f;
+        }
+
         /// <summary>Server: pulls a teammate toward the caster, through the teammate's own Knockback.</summary>
         [Rpc(SendTo.Server)]
         private void YankRpc(ulong targetId, short abilityId)
@@ -135,7 +144,8 @@ namespace GraceRun.Abilities
             if (!target.TryGetComponent(out Knockback knockback)) return;
 
             var toCaster = ((Vector2)transform.position - (Vector2)target.transform.position).normalized;
-            knockback.PushRpc(toCaster * ability.Knockback + Vector2.up * ability.KnockbackLift);
+            var power = PowerMultiplierFor(ability);
+            knockback.PushRpc(toCaster * (ability.Knockback * power) + Vector2.up * (ability.KnockbackLift * power));
         }
     }
 }

@@ -23,6 +23,16 @@ namespace GraceRun.Run
         [SerializeField, Min(0)] private int _currencyPerBoss = 100;
         [SerializeField, Min(0)] private int _bonusNoDeaths = 50;
         [SerializeField, Min(0)] private int _bonusFastKill = 50;
+        [SerializeField, Min(1f), Tooltip("Boss kill under this many seconds grants the fast kill bonus.")]
+        private float _fastKillSeconds = 60f;
+
+        [Header("Rest Stop")]
+        [SerializeField, Min(0), Tooltip("Shared currency cost to buy an additional team reroll.")]
+        private int _rerollCost = 50;
+        [SerializeField, Min(0), Tooltip("Shared currency cost to upgrade one ability to Level 2.")]
+        private int _upgradeCost = 100;
+        [SerializeField, Min(0), Tooltip("Shared currency cost to buy a party buff for the next boss fight.")]
+        private int _buffCost = 75;
 
         [Header("Draft")]
         [SerializeField, Range(1, 4), Tooltip("Cards each player is offered per draft.")]
@@ -44,6 +54,10 @@ namespace GraceRun.Run
         public int CurrencyPerBoss => _currencyPerBoss;
         public int BonusNoDeaths => _bonusNoDeaths;
         public int BonusFastKill => _bonusFastKill;
+        public float FastKillSeconds => _fastKillSeconds;
+        public int RerollCost => _rerollCost;
+        public int UpgradeCost => _upgradeCost;
+        public int BuffCost => _buffCost;
         public int CardsOffered => _cardsOffered;
         public int RerollsPerRun => _rerollsPerRun;
         public int LegendaryMinFloor => _legendaryMinFloor;

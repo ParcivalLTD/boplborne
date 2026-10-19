@@ -34,6 +34,8 @@ namespace GraceRun.Run
         private readonly Dictionary<ulong, Health> _healthById = new();
         private readonly Dictionary<ulong, ReviveSystem> _reviveById = new();
         private BossData _currentBoss;
+        private double _fightStartTime;
+        private bool _hadDeathsThisFight;
 
         /// <summary>The fight loop in the loaded Game scene on this PC, if any.</summary>
         public static FightLoop Instance { get; private set; }
@@ -125,6 +127,8 @@ namespace GraceRun.Run
             if (boss == null) Debug.LogError("No boss configured for fight.", this);
             var run = RunManager.Instance;
             _bossSpawner.ServerSpawn(boss, run != null && run.IsSpawned ? run.FloorSeed : (int?)null);
+            _fightStartTime = NetworkManager.ServerTime.Time;
+            _hadDeathsThisFight = false;
             SetPhase(FightPhase.Fighting);
         }
 
@@ -132,8 +136,30 @@ namespace GraceRun.Run
         {
             var bossDefeated = BossBrain.AreAllDefeated;
             CountPlayers(out var players, out var living);
+            if (living < players) _hadDeathsThisFight = true;
             var outcome = FightRules.Outcome(bossDefeated, players, living);
-            if (outcome != FightPhase.Fighting) SetPhase(outcome);
+            if (outcome != FightPhase.Fighting)
+            {
+                if (outcome == FightPhase.Victory)
+                {
+                    var run = RunManager.Instance;
+                    if (run != null && run.IsSpawned)
+                    {
+                        run.ServerConsumeBuff();
+                        var config = run.Config;
+                        if (config != null)
+                        {
+                            var duration = NetworkManager.ServerTime.Time - _fightStartTime;
+                            var fastKill = duration <= config.FastKillSeconds;
+                            var noDeaths = !_hadDeathsThisFight;
+                            var reward = CurrencyRules.CalculateBossReward(
+                                config.CurrencyPerBoss, noDeaths, config.BonusNoDeaths, fastKill, config.BonusFastKill);
+                            run.ServerAwardCurrency(reward);
+                        }
+                    }
+                }
+                SetPhase(outcome);
+            }
         }
 
         /// <summary>Everyone left mid-fight: clear the arena and wait, so new players can join again.</summary>

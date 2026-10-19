@@ -108,7 +108,8 @@ namespace GraceRun.UI
             {
                 var ability = _loadout.Get(i);
                 var cooldown = _abilities != null ? _abilities.CooldownRemaining01(i) : 0f;
-                _abilitySlots[i].Show(ability != null ? ability.Icon : null, cooldown);
+                var level = _loadout.Level(i);
+                _abilitySlots[i].Show(ability != null ? ability.Icon : null, cooldown, level);
             }
         }
 

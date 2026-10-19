@@ -138,7 +138,8 @@ namespace GraceRun.Player
             if (ControlSuspended || ControlLocked) return;
 
             var slow = _slowTimer > 0f ? _slowMultiplier : 1f;
-            var wanted = inputX * _data.RunSpeed * SpeedMultiplier * slow;
+            var buffMult = Run.RunManager.Instance != null && Run.RunManager.Instance.ActiveBuff == Run.PartyBuff.Swiftstride ? 1.15f : 1f;
+            var wanted = inputX * _data.RunSpeed * SpeedMultiplier * slow * buffMult;
             var changing = Mathf.Abs(wanted) > 0.01f;
             var rate = changing ? _data.Acceleration : _data.Deceleration;
             if (!_grounded) rate *= _data.AirControl;

@@ -24,6 +24,10 @@ MonoBehaviour:
   _currencyPerBoss: 100
   _bonusNoDeaths: 50
   _bonusFastKill: 50
+  _fastKillSeconds: 60
+  _rerollCost: 50
+  _upgradeCost: 100
+  _buffCost: 75
   _cardsOffered: 3
   _rerollsPerRun: 1
   _legendaryMinFloor: 4

@@ -1,4 +1,5 @@
 using System;
+using GraceRun.Run;
 using Unity.Netcode;
 using UnityEngine;
 
@@ -40,11 +41,26 @@ namespace GraceRun.Abilities
         /// <summary>Server time the ability in <paramref name="slot"/> is ready again.</summary>
         public double ReadyAt(int slot) => IsValid(slot) ? _slots[slot].ReadyAt : 0d;
 
-        /// <summary>Server only: puts <paramref name="ability"/> (null = empty) in a slot, ready at once.</summary>
+        /// <summary>Upgrade level of ability in <paramref name="slot"/> (1 = normal, 2 = upgraded).</summary>
+        public int Level(int slot) => IsValid(slot) ? _slots[slot].Level : 1;
+
+        /// <summary>True when ability in <paramref name="slot"/> can be upgraded to Level 2.</summary>
+        public bool CanUpgrade(int slot) =>
+            IsValid(slot) && _slots[slot].AbilityId != AbilityCatalog.None && _slots[slot].Level < RestStopRules.MaxAbilityLevel;
+
+        /// <summary>Server only: puts <paramref name="ability"/> (null = empty) in a slot, ready at once at level 1.</summary>
         public void ServerSet(int slot, AbilityData ability)
         {
             if (!IsServer || !IsValid(slot)) return;
-            _slots[slot] = new AbilitySlotState(_catalog.IdOf(ability), 0d);
+            _slots[slot] = new AbilitySlotState(_catalog.IdOf(ability), 0d, 1);
+        }
+
+        /// <summary>Server only: upgrades ability in <paramref name="slot"/> to Level 2.</summary>
+        public void ServerUpgrade(int slot)
+        {
+            if (!IsServer || !CanUpgrade(slot)) return;
+            _slots[slot] = new AbilitySlotState(_slots[slot].AbilityId, _slots[slot].ReadyAt, 2);
+            SlotReplaced?.Invoke(slot);
         }
 
         /// <summary>Server only: empties all slots (new run in the hub).</summary>
@@ -58,7 +74,7 @@ namespace GraceRun.Abilities
         public void ServerStartCooldown(int slot, double readyAt)
         {
             if (!IsServer || !IsValid(slot)) return;
-            _slots[slot] = new AbilitySlotState(_slots[slot].AbilityId, readyAt);
+            _slots[slot] = new AbilitySlotState(_slots[slot].AbilityId, readyAt, _slots[slot].Level);
         }
 
         /// <summary>Debug menu: put ability <paramref name="abilityId"/> (catalog id, -1 clears) in a slot.</summary>
@@ -70,7 +86,8 @@ namespace GraceRun.Abilities
         private void OnListChanged(NetworkListEvent<AbilitySlotState> change)
         {
             if (change.Type == NetworkListEvent<AbilitySlotState>.EventType.Value &&
-                change.PreviousValue.AbilityId == change.Value.AbilityId) return;
+                change.PreviousValue.AbilityId == change.Value.AbilityId &&
+                change.PreviousValue.Level == change.Value.Level) return;
             SlotReplaced?.Invoke(change.Index);
         }
     }

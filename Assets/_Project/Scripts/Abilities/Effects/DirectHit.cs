@@ -23,10 +23,13 @@ namespace GraceRun.Abilities.Effects
         private void OnImpacted(Vector2 point, Vector2 velocity, Health target)
         {
             if (target == null) return;
-            var ability = _projectile.Effect.Ability;
+            var effect = _projectile.Effect;
+            var ability = effect.Ability;
+            var power = effect.PowerMultiplier;
             var side = velocity.x < 0f ? -1f : 1f;
-            var push = new Vector2(side * ability.Knockback, ability.KnockbackLift);
-            target.ReportHit(new DamageInfo(ability.Damage, push, _projectile.Effect.CasterId, Team.Player));
+            var damage = Mathf.RoundToInt(ability.Damage * power);
+            var push = new Vector2(side * ability.Knockback * power, ability.KnockbackLift * power);
+            target.ReportHit(new DamageInfo(damage, push, effect.CasterId, Team.Player));
         }
     }
 }

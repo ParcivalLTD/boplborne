@@ -38,7 +38,8 @@ namespace GraceRun.Abilities.Effects
             var side = _effect.Aim.x < 0f ? -1f : 1f;
             var centre = _origin + new Vector2(side * ability.LaunchSpeed * _effect.Age, 0f);
             transform.position = centre;
-            var push = new Vector2(side * ability.Knockback, ability.KnockbackLift);
+            var power = _effect.PowerMultiplier;
+            var push = new Vector2(side * ability.Knockback * power, ability.KnockbackLift * power);
 
             foreach (var body in _bodies.Find(centre, ability.EffectRadius, _effect.CasterId))
                 if (!_pushed.Contains(body) && ComboForce.OnBody(_effect, body, out var strength) && _pushed.Add(body))

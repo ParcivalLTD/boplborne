@@ -19,10 +19,13 @@ namespace GraceRun.Abilities.Effects
 
         private readonly NetworkVariable<ulong> _casterId = new();
         private readonly NetworkVariable<Vector2> _aim = new();
+        private readonly NetworkVariable<float> _powerMultiplier = new(
+            1f, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Server);
 
         private float _age;
         private ulong _pendingCasterId;
         private Vector2 _pendingAim;
+        private float _pendingPowerMultiplier = 1f;
 
         public AbilityData Ability => _ability;
         public AbilityTags Tags => _ability.Tags;
@@ -34,6 +37,9 @@ namespace GraceRun.Abilities.Effects
 
         /// <summary>Unit direction the effect was launched in (projectiles fly along it).</summary>
         public Vector2 Aim => IsServer ? _pendingAim : _aim.Value;
+
+        /// <summary>Power scale from ability level: 1 for level 1, Level2PowerMultiplier for level 2.</summary>
+        public float PowerMultiplier => IsServer ? _pendingPowerMultiplier : _powerMultiplier.Value;
 
         /// <summary>Seconds since this PC spawned the effect.</summary>
         public float Age => _age;
@@ -48,6 +54,7 @@ namespace GraceRun.Abilities.Effects
             if (!IsServer) return;
             _casterId.Value = _pendingCasterId;
             _aim.Value = _pendingAim;
+            _powerMultiplier.Value = _pendingPowerMultiplier;
         }
 
         public override void OnNetworkDespawn()
@@ -62,11 +69,12 @@ namespace GraceRun.Abilities.Effects
             if (IsServer && _ability.EffectLifetime > 0f && _age >= _ability.EffectLifetime) NetworkObject.Despawn();
         }
 
-        /// <summary>Server only, before Spawn: who cast it (player NetworkObjectId) and where it points.</summary>
-        public void ServerSetup(ulong casterId, Vector2 aim)
+        /// <summary>Server only, before Spawn: who cast it (player NetworkObjectId), where it points and its power scale.</summary>
+        public void ServerSetup(ulong casterId, Vector2 aim, float powerMultiplier = 1f)
         {
             _pendingCasterId = casterId;
             _pendingAim = aim;
+            _pendingPowerMultiplier = powerMultiplier;
         }
 
         /// <summary>Server only: despawns every active ability effect (used when swapping arenas).</summary>

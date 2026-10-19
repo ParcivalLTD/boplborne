@@ -35,7 +35,10 @@ namespace GraceRun.Player
         private void Update()
         {
             if (_pool == null) return;
-            _pool.Tick(Time.deltaTime, _stats.StaminaRegenPerSecond);
+            var regenRate = _stats.StaminaRegenPerSecond;
+            if (Run.RunManager.Instance != null && Run.RunManager.Instance.ActiveBuff == Run.PartyBuff.Swiftstride)
+                regenRate *= 1.25f;
+            _pool.Tick(Time.deltaTime, regenRate);
             Publish();
         }
 

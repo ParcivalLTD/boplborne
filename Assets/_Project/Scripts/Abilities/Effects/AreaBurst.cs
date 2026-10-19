@@ -54,8 +54,10 @@ namespace GraceRun.Abilities.Effects
                 if (target == null || !target.IsSpawned || target.IsDead || target.NetworkObjectId == effect.CasterId) continue;
                 if (!ComboForce.OnTarget(effect, target, out var strength) || !_hitThisBurst.Add(target)) continue;
 
-                var push = AbilityMath.PushAway(point, target.transform.position, ability.Knockback, ability.KnockbackLift) * strength;
-                target.ReportHit(new DamageInfo(ability.Damage, push, effect.CasterId, Team.Player));
+                var power = effect.PowerMultiplier;
+                var damage = Mathf.RoundToInt(ability.Damage * power);
+                var push = AbilityMath.PushAway(point, target.transform.position, ability.Knockback * power, ability.KnockbackLift * power) * strength;
+                target.ReportHit(new DamageInfo(damage, push, effect.CasterId, Team.Player));
             }
             BurstRpc(point);
         }

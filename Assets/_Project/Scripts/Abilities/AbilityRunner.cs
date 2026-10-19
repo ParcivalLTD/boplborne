@@ -45,7 +45,13 @@ namespace GraceRun.Abilities
         {
             var ability = _loadout.Get(slot);
             if (ability == null || !IsSpawned) return 0f;
-            return AbilityCooldown.Remaining01(ReadyAt(slot), ability.Cooldown, Now);
+            return AbilityCooldown.Remaining01(ReadyAt(slot), CooldownFor(slot, ability), Now);
+        }
+
+        private float CooldownFor(int slot, AbilityData ability)
+        {
+            var level = _loadout != null ? _loadout.Level(slot) : 1;
+            return level >= 2 ? ability.Cooldown * ability.Level2CooldownMultiplier : ability.Cooldown;
         }
 
         private double ReadyAt(int slot)
@@ -63,7 +69,7 @@ namespace GraceRun.Abilities
             var aim = AbilityMath.CasterAim(_movement.Facing, _input.Move.y);
             if (ability.CasterAction != null && !ability.CasterAction.OwnerUse(this, ability, aim)) return;
 
-            _predictedReadyAt[slot] = AbilityCooldown.NextReadyAt(Now, ability.Cooldown);
+            _predictedReadyAt[slot] = AbilityCooldown.NextReadyAt(Now, CooldownFor(slot, ability));
             UseAbilityRpc((byte)slot, aim);
         }
 
@@ -78,8 +84,9 @@ namespace GraceRun.Abilities
                 return;
             }
 
-            _loadout.ServerStartCooldown(slot, AbilityCooldown.NextReadyAt(Now, ability.Cooldown));
-            if (ability.EffectPrefab != null) SpawnEffect(ability, aim);
+            _loadout.ServerStartCooldown(slot, AbilityCooldown.NextReadyAt(Now, CooldownFor(slot, ability)));
+            var power = _loadout.Level(slot) >= 2 ? ability.Level2PowerMultiplier : 1f;
+            if (ability.EffectPrefab != null) SpawnEffect(ability, aim, power);
         }
 
         /// <summary>Server to owner: the use was refused, so drop the predicted cooldown.</summary>
@@ -91,7 +98,7 @@ namespace GraceRun.Abilities
             if (slot >= 0 && slot < _predictedReadyAt.Length) _predictedReadyAt[slot] = 0d;
         }
 
-        private void SpawnEffect(AbilityData ability, Vector2 aim)
+        private void SpawnEffect(AbilityData ability, Vector2 aim, float powerMultiplier)
         {
             var side = aim.x < 0f ? -1f : 1f;
             var offset = new Vector2(ability.SpawnOffset.x * side, ability.SpawnOffset.y);
@@ -100,7 +107,7 @@ namespace GraceRun.Abilities
             {
                 var direction = AbilityMath.LaunchDirection(side, ability.LaunchAngle, ability.Spread, i, ability.Count);
                 var effect = Instantiate(ability.EffectPrefab, position, Quaternion.identity);
-                effect.ServerSetup(NetworkObjectId, direction);
+                effect.ServerSetup(NetworkObjectId, direction, powerMultiplier);
                 effect.NetworkObject.Spawn(true);
             }
         }

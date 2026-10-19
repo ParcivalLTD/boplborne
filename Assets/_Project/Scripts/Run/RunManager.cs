@@ -33,6 +33,12 @@ namespace GraceRun.Run
         private readonly NetworkVariable<int> _bossPoolIndex = new(
             0, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Server);
 
+        private readonly NetworkVariable<int> _currency = new(
+            0, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Server);
+
+        private readonly NetworkVariable<PartyBuff> _activeBuff = new(
+            PartyBuff.None, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Server);
+
         private NetworkObject _activeArena;
         private bool _hubInitialized;
 
@@ -42,6 +48,12 @@ namespace GraceRun.Run
         /// <summary>Raised on every PC when the floor changes (0 = hub).</summary>
         public event Action<int> FloorChanged;
 
+        /// <summary>Raised on every PC when the shared currency total changes.</summary>
+        public event Action<int> CurrencyChanged;
+
+        /// <summary>Raised on every PC when the active party buff changes.</summary>
+        public event Action<PartyBuff> ActiveBuffChanged;
+
         public RunConfig Config => _config;
         public int Floor => _floor.Value;
         public int TotalFloors => _config != null && _config.Floors != null ? _config.Floors.Count : 0;
@@ -49,6 +61,8 @@ namespace GraceRun.Run
         public int FloorSeed => RunRules.FloorSeed(_seed.Value, _floor.Value);
         public bool InHub => _floor.Value == RunRules.HubFloor;
         public bool IsFinalFloor => RunRules.IsFinalFloor(_floor.Value, TotalFloors);
+        public int SharedCurrency => _currency.Value;
+        public PartyBuff ActiveBuff => _activeBuff.Value;
 
         /// <summary>The boss chosen for the current floor, or null in the hub.</summary>
         public BossData CurrentBoss
@@ -67,12 +81,16 @@ namespace GraceRun.Run
         {
             Instance = this;
             _floor.OnValueChanged += OnFloorValueChanged;
+            _currency.OnValueChanged += OnCurrencyValueChanged;
+            _activeBuff.OnValueChanged += OnBuffValueChanged;
             if (IsServer && _bossSpawner != null) _bossSpawner.BossSkipped += OnBossSkipped;
         }
 
         public override void OnNetworkDespawn()
         {
             _floor.OnValueChanged -= OnFloorValueChanged;
+            _currency.OnValueChanged -= OnCurrencyValueChanged;
+            _activeBuff.OnValueChanged -= OnBuffValueChanged;
             if (_bossSpawner != null) _bossSpawner.BossSkipped -= OnBossSkipped;
             if (Instance == this) Instance = null;
             _hubInitialized = false;
@@ -185,13 +203,74 @@ namespace GraceRun.Run
             _fightLoop.ServerBeginCountdown(boss);
         }
 
+        /// <summary>Server only: awards currency to the group total (e.g. for defeating a boss).</summary>
+        public void ServerAwardCurrency(int amount)
+        {
+            if (!IsServer || amount <= 0) return;
+            _currency.Value += amount;
+        }
+
+        /// <summary>Server only: attempts to spend <paramref name="cost"/> from shared currency.</summary>
+        public bool ServerTrySpendCurrency(int cost)
+        {
+            if (!IsServer || !CurrencyRules.CanAfford(_currency.Value, cost)) return false;
+            _currency.Value = CurrencyRules.Spend(_currency.Value, cost);
+            return true;
+        }
+
+        /// <summary>Server only: consumes the active one-off party buff after a boss fight.</summary>
+        public void ServerConsumeBuff()
+        {
+            if (IsServer) _activeBuff.Value = PartyBuff.None;
+        }
+
+        /// <summary>Client buys a team reroll for shared currency at a rest stop.</summary>
+        [Rpc(SendTo.Server)]
+        public void BuyRerollRpc(RpcParams rpcParams = default)
+        {
+            if (!IsServer || _fightLoop.Phase != FightPhase.RestStop) return;
+            if (!RestStopRules.CanBuyReroll(_currency.Value, _config.RerollCost)) return;
+            if (!ServerTrySpendCurrency(_config.RerollCost)) return;
+            _draft.ServerAddRerolls(1);
+        }
+
+        /// <summary>Client upgrades one ability in <paramref name="slot"/> to Level 2 at a rest stop.</summary>
+        [Rpc(SendTo.Server)]
+        public void BuyUpgradeRpc(byte slot, RpcParams rpcParams = default)
+        {
+            if (!IsServer || _fightLoop.Phase != FightPhase.RestStop) return;
+            var clientId = rpcParams.Receive.SenderClientId;
+            if (!NetworkManager.ConnectedClients.TryGetValue(clientId, out var client) || client.PlayerObject == null) return;
+            var loadout = client.PlayerObject.GetComponent<AbilityLoadout>();
+            if (loadout == null || !loadout.CanUpgrade(slot)) return;
+            if (!RestStopRules.CanUpgradeAbility(loadout.Get(slot) != null, loadout.Level(slot), _currency.Value, _config.UpgradeCost)) return;
+            if (!ServerTrySpendCurrency(_config.UpgradeCost)) return;
+            loadout.ServerUpgrade(slot);
+        }
+
+        /// <summary>Client purchases a party buff for the next boss fight at a rest stop.</summary>
+        [Rpc(SendTo.Server)]
+        public void BuyBuffRpc(PartyBuff buff, RpcParams rpcParams = default)
+        {
+            if (!IsServer || _fightLoop.Phase != FightPhase.RestStop) return;
+            if (!RestStopRules.CanBuyBuff(buff, _activeBuff.Value, _currency.Value, _config.BuffCost)) return;
+            if (!ServerTrySpendCurrency(_config.BuffCost)) return;
+            _activeBuff.Value = buff;
+        }
+
         private void ResetPlayersForRun()
         {
+            _currency.Value = 0;
+            _activeBuff.Value = PartyBuff.None;
             foreach (var client in NetworkManager.ConnectedClientsList)
             {
                 var player = client.PlayerObject;
                 if (player == null) continue;
-                if (player.TryGetComponent<Health>(out var health)) health.ServerRestoreFull();
+                if (player.TryGetComponent<Health>(out var health))
+                {
+                    health.ServerSetMax(0);
+                    health.ServerRestoreFull();
+                }
                 if (player.TryGetComponent<ReviveSystem>(out var revive)) revive.ServerResetForFloor();
                 if (player.TryGetComponent<PlayerFlask>(out var flask)) flask.ServerRefill();
                 if (player.TryGetComponent<AbilityLoadout>(out var loadout)) loadout.ServerClear();
@@ -205,7 +284,15 @@ namespace GraceRun.Run
             {
                 var player = client.PlayerObject;
                 if (player == null) continue;
-                if (restoreFull && player.TryGetComponent<Health>(out var health)) health.ServerRestoreFull();
+                if (restoreFull && player.TryGetComponent<Health>(out var health))
+                {
+                    health.ServerSetMax(0);
+                    health.ServerRestoreFull();
+                }
+                if (_activeBuff.Value == PartyBuff.IronSkin && player.TryGetComponent<Health>(out var ironHealth))
+                {
+                    ironHealth.ServerSetMax(ironHealth.Max + 25);
+                }
                 if (restoreFull && player.TryGetComponent<PlayerFlask>(out var flask)) flask.ServerRefill();
                 if (player.TryGetComponent<ReviveSystem>(out var revive))
                 {
@@ -243,5 +330,13 @@ namespace GraceRun.Run
         }
 
         private void OnFloorValueChanged(int previous, int current) => FloorChanged?.Invoke(current);
+
+        private void OnCurrencyValueChanged(int previous, int current)
+        {
+            CurrencyChanged?.Invoke(current);
+            Currency.NotifyAmountChanged(current);
+        }
+
+        private void OnBuffValueChanged(PartyBuff previous, PartyBuff current) => ActiveBuffChanged?.Invoke(current);
     }
 }

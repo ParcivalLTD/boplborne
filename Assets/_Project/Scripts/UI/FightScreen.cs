@@ -63,7 +63,7 @@ namespace GraceRun.UI
             if (phase != _shownPhase || leader != _shownLeader || floor != _shownFloor) Show(phase, leader, run);
             if (phase == FightPhase.Countdown) ShowCountdown(loop.CountdownRemaining);
             if (phase == FightPhase.Fighting && Time.time - _fightShownAt >= loop.Data.FightBannerSeconds) _root.SetActive(false);
-            if (phase == FightPhase.Draft) _root.SetActive(false);
+            if (phase == FightPhase.Draft || phase == FightPhase.RestStop) _root.SetActive(false);
         }
 
         private void Show(FightPhase phase, bool leader, RunManager run)
