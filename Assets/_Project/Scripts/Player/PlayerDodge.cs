@@ -7,8 +7,8 @@ using UnityEngine;
 namespace GraceRun.Player
 {
     /// <summary>
-    /// The dodge roll: a burst of horizontal speed in the input direction (or the facing
-    /// direction), invulnerable for the first part. Runs on the owner; the invulnerable state is
+    /// The dodge roll: a burst of speed in the move-input direction, any way including up and
+    /// diagonals (or the facing direction), with gravity off and invulnerable for the first part. Runs on the owner; the invulnerable state is
     /// an owner-write NetworkVariable so every client shows the white flash and, later, so
     /// victim-side hit detection can skip hits during i-frames.
     /// </summary>
@@ -27,7 +27,7 @@ namespace GraceRun.Player
         private Rigidbody2D _body;
         private bool _dodging;
         private float _elapsed;
-        private float _direction;
+        private Vector2 _direction;
 
         /// <summary>Raised on the owner when a roll starts.</summary>
         public event Action Dodged;
@@ -74,7 +74,7 @@ namespace GraceRun.Player
             if (!_dodging) return;
 
             _elapsed += Time.fixedDeltaTime;
-            _body.linearVelocityX = _direction * _stats.DodgeSpeed;
+            _body.linearVelocity = _direction * _stats.DodgeSpeed;
 
             if (_invulnerable.Value && _elapsed >= _stats.DodgeInvulnerableTime) _invulnerable.Value = false;
             if (_elapsed >= _stats.DodgeDuration) EndDodge();
@@ -84,19 +84,19 @@ namespace GraceRun.Player
         {
             if (!enabled || _dodging || !_stamina.TrySpend(_stats.DodgeCost)) return;
 
-            var inputX = _input.Move.x;
-            _direction = Mathf.Abs(inputX) > 0.01f ? Mathf.Sign(inputX) : _movement.Facing;
+            _direction = ActionAim.DodgeDirection(_input.Move, _movement.Facing, _movement.IsGrounded);
             _elapsed = 0f;
             _dodging = true;
             _movement.ControlSuspended = true;
             _invulnerable.Value = _stats.DodgeInvulnerableTime > 0f;
-            _body.linearVelocityX = _direction * _stats.DodgeSpeed;
+            _body.linearVelocity = _direction * _stats.DodgeSpeed;
             Dodged?.Invoke();
         }
 
         private void EndDodge()
         {
             _dodging = false;
+            if (_body.linearVelocityY > 0f) _body.linearVelocityY *= _stats.DodgeExitLift;
             _movement.ControlSuspended = false;
             if (_invulnerable.Value) _invulnerable.Value = false;
         }

@@ -35,7 +35,8 @@ namespace GraceRun.Player
         public event Action JumpPressed;
         public event Action JumpReleased;
         public event Action DodgePressed;
-        public event Action AttackPressed;
+        /// <summary>Raised on the attack press; true when it came from keyboard or mouse (aim at the cursor).</summary>
+        public event Action<bool> AttackPressed;
         /// <summary>
         /// Raised with ability slot 0, 1 or 2, and true when a mouse button pressed it (aim at the
         /// cursor). Mouse presses over UI (draft cards, buttons) are dropped.
@@ -132,7 +133,8 @@ namespace GraceRun.Player
         private void OnJumpPerformed(InputAction.CallbackContext _) => JumpPressed?.Invoke();
         private void OnJumpCanceled(InputAction.CallbackContext _) => JumpReleased?.Invoke();
         private void OnDodge(InputAction.CallbackContext _) => DodgePressed?.Invoke();
-        private void OnAttack(InputAction.CallbackContext _) => AttackPressed?.Invoke();
+        private void OnAttack(InputAction.CallbackContext context) =>
+            AttackPressed?.Invoke(context.control.device is Keyboard || context.control.device is Pointer);
         private void OnAbility1(InputAction.CallbackContext context) => OnAbility(0, context);
         private void OnAbility2(InputAction.CallbackContext context) => OnAbility(1, context);
         private void OnAbility3(InputAction.CallbackContext context) => OnAbility(2, context);

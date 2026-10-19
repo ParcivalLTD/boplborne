@@ -46,7 +46,7 @@ namespace GraceRun.Player
         /// <summary>+1 or -1: the last horizontal direction the player pushed.</summary>
         public float Facing => _facing;
 
-        /// <summary>While true another component (the dodge) owns horizontal velocity.</summary>
+        /// <summary>While true another component (the dodge) owns the velocity, and gravity is off.</summary>
         public bool ControlSuspended { get; set; }
 
         /// <summary>True while a knockback lock keeps input from steering (see <see cref="LockControl"/>).</summary>
@@ -157,6 +157,11 @@ namespace GraceRun.Player
 
         private void ApplyGravity()
         {
+            if (ControlSuspended)
+            {
+                _body.gravityScale = 0f;
+                return;
+            }
             var rising = _body.linearVelocityY > 0.01f;
             _body.gravityScale = rising && _jumpHeld
                 ? _data.GravityScale

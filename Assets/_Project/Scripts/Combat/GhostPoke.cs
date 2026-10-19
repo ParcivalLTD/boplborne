@@ -36,7 +36,7 @@ namespace GraceRun.Combat
             if (_input != null) _input.AttackPressed -= OnAttackPressed;
         }
 
-        private void OnAttackPressed()
+        private void OnAttackPressed(bool _)
         {
             if (!enabled || Time.time < _readyAt) return;
             var boss = FindBoss();

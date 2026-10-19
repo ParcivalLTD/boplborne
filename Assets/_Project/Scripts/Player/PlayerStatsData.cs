@@ -23,6 +23,8 @@ namespace GraceRun.Player
         [SerializeField, Min(0.01f)] private float _dodgeDuration = 0.35f;
         [SerializeField, Min(0f)] private float _dodgeInvulnerableTime = 0.25f;
         [SerializeField, Min(0f)] private float _dodgeSpeed = 16f;
+        [SerializeField, Range(0f, 1f), Tooltip("Share of the upward roll speed kept when an up or diagonal roll ends (0 = stop rising).")]
+        private float _dodgeExitLift = 0.35f;
 
         [Header("Flask")]
         [SerializeField, Min(0)] private int _flaskCharges = 2;
@@ -41,8 +43,11 @@ namespace GraceRun.Player
         /// <summary>Invulnerable for this long from the start of the roll.</summary>
         public float DodgeInvulnerableTime => _dodgeInvulnerableTime;
 
-        /// <summary>Horizontal speed held through the whole roll, in units per second.</summary>
+        /// <summary>Speed held through the whole roll in its direction, in units per second.</summary>
         public float DodgeSpeed => _dodgeSpeed;
+
+        /// <summary>Share of the upward roll speed kept when the roll ends.</summary>
+        public float DodgeExitLift => _dodgeExitLift;
 
         public int FlaskCharges => _flaskCharges;
         public int FlaskHeal => _flaskHeal;

@@ -1,4 +1,5 @@
 using System;
+using GraceRun.Abilities;
 using GraceRun.Combat;
 using GraceRun.Core.Juice;
 using Unity.Netcode;
@@ -10,7 +11,8 @@ namespace GraceRun.Player
     /// The 3-hit light attack. The owner reads the press, pays stamina and detects hits through an
     /// attacker-side <see cref="Hitbox"/>; the server resolves them. Other PCs get the swing through
     /// <see cref="SwingRpc"/> and replay its timing for visuals only (their hitbox never reports).
-    /// A dodge cancels the swing; hitstop pauses it.
+    /// A keyboard press aims the swing at the mouse cursor (the hitbox turns toward it); a gamepad
+    /// press swings the facing way. A dodge cancels the swing; hitstop pauses it.
     /// </summary>
     public class PlayerLightAttack : NetworkBehaviour
     {
@@ -24,16 +26,22 @@ namespace GraceRun.Player
         [SerializeField] private Hitstop _hitstop;
 
         private LightAttackCombo _combo;
-        private float _facing = 1f;
+        private Transform _hitboxTransform;
+        private Vector2 _aim = Vector2.right;
+        private bool _aimAtCursor;
 
-        /// <summary>Raised on every PC when a swing starts: hit index, facing (+1 or -1).</summary>
+        /// <summary>Raised on every PC when a swing starts: hit index, side (+1 or -1).</summary>
         public event Action<int, float> SwingStarted;
 
         public bool IsSwinging => _combo != null && _combo.Phase != SwingPhase.Idle;
 
+        /// <summary>Unit direction of the current (or last) swing, on every PC.</summary>
+        public Vector2 Aim => _aim;
+
         private void Awake()
         {
             _combo = new LightAttackCombo(_data.Hits, _data.InputBuffer, _data.ChainWindow);
+            _hitboxTransform = _hitboxShape.transform;
         }
 
         public override void OnNetworkSpawn()
@@ -70,9 +78,9 @@ namespace GraceRun.Player
 
         /// <summary>Owner to everyone else: replay this swing locally.</summary>
         [Rpc(SendTo.NotOwner)]
-        private void SwingRpc(byte hitIndex, sbyte facing)
+        private void SwingRpc(byte hitIndex, Vector2 aim)
         {
-            _facing = facing;
+            _aim = AbilityMath.SafeAim(aim);
             _combo.ForceStart(hitIndex);
         }
 
@@ -80,7 +88,11 @@ namespace GraceRun.Player
         [Rpc(SendTo.NotOwner)]
         private void CancelSwingRpc() => _combo.Cancel();
 
-        private void OnAttackPressed() => _combo.Press();
+        private void OnAttackPressed(bool atCursor)
+        {
+            _aimAtCursor = atCursor;
+            _combo.Press();
+        }
 
         private bool CanStart(int hitIndex) =>
             enabled && !_dodge.IsDodging && _stamina.TrySpend(_data.Hits[hitIndex].StaminaCost);
@@ -96,19 +108,27 @@ namespace GraceRun.Player
         {
             if (IsOwner)
             {
-                _facing = _movement.Facing;
+                _aim = OwnerAim();
                 _movement.SpeedMultiplier = _data.MoveSpeedMultiplier;
-                SwingRpc((byte)hitIndex, (sbyte)_facing);
+                SwingRpc((byte)hitIndex, _aim);
             }
-            SwingStarted?.Invoke(hitIndex, _facing);
+            SwingStarted?.Invoke(hitIndex, AbilityMath.SideOf(_aim.x));
+        }
+
+        private Vector2 OwnerAim()
+        {
+            if (_aimAtCursor && _input.TryGetCursorWorld(out var cursor))
+                return AbilityMath.CursorAim(transform.position, cursor, _movement.Facing);
+            return new Vector2(AbilityMath.SideOf(_movement.Facing), 0f);
         }
 
         private void OnActiveStarted(int hitIndex)
         {
             var hit = _data.Hits[hitIndex];
+            _hitboxTransform.localRotation = Quaternion.Euler(0f, 0f, ActionAim.HitboxAngle(_aim));
             _hitboxShape.size = hit.HitboxSize;
-            _hitboxShape.offset = new Vector2(hit.HitboxOffset.x * _facing, hit.HitboxOffset.y);
-            _hitbox.Arm(hit.Damage, new Vector2(hit.Knockback.x * _facing, hit.Knockback.y));
+            _hitboxShape.offset = ActionAim.HitboxLocalOffset(hit.HitboxOffset, _aim);
+            _hitbox.Arm(hit.Damage, ActionAim.Knockback(hit.Knockback, _aim));
         }
 
         private void OnActiveEnded() => _hitbox.Disarm();
