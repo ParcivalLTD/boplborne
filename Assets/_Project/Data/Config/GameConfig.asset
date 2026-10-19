@@ -28,3 +28,4 @@ MonoBehaviour:
   - {fileID: 0}
   - {fileID: 0}
   _settings: {fileID: 11400000, guid: 405c7ca8912f91643813a8597a250f42, type: 2}
+  _server: {fileID: 11400000, guid: 7acc284a6ae48ac479efd47a76fd524c, type: 2}

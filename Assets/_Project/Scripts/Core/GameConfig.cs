@@ -18,6 +18,8 @@ namespace GraceRun.Core
         [SerializeField] private Sprite[] _hatSprites;
         [SerializeField, Tooltip("Defaults and limits for the settings screen.")]
         private global::GraceRun.Core.Settings.SettingsData _settings;
+        [SerializeField, Tooltip("Tuning for a dedicated server build that runs around the clock.")]
+        private Net.ServerData _server;
 
         public int MaxPlayers => _maxPlayers;
         public ushort Port => (ushort)_port;
@@ -26,6 +28,9 @@ namespace GraceRun.Core
 
         /// <summary>Defaults for the player-facing settings (volumes, shake, display).</summary>
         public global::GraceRun.Core.Settings.SettingsData Settings => _settings;
+
+        /// <summary>Idle reset, status logging and frame rate of a dedicated server.</summary>
+        public Net.ServerData Server => _server;
 
         /// <summary>How long the Join button waits for the host before giving up.</summary>
         public float ConnectTimeoutSeconds => _connectTimeoutSeconds;

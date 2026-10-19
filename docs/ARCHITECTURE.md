@@ -97,6 +97,7 @@ Everything tunable is here. Default values are the starting values in `docs/GDD.
 | Settings | `Core/Settings/GameSettings` (PlayerPrefs) + `SettingsData` defaults | local only |
 | Control schemes | `Core/Settings/ControlScheme`, `ControlChoices`, `ControlLayout`, `ControlSchemeRules` (pure); `PlayerInputReader.ApplyLayout` overrides the keyboard / mouse bindings of Attack and Ability1-3; `PlayerSlice` rides `SliceSlot` | owner, local only |
 | Nicknames | `Net/NicknameRules` (pure), `ConnectionPayload.Nickname`, `ConnectionManager.NicknameOf` (server), `PlayerIdentity` (synced name) | server sanitises and uniquifies, every PC shows |
+| Dedicated server | `Net/DedicatedServerKeeper` (frame cap, idle reset to the hub, status log and file), pure `ServerRules`, `ServerData` asset; `tools/run-server.ps1` restarts it | server only |
 | Menus | `UI/Menus` (`MenuKit`, `MenuPages`, `SettingsPage`, `ControlsPage`), `MainMenuScreen`, `PauseMenu` | local only |
 | Combos | `ComboRules` + tag checks in effect components | server |
 | Revive, ghosts | `ReviveSystem`, `Ghost` | server decides, all show |

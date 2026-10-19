@@ -64,7 +64,7 @@ namespace GraceRun.Net
             var args = CommandLineArgs.Current();
             if (args.StartServer)
             {
-                StartDedicatedServer(args.Port ?? _config.Port);
+                StartDedicatedServer(args.Port ?? _config.Port, args.StatusFile);
                 return;
             }
 
@@ -95,11 +95,19 @@ namespace GraceRun.Net
         }
 
         /// <summary>Starts a server with no local player (command line -server).</summary>
-        public void StartDedicatedServer(ushort port)
+        public void StartDedicatedServer(ushort port, string statusFile = null)
         {
             if (IsBusy) return;
             Configure(ListenAddress, port);
-            if (!_networkManager.StartServer()) Debug.LogError($"Could not start the server on port {port}.");
+            if (!_networkManager.StartServer())
+            {
+                Debug.LogError($"Could not start the server on port {port}.");
+                return;
+            }
+            var keeper = GetComponent<DedicatedServerKeeper>();
+            if (keeper == null) keeper = gameObject.AddComponent<DedicatedServerKeeper>();
+            keeper.Init(_config.Server, _config.MaxPlayers, statusFile);
+            Debug.Log($"[Server] Listening on port {port}, game version {_config.GameVersion}.");
         }
 
         /// <summary>Joins a host typed as "ip" or "ip:port".</summary>
@@ -158,7 +166,10 @@ namespace GraceRun.Net
 
             response.Approved = result == ApprovalResult.Approved;
             if (response.Approved)
+            {
                 _nicknames[request.ClientNetworkId] = NicknameRules.Unique(NicknameRules.Sanitize(payload.Nickname), _nicknames.Values);
+                Debug.Log($"[Server] {Describe(request.ClientNetworkId)} joined ({_networkManager.ConnectedClientsIds.Count + 1}/{_config.MaxPlayers}).");
+            }
             response.CreatePlayerObject = false;
             response.Pending = false;
             if (response.Approved) return;
@@ -172,14 +183,21 @@ namespace GraceRun.Net
             _networkManager.SceneManager.LoadScene(Scenes.Game, LoadSceneMode.Single);
         }
 
+        private string Describe(ulong clientId) =>
+            _nicknames.TryGetValue(clientId, out var name) && !string.IsNullOrEmpty(name)
+                ? $"'{name}' (client {clientId})"
+                : $"Client {clientId}";
+
         private void OnClientDisconnect(ulong clientId)
         {
-            _nicknames.Remove(clientId);
             if (_networkManager.IsServer)
             {
-                if (clientId != _networkManager.LocalClientId) Debug.Log($"Client {clientId} left; a slot opened.");
+                if (clientId != _networkManager.LocalClientId)
+                    Debug.Log($"[Server] {Describe(clientId)} left ({Mathf.Max(0, _networkManager.ConnectedClientsIds.Count - 1)}/{_config.MaxPlayers}).");
+                _nicknames.Remove(clientId);
                 return;
             }
+            _nicknames.Remove(clientId);
 
             if (_leaving) return;
             StopTimeout();

@@ -10,7 +10,7 @@ Grace Run uses **Netcode for GameObjects** with **Unity Transport**, connecting 
 | **Client** | Everyone else | Main menu → Join → type the host's Hamachi IPv4 → Join. |
 | **Server only** | Optional, a PC that just runs the server | `GraceRun.exe -server -port 7777`. Add `-batchmode -nographics` for no window. A Windows Dedicated Server build profile works too. |
 
-Command-line arguments (read by `CommandLineArgs` in `Bootstrap`): `-server`, `-port <n>`, `-connect <ip>` (client auto-join, handy for testing).
+Command-line arguments (read by `CommandLineArgs` in `Bootstrap`): `-server`, `-port <n>`, `-connect <ip>` (client auto-join, handy for testing), `-statusfile <path>` (server only: a status file for monitoring). Running a server around the clock is covered in `docs/SERVER.md`.
 
 ## Who decides what (authority table)
 
