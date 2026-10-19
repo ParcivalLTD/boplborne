@@ -16,7 +16,7 @@ namespace GraceRun.Editor
         private static readonly int[] GameLayers =
         {
             Layers.GroundIndex, Layers.PlayerIndex, Layers.GhostIndex, Layers.BossIndex,
-            Layers.PlayerAttackIndex, Layers.BossAttackIndex, Layers.AbilityIndex,
+            Layers.PlayerAttackIndex, Layers.BossAttackIndex, Layers.AbilityIndex, Layers.PlatformIndex,
         };
 
         // Each pair collides both ways. Anything involving a game layer that is not listed is ignored.
@@ -32,6 +32,7 @@ namespace GraceRun.Editor
             (Layers.BossIndex, Layers.AbilityIndex),
             (Layers.PlayerAttackIndex, Layers.AbilityIndex),
             (Layers.AbilityIndex, Layers.AbilityIndex),
+            (Layers.PlatformIndex, Layers.PlayerIndex),
         };
 
         [MenuItem("Grace Run/Apply 2D Layer Collision Matrix")]

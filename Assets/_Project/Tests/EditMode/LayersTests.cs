@@ -14,6 +14,7 @@ namespace GraceRun.Tests
         [TestCase(Layers.PlayerAttack, Layers.PlayerAttackIndex)]
         [TestCase(Layers.BossAttack, Layers.BossAttackIndex)]
         [TestCase(Layers.Ability, Layers.AbilityIndex)]
+        [TestCase(Layers.Platform, Layers.PlatformIndex)]
         public void LayerConstantMatchesProjectSettings(string layerName, int expectedIndex)
         {
             Assert.AreEqual(expectedIndex, LayerMask.NameToLayer(layerName));

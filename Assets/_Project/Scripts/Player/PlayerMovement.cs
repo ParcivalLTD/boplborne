@@ -67,7 +67,7 @@ namespace GraceRun.Player
             _groundFilter = new ContactFilter2D
             {
                 useLayerMask = true,
-                layerMask = Layers.Mask(Layers.GroundIndex),
+                layerMask = Layers.StandableMask,
                 useTriggers = false,
             };
         }

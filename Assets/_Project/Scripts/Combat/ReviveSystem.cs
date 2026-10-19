@@ -129,7 +129,7 @@ namespace GraceRun.Combat
         private void DropGrave()
         {
             Vector2 spot = transform.position;
-            var filter = new ContactFilter2D { useLayerMask = true, layerMask = Layers.Mask(Layers.GroundIndex) };
+            var filter = new ContactFilter2D { useLayerMask = true, layerMask = Layers.StandableMask };
             if (Physics2D.Raycast(spot, Vector2.down, filter, _groundHits, _data.GraveSnapDistance) > 0)
                 spot = _groundHits[0].point;
             _grave.Value = spot;

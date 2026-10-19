@@ -49,7 +49,7 @@ namespace GraceRun.Abilities
             _filter = new ContactFilter2D
             {
                 useLayerMask = true,
-                layerMask = Layers.Mask(Layers.GroundIndex) | Layers.Mask(Layers.BossIndex) |
+                layerMask = Layers.StandableMask | Layers.Mask(Layers.BossIndex) |
                             Layers.Mask(Layers.PlayerIndex) | Layers.Mask(Layers.AbilityIndex),
                 useTriggers = false,
             };

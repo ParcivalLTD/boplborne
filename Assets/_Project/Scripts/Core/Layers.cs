@@ -13,6 +13,7 @@ namespace GraceRun.Core
         public const string PlayerAttack = "PlayerAttack";
         public const string BossAttack = "BossAttack";
         public const string Ability = "Ability";
+        public const string Platform = "Platform";
 
         public const int GroundIndex = 8;
         public const int PlayerIndex = 9;
@@ -21,8 +22,12 @@ namespace GraceRun.Core
         public const int PlayerAttackIndex = 12;
         public const int BossAttackIndex = 13;
         public const int AbilityIndex = 14;
+        public const int PlatformIndex = 15;
 
         /// <summary>Layer mask containing only the given layer index.</summary>
         public static int Mask(int layerIndex) => 1 << layerIndex;
+
+        /// <summary>What a player can stand on: the solid ground and one-way platforms.</summary>
+        public static int StandableMask => Mask(GroundIndex) | Mask(PlatformIndex);
     }
 }

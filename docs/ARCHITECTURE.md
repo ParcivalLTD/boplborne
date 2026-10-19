@@ -55,12 +55,13 @@ Assets/
 | Layer | Collides or overlaps with |
 | --- | --- |
 | Ground | Player, Boss, Ability |
-| Player | Ground, Ability (players pass through each other and through the boss's body) |
+| Player | Ground, Platform, Ability (players pass through each other and through the boss's body) |
 | Ghost | nothing (ghosts float freely) |
 | Boss | Ground |
 | PlayerAttack | trigger only: Boss, Player (friendly fire), Ability |
 | BossAttack | trigger only: Player |
 | Ability | Ground, Player, Boss, Ability |
+| Platform | Player only: one-way ledges (`PlatformEffector2D`, `Prefabs/Arenas/OneWayPlatform`). Bosses, abilities and ghosts pass through. |
 
 Layer names live as constants in `GraceRun.Core.Layers`.
 
