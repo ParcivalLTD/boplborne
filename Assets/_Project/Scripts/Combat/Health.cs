@@ -41,7 +41,7 @@ namespace GraceRun.Combat
         public event Action<DamageInfo> HitTaken;
 
         public int Current => _current.Value;
-        public int Max => _maxOverride.Value > 0 ? _maxOverride.Value : _healthStats != null ? _healthStats.MaxHP : 1;
+        public int Max => HealthRules.Max(_maxOverride.Value, _healthStats != null ? _healthStats.MaxHP : 1);
         public float Normalized => (float)_current.Value / Max;
         public bool IsDead => IsSpawned && _current.Value <= 0;
         public Team Team => _team;
@@ -101,11 +101,14 @@ namespace GraceRun.Combat
         [Rpc(SendTo.Server)]
         public void DebugSetCurrentRpc(int value) => ServerSetCurrent(value);
 
-        /// <summary>Server only: replaces the stats max HP (boss HP scaling) and refills to it.</summary>
+        /// <summary>
+        /// Server only: replaces the stats max HP (boss HP scaling, Iron Skin) and refills to it.
+        /// 0 or less clears the override, back to the stats asset's max HP.
+        /// </summary>
         public void ServerSetMax(int max)
         {
             if (!IsServer) return;
-            _maxOverride.Value = Mathf.Max(1, max);
+            _maxOverride.Value = HealthRules.OverrideFor(max);
             _current.Value = Max;
         }
 
