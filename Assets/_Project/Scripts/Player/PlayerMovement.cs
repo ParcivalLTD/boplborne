@@ -7,7 +7,7 @@ namespace GraceRun.Player
 {
     /// <summary>
     /// Running and jumping for the player you own: acceleration with air control, a variable
-    /// jump height, faster falling, coyote time and a jump buffer. Runs on the owner only;
+    /// jump height, air jumps, faster falling, coyote time and a jump buffer. Runs on the owner only;
     /// everyone else sees the result through the owner-authoritative NetworkTransform.
     /// </summary>
     [RequireComponent(typeof(Rigidbody2D))]
@@ -46,8 +46,11 @@ namespace GraceRun.Player
         /// <summary>+1 or -1: the last horizontal direction the player pushed.</summary>
         public float Facing => _facing;
 
-        /// <summary>While true another component (the dodge) owns the velocity, and gravity is off.</summary>
+        /// <summary>While true another component (the dodge) owns horizontal velocity.</summary>
         public bool ControlSuspended { get; set; }
+
+        /// <summary>While true gravity is off (an up, down or diagonal dodge roll owns the vertical speed too).</summary>
+        public bool GravitySuspended { get; set; }
 
         /// <summary>True while a knockback lock keeps input from steering (see <see cref="LockControl"/>).</summary>
         public bool ControlLocked => _lockTimer > 0f;
@@ -93,9 +96,11 @@ namespace GraceRun.Player
             var deltaTime = Time.fixedDeltaTime;
             UpdateGrounded();
             _jumpGate.SetGrounded(_grounded, _data.CoyoteTime);
+            if (_grounded) _jumpGate.RefillAirJumps(_data.AirJumps);
 
             ApplyHorizontal(deltaTime);
-            if (_jumpGate.TryConsume()) Jump();
+            if (_jumpGate.TryConsume()) Jump(_data.JumpVelocity);
+            else if (_jumpGate.TryConsumeAirJump()) Jump(_data.AirJumpVelocity);
             ApplyGravity();
 
             _jumpGate.Tick(deltaTime);
@@ -148,16 +153,16 @@ namespace GraceRun.Player
             _body.linearVelocityX = speed;
         }
 
-        private void Jump()
+        private void Jump(float velocity)
         {
-            _body.linearVelocityY = _data.JumpVelocity;
+            _body.linearVelocityY = velocity;
             _grounded = false;
             Jumped?.Invoke();
         }
 
         private void ApplyGravity()
         {
-            if (ControlSuspended)
+            if (GravitySuspended)
             {
                 _body.gravityScale = 0f;
                 return;

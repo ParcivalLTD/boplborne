@@ -11,9 +11,26 @@ namespace GraceRun.Player
     {
         private float _coyoteLeft;
         private float _bufferLeft;
+        private int _airJumpsLeft;
 
         public bool HasCoyote => _coyoteLeft > 0f;
         public bool HasBufferedPress => _bufferLeft > 0f;
+        public int AirJumpsLeft => _airJumpsLeft;
+
+        /// <summary>Gives back the air jumps (call while grounded).</summary>
+        public void RefillAirJumps(int airJumps) => _airJumpsLeft = airJumps;
+
+        /// <summary>
+        /// True once when a press arrives with no floor in reach and an air jump left; spends it.
+        /// Check <see cref="TryConsume"/> first so a ground jump never costs an air jump.
+        /// </summary>
+        public bool TryConsumeAirJump()
+        {
+            if (_bufferLeft <= 0f || _coyoteLeft > 0f || _airJumpsLeft <= 0) return false;
+            _airJumpsLeft--;
+            _bufferLeft = 0f;
+            return true;
+        }
 
         /// <summary>Refills coyote time while grounded; it drains once the feet leave the floor.</summary>
         public void SetGrounded(bool grounded, float coyoteTime)

@@ -77,5 +77,54 @@ namespace GraceRun.Tests
 
             Assert.IsFalse(gate.TryConsume());
         }
+
+        [Test]
+        public void PressInTheAirUsesAnAirJump()
+        {
+            var gate = new JumpGate();
+            gate.RefillAirJumps(1);
+            gate.Press(Buffer);
+
+            Assert.IsFalse(gate.TryConsume());
+            Assert.IsTrue(gate.TryConsumeAirJump());
+            Assert.AreEqual(0, gate.AirJumpsLeft);
+        }
+
+        [Test]
+        public void AirJumpsRunOutUntilRefilled()
+        {
+            var gate = new JumpGate();
+            gate.RefillAirJumps(1);
+            gate.Press(Buffer);
+            gate.TryConsumeAirJump();
+            gate.Press(Buffer);
+
+            Assert.IsFalse(gate.TryConsumeAirJump());
+            gate.RefillAirJumps(1);
+            Assert.IsTrue(gate.TryConsumeAirJump());
+        }
+
+        [Test]
+        public void GroundJumpWithinCoyoteNeverCostsAnAirJump()
+        {
+            var gate = new JumpGate();
+            gate.SetGrounded(true, Coyote);
+            gate.RefillAirJumps(1);
+            gate.Press(Buffer);
+
+            Assert.IsFalse(gate.TryConsumeAirJump());
+            Assert.IsTrue(gate.TryConsume());
+            Assert.AreEqual(1, gate.AirJumpsLeft);
+        }
+
+        [Test]
+        public void NoAirJumpsMeansNoJumpInTheAir()
+        {
+            var gate = new JumpGate();
+            gate.RefillAirJumps(0);
+            gate.Press(Buffer);
+
+            Assert.IsFalse(gate.TryConsumeAirJump());
+        }
     }
 }

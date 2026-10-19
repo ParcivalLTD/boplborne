@@ -21,6 +21,10 @@ namespace GraceRun.Player
         [SerializeField, Min(0.01f)] private float _gravityScale = 4f;
         [SerializeField, Min(1f)] private float _fallGravityMultiplier = 1.6f;
         [SerializeField, Min(0f)] private float _maxFallSpeed = 30f;
+        [SerializeField, Min(0), Tooltip("Extra jumps in the air before touching the ground again.")]
+        private int _airJumps = 1;
+        [SerializeField, Min(0f), Tooltip("Height of an air jump held all the way, in units.")]
+        private float _airJumpHeight = 3f;
 
         [Header("Forgiveness")]
         [SerializeField, Min(0f)] private float _coyoteTime = 0.1f;
@@ -60,6 +64,9 @@ namespace GraceRun.Player
 
         public float MaxFallSpeed => _maxFallSpeed;
 
+        /// <summary>Extra jumps in the air before touching the ground again.</summary>
+        public int AirJumps => _airJumps;
+
         /// <summary>How long after walking off a ledge a jump still counts.</summary>
         public float CoyoteTime => _coyoteTime;
 
@@ -77,7 +84,12 @@ namespace GraceRun.Player
         public float SquashRecoverTime => _squashRecoverTime;
 
         /// <summary>Upward speed that reaches <see cref="JumpHeight"/> under the rising gravity.</summary>
-        public float JumpVelocity =>
-            Mathf.Sqrt(2f * Mathf.Abs(Physics2D.gravity.y) * _gravityScale * _jumpHeight);
+        public float JumpVelocity => VelocityFor(_jumpHeight);
+
+        /// <summary>Upward speed that reaches the air jump height under the rising gravity.</summary>
+        public float AirJumpVelocity => VelocityFor(_airJumpHeight);
+
+        private float VelocityFor(float height) =>
+            Mathf.Sqrt(2f * Mathf.Abs(Physics2D.gravity.y) * _gravityScale * height);
     }
 }

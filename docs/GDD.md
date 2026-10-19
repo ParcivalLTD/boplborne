@@ -24,7 +24,7 @@ Grace Run is a 1–4 player online co-op roguelite. Friends climb a tower of sou
 | Action | Gamepad | Keyboard |
 | --- | --- | --- |
 | Move | Left stick | A / D |
-| Jump (hold = higher) | South (A / Cross) | Space |
+| Jump (hold = higher; press again in the air for 1 air jump) | South (A / Cross) | Space |
 | Dodge roll (i-frames), any direction of the move input | East (B / Circle) | Left Shift |
 | Attack (3-hit combo) | West (X / Square), facing way | J, aimed at the mouse cursor |
 | Ability 1 / 2 / 3 | North / LB / RB | Left / middle / right mouse, aimed at the cursor (K / L / ; also work, aimed by facing) |
@@ -42,7 +42,7 @@ Grace Run is a 1–4 player online co-op roguelite. Friends climb a tower of sou
 | Dodge | costs 25 stamina, lasts 0.35 s, invulnerable for the first 0.25 s |
 | Light attack | costs 10 stamina, 8 damage per hit, final hit knocks back |
 | Flask | 2 charges per player, heals 40, refilled at rest stops |
-| Movement | feel first: coyote time 0.1 s, jump buffer 0.1 s |
+| Movement | fast and airy (Bopl-like): run 12, jump 4.5 high + 1 air jump 3 high, air control 0.9, coyote 0.12 s, jump buffer 0.12 s |
 
 ## Abilities
 

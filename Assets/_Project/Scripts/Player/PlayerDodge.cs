@@ -8,7 +8,8 @@ namespace GraceRun.Player
 {
     /// <summary>
     /// The dodge roll: a burst of speed in the move-input direction, any way including up and
-    /// diagonals (or the facing direction), with gravity off and invulnerable for the first part. Runs on the owner; the invulnerable state is
+    /// diagonals (or the facing direction), invulnerable for the first part. Up, down and diagonal
+    /// rolls switch gravity off; a flat roll keeps it. Runs on the owner; the invulnerable state is
     /// an owner-write NetworkVariable so every client shows the white flash and, later, so
     /// victim-side hit detection can skip hits during i-frames.
     /// </summary>
@@ -74,7 +75,7 @@ namespace GraceRun.Player
             if (!_dodging) return;
 
             _elapsed += Time.fixedDeltaTime;
-            _body.linearVelocity = _direction * _stats.DodgeSpeed;
+            ApplyRollVelocity();
 
             if (_invulnerable.Value && _elapsed >= _stats.DodgeInvulnerableTime) _invulnerable.Value = false;
             if (_elapsed >= _stats.DodgeDuration) EndDodge();
@@ -88,17 +89,28 @@ namespace GraceRun.Player
             _elapsed = 0f;
             _dodging = true;
             _movement.ControlSuspended = true;
+            _movement.GravitySuspended = !IsFlat;
             _invulnerable.Value = _stats.DodgeInvulnerableTime > 0f;
-            _body.linearVelocity = _direction * _stats.DodgeSpeed;
+            ApplyRollVelocity();
             Dodged?.Invoke();
         }
 
         private void EndDodge()
         {
             _dodging = false;
-            if (_body.linearVelocityY > 0f) _body.linearVelocityY *= _stats.DodgeExitLift;
+            if (!IsFlat && _body.linearVelocityY > 0f) _body.linearVelocityY *= _stats.DodgeExitLift;
             _movement.ControlSuspended = false;
+            _movement.GravitySuspended = false;
             if (_invulnerable.Value) _invulnerable.Value = false;
+        }
+
+        // A flat roll only owns the horizontal speed, as before: gravity, ledges and jumping out still work.
+        private bool IsFlat => Mathf.Approximately(_direction.y, 0f);
+
+        private void ApplyRollVelocity()
+        {
+            if (IsFlat) _body.linearVelocityX = _direction.x * _stats.DodgeSpeed;
+            else _body.linearVelocity = _direction * _stats.DodgeSpeed;
         }
 
         private void OnInvulnerableChanged(bool previous, bool current)
