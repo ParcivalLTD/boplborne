@@ -26,13 +26,14 @@ Grace Run is a 1–4 player online co-op roguelite. Friends climb a tower of sou
 | Move | Left stick | A / D |
 | Jump (hold = higher; press again in the air for 1 air jump) | South (A / Cross) | Space |
 | Dodge roll (i-frames), any direction of the move input; one roll in the air until you land | East (B / Circle) | Left Shift |
-| Attack (3-hit combo) | West (X / Square), facing way | J, aimed at the mouse cursor |
+| Light attack (the weapon's combo; hold up / down for an up / down swing; in the air an aerial swing) | West (X / Square), facing way | J, aimed at the mouse cursor |
+| Heavy attack (slow, hard hitting; same in the air) | Right trigger, facing way | U or Mouse Forward (side button), aimed at the mouse cursor |
 | Slice (mouse) | — | Hold the slice button (left mouse by default) and drag the cursor across a target (within reach of your player) |
 | Ability 1 / 2 / 3 | North / LB / RB | Left / middle / right mouse, fired on release toward the cursor (a left-mouse drag is a slice and fires nothing); K / L / ; fire on press, aimed by facing |
 | Flask (heal) | D-pad up | R |
 | Interact (revive) | D-pad down | E |
 
-Attack, abilities and the slice can be rebound in **Settings → Controls setup**: Keyboard + mouse (the layout above), Keyboard only (J / K / L / ; aimed by facing, no mouse in combat), Mouse only (slice for melee, the three mouse buttons for abilities), or Custom (a key or mouse button per action, which ability slot slices, whether keys aim at the cursor). Changing any row switches to Custom.
+Attack, heavy attack, abilities and the slice can be rebound in **Settings → Controls setup**: Keyboard + mouse (the layout above), Keyboard only (J / U / K / L / ; aimed by facing, no mouse in combat), Mouse only (slice for melee, Mouse Forward for heavy, the three mouse buttons for abilities; a mouse without a side button should use Custom), or Custom (a key or mouse button per action, which ability slot slices, whether keys aim at the cursor). Changing any row switches to Custom.
 | Pause | Start | Esc |
 
 ### Starting values (tune in data assets, not code)
@@ -43,9 +44,27 @@ Attack, abilities and the slice can be rebound in **Settings → Controls setup*
 | Boss hit damage | 25–35 |
 | Stamina | 100; regenerates 40/s after 0.5 s without spending |
 | Dodge | costs 25 stamina, lasts 0.35 s, invulnerable for the first 0.25 s |
-| Light attack | costs 10 stamina, 8 damage per hit, final hit knocks back |
+| Light attack | Fists: costs 10 stamina, 8 damage per hit, final hit knocks back (every weapon has its own numbers, see Weapons) |
 | Flask | 2 charges per player, heals 40, refilled at rest stops |
 | Movement | fast and airy (Bopl-like): run 12, jump 4.5 high + 1 air jump 3 high, air control 0.9, coyote 0.12 s, jump buffer 0.12 s; short hang at the top of a held jump; wall slide + wall jump (doesn't spend the air jump); hold down to fast-fall; down + jump drops through one-way ledges |
+
+## Weapons
+
+Every player carries one weapon (Brawlhalla-style), Fists until they pick another. A weapon is a move set, all numbers in its `WeaponData` asset (`Data/Weapons`):
+
+- **Light combo**: the light button chains the weapon's hits (3 for Sword and Spear, 2 for Hammer, 3 for Fists); the last one hits harder and knocks back.
+- **Heavy**: one slow, strong swing on the heavy button.
+- **Aerial**: the light button while airborne. **Up** / **Down**: the light button while holding up / down (ground or air). A weapon without one of these uses its light combo there (Fists have none, so nothing changes for them).
+- Every swing costs stamina, slows running while it lasts and is cancelled by a dodge. Hits are detected on the attacker's PC and resolved by the server like every player attack; friendly fire rules apply.
+
+| Weapon | Feel | Light combo (damage) | Heavy | Aerial / Up / Down | Reach |
+| --- | --- | --- | --- | --- | --- |
+| Fists | the old default | 8 · 8 · 8 (knockback on the last) | 14 | none, uses the light combo | short |
+| Sword | fast, balanced | 7 · 7 · 10, quick | 17, fast for a heavy | 10 / 9 / 9 | medium |
+| Spear | long, narrow | 6 · 6 · 9 | 18, longest reach | 9 / 10 / 10, thin tall hitboxes | long |
+| Hammer | slow, huge knockback | 11 · 16 (two hits) | 30, 0.4 s wind-up | 14 / 14 / 14, big knockback | medium |
+
+**Getting one:** in the hub (from the starter draft until the run starts, so you can try each on the training dummy) and at every rest stop, a row of weapon buttons in the top-right corner picks any weapon for free. It cannot change during a fight or a later draft. A new run (back in the hub) starts everyone with Fists again. Weapons are not cards: they never take an ability slot and never take part in `ComboRules`.
 
 ## Abilities
 

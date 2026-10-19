@@ -150,5 +150,60 @@ namespace GraceRun.Tests
             Assert.AreEqual(1, activeEnded);
             Assert.AreEqual(0, _combo.NextHit);
         }
+
+        [Test]
+        public void StandAloneMoveStartsAtOnceAndDoesNotChain()
+        {
+            var combo = new LightAttackCombo(new[] { Hit, Hit, Hit }, Buffer, Chain, 2);
+            var started = new List<int>();
+            combo.SwingStarted += started.Add;
+
+            combo.PressMove(2);
+            for (var t = 0f; t < 1f; t += Step) combo.Tick(Step);
+            combo.Press();
+
+            CollectionAssert.AreEqual(new[] { 2, 0 }, started);
+        }
+
+        [Test]
+        public void ComboOfTwoWrapsAfterTheSecondHit()
+        {
+            var combo = new LightAttackCombo(new[] { Hit, Hit, Hit }, Buffer, Chain, 2);
+            var started = new List<int>();
+            combo.SwingStarted += started.Add;
+
+            for (var press = 0; press < 3; press++)
+            {
+                combo.Press();
+                for (var t = 0f; t < 0.5f; t += Step) combo.Tick(Step);
+            }
+
+            CollectionAssert.AreEqual(new[] { 0, 1, 0 }, started);
+        }
+
+        [Test]
+        public void BufferedMoveStartsWhenTheSwingEnds()
+        {
+            _combo.Press();
+            Run(0.2f);
+            _combo.PressMove(2);
+            Run(Startup + Active + Recovery - 0.2f);
+
+            CollectionAssert.AreEqual(new[] { 0, 2 }, _started);
+        }
+
+        [Test]
+        public void ConfigureCancelsTheSwingAndSwapsTheHits()
+        {
+            var ended = 0;
+            _combo.SwingEnded += () => ended++;
+            _combo.Press();
+
+            _combo.Configure(new[] { Hit }, Buffer, Chain);
+
+            Assert.AreEqual(SwingPhase.Idle, _combo.Phase);
+            Assert.AreEqual(1, ended);
+            Assert.AreEqual(0, _combo.NextHit);
+        }
     }
 }

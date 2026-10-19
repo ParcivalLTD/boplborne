@@ -9,6 +9,9 @@ namespace GraceRun.Core.Settings
         /// <summary>Choice index for the light attack.</summary>
         public int Attack;
 
+        /// <summary>Choice index for the heavy attack (a key or a mouse button).</summary>
+        public int Heavy;
+
         /// <summary>Choice index per ability slot.</summary>
         public readonly int[] Abilities = new int[ControlLayout.AbilitySlots];
 
@@ -17,12 +20,12 @@ namespace GraceRun.Core.Settings
 
         public bool CursorAimKeys = true;
 
-        /// <summary>J to attack, abilities on the three mouse buttons, slice on Ability 1.</summary>
+        /// <summary>J to attack, U for heavy, abilities on the three mouse buttons, slice on Ability 1.</summary>
         public static CustomControls Default
         {
             get
             {
-                var custom = new CustomControls { Attack = ControlChoices.IndexOf("<Keyboard>/j"), Slice = 0 };
+                var custom = new CustomControls { Attack = ControlChoices.IndexOf("<Keyboard>/j"), Heavy = ControlChoices.IndexOf("<Keyboard>/u"), Slice = 0 };
                 custom.Abilities[0] = ControlChoices.IndexOf("<Mouse>/leftButton");
                 custom.Abilities[1] = ControlChoices.IndexOf("<Mouse>/middleButton");
                 custom.Abilities[2] = ControlChoices.IndexOf("<Mouse>/rightButton");
@@ -32,7 +35,7 @@ namespace GraceRun.Core.Settings
 
         public CustomControls Clone()
         {
-            var copy = new CustomControls { Attack = Attack, Slice = Slice, CursorAimKeys = CursorAimKeys };
+            var copy = new CustomControls { Attack = Attack, Heavy = Heavy, Slice = Slice, CursorAimKeys = CursorAimKeys };
             for (var i = 0; i < Abilities.Length; i++) copy.Abilities[i] = Abilities[i];
             return copy;
         }

@@ -303,6 +303,7 @@ namespace GraceRun.Run
                 if (player.TryGetComponent<ReviveSystem>(out var revive)) revive.ServerResetForFloor();
                 if (player.TryGetComponent<PlayerFlask>(out var flask)) flask.ServerRefill();
                 if (player.TryGetComponent<AbilityLoadout>(out var loadout)) loadout.ServerClear();
+                if (player.TryGetComponent<PlayerWeapon>(out var weapon)) weapon.ServerReset();
                 TeleportToSpawn(player);
             }
         }

@@ -120,6 +120,58 @@ namespace GraceRun.Tests
         }
 
         [Test]
+        public void EverySchemeBindsTheHeavyAttack()
+        {
+            foreach (var scheme in new[] { ControlScheme.Mixed, ControlScheme.KeyboardOnly, ControlScheme.MouseOnly, ControlScheme.Custom })
+            {
+                var layout = ControlSchemeRules.Build(scheme, null);
+                Assert.IsTrue(layout.HeavyKeyPath.Length > 0 || layout.HeavyPointerPath.Length > 0, scheme.ToString());
+            }
+            Assert.AreEqual("<Keyboard>/u", ControlSchemeRules.Build(ControlScheme.Mixed, null).HeavyKeyPath);
+            Assert.AreEqual("<Mouse>/forwardButton", ControlSchemeRules.Build(ControlScheme.Mixed, null).HeavyPointerPath);
+            Assert.IsEmpty(ControlSchemeRules.Build(ControlScheme.KeyboardOnly, null).HeavyPointerPath);
+            Assert.IsEmpty(ControlSchemeRules.Build(ControlScheme.MouseOnly, null).HeavyKeyPath);
+        }
+
+        [Test]
+        public void CustomHeavyGoesToTheKeyOrThePointerPath()
+        {
+            var custom = CustomControls.Default;
+            custom.Heavy = ControlChoices.IndexOf("<Mouse>/backButton");
+            var layout = ControlSchemeRules.Build(ControlScheme.Custom, custom);
+            Assert.AreEqual("<Mouse>/backButton", layout.HeavyPointerPath);
+            Assert.IsEmpty(layout.HeavyKeyPath);
+
+            custom.Heavy = ControlChoices.IndexOf("<Keyboard>/i");
+            layout = ControlSchemeRules.Build(ControlScheme.Custom, custom);
+            Assert.AreEqual("<Keyboard>/i", layout.HeavyKeyPath);
+            Assert.IsEmpty(layout.HeavyPointerPath);
+        }
+
+        [Test]
+        public void CustomFromAPresetKeepsTheHeavyBinding()
+        {
+            var fromMixed = ControlSchemeRules.CustomFrom(ControlSchemeRules.Build(ControlScheme.Mixed, null));
+            Assert.AreEqual(ControlChoices.IndexOf("<Keyboard>/u"), fromMixed.Heavy);
+
+            var fromMouse = ControlSchemeRules.CustomFrom(ControlSchemeRules.Build(ControlScheme.MouseOnly, null));
+            Assert.AreEqual(ControlChoices.IndexOf("<Mouse>/forwardButton"), fromMouse.Heavy);
+        }
+
+        [Test]
+        public void HeavyLabelNamesBothBindings()
+        {
+            Assert.AreEqual("U / Mouse Forward", ControlSchemeRules.HeavyLabel(ControlSchemeRules.Build(ControlScheme.Mixed, null)));
+            Assert.AreEqual("U", ControlSchemeRules.HeavyLabel(ControlSchemeRules.Build(ControlScheme.KeyboardOnly, null)));
+        }
+
+        [Test]
+        public void DescribeListsTheHeavyAttack()
+        {
+            StringAssert.Contains("Heavy attack</color>    U / Mouse Forward", ControlSchemeRules.Describe(ControlLayout.Default));
+        }
+
+        [Test]
         public void DescribeListsTheActiveControls()
         {
             var text = ControlSchemeRules.Describe(ControlSchemeRules.Build(ControlScheme.KeyboardOnly, null));

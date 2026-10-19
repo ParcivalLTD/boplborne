@@ -23,6 +23,7 @@ namespace GraceRun.Player
         private InputAction _jump;
         private InputAction _dodge;
         private InputAction _attack;
+        private InputAction _heavy;
         private InputAction _ability1;
         private InputAction _ability2;
         private InputAction _ability3;
@@ -42,6 +43,8 @@ namespace GraceRun.Player
         public event Action DodgePressed;
         /// <summary>Raised on the attack press; true when it came from keyboard or mouse (aim at the cursor).</summary>
         public event Action<bool> AttackPressed;
+        /// <summary>Raised on the heavy attack press; true when it came from keyboard or mouse (aim at the cursor).</summary>
+        public event Action<bool> HeavyPressed;
         /// <summary>
         /// Raised to use ability slot 0, 1 or 2; true when a mouse button did it (aim at the cursor).
         /// Keys and gamepad fire on press; mouse buttons fire on release, unless the hold was claimed
@@ -97,6 +100,7 @@ namespace GraceRun.Player
             _jump = _map.FindAction("Jump", true);
             _dodge = _map.FindAction("Dodge", true);
             _attack = _map.FindAction("Attack", true);
+            _heavy = _map.FindAction("Heavy", true);
             _ability1 = _map.FindAction("Ability1", true);
             _ability2 = _map.FindAction("Ability2", true);
             _ability3 = _map.FindAction("Ability3", true);
@@ -126,6 +130,7 @@ namespace GraceRun.Player
             _jump.canceled += OnJumpCanceled;
             _dodge.performed += OnDodge;
             _attack.performed += OnAttack;
+            _heavy.performed += OnHeavy;
             _ability1.performed += OnAbility1;
             _ability2.performed += OnAbility2;
             _ability3.performed += OnAbility3;
@@ -147,6 +152,7 @@ namespace GraceRun.Player
             _jump.canceled -= OnJumpCanceled;
             _dodge.performed -= OnDodge;
             _attack.performed -= OnAttack;
+            _heavy.performed -= OnHeavy;
             _ability1.performed -= OnAbility1;
             _ability2.performed -= OnAbility2;
             _ability3.performed -= OnAbility3;
@@ -175,6 +181,7 @@ namespace GraceRun.Player
         {
             _layout = layout;
             Rebind(_attack, layout.AttackPath, null);
+            Rebind(_heavy, layout.HeavyKeyPath, layout.HeavyPointerPath);
             Rebind(_ability1, layout.KeyPaths[0], layout.PointerPaths[0]);
             Rebind(_ability2, layout.KeyPaths[1], layout.PointerPaths[1]);
             Rebind(_ability3, layout.KeyPaths[2], layout.PointerPaths[2]);
@@ -214,8 +221,14 @@ namespace GraceRun.Player
         private void OnDodge(InputAction.CallbackContext _) { if (!GameplayBlocked) DodgePressed?.Invoke(); }
         private void OnAttack(InputAction.CallbackContext context)
         {
-            if (!GameplayBlocked) AttackPressed?.Invoke(context.control.device is Pointer || (context.control.device is Keyboard && _layout.CursorAimKeys));
+            if (!GameplayBlocked) AttackPressed?.Invoke(AimsAtCursor(context));
         }
+        private void OnHeavy(InputAction.CallbackContext context)
+        {
+            if (!GameplayBlocked) HeavyPressed?.Invoke(AimsAtCursor(context));
+        }
+        private bool AimsAtCursor(InputAction.CallbackContext context) =>
+            context.control.device is Pointer || (context.control.device is Keyboard && _layout.CursorAimKeys);
         private void OnAbility1(InputAction.CallbackContext context) => OnAbility(0, context);
         private void OnAbility2(InputAction.CallbackContext context) => OnAbility(1, context);
         private void OnAbility3(InputAction.CallbackContext context) => OnAbility(2, context);

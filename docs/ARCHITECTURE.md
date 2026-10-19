@@ -21,7 +21,7 @@ Assets/
       DebugTools/    DebugMenu, DebugCommands, HitboxGizmos
     Data/
       Config/        GameConfig, RunConfig, ComboRules
-      Player/        PlayerMovementData, PlayerStatsData, LightAttackData
+      Player/        PlayerMovementData, PlayerStatsData, WeaponData, WeaponCatalog (and the legacy LightAttackData)
       Abilities/     one AbilityData per ability
       Bosses/        one folder per boss: BossData + its AttackData assets
     Prefabs/         Player, Bosses/, Abilities/, Arenas/, UI/, FX/
@@ -74,7 +74,9 @@ Everything tunable is here. Default values are the starting values in `docs/GDD.
 | `GameConfig` | maxPlayers (4), port (7777), gameVersion, playerColors[4], hat sprites[4] |
 | `PlayerMovementData` | runSpeed, acceleration, deceleration, airControl, jumpHeight, jumpCutMultiplier, gravityScale, fallGravityMultiplier, maxFallSpeed, coyoteTime, jumpBuffer, groundCheckSize, jumpStretch, landSquash, squashRecoverTime |
 | `PlayerStatsData` | maxHP, maxStamina, staminaRegenPerSecond, regenDelay, dodgeCost, dodgeDuration, dodgeInvulnerableTime, dodgeSpeed, flaskCharges, flaskHeal |
-| `LightAttackData` | hits[3]: damage, knockback, hitbox size/offset, startup, active, recovery, staminaCost |
+| `LightAttackData` | legacy: the old Fists combo, the source of the Fists weapon's light hits (nothing reads it any more) |
+| `WeaponData` | displayName, colour, placeholder bar size, combo[] (damage, knockback, hitbox size/offset, startup, active, recovery, staminaCost per hit), heavy, optional aerial / up / down, inputBuffer, chainWindow, moveSpeedMultiplier |
+| `WeaponCatalog` | weapons[] (list index = network id, 0 = Fists), directionThreshold (how far up / down the move stick counts) |
 | `AbilityData` | id, displayName, description, comboHook, icon, tags (flags), rarity, cooldown, minFloor, effectPrefab, level2 multipliers |
 | `ComboRules` | rules[]: sourceTag, targetTag, interaction (Absorb, Redirect, Pull, Push, Launch, Ricochet, Ignite…), parameters |
 | `BossData` | id, displayName, floor, baseHP, hpScalePerExtraPlayer (0.6), phase2Threshold (0.5), phase1Attacks[], phase2Attacks[], targetSwitchInterval, prefab, arenaPrefab, accentColor |
@@ -98,6 +100,7 @@ Everything tunable is here. Default values are the starting values in `docs/GDD.
 | Player movement | `PlayerMovement`, `JumpGate`, `PlayerDodge`, `PlayerInputReader` | owner |
 | Health and damage | `Health` (NetworkVariable), `DamageService` | server |
 | Player attacks | `Hitbox` on attacker | owner detects, server applies |
+| Weapons | `WeaponData` / `WeaponCatalog`; pure `WeaponMoves` (which move a press asks for), `WeaponMoveSet` (flattens a weapon into one hit list: combo first, then heavy, aerial, up, down), `WeaponRules` (when it may change), `LightAttackCombo` (timing, chaining, buffered stand-alone moves); `PlayerLightAttack` (plays the equipped weapon's swings), `PlayerWeapon` (server-write `NetworkVariable<byte>`, `SelectRpc`), `WeaponView` (placeholder bar); `UI/WeaponPickerScreen` | owner swings and detects hits, server applies damage and owns the equipped weapon, every PC shows it |
 | Boss AI | `BossBrain`, `BossAttackRunner` | server |
 | Boss telegraphs and hitboxes | `Telegraph`, `BossAttackRunner` client side | every client, from the broadcast start tick |
 | Abilities | `AbilityLoadout` (NetworkList), `AbilityRunner`, effect prefabs | owner requests, server spawns |

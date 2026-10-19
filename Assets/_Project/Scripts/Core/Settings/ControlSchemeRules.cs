@@ -6,6 +6,8 @@ namespace GraceRun.Core.Settings
     public static class ControlSchemeRules
     {
         private const string AttackKey = "<Keyboard>/j";
+        private const string HeavyKey = "<Keyboard>/u";
+        private const string HeavyButton = "<Mouse>/forwardButton";
         private static readonly string[] AbilityKeys = { "<Keyboard>/k", "<Keyboard>/l", "<Keyboard>/semicolon" };
         private static readonly string[] AbilityButtons = { "<Mouse>/leftButton", "<Mouse>/middleButton", "<Mouse>/rightButton" };
         private static readonly string[] AbilityGamepad = { "North", "LB", "RB" };
@@ -16,13 +18,13 @@ namespace GraceRun.Core.Settings
             switch (scheme)
             {
                 case ControlScheme.KeyboardOnly:
-                    return new ControlLayout(AttackKey, (string[])AbilityKeys.Clone(), Empty(), -1, false);
+                    return new ControlLayout(AttackKey, HeavyKey, string.Empty, (string[])AbilityKeys.Clone(), Empty(), -1, false);
                 case ControlScheme.MouseOnly:
-                    return new ControlLayout(string.Empty, Empty(), (string[])AbilityButtons.Clone(), 0, true);
+                    return new ControlLayout(string.Empty, string.Empty, HeavyButton, Empty(), (string[])AbilityButtons.Clone(), 0, true);
                 case ControlScheme.Custom:
                     return BuildCustom(custom ?? CustomControls.Default);
                 default:
-                    return new ControlLayout(AttackKey, (string[])AbilityKeys.Clone(), (string[])AbilityButtons.Clone(), 0, true);
+                    return new ControlLayout(AttackKey, HeavyKey, HeavyButton, (string[])AbilityKeys.Clone(), (string[])AbilityButtons.Clone(), 0, true);
             }
         }
 
@@ -35,6 +37,7 @@ namespace GraceRun.Core.Settings
             var custom = new CustomControls
             {
                 Attack = ControlChoices.IndexOf(layout.AttackPath),
+                Heavy = ControlChoices.IndexOf(layout.HeavyKeyPath.Length > 0 ? layout.HeavyKeyPath : layout.HeavyPointerPath),
                 Slice = layout.SliceSlot,
                 CursorAimKeys = layout.CursorAimKeys,
             };
@@ -63,19 +66,25 @@ namespace GraceRun.Core.Settings
 
         public static string SchemeHint(ControlScheme scheme) => scheme switch
         {
-            ControlScheme.KeyboardOnly => "J attacks, K / L / ; use abilities, aimed the way you face.",
-            ControlScheme.MouseOnly => "Drag with left mouse to slice. Mouse buttons use abilities, aimed at the cursor.",
+            ControlScheme.KeyboardOnly => "J attacks, U heavy, K / L / ; use abilities, aimed the way you face.",
+            ControlScheme.MouseOnly => "Drag with left mouse to slice, side button for heavy. Mouse buttons use abilities, aimed at the cursor.",
             ControlScheme.Custom => "Your own keys and buttons. Change any row below.",
             _ => "Both at once: keys, and the mouse with the slice.",
         };
 
         public static string AttackLabel(ControlLayout layout) => Label(layout.AttackPath);
 
+        /// <summary>"U / Mouse Forward" for the heavy attack bound to both, or "None".</summary>
+        public static string HeavyLabel(ControlLayout layout) => BothLabel(layout.HeavyKeyPath, layout.HeavyPointerPath);
+
         /// <summary>"K / Left Mouse" for a slot bound to both, or "None".</summary>
         public static string AbilityLabel(ControlLayout layout, int slot)
         {
-            var key = layout.KeyPaths[slot];
-            var pointer = layout.PointerPaths[slot];
+            return BothLabel(layout.KeyPaths[slot], layout.PointerPaths[slot]);
+        }
+
+        private static string BothLabel(string key, string pointer)
+        {
             if (key.Length > 0 && pointer.Length > 0) return Label(key) + " / " + Label(pointer);
             return key.Length > 0 ? Label(key) : Label(pointer);
         }
@@ -92,7 +101,8 @@ namespace GraceRun.Core.Settings
             Line(text, "Fast fall", "hold S while falling");
             Line(text, "Drop through a ledge", "S + Space");
             Line(text, "Dodge roll (any direction)", "Shift   ·   East");
-            Line(text, "Light attack", AttackLine(layout) + "   ·   West");
+            Line(text, "Light attack · aerial · up / down", AttackLine(layout) + "   ·   West");
+            Line(text, "Heavy attack", HeavyLabel(layout) + "   ·   Right trigger");
             Line(text, "Slice", layout.SliceSlot >= 0
                 ? "hold " + Label(layout.PointerPaths[layout.SliceSlot]) + " and drag across a target"
                 : "off");
@@ -123,7 +133,10 @@ namespace GraceRun.Core.Settings
                 pointers[i] = pointer ? path : string.Empty;
             }
             var slice = custom.Slice >= 0 && custom.Slice < pointers.Length && pointers[custom.Slice].Length > 0 ? custom.Slice : -1;
-            return new ControlLayout(ControlChoices.PathOf(custom.Attack), keys, pointers, slice, custom.CursorAimKeys);
+            var heavy = ControlChoices.PathOf(custom.Heavy);
+            var heavyIsPointer = ControlChoices.IsPointer(heavy);
+            return new ControlLayout(ControlChoices.PathOf(custom.Attack), heavyIsPointer ? string.Empty : heavy,
+                heavyIsPointer ? heavy : string.Empty, keys, pointers, slice, custom.CursorAimKeys);
         }
 
         private static string[] Empty() => new[] { string.Empty, string.Empty, string.Empty };

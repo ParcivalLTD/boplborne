@@ -21,6 +21,7 @@ namespace GraceRun.Core.Settings
         private const string NicknameKey = "settings.nickname";
         private const string SchemeKey = "settings.controlScheme";
         private const string CustomAttackKey = "settings.custom.attack";
+        private const string CustomHeavyKey = "settings.custom.heavy";
         private const string CustomAbilityKey = "settings.custom.ability";
         private const string CustomSliceKey = "settings.custom.slice";
         private const string CustomAimKey = "settings.custom.aimKeys";
@@ -163,6 +164,7 @@ namespace GraceRun.Core.Settings
             PlayerPrefs.SetString(NicknameKey, Nickname);
             PlayerPrefs.SetInt(SchemeKey, (int)Scheme);
             PlayerPrefs.SetInt(CustomAttackKey, Custom.Attack);
+            PlayerPrefs.SetInt(CustomHeavyKey, Custom.Heavy);
             for (var i = 0; i < Custom.Abilities.Length; i++) PlayerPrefs.SetInt(CustomAbilityKey + i, Custom.Abilities[i]);
             PlayerPrefs.SetInt(CustomSliceKey, Custom.Slice);
             PlayerPrefs.SetInt(CustomAimKey, Custom.CursorAimKeys ? 1 : 0);
@@ -176,6 +178,7 @@ namespace GraceRun.Core.Settings
 
             var custom = CustomControls.Default;
             custom.Attack = ClampChoice(PlayerPrefs.GetInt(CustomAttackKey, custom.Attack));
+            custom.Heavy = ClampChoice(PlayerPrefs.GetInt(CustomHeavyKey, custom.Heavy));
             for (var i = 0; i < custom.Abilities.Length; i++)
                 custom.Abilities[i] = ClampChoice(PlayerPrefs.GetInt(CustomAbilityKey + i, custom.Abilities[i]));
             custom.Slice = Mathf.Clamp(PlayerPrefs.GetInt(CustomSliceKey, custom.Slice), -1, ControlLayout.AbilitySlots - 1);

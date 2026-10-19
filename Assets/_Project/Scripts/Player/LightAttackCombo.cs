@@ -13,20 +13,21 @@ namespace GraceRun.Player
         /// <summary>Slack for float drift, so a phase never ends one tick late.</summary>
         private const float TimeEpsilon = 0.0001f;
 
-        private readonly IReadOnlyList<LightAttackHit> _hits;
-        private readonly float _inputBuffer;
-        private readonly float _chainWindow;
+        private IReadOnlyList<LightAttackHit> _hits;
+        private int _comboLength;
+        private float _inputBuffer;
+        private float _chainWindow;
 
         private float _phaseTime;
         private float _bufferLeft;
+        private int _bufferedHit = -1;
         private float _chainLeft;
         private int _nextHit;
 
-        public LightAttackCombo(IReadOnlyList<LightAttackHit> hits, float inputBuffer, float chainWindow)
+        /// <param name="comboLength">How many hits at the front chain into each other; the rest are stand-alone moves (0 = all).</param>
+        public LightAttackCombo(IReadOnlyList<LightAttackHit> hits, float inputBuffer, float chainWindow, int comboLength = 0)
         {
-            _hits = hits;
-            _inputBuffer = inputBuffer;
-            _chainWindow = chainWindow;
+            Configure(hits, inputBuffer, chainWindow, comboLength);
         }
 
         /// <summary>Asked with the hit index before a swing starts from a press. Null means always yes.</summary>
@@ -49,11 +50,27 @@ namespace GraceRun.Player
         /// <summary>The swing ended or was cancelled; the attacker is free again.</summary>
         public event Action SwingEnded;
 
-        /// <summary>An attack press. Starts a swing at once when idle, otherwise buffers it.</summary>
-        public void Press()
+        /// <summary>Swaps in another weapon's hits: stops any swing and starts the chain over.</summary>
+        public void Configure(IReadOnlyList<LightAttackHit> hits, float inputBuffer, float chainWindow, int comboLength = 0)
         {
-            if (Phase == SwingPhase.Idle && TryStart(_nextHit)) return;
+            Cancel();
+            _hits = hits;
+            _inputBuffer = inputBuffer;
+            _chainWindow = chainWindow;
+            _comboLength = comboLength > 0 && comboLength < hits.Count ? comboLength : hits.Count;
+        }
+
+        /// <summary>An attack press. Starts the next combo hit at once when idle, otherwise buffers it.</summary>
+        public void Press() => PressHit(-1);
+
+        /// <summary>A press for a stand-alone move (heavy, aerial, up, down): starts that hit, or buffers it.</summary>
+        public void PressMove(int hitIndex) => PressHit(hitIndex);
+
+        private void PressHit(int hitIndex)
+        {
+            if (Phase == SwingPhase.Idle && TryStart(hitIndex < 0 ? _nextHit : hitIndex)) return;
             _bufferLeft = _inputBuffer;
+            _bufferedHit = hitIndex;
         }
 
         /// <summary>Starts a given hit without asking <see cref="CanStart"/> (replaying another player's swing).</summary>
@@ -131,14 +148,14 @@ namespace GraceRun.Player
         private void Finish()
         {
             Phase = SwingPhase.Idle;
-            var last = HitIndex + 1 >= _hits.Count;
+            var last = HitIndex + 1 >= _comboLength;
             _nextHit = last ? 0 : HitIndex + 1;
             _chainLeft = last ? 0f : _chainWindow;
             SwingEnded?.Invoke();
 
             if (_bufferLeft <= 0f) return;
             _bufferLeft = 0f;
-            TryStart(_nextHit);
+            TryStart(_bufferedHit < 0 ? _nextHit : _bufferedHit);
         }
 
         private bool TryStart(int hitIndex)

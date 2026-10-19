@@ -26,6 +26,8 @@ namespace GraceRun.UI.Menus
 
             rows.Add(MenuKit.Option(column, "Attack", () => ControlSchemeRules.AttackLabel(GameSettings.Layout),
                 delta => GameSettings.EditCustom(c => c.Attack = ControlSchemeRules.CycleChoice(c.Attack, delta))));
+            rows.Add(MenuKit.Option(column, "Heavy attack", () => ControlSchemeRules.HeavyLabel(GameSettings.Layout),
+                delta => GameSettings.EditCustom(c => c.Heavy = ControlSchemeRules.CycleChoice(c.Heavy, delta))));
             for (var i = 0; i < ControlLayout.AbilitySlots; i++)
             {
                 var slot = i;
@@ -38,7 +40,7 @@ namespace GraceRun.UI.Menus
                 _ => GameSettings.EditCustom(c => c.CursorAimKeys = !c.CursorAimKeys)));
 
             MenuKit.Button(column, "Back", pages.Back);
-            MenuKit.Label(column, "Left / right to change. Mouse buttons fire on release and aim at the cursor.", MenuStyle.SmallSize, MenuStyle.Fog);
+            MenuKit.Label(column, "Left / right to change. Mouse buttons fire on release and aim at the cursor. Hold up / down with Attack to swing up / down.", MenuStyle.SmallSize, MenuStyle.Fog);
             MenuKit.ChainVertical(column);
 
             column.gameObject.AddComponent<ControlsSettingsView>().Setup(hint, rows);

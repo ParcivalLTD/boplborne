@@ -21,6 +21,7 @@ Everyone is a friend, so we trust clients where it makes the game feel better.
 | Your own player's movement, jump, dodge | **Your PC** (owner) | `NetworkTransform` with owner authority, interpolation on for others |
 | Whether your attack hit something | **Your PC** (attacker side) | `ReportHitRpc` to server |
 | Whether a boss attack hit you | **Your PC** (victim side), only if you weren't invulnerable | `ReportHitRpc` to server |
+| Which weapon a player carries | **Server** (the owner asks with `SelectRpc`, only accepted in the hub and at rest stops) | `NetworkVariable<byte>` on `PlayerWeapon` (catalog id) |
 | HP, damage numbers, deaths, revives | **Server** | `NetworkVariable` on `Health` |
 | Stamina | **Your PC** (it only gates your own actions) | `NetworkVariable` (owner write) so the HUD shows it |
 | Knockback on a player | Server or attacker decides, **target's PC applies** | `[Rpc(SendTo.Owner)]` on the target |

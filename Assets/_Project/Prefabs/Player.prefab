@@ -1341,6 +1341,8 @@ GameObject:
   - component: {fileID: 6712944494138826279}
   - component: {fileID: 2396146848627771548}
   - component: {fileID: 3692905994076000439}
+  - component: {fileID: 1686664829191433301}
+  - component: {fileID: 4231046611271713449}
   m_Layer: 9
   m_Name: Player
   m_TagString: Untagged
@@ -1714,7 +1716,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: GraceRun.Runtime::GraceRun.Player.PlayerLightAttack
   ShowTopMostFoldoutHeaderGroup: 1
-  _data: {fileID: 11400000, guid: 311fe46c04884094b87f6031c73c22cf, type: 2}
+  _weapon: {fileID: 1686664829191433301}
   _input: {fileID: 1201089126174767330}
   _movement: {fileID: 1396830838873508324}
   _stamina: {fileID: 1895680035810035299}
@@ -1769,7 +1771,6 @@ MonoBehaviour:
   _data: {fileID: 11400000, guid: efab9effa57c4474db35f3a7cfd49929, type: 2}
   _attack: {fileID: 2042001691053674803}
   _dodge: {fileID: 4801282400668150400}
-  _attackData: {fileID: 11400000, guid: 311fe46c04884094b87f6031c73c22cf, type: 2}
   _feet: {fileID: 3085121052913803457}
 --- !u!114 &2044170315674731346
 MonoBehaviour:
@@ -2034,3 +2035,35 @@ MonoBehaviour:
   _health: {fileID: 2285578246583526149}
   _ghost: {fileID: 4886432173965129126}
   _groundCheck: {fileID: 3085121052913803457}
+--- !u!114 &1686664829191433301
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9178268518804516864}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8ef56d10839e22149ad36c435a5140be, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: GraceRun.Runtime::GraceRun.Player.PlayerWeapon
+  ShowTopMostFoldoutHeaderGroup: 1
+  _catalog: {fileID: 11400000, guid: d023d3d88348a624f9c41c002ed271f1, type: 2}
+--- !u!114 &4231046611271713449
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9178268518804516864}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 140b7093dfca91145a752c2ced321cdf, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: GraceRun.Runtime::GraceRun.Player.WeaponView
+  _weapon: {fileID: 1686664829191433301}
+  _attack: {fileID: 2042001691053674803}
+  _reference: {fileID: 4279113817888160496}
+  _grip: 0.4
+  _windUp: 0.45
+  _restOffset: {x: -0.3, y: 0.2}
