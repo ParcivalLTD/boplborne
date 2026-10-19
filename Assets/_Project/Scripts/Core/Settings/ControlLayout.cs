@@ -44,7 +44,7 @@ namespace GraceRun.Core.Settings
         /// <summary>Whether a keyboard attack aims at the mouse cursor (otherwise the way you face).</summary>
         public bool CursorAimKeys { get; }
 
-        /// <summary>The layout the game shipped with (same as <see cref="ControlScheme.Mixed"/>).</summary>
-        public static ControlLayout Default => ControlSchemeRules.Build(ControlScheme.Mixed, null);
+        /// <summary>The default layout (<see cref="ControlScheme.KeyboardOnly"/>).</summary>
+        public static ControlLayout Default => ControlSchemeRules.Build(ControlScheme.KeyboardOnly, null);
     }
 }

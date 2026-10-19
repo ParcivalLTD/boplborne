@@ -27,6 +27,9 @@ namespace GraceRun.Core.Settings
         /// <summary>Input System path of choice <paramref name="index"/> (empty for None or an unknown index).</summary>
         public static string PathOf(int index) => index > 0 && index < Choices.Length ? Choices[index].path : string.Empty;
 
+        /// <summary>True when choice <paramref name="index"/> may be used on the keyboard (<paramref name="mouse"/> false) or the mouse; None fits both.</summary>
+        public static bool FitsDevice(int index, bool mouse) => index <= 0 || IsPointer(PathOf(index)) == mouse;
+
         /// <summary>Text shown for choice <paramref name="index"/>.</summary>
         public static string LabelOf(int index) => index >= 0 && index < Choices.Length ? Choices[index].label : "None";
 

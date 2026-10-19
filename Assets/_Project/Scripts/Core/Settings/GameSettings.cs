@@ -24,7 +24,7 @@ namespace GraceRun.Core.Settings
         private const string CustomHeavyKey = "settings.custom.heavy";
         private const string CustomAbilityKey = "settings.custom.ability";
         private const string CustomSliceKey = "settings.custom.slice";
-        private const string CustomAimKey = "settings.custom.aimKeys";
+        private const string CustomMouseKey = "settings.custom.mouse";
 
         private static readonly List<Vector2Int> ResolutionList = new();
         private static SettingsData _defaults;
@@ -45,7 +45,7 @@ namespace GraceRun.Core.Settings
         /// <summary>The name shown for this player online; empty to be shown as P1-P4. Never longer than the nickname limit.</summary>
         public static string Nickname { get; private set; } = string.Empty;
 
-        public static ControlScheme Scheme { get; private set; } = ControlScheme.Mixed;
+        public static ControlScheme Scheme { get; private set; } = ControlScheme.KeyboardOnly;
 
         /// <summary>The player's own picks, used while <see cref="Scheme"/> is Custom (kept for later when it is not).</summary>
         public static CustomControls Custom { get; private set; } = CustomControls.Default;
@@ -127,7 +127,7 @@ namespace GraceRun.Core.Settings
                 Fullscreen = _defaults.Fullscreen;
                 VSync = _defaults.VSync;
                 Resolution = Vector2Int.zero;
-                Scheme = ControlScheme.Mixed;
+                Scheme = ControlScheme.KeyboardOnly;
                 Custom = CustomControls.Default;
             }, true);
         }
@@ -167,22 +167,21 @@ namespace GraceRun.Core.Settings
             PlayerPrefs.SetInt(CustomHeavyKey, Custom.Heavy);
             for (var i = 0; i < Custom.Abilities.Length; i++) PlayerPrefs.SetInt(CustomAbilityKey + i, Custom.Abilities[i]);
             PlayerPrefs.SetInt(CustomSliceKey, Custom.Slice);
-            PlayerPrefs.SetInt(CustomAimKey, Custom.CursorAimKeys ? 1 : 0);
+            PlayerPrefs.SetInt(CustomMouseKey, Custom.Mouse ? 1 : 0);
             PlayerPrefs.Save();
         }
 
         private static void LoadControls()
         {
-            var scheme = PlayerPrefs.GetInt(SchemeKey, (int)ControlScheme.Mixed);
-            Scheme = Enum.IsDefined(typeof(ControlScheme), scheme) ? (ControlScheme)scheme : ControlScheme.Mixed;
+            var scheme = PlayerPrefs.GetInt(SchemeKey, (int)ControlScheme.KeyboardOnly);
+            Scheme = Enum.IsDefined(typeof(ControlScheme), scheme) ? (ControlScheme)scheme : ControlScheme.KeyboardOnly;
 
-            var custom = CustomControls.Default;
+            var custom = CustomControls.DefaultFor(PlayerPrefs.GetInt(CustomMouseKey, 0) == 1);
             custom.Attack = ClampChoice(PlayerPrefs.GetInt(CustomAttackKey, custom.Attack));
             custom.Heavy = ClampChoice(PlayerPrefs.GetInt(CustomHeavyKey, custom.Heavy));
             for (var i = 0; i < custom.Abilities.Length; i++)
                 custom.Abilities[i] = ClampChoice(PlayerPrefs.GetInt(CustomAbilityKey + i, custom.Abilities[i]));
             custom.Slice = Mathf.Clamp(PlayerPrefs.GetInt(CustomSliceKey, custom.Slice), -1, ControlLayout.AbilitySlots - 1);
-            custom.CursorAimKeys = PlayerPrefs.GetInt(CustomAimKey, custom.CursorAimKeys ? 1 : 0) == 1;
             Custom = custom;
             _layout = null;
         }
@@ -196,7 +195,7 @@ namespace GraceRun.Core.Settings
             ResolutionList.Clear();
             MasterVolume = SfxVolume = ShakeMultiplier = 1f;
             Nickname = string.Empty;
-            Scheme = ControlScheme.Mixed;
+            Scheme = ControlScheme.KeyboardOnly;
             Custom = CustomControls.Default;
             _layout = null;
             Changed = null;

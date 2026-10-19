@@ -104,10 +104,35 @@ namespace GraceRun.UI.Menus
             var row = Row<MenuOptionRow>(parent, text, out var label);
             label.alignment = TextAnchor.MiddleLeft;
             label.rectTransform.offsetMin = new Vector2(24f, 0f);
-            var value = Label(row.transform, "", MenuStyle.BodySize, MenuStyle.Gold, TextAnchor.MiddleRight);
-            Stretch(value.rectTransform, new Vector2(0f, 0f), new Vector2(-24f, 0f));
+            var value = Label(row.transform, "", MenuStyle.BodySize, MenuStyle.Gold, TextAnchor.MiddleCenter);
+            SideRect(value.rectTransform, ValueWidth, ArrowWidth + 8f);
+            Arrow(row, "<", -1, ValueWidth + ArrowWidth + 8f);
+            Arrow(row, ">", 1, 8f);
             row.Bind(value, read, adjust);
             return row;
+        }
+
+        private const float ArrowWidth = 32f;
+        private const float ValueWidth = 170f;
+
+        /// <summary>A clickable arrow at the right end of an option row; a click steps the value by <paramref name="delta"/>.</summary>
+        private static void Arrow(MenuOptionRow row, string glyph, int delta, float fromRight)
+        {
+            var text = Label(row.transform, glyph, MenuStyle.BodySize + 6, MenuStyle.Bone, TextAnchor.MiddleCenter);
+            SideRect(text.rectTransform, ArrowWidth, fromRight);
+            text.raycastTarget = true;
+            text.gameObject.AddComponent<OptionArrow>().Setup(row, delta);
+        }
+
+        /// <summary>Pins <paramref name="rect"/> to the right edge of its row: <paramref name="width"/> wide, <paramref name="fromRight"/> in from the edge.</summary>
+        private static void SideRect(RectTransform rect, float width, float fromRight)
+        {
+            rect.anchorMin = new Vector2(1f, 0f);
+            rect.anchorMax = new Vector2(1f, 1f);
+            rect.pivot = new Vector2(1f, 0.5f);
+            rect.sizeDelta = new Vector2(width, 0f);
+            rect.anchoredPosition = new Vector2(-fromRight, 0f);
+            if (rect.TryGetComponent(out LayoutElement element)) element.ignoreLayout = true;
         }
 
         /// <summary>A single-line text field (the join address).</summary>

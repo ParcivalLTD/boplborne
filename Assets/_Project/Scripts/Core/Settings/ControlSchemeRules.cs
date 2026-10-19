@@ -24,33 +24,40 @@ namespace GraceRun.Core.Settings
                 case ControlScheme.Custom:
                     return BuildCustom(custom ?? CustomControls.Default);
                 default:
-                    return new ControlLayout(AttackKey, HeavyKey, HeavyButton, (string[])AbilityKeys.Clone(), (string[])AbilityButtons.Clone(), 0, true);
+                    return new ControlLayout(AttackKey, HeavyKey, string.Empty, (string[])AbilityKeys.Clone(), Empty(), -1, false);
             }
         }
 
         /// <summary>
-        /// A custom setup that behaves like <paramref name="layout"/> as closely as one choice per
-        /// action allows (a key wins over a mouse button), so editing a preset starts from what you had.
+        /// A custom setup that starts from <paramref name="layout"/>, so editing a preset keeps what you had.
+        /// The device is the mouse when the layout has no keys at all.
         /// </summary>
         public static CustomControls CustomFrom(ControlLayout layout)
         {
+            var mouse = layout.AttackPath.Length == 0 && layout.HeavyKeyPath.Length == 0 && layout.KeyPaths[0].Length == 0;
             var custom = new CustomControls
             {
+                Mouse = mouse,
                 Attack = ControlChoices.IndexOf(layout.AttackPath),
-                Heavy = ControlChoices.IndexOf(layout.HeavyKeyPath.Length > 0 ? layout.HeavyKeyPath : layout.HeavyPointerPath),
-                Slice = layout.SliceSlot,
-                CursorAimKeys = layout.CursorAimKeys,
+                Heavy = ControlChoices.IndexOf(mouse ? layout.HeavyPointerPath : layout.HeavyKeyPath),
+                Slice = mouse ? layout.SliceSlot : -1,
             };
             for (var i = 0; i < ControlLayout.AbilitySlots; i++)
-            {
-                var path = layout.KeyPaths[i].Length > 0 ? layout.KeyPaths[i] : layout.PointerPaths[i];
-                custom.Abilities[i] = ControlChoices.IndexOf(path);
-            }
+                custom.Abilities[i] = ControlChoices.IndexOf(mouse ? layout.PointerPaths[i] : layout.KeyPaths[i]);
             return custom;
         }
 
-        /// <summary>Next choice index after <paramref name="delta"/> steps, wrapping.</summary>
-        public static int CycleChoice(int index, int delta) => SettingsRules.Cycle(index, delta, ControlChoices.Count);
+        /// <summary>Next choice on the same device (None always fits) after <paramref name="delta"/> steps, wrapping.</summary>
+        public static int CycleChoice(int index, int delta, bool mouse)
+        {
+            var next = index;
+            for (var i = 0; i < ControlChoices.Count; i++)
+            {
+                next = SettingsRules.Cycle(next, delta, ControlChoices.Count);
+                if (ControlChoices.FitsDevice(next, mouse)) return next;
+            }
+            return index;
+        }
 
         /// <summary>Next slice slot after <paramref name="delta"/> steps through Off, Ability 1, 2, 3.</summary>
         public static int CycleSlice(int slice, int delta) =>
@@ -58,18 +65,17 @@ namespace GraceRun.Core.Settings
 
         public static string SchemeLabel(ControlScheme scheme) => scheme switch
         {
-            ControlScheme.KeyboardOnly => "Keyboard only",
             ControlScheme.MouseOnly => "Mouse only",
             ControlScheme.Custom => "Custom",
-            _ => "Keyboard + mouse",
+            _ => "Keyboard only",
         };
 
         public static string SchemeHint(ControlScheme scheme) => scheme switch
         {
             ControlScheme.KeyboardOnly => "J attacks, U heavy, K / L / ; use abilities, aimed the way you face.",
             ControlScheme.MouseOnly => "Drag with left mouse to slice, side button for heavy. Mouse buttons use abilities, aimed at the cursor.",
-            ControlScheme.Custom => "Your own keys and buttons. Change any row below.",
-            _ => "Both at once: keys, and the mouse with the slice.",
+            ControlScheme.Custom => "Your own keys or mouse buttons, never both. Change any row below.",
+            _ => "Keys only. The mouse does nothing in combat.",
         };
 
         public static string AttackLabel(ControlLayout layout) => Label(layout.AttackPath);
@@ -123,21 +129,26 @@ namespace GraceRun.Core.Settings
 
         private static ControlLayout BuildCustom(CustomControls custom)
         {
-            var keys = new string[ControlLayout.AbilitySlots];
-            var pointers = new string[ControlLayout.AbilitySlots];
+            var keys = Empty();
+            var pointers = Empty();
             for (var i = 0; i < keys.Length; i++)
             {
-                var path = ControlChoices.PathOf(custom.Abilities[i]);
-                var pointer = ControlChoices.IsPointer(path);
-                keys[i] = pointer ? string.Empty : path;
-                pointers[i] = pointer ? path : string.Empty;
+                var path = DevicePath(custom.Abilities[i], custom.Mouse);
+                if (custom.Mouse) pointers[i] = path;
+                else keys[i] = path;
             }
-            var slice = custom.Slice >= 0 && custom.Slice < pointers.Length && pointers[custom.Slice].Length > 0 ? custom.Slice : -1;
-            var heavy = ControlChoices.PathOf(custom.Heavy);
-            var heavyIsPointer = ControlChoices.IsPointer(heavy);
-            return new ControlLayout(ControlChoices.PathOf(custom.Attack), heavyIsPointer ? string.Empty : heavy,
-                heavyIsPointer ? heavy : string.Empty, keys, pointers, slice, custom.CursorAimKeys);
+            var slice = custom.Mouse && custom.Slice >= 0 && custom.Slice < pointers.Length && pointers[custom.Slice].Length > 0 ? custom.Slice : -1;
+            var heavy = DevicePath(custom.Heavy, custom.Mouse);
+            return new ControlLayout(DevicePath(custom.Attack, custom.Mouse), custom.Mouse ? string.Empty : heavy,
+                custom.Mouse ? heavy : string.Empty, keys, pointers, slice, custom.Mouse);
         }
+
+        /// <summary>The path of a choice, or empty when it belongs to the other device (an old save cannot mix them).</summary>
+        private static string DevicePath(int choice, bool mouse) => ControlChoices.FitsDevice(choice, mouse) ? ControlChoices.PathOf(choice) : string.Empty;
+
+        /// <summary>The device label shown for a custom scheme.</summary>
+        public static string DeviceLabel(bool mouse) => mouse ? "Mouse" : "Keyboard";
+
 
         private static string[] Empty() => new[] { string.Empty, string.Empty, string.Empty };
 

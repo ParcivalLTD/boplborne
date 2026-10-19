@@ -5,31 +5,31 @@ namespace GraceRun.Tests
 {
     public class ControlSchemeRulesTests
     {
-        [Test]
-        public void MixedKeepsEveryDefaultBinding()
+        private static bool UsesKeys(ControlLayout layout)
         {
-            var layout = ControlSchemeRules.Build(ControlScheme.Mixed, null);
-            Assert.AreEqual("<Keyboard>/j", layout.AttackPath);
-            Assert.AreEqual("<Keyboard>/k", layout.KeyPaths[0]);
-            Assert.AreEqual("<Keyboard>/semicolon", layout.KeyPaths[2]);
-            Assert.AreEqual("<Mouse>/leftButton", layout.PointerPaths[0]);
-            Assert.AreEqual("<Mouse>/rightButton", layout.PointerPaths[2]);
-            Assert.AreEqual(0, layout.SliceSlot);
-            Assert.IsTrue(layout.CursorAimKeys);
+            if (layout.AttackPath.Length > 0 && ControlChoices.IsKey(layout.AttackPath)) return true;
+            if (layout.HeavyKeyPath.Length > 0) return true;
+            foreach (var key in layout.KeyPaths) if (key.Length > 0) return true;
+            return false;
+        }
+
+        private static bool UsesMouse(ControlLayout layout)
+        {
+            if (ControlChoices.IsPointer(layout.AttackPath) || layout.HeavyPointerPath.Length > 0) return true;
+            foreach (var pointer in layout.PointerPaths) if (pointer.Length > 0) return true;
+            return false;
         }
 
         [Test]
         public void KeyboardOnlyHasNoMouseAndNoSlice()
         {
             var layout = ControlSchemeRules.Build(ControlScheme.KeyboardOnly, null);
-            for (var i = 0; i < ControlLayout.AbilitySlots; i++)
-            {
-                Assert.IsNotEmpty(layout.KeyPaths[i]);
-                Assert.IsEmpty(layout.PointerPaths[i]);
-            }
+            Assert.AreEqual("<Keyboard>/j", layout.AttackPath);
+            Assert.AreEqual("<Keyboard>/k", layout.KeyPaths[0]);
+            Assert.AreEqual("<Keyboard>/semicolon", layout.KeyPaths[2]);
+            Assert.IsFalse(UsesMouse(layout));
             Assert.AreEqual(-1, layout.SliceSlot);
             Assert.IsFalse(layout.CursorAimKeys);
-            Assert.AreEqual("<Keyboard>/j", layout.AttackPath);
         }
 
         [Test]
@@ -37,60 +37,124 @@ namespace GraceRun.Tests
         {
             var layout = ControlSchemeRules.Build(ControlScheme.MouseOnly, null);
             Assert.IsEmpty(layout.AttackPath);
-            for (var i = 0; i < ControlLayout.AbilitySlots; i++)
-            {
-                Assert.IsEmpty(layout.KeyPaths[i]);
-                Assert.IsNotEmpty(layout.PointerPaths[i]);
-            }
+            Assert.IsFalse(UsesKeys(layout));
+            Assert.AreEqual("<Mouse>/leftButton", layout.PointerPaths[0]);
             Assert.AreEqual(0, layout.SliceSlot);
         }
 
         [Test]
-        public void CustomSendsMouseChoicesToThePointerBinding()
+        public void NoSchemeMixesKeyboardAndMouse()
         {
-            var custom = CustomControls.Default;
-            custom.Abilities[0] = ControlChoices.IndexOf("<Keyboard>/q");
-            custom.Abilities[1] = ControlChoices.IndexOf("<Mouse>/backButton");
-            var layout = ControlSchemeRules.Build(ControlScheme.Custom, custom);
-
-            Assert.AreEqual("<Keyboard>/q", layout.KeyPaths[0]);
-            Assert.IsEmpty(layout.PointerPaths[0]);
-            Assert.AreEqual("<Mouse>/backButton", layout.PointerPaths[1]);
-            Assert.IsEmpty(layout.KeyPaths[1]);
+            foreach (var scheme in new[] { ControlScheme.KeyboardOnly, ControlScheme.MouseOnly, ControlScheme.Custom })
+            {
+                var layout = ControlSchemeRules.Build(scheme, null);
+                Assert.IsFalse(UsesKeys(layout) && UsesMouse(layout), scheme.ToString());
+            }
+            Assert.IsFalse(UsesMouse(ControlLayout.Default));
         }
 
         [Test]
-        public void CustomSliceNeedsThatAbilityOnAMouseButton()
+        public void CustomDropsChoicesFromTheOtherDevice()
+        {
+            var custom = CustomControls.Default;
+            custom.Abilities[1] = ControlChoices.IndexOf("<Mouse>/backButton");
+            var layout = ControlSchemeRules.Build(ControlScheme.Custom, custom);
+            Assert.IsEmpty(layout.KeyPaths[1]);
+            Assert.IsEmpty(layout.PointerPaths[1]);
+            Assert.IsFalse(UsesKeys(layout) && UsesMouse(layout));
+
+            custom = CustomControls.DefaultFor(true);
+            custom.Abilities[0] = ControlChoices.IndexOf("<Keyboard>/q");
+            layout = ControlSchemeRules.Build(ControlScheme.Custom, custom);
+            Assert.IsEmpty(layout.KeyPaths[0]);
+            Assert.IsEmpty(layout.PointerPaths[0]);
+        }
+
+        [Test]
+        public void CustomMouseDeviceUsesPointerPathsAndSlices()
+        {
+            var layout = ControlSchemeRules.Build(ControlScheme.Custom, CustomControls.DefaultFor(true));
+            Assert.AreEqual("<Mouse>/leftButton", layout.PointerPaths[0]);
+            Assert.AreEqual("<Mouse>/forwardButton", layout.HeavyPointerPath);
+            Assert.AreEqual(0, layout.SliceSlot);
+            Assert.IsFalse(UsesKeys(layout));
+        }
+
+        [Test]
+        public void CustomSliceNeedsTheMouseDeviceAndThatAbilityOnAButton()
         {
             var custom = CustomControls.Default;
             custom.Slice = 0;
-            custom.Abilities[0] = ControlChoices.IndexOf("<Keyboard>/k");
             Assert.AreEqual(-1, ControlSchemeRules.Build(ControlScheme.Custom, custom).SliceSlot);
 
-            custom.Abilities[0] = ControlChoices.IndexOf("<Mouse>/rightButton");
-            Assert.AreEqual(0, ControlSchemeRules.Build(ControlScheme.Custom, custom).SliceSlot);
+            custom = CustomControls.DefaultFor(true);
+            custom.Abilities[0] = 0;
+            Assert.AreEqual(-1, ControlSchemeRules.Build(ControlScheme.Custom, custom).SliceSlot);
         }
 
         [Test]
-        public void CustomAttackCanBeNoneOrAMouseButton()
+        public void CustomAttackCanBeNone()
         {
             var custom = CustomControls.Default;
             custom.Attack = 0;
             Assert.IsEmpty(ControlSchemeRules.Build(ControlScheme.Custom, custom).AttackPath);
-            custom.Attack = ControlChoices.IndexOf("<Mouse>/middleButton");
-            Assert.AreEqual("<Mouse>/middleButton", ControlSchemeRules.Build(ControlScheme.Custom, custom).AttackPath);
         }
 
         [Test]
-        public void CustomFromAPresetBehavesTheSameWhereOneChoicePerActionAllows()
+        public void SwitchingDeviceStartsThatDevicesDefaults()
         {
-            var fromMouse = ControlSchemeRules.Build(ControlScheme.Custom, ControlSchemeRules.CustomFrom(ControlSchemeRules.Build(ControlScheme.MouseOnly, null)));
-            Assert.IsEmpty(fromMouse.AttackPath);
-            Assert.AreEqual("<Mouse>/leftButton", fromMouse.PointerPaths[0]);
-            Assert.AreEqual(0, fromMouse.SliceSlot);
+            var custom = CustomControls.Default;
+            custom.SetMouse(true);
+            Assert.IsTrue(custom.Mouse);
+            Assert.AreEqual(ControlChoices.IndexOf("<Mouse>/leftButton"), custom.Abilities[0]);
+            custom.SetMouse(false);
+            Assert.AreEqual(ControlChoices.IndexOf("<Keyboard>/k"), custom.Abilities[0]);
+        }
 
-            var fromMixed = ControlSchemeRules.CustomFrom(ControlSchemeRules.Build(ControlScheme.Mixed, null));
-            Assert.AreEqual(ControlChoices.IndexOf("<Keyboard>/k"), fromMixed.Abilities[0]);
+        [Test]
+        public void CycleChoiceStaysOnTheDevice()
+        {
+            var index = ControlChoices.IndexOf("<Keyboard>/b");
+            for (var i = 0; i < ControlChoices.Count * 2; i++)
+            {
+                index = ControlSchemeRules.CycleChoice(index, 1, false);
+                Assert.IsTrue(ControlChoices.FitsDevice(index, false));
+            }
+            index = ControlChoices.IndexOf("<Mouse>/leftButton");
+            for (var i = 0; i < ControlChoices.Count * 2; i++)
+            {
+                index = ControlSchemeRules.CycleChoice(index, -1, true);
+                Assert.IsTrue(ControlChoices.FitsDevice(index, true));
+            }
+        }
+
+        [Test]
+        public void CustomFromAPresetKeepsItsDeviceAndBindings()
+        {
+            var fromKeys = ControlSchemeRules.CustomFrom(ControlSchemeRules.Build(ControlScheme.KeyboardOnly, null));
+            Assert.IsFalse(fromKeys.Mouse);
+            Assert.AreEqual(ControlChoices.IndexOf("<Keyboard>/k"), fromKeys.Abilities[0]);
+            Assert.AreEqual(ControlChoices.IndexOf("<Keyboard>/u"), fromKeys.Heavy);
+
+            var fromMouse = ControlSchemeRules.CustomFrom(ControlSchemeRules.Build(ControlScheme.MouseOnly, null));
+            Assert.IsTrue(fromMouse.Mouse);
+            Assert.AreEqual(ControlChoices.IndexOf("<Mouse>/forwardButton"), fromMouse.Heavy);
+            var layout = ControlSchemeRules.Build(ControlScheme.Custom, fromMouse);
+            Assert.IsEmpty(layout.AttackPath);
+            Assert.AreEqual("<Mouse>/leftButton", layout.PointerPaths[0]);
+            Assert.AreEqual(0, layout.SliceSlot);
+        }
+
+        [Test]
+        public void EverySchemeBindsTheHeavyAttack()
+        {
+            foreach (var scheme in new[] { ControlScheme.KeyboardOnly, ControlScheme.MouseOnly, ControlScheme.Custom })
+            {
+                var layout = ControlSchemeRules.Build(scheme, null);
+                Assert.IsTrue(layout.HeavyKeyPath.Length > 0 || layout.HeavyPointerPath.Length > 0, scheme.ToString());
+            }
+            Assert.AreEqual("<Keyboard>/u", ControlSchemeRules.Build(ControlScheme.KeyboardOnly, null).HeavyKeyPath);
+            Assert.AreEqual("<Mouse>/forwardButton", ControlSchemeRules.Build(ControlScheme.MouseOnly, null).HeavyPointerPath);
         }
 
         [Test]
@@ -111,64 +175,13 @@ namespace GraceRun.Tests
         }
 
         [Test]
-        public void LabelsNameBothBindingsOfAMixedAbility()
+        public void LabelsNameTheBindings()
         {
-            var layout = ControlSchemeRules.Build(ControlScheme.Mixed, null);
-            Assert.AreEqual("K / Left Mouse", ControlSchemeRules.AbilityLabel(layout, 0));
+            var layout = ControlSchemeRules.Build(ControlScheme.KeyboardOnly, null);
+            Assert.AreEqual("K", ControlSchemeRules.AbilityLabel(layout, 0));
             Assert.AreEqual("J", ControlSchemeRules.AttackLabel(layout));
+            Assert.AreEqual("U", ControlSchemeRules.HeavyLabel(layout));
             Assert.AreEqual("None", ControlSchemeRules.AttackLabel(ControlSchemeRules.Build(ControlScheme.MouseOnly, null)));
-        }
-
-        [Test]
-        public void EverySchemeBindsTheHeavyAttack()
-        {
-            foreach (var scheme in new[] { ControlScheme.Mixed, ControlScheme.KeyboardOnly, ControlScheme.MouseOnly, ControlScheme.Custom })
-            {
-                var layout = ControlSchemeRules.Build(scheme, null);
-                Assert.IsTrue(layout.HeavyKeyPath.Length > 0 || layout.HeavyPointerPath.Length > 0, scheme.ToString());
-            }
-            Assert.AreEqual("<Keyboard>/u", ControlSchemeRules.Build(ControlScheme.Mixed, null).HeavyKeyPath);
-            Assert.AreEqual("<Mouse>/forwardButton", ControlSchemeRules.Build(ControlScheme.Mixed, null).HeavyPointerPath);
-            Assert.IsEmpty(ControlSchemeRules.Build(ControlScheme.KeyboardOnly, null).HeavyPointerPath);
-            Assert.IsEmpty(ControlSchemeRules.Build(ControlScheme.MouseOnly, null).HeavyKeyPath);
-        }
-
-        [Test]
-        public void CustomHeavyGoesToTheKeyOrThePointerPath()
-        {
-            var custom = CustomControls.Default;
-            custom.Heavy = ControlChoices.IndexOf("<Mouse>/backButton");
-            var layout = ControlSchemeRules.Build(ControlScheme.Custom, custom);
-            Assert.AreEqual("<Mouse>/backButton", layout.HeavyPointerPath);
-            Assert.IsEmpty(layout.HeavyKeyPath);
-
-            custom.Heavy = ControlChoices.IndexOf("<Keyboard>/i");
-            layout = ControlSchemeRules.Build(ControlScheme.Custom, custom);
-            Assert.AreEqual("<Keyboard>/i", layout.HeavyKeyPath);
-            Assert.IsEmpty(layout.HeavyPointerPath);
-        }
-
-        [Test]
-        public void CustomFromAPresetKeepsTheHeavyBinding()
-        {
-            var fromMixed = ControlSchemeRules.CustomFrom(ControlSchemeRules.Build(ControlScheme.Mixed, null));
-            Assert.AreEqual(ControlChoices.IndexOf("<Keyboard>/u"), fromMixed.Heavy);
-
-            var fromMouse = ControlSchemeRules.CustomFrom(ControlSchemeRules.Build(ControlScheme.MouseOnly, null));
-            Assert.AreEqual(ControlChoices.IndexOf("<Mouse>/forwardButton"), fromMouse.Heavy);
-        }
-
-        [Test]
-        public void HeavyLabelNamesBothBindings()
-        {
-            Assert.AreEqual("U / Mouse Forward", ControlSchemeRules.HeavyLabel(ControlSchemeRules.Build(ControlScheme.Mixed, null)));
-            Assert.AreEqual("U", ControlSchemeRules.HeavyLabel(ControlSchemeRules.Build(ControlScheme.KeyboardOnly, null)));
-        }
-
-        [Test]
-        public void DescribeListsTheHeavyAttack()
-        {
-            StringAssert.Contains("Heavy attack</color>    U / Mouse Forward", ControlSchemeRules.Describe(ControlLayout.Default));
         }
 
         [Test]
@@ -177,6 +190,7 @@ namespace GraceRun.Tests
             var text = ControlSchemeRules.Describe(ControlSchemeRules.Build(ControlScheme.KeyboardOnly, null));
             StringAssert.Contains("J (aims the way you face)", text);
             StringAssert.Contains("Slice</color>    off", text);
+            StringAssert.Contains("Heavy attack</color>    U", text);
         }
     }
 }

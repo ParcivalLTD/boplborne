@@ -6,9 +6,9 @@ using UnityEngine.UI;
 namespace GraceRun.UI.Menus
 {
     /// <summary>
-    /// One settings row: a label and a value shown as "&lt; value &gt;". Left / right (keys, stick,
-    /// d-pad) change the value; up / down move between rows as usual; a click or submit steps it
-    /// forward. Built by <see cref="MenuKit.Option"/>.
+    /// One settings row: a label, a value and two arrow buttons. Left / right (keys, stick, d-pad) or a
+    /// click on an arrow change the value; up / down move between rows as usual; a click on the row
+    /// or submit steps it forward. Built by <see cref="MenuKit.Option"/>.
     /// </summary>
     public class MenuOptionRow : Button
     {
@@ -29,7 +29,7 @@ namespace GraceRun.UI.Menus
         /// <summary>Shows the current value again (after a reset or an outside change).</summary>
         public void Refresh()
         {
-            if (_value != null && _read != null) _value.text = $"<   {_read()}   >";
+            if (_value != null && _read != null) _value.text = _read();
         }
 
         public override void OnMove(AxisEventData eventData)
@@ -42,7 +42,8 @@ namespace GraceRun.UI.Menus
             }
         }
 
-        private void Adjust(int delta)
+        /// <summary>Moves the value by <paramref name="delta"/> (±1) and shows it.</summary>
+        public void Adjust(int delta)
         {
             _adjust?.Invoke(delta);
             Refresh();
