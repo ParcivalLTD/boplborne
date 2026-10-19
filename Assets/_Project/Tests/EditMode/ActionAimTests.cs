@@ -65,6 +65,21 @@ namespace GraceRun.Tests
         }
 
         [Test]
+        public void GroundedDodgeIsAlwaysAllowed() =>
+            Assert.IsTrue(ActionAim.CanDodge(true, 5, 1));
+
+        [Test]
+        public void OnlyOneDodgeInTheAir()
+        {
+            Assert.IsTrue(ActionAim.CanDodge(false, 0, 1));
+            Assert.IsFalse(ActionAim.CanDodge(false, 1, 1));
+        }
+
+        [Test]
+        public void NoAirDodgesMeansNoneInTheAir() =>
+            Assert.IsFalse(ActionAim.CanDodge(false, 0, 0));
+
+        [Test]
         public void AirborneDodgeCanGoStraightDown() =>
             Assert.AreEqual(Vector2.down, ActionAim.DodgeDirection(Vector2.down, 1f, false));
     }

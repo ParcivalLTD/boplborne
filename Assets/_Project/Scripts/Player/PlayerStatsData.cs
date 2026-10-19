@@ -25,6 +25,8 @@ namespace GraceRun.Player
         [SerializeField, Min(0f)] private float _dodgeSpeed = 16f;
         [SerializeField, Range(0f, 1f), Tooltip("Share of the upward roll speed kept when an up or diagonal roll ends (0 = stop rising).")]
         private float _dodgeExitLift = 0.35f;
+        [SerializeField, Min(0), Tooltip("Rolls that may start in the air before touching the ground again.")]
+        private int _airDodges = 1;
 
         [Header("Flask")]
         [SerializeField, Min(0)] private int _flaskCharges = 2;
@@ -48,6 +50,9 @@ namespace GraceRun.Player
 
         /// <summary>Share of the upward roll speed kept when the roll ends.</summary>
         public float DodgeExitLift => _dodgeExitLift;
+
+        /// <summary>Rolls that may start in the air before touching the ground again.</summary>
+        public int AirDodges => _airDodges;
 
         public int FlaskCharges => _flaskCharges;
         public int FlaskHeal => _flaskHeal;

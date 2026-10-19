@@ -20,5 +20,7 @@ MonoBehaviour:
   _dodgeDuration: 0.35
   _dodgeInvulnerableTime: 0.25
   _dodgeSpeed: 16
+  _dodgeExitLift: 0.35
+  _airDodges: 1
   _flaskCharges: 2
   _flaskHeal: 40

@@ -23,6 +23,10 @@ namespace GraceRun.Player
         public static Vector2 Knockback(Vector2 knockback, Vector2 aim) =>
             AbilityMath.AimedOffset(knockback, AbilityMath.SideOf(aim.x), AbilityMath.Elevation(aim));
 
+        /// <summary>A roll may start on the ground any time; in the air only while air rolls are left.</summary>
+        public static bool CanDodge(bool grounded, int airDodgesUsed, int airDodges) =>
+            grounded || airDodgesUsed < airDodges;
+
         /// <summary>
         /// Unit direction of a dodge roll: the move input in any direction, never into the floor
         /// while grounded; with no input, along <paramref name="facing"/>.

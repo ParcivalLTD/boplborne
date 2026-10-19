@@ -9,7 +9,8 @@ namespace GraceRun.Player
     /// <summary>
     /// The dodge roll: a burst of speed in the move-input direction, any way including up and
     /// diagonals (or the facing direction), invulnerable for the first part. Up, down and diagonal
-    /// rolls switch gravity off; a flat roll keeps it. Runs on the owner; the invulnerable state is
+    /// rolls switch gravity off; a flat roll keeps it. Only <see cref="PlayerStatsData.AirDodges"/>
+    /// rolls may start in the air before the feet touch the ground again. Runs on the owner; the invulnerable state is
     /// an owner-write NetworkVariable so every client shows the white flash and, later, so
     /// victim-side hit detection can skip hits during i-frames.
     /// </summary>
@@ -29,6 +30,7 @@ namespace GraceRun.Player
         private bool _dodging;
         private float _elapsed;
         private Vector2 _direction;
+        private int _airDodgesUsed;
 
         /// <summary>Raised on the owner when a roll starts.</summary>
         public event Action Dodged;
@@ -72,6 +74,7 @@ namespace GraceRun.Player
 
         private void FixedUpdate()
         {
+            if (!_dodging && _movement.IsGrounded) _airDodgesUsed = 0;
             if (!_dodging) return;
 
             _elapsed += Time.fixedDeltaTime;
@@ -83,9 +86,12 @@ namespace GraceRun.Player
 
         private void OnDodgePressed()
         {
-            if (!enabled || _dodging || !_stamina.TrySpend(_stats.DodgeCost)) return;
+            var grounded = _movement.IsGrounded;
+            if (!enabled || _dodging || !ActionAim.CanDodge(grounded, _airDodgesUsed, _stats.AirDodges)) return;
+            if (!_stamina.TrySpend(_stats.DodgeCost)) return;
+            if (!grounded) _airDodgesUsed++;
 
-            _direction = ActionAim.DodgeDirection(_input.Move, _movement.Facing, _movement.IsGrounded);
+            _direction = ActionAim.DodgeDirection(_input.Move, _movement.Facing, grounded);
             _elapsed = 0f;
             _dodging = true;
             _movement.ControlSuspended = true;
