@@ -13,7 +13,7 @@ Project folder: `R:\dev\boplborne`
 | **Unity CLI** (beta) | In PowerShell: `irm https://unity.com/install.ps1 \| iex`. Open a new PowerShell window, check `unity --version`, then sign in with `unity auth login`. It creates the project and runs Unity's MCP server for Claude. |
 | **Claude desktop app** | Download it from claude.com/download, install, sign in. Claude Code lives in its **Code** tab and needs a Pro or Max plan. |
 | **GitHub account** | Create an empty **private** repository called `boplborne`. |
-| **Aseprite** | For pixel art (LibreSprite is a free alternative). Not needed until M8. |
+| **Krita** (free; or Clip Studio / Photoshop) | For the hand pass on AI stills and splitting rigs into layers (`.psb`). Plus an AI image tool of your choice that takes a reference image. Not needed until M8. |
 | **LogMeIn Hamachi** **(everyone)** | Free plan: up to 5 people per network. |
 
 ## 2. Create the Unity project

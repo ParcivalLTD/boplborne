@@ -25,7 +25,7 @@ Built in **Unity 6** with an AI agent (**Claude Code** or **Antigravity**) conne
 | `docs/NETWORKING.md` | Who owns what over the network, plus hosting and joining with Hamachi. |
 | `docs/SERVER.md` | Running a dedicated server around the clock: restart script, port forwarding, starting at boot. |
 | `docs/ART_PIPELINE.md` | How to generate, clean up and import sprites and animations. |
-| `docs/art/grace-run.gpl` | The color palette, loadable in Aseprite. |
+| `docs/art/grace-run.gpl` | Colour reference (players, gameplay signals, arena accents). The art style is in `docs/ART_PIPELINE.md`. |
 | `docs/DECISIONS.md` | Decisions already made, so nobody (human or AI) re-argues them. |
 | `docs/PLAYTEST.md` | Playtest checklist and feedback template. |
 

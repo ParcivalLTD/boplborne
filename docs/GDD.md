@@ -6,7 +6,7 @@ This is the source of truth for **what** we build. The longer living design doc:
 
 Grace Run is a 1–4 player online co-op roguelite. Friends climb a tower of souls-style boss arenas and draft chaotic, combinable abilities between fights. Elden Ring's bosses meet Bopl Battle's ability combos, with the friend-group chaos of How to Fish.
 
-- 2D side-view. The hub fits one screen; boss arenas are wider (and one is taller) than the 640×360 view, and a camera pans to follow the group. Each player sees their own view; markers on the screen edge show teammates, gravestones and the boss when they are off screen.
+- 2D side-view. The hub fits one screen; boss arenas are wider (and one is taller) than the 40 × 22.5 unit view, and a camera pans to follow the group. Each player sees their own view; markers on the screen edge show teammates, gravestones and the boss when they are off screen.
 - 1–4 players, each on their own PC. One hosts, the others join over Hamachi.
 - Run: 7 floors plus a final boss (8 bosses), about 25–40 minutes.
 - Windows, free download on GitHub. Controllers first, keyboard supported.
@@ -164,22 +164,26 @@ Meta progression unlocks new abilities, bosses and hats. Never permanent stat bo
 
 ## Look
 
-- Pixel art, 640×360 base resolution (×3 = 1080p). Players 24–32 px tall, bosses 96–160 px.
-- Colors (also in `docs/art/grace-run.gpl`):
+- **1930s rubber-hose cartoon**, inspired by Cuphead but our own (never copy its characters, UI or fonts): thick uneven ink lines, flat cel colours, pie-cut eyes, white gloves, big shoes, watercolour backgrounds, a film-reel finish (grain, vignette, dust, warm grade). Details and specs in `docs/ART_PIPELINE.md`.
+- Hand-drawn stills animated with 2D bone rigs, played stepped at 24 fps so they read as drawn frames.
+- View is 40 × 22.5 units; art is authored at 96 px per unit (4K). Players about 1.7 units tall, bosses 6–10 units.
+- Colors:
 
 | Use | Hex |
 | --- | --- |
-| Night (ground) | #12101A |
-| Stone / Stone light / Fog | #2A2533 / #4A4256 / #8C84A0 |
-| Bone (text, boss HP) | #EDE7F6 |
+| Ink (outlines, text on cream) | #17120F |
+| Cream (UI panels, icon badges) | #F2E8D5 |
+| Bone (text on dark, boss HP) | #EDE7F6 |
 | P1 Blue (plume) / P2 Orange (horns) / P3 Green (crown) / P4 Pink (wizard hat) | #4C8DFF / #FF9A3C / #3CCB7F / #FF5FA8 |
 | Telegraph red (dodge now) — gameplay only | #FF3B3B |
 | Weak-point gold (hit now) — gameplay only | #FFC94A |
 | Ghost blue (50% opacity) | #A8C8FF |
+| Arena accents | per boss, see the boss table |
 
-- Red and gold are reserved for gameplay signals. Arenas stay dark and muted.
+- Red and gold are reserved for gameplay signals. Backgrounds are soft, paler and lower contrast than characters and attacks, so danger always pops.
 - Every player = color + hat shape, never color alone.
-- Game feel: hitstop on heavy hits, screen shake (with a settings slider), squash and stretch, particles and a sound for every action, a unique sound per boss telegraph.
+- Game feel: hitstop on heavy hits, screen shake (with a settings slider), big rubber-hose squash and stretch, hand-drawn puffs and stars, a sound for every action, a unique sound per boss telegraph. A Film effects toggle in Settings turns the film look off.
+- Audio: big-band jazz and ragtime music with a scratchy record feel; cartoon sound effects (boings, slide whistles, cymbal crashes).
 
 ## Placeholder art (until M8)
 
