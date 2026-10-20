@@ -90,7 +90,7 @@ namespace GraceRun.Combat
 
         private void SetTint(bool ghost)
         {
-            // A flash still showing from the killing hit would later restore the living colors over the tint.
+            // Ghosts never flash; disabling also clears a flash still showing from the killing hit.
             _flash.enabled = !ghost;
             var tint = _data.GhostColor;
             for (var i = 0; i < _tinted.Length; i++)

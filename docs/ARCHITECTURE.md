@@ -26,7 +26,7 @@ Assets/
       Bosses/        one folder per boss: BossData + its AttackData assets
     Prefabs/         Player, Bosses/, Abilities/, Arenas/, UI/, FX/
     Scenes/          Bootstrap, MainMenu, Game
-    Art/             Characters/, Bosses/, Environment/, FX/, UI/   (.aseprite files live here)
+    Art/             Characters/, Bosses/, Environment/, FX/, UI/   (.aseprite files live here), Shaders/, Materials/
     Audio/           SFX/, Music/
     Input/           GraceRunControls.inputactions
     Tests/

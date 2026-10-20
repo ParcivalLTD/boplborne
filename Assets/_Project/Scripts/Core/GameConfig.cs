@@ -15,6 +15,8 @@ namespace GraceRun.Core
         [SerializeField] private string _defaultAddress;
         [SerializeField, Min(1f)] private float _connectTimeoutSeconds = 10f;
         [SerializeField] private Color[] _playerColors;
+        [SerializeField, Tooltip("Body shades per player; the sprite shader swaps P1's ramp for these.")]
+        private PlayerRamp[] _playerRamps;
         [SerializeField] private Sprite[] _hatSprites;
         [SerializeField, Tooltip("Defaults and limits for the settings screen.")]
         private global::GraceRun.Core.Settings.SettingsData _settings;
@@ -37,6 +39,9 @@ namespace GraceRun.Core
 
         /// <summary>Color for player index 0-3 (P1 blue, P2 orange, P3 green, P4 pink).</summary>
         public Color GetPlayerColor(int playerIndex) => _playerColors[playerIndex];
+
+        /// <summary>Body ramp for player index 0-3; index 0 is the P1 blue the art is drawn in.</summary>
+        public PlayerRamp GetPlayerRamp(int playerIndex) => _playerRamps[playerIndex];
 
         /// <summary>Hat sprite for player index 0-3; null until hat art exists.</summary>
         public Sprite GetHatSprite(int playerIndex) =>

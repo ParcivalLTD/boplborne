@@ -40,7 +40,7 @@ Read each tool's license terms for using its output in a released game. Credit a
 
 The body is drawn **once, in P1's blue ramp** (`#2B5BC0`, `#4C8DFF`, `#BFD6FF`). A sprite shader swaps exactly those three colours for the player's ramp (orange, green, pink from the palette), so all four players share every frame and stay on the palette. A plain colour tint is not used: it would multiply the shading into colours outside the palette.
 
-The same shader does the **hit flash** (a material property block fades the sprite to white), which replaces `SpriteFlash`'s colour tint. Build this shader before any real art goes in.
+The shader is `Assets/_Project/Art/Shaders/SpriteRampFlash.shader` (materials `SpritePlayer` and `SpriteFlash` in `Art/Materials`); the ramps live in `GameConfig` → Player Ramps. The same shader does the **hit flash** (a material property block fades the sprite to white), which replaces `SpriteFlash`'s colour tint. Build this shader before any real art goes in.
 
 Hats are **separate 32×32 sprites** on the Player prefab's own `Hat` renderer, drawn in their own palette colours (not swapped). The body never has to be regenerated for a hat.
 
@@ -128,6 +128,8 @@ PixelLab output is not locked to our palette. A small Python (Pillow) script in 
 - reports outline pixels that are not `#120F18`, gaps in the outline, and stray single pixels
 - trims or pads to the spec canvas, feet on the bottom row (players) / bottom centre (bosses)
 - writes a contact sheet to `scratch/art/` so the user can review a whole animation at once
+
+Run it from the project root (`pip install -r tools/art/requirements.txt` once): `python tools/art/cleanup.py scratch/art/player/raw --kind player` (kinds: `player`, `boss` with `--canvas 128`–`192`, `icon`, `tile`). Cleaned PNGs go to `<input folder>/clean`, the contact sheet to `scratch/art/<asset>-sheet.png`.
 
 The script does the mechanical part; the hand pass in Aseprite still decides whether it looks good.
 

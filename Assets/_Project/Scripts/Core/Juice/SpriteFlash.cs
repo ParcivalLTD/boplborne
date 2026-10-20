@@ -5,22 +5,25 @@ namespace GraceRun.Core.Juice
     /// <summary>
     /// Turns a set of sprites solid white, either for a moment (<see cref="Flash"/>) or for as
     /// long as something holds it (<see cref="SetHeld"/>). Local cosmetic only.
-    /// Placeholder sprites are white shapes, so tinting the renderer color is enough for now;
-    /// real art (M8) needs a flash shader driven by a material property block.
+    /// Drives <c>_FlashAmount</c> of the GraceRun/Sprite Ramp Flash shader through a material
+    /// property block, so the renderer colour (player tint, ghost, enrage) is never touched.
     /// </summary>
     public class SpriteFlash : MonoBehaviour
     {
+        private static readonly int FlashAmountId = Shader.PropertyToID("_FlashAmount");
+        private static readonly int FlashColorId = Shader.PropertyToID("_FlashColor");
+
         [SerializeField] private SpriteRenderer[] _renderers;
         [SerializeField] private Color _flashColor = Color.white;
 
-        private Color[] _originalColors;
+        private MaterialPropertyBlock _block;
         private bool _held;
         private float _timeLeft;
         private bool _showing;
 
         private void Awake()
         {
-            _originalColors = new Color[_renderers.Length];
+            _block = new MaterialPropertyBlock();
         }
 
         private void Update()
@@ -59,17 +62,14 @@ namespace GraceRun.Core.Juice
             if (show == _showing) return;
             _showing = show;
 
-            for (var i = 0; i < _renderers.Length; i++)
+            foreach (var sprite in _renderers)
             {
-                if (show)
-                {
-                    _originalColors[i] = _renderers[i].color;
-                    _renderers[i].color = _flashColor;
-                }
-                else
-                {
-                    _renderers[i].color = _originalColors[i];
-                }
+                if (sprite == null) continue;
+                // Read first: PlayerVisuals keeps the player's ramp in the same block.
+                sprite.GetPropertyBlock(_block);
+                _block.SetColor(FlashColorId, _flashColor);
+                _block.SetFloat(FlashAmountId, show ? 1f : 0f);
+                sprite.SetPropertyBlock(_block);
             }
         }
     }
