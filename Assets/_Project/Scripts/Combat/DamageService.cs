@@ -22,8 +22,8 @@ namespace GraceRun.Combat
 
             var combat = target.Combat;
             var friendly = DamageMath.IsFriendlyFire(info.AttackerTeam, info.AttackerId, target.Team, target.NetworkObjectId);
-            var buff = Run.RunManager.Instance != null ? Run.RunManager.Instance.ActiveBuff : Run.PartyBuff.None;
-            var amount = Run.RestStopRules.BuffedDamage(info.Amount, friendly, info.AttackerTeam, buff);
+            var buffMult = Run.PartyBuffTuning.TryGetActive(out var buffs, out var buff) ? buffs.DamageMultiplier(buff) : 1f;
+            var amount = Run.RestStopRules.BuffedDamage(info.Amount, friendly, info.AttackerTeam, buffMult);
             if (amount > 0 && StatusEffects.TryFind(info.AttackerId, out var attackerStatus))
                 amount = DamageMath.Scaled(amount, attackerStatus.OutgoingDamageMultiplier);
 

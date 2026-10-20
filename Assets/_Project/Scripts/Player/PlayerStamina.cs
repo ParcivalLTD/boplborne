@@ -36,8 +36,8 @@ namespace GraceRun.Player
         {
             if (_pool == null) return;
             var regenRate = _stats.StaminaRegenPerSecond;
-            if (Run.RunManager.Instance != null && Run.RunManager.Instance.ActiveBuff == Run.PartyBuff.Swiftstride)
-                regenRate *= 1.25f;
+            if (Run.PartyBuffTuning.TryGetActive(out var buffs, out var buff))
+                regenRate *= buffs.StaminaRegenMultiplier(buff);
             _pool.Tick(Time.deltaTime, regenRate);
             Publish();
         }

@@ -319,9 +319,10 @@ namespace GraceRun.Run
                     health.ServerSetMax(0);
                     health.ServerRestoreFull();
                 }
-                if (_activeBuff.Value == PartyBuff.IronSkin && player.TryGetComponent<Health>(out var ironHealth))
+                var bonusMaxHp = _config.PartyBuffs.BonusMaxHp(_activeBuff.Value);
+                if (bonusMaxHp > 0 && player.TryGetComponent<Health>(out var ironHealth))
                 {
-                    ironHealth.ServerSetMax(ironHealth.Max + 25);
+                    ironHealth.ServerSetMax(ironHealth.Max + bonusMaxHp);
                 }
                 if (restoreFull && player.TryGetComponent<PlayerFlask>(out var flask)) flask.ServerRefill();
                 if (player.TryGetComponent<ReviveSystem>(out var revive))

@@ -10,7 +10,6 @@ namespace GraceRun.Run
     public static class RestStopRules
     {
         public const int MaxAbilityLevel = 2;
-        public const float EmpoweredDamageMultiplier = 1.20f;
 
         /// <summary>True when ability in a slot can be upgraded to Level 2.</summary>
         public static bool CanUpgradeAbility(bool hasAbility, int currentLevel, int currentCurrency, int upgradeCost) =>
@@ -24,12 +23,12 @@ namespace GraceRun.Run
         public static bool CanBuyBuff(PartyBuff requestedBuff, PartyBuff currentBuff, int currentCurrency, int buffCost) =>
             requestedBuff != PartyBuff.None && requestedBuff != currentBuff && CurrencyRules.CanAfford(currentCurrency, buffCost);
 
-        /// <summary>Calculates attack damage, applying the EmpoweredAttacks party buff if active against enemies.</summary>
-        public static int BuffedDamage(int baseDamage, bool isFriendly, Team attackerTeam, PartyBuff activeBuff)
+        /// <summary>Applies the active party buff's damage multiplier to player hits on enemies; teammates and bosses are unaffected.</summary>
+        public static int BuffedDamage(int baseDamage, bool isFriendly, Team attackerTeam, float buffDamageMultiplier)
         {
-            if (!isFriendly && attackerTeam == Team.Player && activeBuff == PartyBuff.EmpoweredAttacks)
+            if (!isFriendly && attackerTeam == Team.Player && buffDamageMultiplier != 1f)
             {
-                return Mathf.RoundToInt(baseDamage * EmpoweredDamageMultiplier);
+                return Mathf.RoundToInt(baseDamage * buffDamageMultiplier);
             }
             return baseDamage;
         }

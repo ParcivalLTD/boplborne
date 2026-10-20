@@ -36,6 +36,9 @@ namespace GraceRun.UI
         private Button _buff1Button;
         private Button _buff2Button;
         private Button _buff3Button;
+        private Text _buff1Text;
+        private Text _buff2Text;
+        private Text _buff3Text;
 
         private Button _advanceButton;
         private Text _advanceButtonText;
@@ -152,20 +155,18 @@ namespace GraceRun.UI
 
             // 3. One-off Party Buff Card
             var buffCost = config != null ? config.BuffCost : 75;
+            var tuning = config != null ? config.PartyBuffs : new PartyBuffTuning();
             if (_buffStatusText != null)
             {
                 if (buff == PartyBuff.None)
                     _buffStatusText.text = "Active: None (buy one below for the next fight)";
                 else
-                    _buffStatusText.text = $"Active: <color=#{ColorUtility.ToHtmlStringRGB(GoldColor)}>{BuffName(buff)}</color>";
+                    _buffStatusText.text = $"Active: <color=#{ColorUtility.ToHtmlStringRGB(GoldColor)}>{BuffName(buff, tuning)}</color>";
             }
 
-            if (_buff1Button != null)
-                _buff1Button.interactable = RestStopRules.CanBuyBuff(PartyBuff.EmpoweredAttacks, buff, currency, buffCost);
-            if (_buff2Button != null)
-                _buff2Button.interactable = RestStopRules.CanBuyBuff(PartyBuff.IronSkin, buff, currency, buffCost);
-            if (_buff3Button != null)
-                _buff3Button.interactable = RestStopRules.CanBuyBuff(PartyBuff.Swiftstride, buff, currency, buffCost);
+            RefreshBuffButton(_buff1Button, _buff1Text, PartyBuff.EmpoweredAttacks, buff, currency, buffCost, tuning);
+            RefreshBuffButton(_buff2Button, _buff2Text, PartyBuff.IronSkin, buff, currency, buffCost, tuning);
+            RefreshBuffButton(_buff3Button, _buff3Text, PartyBuff.Swiftstride, buff, currency, buffCost, tuning);
 
             // 4. Advance / Next Floor Button
             var isLeader = loop != null && loop.IsLocalLeader;
@@ -173,13 +174,31 @@ namespace GraceRun.UI
             if (_waitingLeaderText != null) _waitingLeaderText.gameObject.SetActive(!isLeader);
         }
 
-        private static string BuffName(PartyBuff buff) => buff switch
+        private static void RefreshBuffButton(Button button, Text label, PartyBuff offered, PartyBuff active,
+            int currency, int cost, PartyBuffTuning tuning)
         {
-            PartyBuff.EmpoweredAttacks => "Empowered Attacks (+20% Boss Damage)",
-            PartyBuff.IronSkin => "Iron Skin (+25 Max HP)",
-            PartyBuff.Swiftstride => "Swiftstride (+15% Move Speed, +25% Stamina Regen)",
+            if (button == null) return;
+            button.interactable = RestStopRules.CanBuyBuff(offered, active, currency, cost);
+            if (label != null) label.text = $"{BuffShortName(offered, tuning)} — {cost} ✦";
+        }
+
+        private static string BuffName(PartyBuff buff, PartyBuffTuning t) => buff switch
+        {
+            PartyBuff.EmpoweredAttacks => $"Empowered Attacks (+{Percent(t.EmpoweredDamageMultiplier)}% Boss Damage)",
+            PartyBuff.IronSkin => $"Iron Skin (+{t.IronSkinBonusMaxHp} Max HP)",
+            PartyBuff.Swiftstride => $"Swiftstride (+{Percent(t.SwiftstrideMoveMultiplier)}% Move Speed, +{Percent(t.SwiftstrideStaminaRegenMultiplier)}% Stamina Regen)",
             _ => "None",
         };
+
+        private static string BuffShortName(PartyBuff buff, PartyBuffTuning t) => buff switch
+        {
+            PartyBuff.EmpoweredAttacks => $"Empowered Strikes (+{Percent(t.EmpoweredDamageMultiplier)}% Dmg)",
+            PartyBuff.IronSkin => $"Iron Skin (+{t.IronSkinBonusMaxHp} Max HP)",
+            PartyBuff.Swiftstride => $"Swiftstride (+{Percent(t.SwiftstrideMoveMultiplier)}% Spd)",
+            _ => "None",
+        };
+
+        private static int Percent(float multiplier) => Mathf.RoundToInt((multiplier - 1f) * 100f);
 
         private static AbilityLoadout LocalLoadout()
         {
@@ -274,9 +293,9 @@ namespace GraceRun.UI
             _buffStatusText = CreateText("Card3Status", card3.transform, "Active: None (buy one below)", 16, FontStyle.Italic, TextAnchor.MiddleCenter, FogColor, new Vector2(0.5f, 0.78f), new Vector2(cardWidth - 40, 36));
             _buffStatusText.supportRichText = true;
 
-            _buff1Button = CreateButton("Buff1Btn", card3.transform, "Empowered Strikes (+20% Dmg) — 75 ✦", new Vector2(0.5f, 0.58f), new Vector2(cardWidth - 60, 48), () => OnBuyBuff(PartyBuff.EmpoweredAttacks), out _);
-            _buff2Button = CreateButton("Buff2Btn", card3.transform, "Iron Skin (+25 Max HP) — 75 ✦", new Vector2(0.5f, 0.38f), new Vector2(cardWidth - 60, 48), () => OnBuyBuff(PartyBuff.IronSkin), out _);
-            _buff3Button = CreateButton("Buff3Btn", card3.transform, "Swiftstride (+15% Spd) — 75 ✦", new Vector2(0.5f, 0.18f), new Vector2(cardWidth - 60, 48), () => OnBuyBuff(PartyBuff.Swiftstride), out _);
+            _buff1Button = CreateButton("Buff1Btn", card3.transform, "Empowered Strikes (+20% Dmg) — 75 ✦", new Vector2(0.5f, 0.58f), new Vector2(cardWidth - 60, 48), () => OnBuyBuff(PartyBuff.EmpoweredAttacks), out _buff1Text);
+            _buff2Button = CreateButton("Buff2Btn", card3.transform, "Iron Skin (+25 Max HP) — 75 ✦", new Vector2(0.5f, 0.38f), new Vector2(cardWidth - 60, 48), () => OnBuyBuff(PartyBuff.IronSkin), out _buff2Text);
+            _buff3Button = CreateButton("Buff3Btn", card3.transform, "Swiftstride (+15% Spd) — 75 ✦", new Vector2(0.5f, 0.18f), new Vector2(cardWidth - 60, 48), () => OnBuyBuff(PartyBuff.Swiftstride), out _buff3Text);
 
             // Bottom Continue Section
             _advanceButton = CreateButton("AdvanceBtn", _root.transform, "Continue to Next Floor", new Vector2(0.5f, 0.10f), new Vector2(360, 60), OnAdvance, out _advanceButtonText);

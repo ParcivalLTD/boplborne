@@ -40,17 +40,27 @@ namespace GraceRun.Tests
         [Test]
         public void EmpoweredAttacksBuffsDamageAgainstEnemiesOnly()
         {
-            // Against boss (not friendly fire, player team)
-            var buffed = RestStopRules.BuffedDamage(10, false, Team.Player, PartyBuff.EmpoweredAttacks);
-            Assert.AreEqual(12, buffed); // 10 * 1.2 = 12
+            var tuning = new PartyBuffTuning(25, 1.2f, 1.15f, 1.25f);
+            var empowered = tuning.DamageMultiplier(PartyBuff.EmpoweredAttacks);
 
-            // Friendly fire: NOT buffed
-            var friendly = RestStopRules.BuffedDamage(10, true, Team.Player, PartyBuff.EmpoweredAttacks);
-            Assert.AreEqual(10, friendly);
+            Assert.AreEqual(12, RestStopRules.BuffedDamage(10, false, Team.Player, empowered));
+            Assert.AreEqual(10, RestStopRules.BuffedDamage(10, true, Team.Player, empowered), "friendly fire is not buffed");
+            Assert.AreEqual(10, RestStopRules.BuffedDamage(10, false, Team.Boss, empowered), "boss hits are not buffed");
+            Assert.AreEqual(10, RestStopRules.BuffedDamage(10, false, Team.Player, tuning.DamageMultiplier(PartyBuff.None)));
+        }
 
-            // With no buff: normal damage
-            var unbuffed = RestStopRules.BuffedDamage(10, false, Team.Player, PartyBuff.None);
-            Assert.AreEqual(10, unbuffed);
+        [Test]
+        public void EachBuffOnlyChangesItsOwnStat()
+        {
+            var tuning = new PartyBuffTuning(30, 1.5f, 1.2f, 1.4f);
+
+            Assert.AreEqual(30, tuning.BonusMaxHp(PartyBuff.IronSkin));
+            Assert.AreEqual(0, tuning.BonusMaxHp(PartyBuff.Swiftstride));
+            Assert.AreEqual(1.2f, tuning.MoveMultiplier(PartyBuff.Swiftstride));
+            Assert.AreEqual(1.4f, tuning.StaminaRegenMultiplier(PartyBuff.Swiftstride));
+            Assert.AreEqual(1f, tuning.MoveMultiplier(PartyBuff.IronSkin));
+            Assert.AreEqual(1f, tuning.StaminaRegenMultiplier(PartyBuff.None));
+            Assert.AreEqual(1f, tuning.DamageMultiplier(PartyBuff.IronSkin));
         }
     }
 }

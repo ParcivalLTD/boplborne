@@ -28,6 +28,11 @@ MonoBehaviour:
   _rerollCost: 50
   _upgradeCost: 100
   _buffCost: 75
+  _partyBuffs:
+    _ironSkinBonusMaxHp: 25
+    _empoweredDamageMultiplier: 1.2
+    _swiftstrideMoveMultiplier: 1.15
+    _swiftstrideStaminaRegenMultiplier: 1.25
   _cardsOffered: 3
   _rerollsPerRun: 1
   _legendaryMinFloor: 4
