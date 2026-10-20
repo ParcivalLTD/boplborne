@@ -285,28 +285,69 @@ Add MetaProgress (saved locally per player as JSON): unlocks for new abilities, 
 
 ## M8 — Art and audio pass
 
-Follow `docs/ART_PIPELINE.md`. Art comes from the PixelLab MCP; the user picks candidates and does the hand pass. One step per chat, art-only commits.
+Follow `docs/ART_PIPELINE.md`. Art comes from the PixelLab MCP; the agent shows candidates in `scratch/art/`, the user picks and does the hand pass in Aseprite. One step per chat, art-only commits.
 
-### 8.1 Sprite shader
+### 8.1 Sprite shader and cleanup script
 ```
-Add a sprite shader + material per docs/ART_PIPELINE.md "Player colours": swap the three P1 blue ramp colours for the player's ramp from the palette, and a hit flash through a material property block that replaces SpriteFlash's colour tint. Flash-only variant for bosses, the dummy and summons. Write the art cleanup script in tools/art/ too.
+8.1: Build the sprite shader from docs/ART_PIPELINE.md "Player colours": swap the three P1 blue ramp colours for the player's ramp, plus a hit flash via material property block that replaces SpriteFlash's colour tint. Flash-only variant for bosses, dummy and summons. Also write the art cleanup script in tools/art/ (palette snap to grace-run.gpl, binary alpha, outline and stray-pixel report, canvas padding, contact sheet into scratch/art/).
 ```
-**Done when:** placeholder shapes flash on hit for host and client, and P1–P4 keep their colours.
+**Done when:** placeholders flash on hit as host and client, and P1–P4 keep their colours.
 
-### 8.2 Player anchor, hats and animations
+### 8.2 Player anchor and hats
 ```
-Using the PixelLab MCP, make the player style anchor and the four hats (ART_PIPELINE steps 2), then the player animations and an Animator driven by movement, dodge, attack, hurt and ghost state (step 3).
+8.2: Using the PixelLab MCP, make the player style anchor per docs/ART_PIPELINE.md step 2. Generate 10–20 candidates into scratch/art/player/, show me a contact sheet, and wait for my pick. Then run the cleanup script, and I'll do the hand pass. Then generate the four hats (plume, horns, crown, wizard) from the anchor the same way. Record the PixelLab ids in docs/art/pixellab-ids.md. Wire the body and hats into the Player prefab and GameConfig.
 ```
-Split into two chats if it grows: anchor + hats, then animations.
-**Done when:** all four players animate in their own colour and hat, facing both ways, in play mode.
+**Done when:** all four players show the new body in their own colour with their own hat, in play mode.
 
-### 8.2b Bosses, arenas, icons
-One chat per item: each existing boss's held key poses (`ART_PIPELINE` step 4: The Gatekeeper, The Brood Mother, The Bell Twins), then arena tilesets, then ability icons and UI.
+### 8.3 Player animations
+```
+8.3: Animate the player anchor with the PixelLab MCP per docs/ART_PIPELINE.md step 3 (clip table: idle, run, jump, fall, dodge, attack1-3, hurt, ghost), facing right only. Show me each clip's contact sheet before importing. Import the frames, build the clips, and add an Animator driven by movement, dodge, attack, hurt and ghost state, with sprite flip for facing.
+```
+**Done when:** every state plays the right clip for P1–P4, and others see the same animation on a client.
 
-### 8.3 Audio
+### 8.4 The Gatekeeper poses
 ```
-Hook the sound files in Assets/_Project/Audio into the AudioCue assets, add a unique telegraph sound per boss attack, music per arena with a crossfade, and an audio mixer with the volume settings.
+8.4: Make The Gatekeeper's art with the PixelLab MCP per docs/ART_PIPELINE.md step 4: one anchor still (show candidates, wait for my pick and hand pass), then idle, per-attack wind-up / strike / recovery poses (slams, shield bash, sweep), stagger and death. Show the boss pose that matches each attack phase from AttackData, and keep the red telegraph glow on the striking part.
 ```
+**Done when:** every attack's telegraph reads clearly in a solo fight and the hitboxes still match the poses.
+
+### 8.5 The Brood Mother poses
+```
+8.5: The Brood Mother's art, same process as The Gatekeeper (docs/ART_PIPELINE.md step 4), including the Brood Crawler summons.
+```
+**Done when:** every attack's telegraph reads clearly in a solo fight.
+
+### 8.6 The Bell Twins poses
+```
+8.6: The Bell Twins' art, same process as The Gatekeeper (docs/ART_PIPELINE.md step 4). Both twins share one anchor style but must be told apart at a glance.
+```
+**Done when:** both twins' telegraphs read clearly in a solo fight.
+
+Bosses added later in M7 get the same prompt with their name once they are built.
+
+### 8.7 Arena tilesets and backgrounds
+```
+8.7: Arena tilesets with the PixelLab MCP per docs/ART_PIPELINE.md step 5. Hub first (show candidates, wait for my pick), then chain the Gatekeeper, Brood Mother and Bell Twins arenas from it, each tinted to its accent. Floors, walls, one-way platform edges, plus far and near background layers. Swap them into the arena prefabs without changing any collider.
+```
+**Done when:** every arena looks finished and no telegraph is harder to read.
+
+### 8.8 Ability icons
+```
+8.8: Ability icons with the PixelLab MCP per docs/ART_PIPELINE.md step 6. Make one icon first for my approval, then use it as the style reference for all abilities in the AbilityCatalog. Replace the placeholder icons in the ability assets.
+```
+**Done when:** the draft cards and HUD slots show readable icons at their real size.
+
+### 8.9 UI restyle
+```
+8.9: Restyle the UI to match the art: main menu, HUD panels, draft cards, results, Rest Stop, weapon picker. Use PixelLab create_ui_asset for panels and frames where it helps, and replace legacy Text with one pixel font.
+```
+**Done when:** every screen is readable at 1920×1080 and 1280×720.
+
+### 8.10 Audio
+```
+8.10: Hook the sound files in Assets/_Project/Audio into the AudioCue assets, add a unique telegraph sound per boss attack, music per arena with a crossfade, and an audio mixer with master / music / SFX volume in Settings.
+```
+**Done when:** every telegraph has its own sound and the volume sliders work.
 
 ---
 
