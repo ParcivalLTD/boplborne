@@ -1,0 +1,23 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 367b524999a1d854faf32d6d37229f78, type: 3}
+  m_Name: PlayerAnimData
+  m_EditorClassIdentifier: GraceRun.Runtime::GraceRun.Player.PlayerAnimData
+  _runSpeedThreshold: 0.5
+  _hurtTime: 0.25
+  _idleFps: 12
+  _runFps: 16
+  _airFps: 12
+  _dodgeFps: 20
+  _attackFps: 20
+  _hurtFps: 12
+  _ghostFps: 10

@@ -28,8 +28,8 @@ SCRATCH = ROOT / "scratch" / "art"
 OUTLINE = (18, 15, 24)
 P1_RAMP = {(43, 91, 192), (76, 141, 255), (191, 214, 255)}
 NEUTRALS = {(237, 231, 246), (242, 232, 213), (255, 255, 255)}  # eyes, highlights
-CANVAS = {"player": (48, 48), "hat": (48, 64), "boss": (160, 160), "icon": (32, 32), "tile": (24, 24)}
-ANCHOR = {"player": "bottom", "hat": "none", "boss": "bottom", "icon": "centre", "tile": "none"}
+CANVAS = {"player": (48, 48), "anim": (64, 64), "hat": (48, 64), "boss": (160, 160), "icon": (32, 32), "tile": (24, 24)}
+ANCHOR = {"player": "bottom", "anim": "none", "hat": "none", "boss": "bottom", "icon": "centre", "tile": "none"}
 ALPHA_CUTOFF = 128
 SHEET_SCALE = 4
 REPORT_LIMIT = 8
@@ -84,6 +84,21 @@ def fit_canvas(img: Image.Image, size, anchor: str, notes: list[str]) -> Image.I
     return canvas
 
 
+def ground_clip(frames: list[Image.Image]) -> list[Image.Image]:
+    """Animation frames keep their positions; the whole clip moves down so its lowest pixel sits on the bottom row."""
+    boxes = [f.getbbox() for f in frames]
+    lowest = max((b[3] for b in boxes if b), default=frames[0].height)
+    dy = frames[0].height - lowest
+    if dy == 0:
+        return frames
+    moved = []
+    for f in frames:
+        canvas = Image.new("RGBA", f.size)
+        canvas.paste(f, (0, dy))
+        moved.append(canvas)
+    return moved
+
+
 def inspect(img: Image.Image, kind: str) -> list[str]:
     w, h = img.size
     px = img.load()
@@ -104,11 +119,11 @@ def inspect(img: Image.Image, kind: str) -> list[str]:
                     for dx in (-1, 0, 1) for dy in (-1, 0, 1) if dx or dy]
             if rgb != OUTLINE and (all(c is None for c in ring) or rgb not in ring):
                 strays.append((x, y))
-            if kind == "player" and rgb not in P1_RAMP and rgb != OUTLINE and rgb not in NEUTRALS:
+            if kind in ("player", "anim") and rgb not in P1_RAMP and rgb != OUTLINE and rgb not in NEUTRALS:
                 unswapped.add(rgb)
 
     notes = []
-    if kind in ("player", "boss"):
+    if kind in ("player", "anim", "boss"):
         if gaps:
             notes.append(f"{len(gaps)} outline gap(s) at {gaps[:REPORT_LIMIT]}")
         if wrong_outline:
@@ -180,10 +195,14 @@ def main() -> int:
     out_dir = args.out or files[0].parent / "clean"
     out_dir.mkdir(parents=True, exist_ok=True)
 
+    snapped = [snap(Image.open(file), palette) for file in files]
+    if args.kind == "anim":
+        snapped = ground_clip(snapped)
+
     frames, problems = [], 0
-    for file in files:
+    for file, img in zip(files, snapped):
         notes = []
-        img = fit_canvas(snap(Image.open(file), palette), size, ANCHOR[args.kind], notes)
+        img = fit_canvas(img, size, ANCHOR[args.kind], notes)
         notes += inspect(img, args.kind)
         img.save(out_dir / file.name)
         frames.append((file.stem, img))

@@ -24,6 +24,7 @@ Everyone is a friend, so we trust clients where it makes the game feel better.
 | Which weapon a player carries | **Server** (the owner asks with `SelectRpc`, only accepted in the hub and at rest stops) | `NetworkVariable<byte>` on `PlayerWeapon` (catalog id) |
 | HP, damage numbers, deaths, revives | **Server** | `NetworkVariable` on `Health` |
 | Stamina | **Your PC** (it only gates your own actions) | `NetworkVariable` (owner write) so the HUD shows it |
+| Player animation (locomotion + facing) | **Your PC** (cosmetic) | `PlayerAnimSync`: one-byte `NetworkVariable` (owner write); dodge, swings, hurt and ghost come from state already on every PC |
 | Knockback on a player | Server or attacker decides, **target's PC applies** | `[Rpc(SendTo.Owner)]` on the target |
 | Boss AI, target, position | **Server** | `NetworkTransform` (server authority) + `CurrentAttack` NetworkVariable |
 | Boss attack timing | **Server** picks attack id + start tick | Every client plays the telegraph from that tick |

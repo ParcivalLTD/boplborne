@@ -30,7 +30,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 9132918677835023128}
+  m_Father: {fileID: 4118385989235321270}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!212 &2852122614352368930
 SpriteRenderer:
@@ -375,6 +375,63 @@ Transform:
   - {fileID: 7676316402801775865}
   m_Father: {fileID: 8229950229143954884}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &2188168989864969898
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 4118385989235321270}
+  - component: {fileID: 4719141867451221013}
+  m_Layer: 0
+  m_Name: Rig
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &4118385989235321270
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2188168989864969898}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 2539308819318417232}
+  - {fileID: 2861474906777749944}
+  - {fileID: 3179496416960478923}
+  m_Father: {fileID: 9132918677835023128}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!95 &4719141867451221013
+Animator:
+  serializedVersion: 7
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2188168989864969898}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 380938993121e6c4091c93e0801aa9af, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_AnimatePhysics: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!1 &2949444961007097689
 GameObject:
   m_ObjectHideFlags: 0
@@ -549,7 +606,7 @@ Transform:
   m_LocalScale: {x: 1, y: 0.15, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 9132918677835023128}
+  m_Father: {fileID: 4118385989235321270}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!212 &4338494343565129789
 SpriteRenderer:
@@ -842,7 +899,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 9132918677835023128}
+  m_Father: {fileID: 4118385989235321270}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!212 &4279113817888160496
 SpriteRenderer:
@@ -933,9 +990,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 2539308819318417232}
-  - {fileID: 2861474906777749944}
-  - {fileID: 3179496416960478923}
+  - {fileID: 4118385989235321270}
   m_Father: {fileID: 5463849497643352723}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &6624906038678948810
@@ -1319,6 +1374,8 @@ GameObject:
   - component: {fileID: 2396146848627771548}
   - component: {fileID: 1686664829191433301}
   - component: {fileID: 4231046611271713449}
+  - component: {fileID: 1578395796415342261}
+  - component: {fileID: 6063815576682744589}
   m_Layer: 9
   m_Name: Player
   m_TagString: Untagged
@@ -2019,3 +2076,39 @@ MonoBehaviour:
   _grip: 0.4
   _windUp: 0.45
   _restOffset: {x: -0.3, y: 0.2}
+--- !u!114 &1578395796415342261
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9178268518804516864}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c670057efd37f4443b119ea2edc75ed3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: GraceRun.Runtime::GraceRun.Player.PlayerAnimSync
+  ShowTopMostFoldoutHeaderGroup: 1
+  _data: {fileID: 11400000, guid: 45ac6d82608a3754fa1e00563d73086b, type: 2}
+  _movement: {fileID: 1396830838873508324}
+--- !u!114 &6063815576682744589
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9178268518804516864}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 475fbe3d84b1f9e4c8928aab90fee6b0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: GraceRun.Runtime::GraceRun.Player.PlayerAnimator
+  _data: {fileID: 11400000, guid: 45ac6d82608a3754fa1e00563d73086b, type: 2}
+  _stats: {fileID: 11400000, guid: a8d314f02ca76654bb4e20068643a9cd, type: 2}
+  _animator: {fileID: 4719141867451221013}
+  _rig: {fileID: 4118385989235321270}
+  _sync: {fileID: 1578395796415342261}
+  _dodge: {fileID: 4801282400668150400}
+  _attack: {fileID: 2042001691053674803}
+  _health: {fileID: 2285578246583526149}
+  _ghost: {fileID: 4886432173965129126}
