@@ -164,15 +164,15 @@ Meta progression unlocks new abilities, bosses and hats. Never permanent stat bo
 
 ## Look
 
-- **1930s rubber-hose cartoon**, inspired by Cuphead but our own (never copy its characters, UI or fonts): thick uneven ink lines, flat cel colours, pie-cut eyes, white gloves, big shoes, watercolour backgrounds, a film-reel finish (grain, vignette, dust, warm grade). Details and specs in `docs/ART_PIPELINE.md`.
-- Hand-drawn stills animated with 2D bone rigs, played stepped at 24 fps so they read as drawn frames.
-- View is 40 × 22.5 units; art is authored at 96 px per unit (4K). Players about 1.7 units tall, bosses 6–10 units.
-- Colors:
+- **Pixel art in a 1930s rubber-hose cartoon style**, inspired by Cuphead but our own (never copy its characters, UI or fonts): pie-cut eyes, white gloves, big round shoes, bendy limbs, bouncy squash and stretch, warm vintage colours, a film-reel finish (grain, vignette, dust). Details and specs in `docs/ART_PIPELINE.md`.
+- 960×540 base resolution (×2 = 1080p), 24 px per unit, view 40 × 22.5 units. Players about 40 px tall on a 48 px canvas, bosses 120–200 px.
+- Colors (also in `docs/art/grace-run.gpl`):
 
 | Use | Hex |
 | --- | --- |
-| Ink (outlines, text on cream) | #17120F |
-| Cream (UI panels, icon badges) | #F2E8D5 |
+| Ink (outlines, text on cream) | #120F18 |
+| Cream / Paper (UI panels, icon badges) | #F2E8D5 / #E9DCC0 |
+| Sepia dark / Sepia (vintage backgrounds) | #3B2A1E / #7A5C3E |
 | Bone (text on dark, boss HP) | #EDE7F6 |
 | P1 Blue (plume) / P2 Orange (horns) / P3 Green (crown) / P4 Pink (wizard hat) | #4C8DFF / #FF9A3C / #3CCB7F / #FF5FA8 |
 | Telegraph red (dodge now) — gameplay only | #FF3B3B |
@@ -182,7 +182,7 @@ Meta progression unlocks new abilities, bosses and hats. Never permanent stat bo
 
 - Red and gold are reserved for gameplay signals. Backgrounds are soft, paler and lower contrast than characters and attacks, so danger always pops.
 - Every player = color + hat shape, never color alone.
-- Game feel: hitstop on heavy hits, screen shake (with a settings slider), big rubber-hose squash and stretch, hand-drawn puffs and stars, a sound for every action, a unique sound per boss telegraph. A Film effects toggle in Settings turns the film look off.
+- Game feel: hitstop on heavy hits, screen shake (with a settings slider), big rubber-hose squash and stretch, pixel puffs and stars, a sound for every action, a unique sound per boss telegraph. A Film effects toggle in Settings turns the film look off.
 - Audio: big-band jazz and ragtime music with a scratchy record feel; cartoon sound effects (boings, slide whistles, cymbal crashes).
 
 ## Placeholder art (until M8)

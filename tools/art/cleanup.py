@@ -28,8 +28,8 @@ SCRATCH = ROOT / "scratch" / "art"
 OUTLINE = (18, 15, 24)
 P1_RAMP = {(43, 91, 192), (76, 141, 255), (191, 214, 255)}
 NEUTRALS = {(237, 231, 246), (242, 232, 213), (255, 255, 255)}  # eyes, highlights
-CANVAS = {"player": (32, 32), "boss": (160, 160), "icon": (32, 32), "tile": (16, 16)}
-ANCHOR = {"player": "bottom", "boss": "bottom", "icon": "centre", "tile": "none"}
+CANVAS = {"player": (48, 48), "hat": (48, 48), "boss": (160, 160), "icon": (32, 32), "tile": (24, 24)}
+ANCHOR = {"player": "bottom", "hat": "none", "boss": "bottom", "icon": "centre", "tile": "none"}
 ALPHA_CUTOFF = 128
 SHEET_SCALE = 4
 REPORT_LIMIT = 8
@@ -166,7 +166,7 @@ def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     parser.add_argument("inputs", nargs="+", help="PNG files, globs or folders")
     parser.add_argument("--kind", choices=sorted(CANVAS), required=True)
-    parser.add_argument("--canvas", type=int, help="square canvas size (bosses: 128-192, default 160)")
+    parser.add_argument("--canvas", type=int, help="square canvas size (bosses: 144-240, default 160)")
     parser.add_argument("--out", type=Path, help="folder for cleaned PNGs (default: <input folder>/clean)")
     parser.add_argument("--sheet", type=Path, help="contact sheet path (default: scratch/art/<out name>-sheet.png)")
     args = parser.parse_args()

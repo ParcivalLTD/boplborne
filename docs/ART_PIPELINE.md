@@ -1,75 +1,75 @@
-# Art pipeline: a 1930s rubber-hose cartoon look
+# Art pipeline: pixel art in a 1930s rubber-hose cartoon style
 
-Grace Run looks like an old hand-drawn cartoon: thick wobbly ink lines, flat cel colours, rubber-hose limbs, pie-cut eyes, soft watercolour backgrounds and a film-reel finish (grain, vignette, a little gate weave). The look is inspired by Cuphead, but it is built from the **1930s cartoon tradition**, not from Cuphead itself.
+Grace Run is **pixel art that looks like an old cartoon**: rubber-hose limbs, pie-cut eyes, white gloves, big round shoes, bouncy squash-and-stretch, warm vintage colours and a film-reel finish (grain, vignette, dust). The mood is inspired by Cuphead, but drawn in pixels and built from the **1930s cartoon tradition**, not from Cuphead itself.
 
-Real frame-by-frame animation is too much work for this project. We fake most of it:
-
-1. **AI stills** give us clean ink-and-cel drawings (one anchor per character first, everything else from that anchor).
-2. A **hand pass** fixes lines, fills and proportions.
-3. **Unity 2D Animation rigs** (bones plus sprite skinning) bend the rubber-hose limbs; **sprite swaps** change hands, faces and big poses.
-4. Animation plays **stepped at 24 fps** (each pose is held, not tweened), so rigs read as drawn frames.
-5. The **film look** (post effects) sells the period: grain, vignette, warm grade, dust and scratches.
+AI pixel art looks bad when it's generated one image at a time with no style anchor, no fixed palette and no cleanup. It looks good when you **lock one style first**, generate everything from that anchor, force it into one palette, and clean every frame by hand.
 
 ## Originality (read this first)
 
 - Never copy Cuphead's characters, bosses, title cards, UI, fonts, logos or catchphrases ("A Knockout!", "Wallop!"). Write our own.
 - Never put "Cuphead" or "Studio MDHR" in a generation prompt; describe the period style instead ("1930s rubber-hose cartoon"). Look-alike output is a legal and reputation risk.
-- Our identity stays our own: the **blob knight** heroes, their hats, our bosses (The Gatekeeper, The Brood Mother, The Bell Twins, …) and arenas.
-- Read the image tool's license terms for using its output in a released game. Credit any fonts, music or asset packs in the README.
+- Our identity stays our own: the **blob knight** heroes, their hats, our bosses and arenas.
+- Read each tool's license terms for using its output in a released game. Credit any asset packs, fonts and music in the README.
 
 ## Specs (decide once, never change)
 
 | Thing | Spec |
 | --- | --- |
-| World view | 40 × 22.5 units (unchanged; gameplay sizes don't move) |
-| Pixels per unit (Unity) | **96** (art is authored for 4K: 22.5 units × 96 = 2160 px). At 1080p it's drawn at half size. |
-| Player | about **1.7 units tall** (about 160 px at source) on a 256 × 256 canvas, facing right, feet on the bottom edge |
-| Boss | 6–10 units tall (about 600–1000 px), facing left, canvas fits the widest pose |
-| Hats | separate sprites, 128 × 128 canvas, pivot at the hat's bottom centre |
-| Ability icons | 256 × 256, shown at 64–96 px |
-| Line | ink black `#17120F`, **thick and slightly uneven** (about 6–8 px at source on players, 10–14 px on bosses), rounded ends, no hairlines |
-| Fills | flat cel colours; at most **one** shadow tone per colour, as a hard-edged shape (no gradients on characters) |
+| Base resolution | **960×540**, scaled ×2 to 1080p (×4 to 4K), Pixel Perfect Camera |
+| Pixels per unit (Unity) | **24** (view stays 40 × 22.5 units, so gameplay sizes don't move) |
+| Player canvas | **48×48**, character about 38–42 px tall, facing right, feet on the bottom row |
+| Hats | **48×48**, drawn on the same canvas as the body so they line up |
+| Boss canvas | 144–240 px, boss 120–200 px tall, facing left |
+| Tiles | 24×24 |
+| Ability icons | 32×32 |
+| Palette | `docs/art/grace-run.gpl` (load in Aseprite: Palette menu → Load Palette) |
 | Light | from the top left, always |
-| Faces | pie-cut eyes (black oval with a wedge cut out), big shoes / round feet, white gloves |
-| Backgrounds | soft watercolour, paper texture, lower contrast and saturation than characters |
-| Animation rate | 24 fps stepped (poses held between steps); fast actions may go on ones, idles on twos (12 fps) |
+| Outline | 1 px, ink `#120F18`, on characters and bosses (2 px on the outer silhouette of bosses is fine) |
+| Animation | held frames, 12 fps for idles, up to 24 fps for fast actions; strong anticipation, smear frames |
+
+## Cartoon design language
+
+Every character, boss and prop follows these, at pixel scale:
+
+- **Pie-cut eyes:** a tall black oval with a small wedge cut out, on a white eye shape. At 48 px that's about 3×5 px per eye.
+- **White gloves** (3–4 px hands, a 1 px cuff) and **big round shoes**.
+- **Rubber-hose limbs:** thin, bendy, no elbows or knees; they swing in arcs.
+- **Round, bouncy shapes:** silhouettes built from circles and ovals; squash on landing, stretch on jumps.
+- **Faces sell the mood:** wide grins, gritted teeth, cartoon sweat drops, stars when hit.
+- **Flat colours, simple shading:** one shadow and one highlight per colour, hard-edged.
 
 ## Colours
 
-The colour table lives in `docs/GDD.md` → Look. Rules:
-
-- Players are told apart by **colour + hat**, never by colour alone.
+- Players use their ramp (blue, orange, green, pink) plus ink, white (eyes, gloves) and neutrals.
+- Backgrounds lean warm and vintage (sepia, paper, the arena accent). They are paler and lower contrast than anything that can hurt you.
 - **Telegraph red** and **weak-point gold** are reserved for gameplay signals. Never use them in backgrounds, props or idle boss colours.
-- Backgrounds are paler and lower contrast than anything that can hurt you. Characters and attacks carry the heaviest ink.
+- Players are told apart by **colour + hat**, never colour alone.
 
 ## Tools
 
 | Tool | Good for | Notes |
 | --- | --- | --- |
-| **AI image tool** (the user's choice; one that takes a reference image) | Anchor stills, pose stills, backgrounds, icons | The user generates and drops candidates into `scratch/art/<asset>/raw/` (git-ignored). If an image MCP is connected later, the agent may call it, but it still shows candidates and waits for the user's pick. PixelLab is **not** used any more (it only makes pixel art). |
-| **Krita** (free) / Clip Studio / Photoshop | Hand pass, splitting rigs into layers, masks | Save rig sources as `.psb` (layered) in `Assets/_Project/Art/<group>/`. |
-| **Unity 2D Animation + PSD Importer** (installed) | Bones, sprite skinning, sprite swap, clips | One `.psb` per rigged character; layers become sprites, the importer builds the skeleton. |
-| **URP post-processing** (installed) | Grain, vignette, colour grading | A `FilmLook` volume profile, see "Film look". |
+| **PixelLab MCP** (pixellab.ai) | Characters, animations, boss poses, tilesets, icons | The agent calls it directly (see "Working with the PixelLab MCP"). **Main tool.** |
+| **Aseprite** | Hand cleanup, small fixes | Every anchor (player, each boss) gets a hand pass here before the rest is generated from it. |
+| **URP post-processing** (installed) | Film look | See "Film look". |
+| **Asset packs** (itch.io, Kenney.nl) | Backgrounds, FX | Recolour to our palette. |
 
-## Working with AI stills
+## Working with the PixelLab MCP
 
-- **Anchor first.** For each character, make one perfect still (the anchor). Every other pose is generated with the anchor as the reference image, so the character stays on-model.
-- **Same prompt skeleton every time** (see "Prompt templates"). Change only the words in brackets.
-- **Generate flat and isolated:** plain white or flat grey background, no shadows on the ground, no text. We cut it out in the hand pass.
-- **One asset group per session and commit**, art only (no gameplay changes in the same commit), so any step can be reverted on its own.
-- Keep the prompt, tool, model and seed of every picked asset in `docs/art/sources.md`, so later poses can be made the same way.
+- **Setup:** the server is added at **user** scope (`claude mcp add --scope user --transport http pixellab https://api.pixellab.ai/mcp --header "Authorization: Bearer <token>"`), never in the checked-in `.mcp.json`, so the token stays out of git. Tools appear after a session restart.
+- **Read the live tool schema before calling a tool.** PixelLab changes parameters; don't trust names or limits from memory or from this doc.
+- **Best value for candidates:** `create_image_pro` returns many candidates per call on small canvases (25 at 42–50 px, 4 at 86–170 px, 1 above). Pass the palette colours for the asset (for players: ink, P1 ramp, white, bone), so candidates come back on-palette.
+- **Candidates go to `scratch/art/<asset>/`** (git-ignored). The agent shows a contact sheet, the user picks. Only picked, cleaned assets go into `Assets/_Project/Art`.
+- **Reuse, don't regenerate.** Keep the PixelLab ids of picked assets in `docs/art/pixellab-ids.md`, so later animations and tilesets are made from the same anchor (style references, `style_character_id`, start frames).
+- **One direction only.** Facing right for players, facing left for bosses; Unity mirrors the sprite. Half the cost, no left/right drift.
+- **Watch the cost.** Check `get_balance` before a big call. Failed jobs are not charged. Save the expensive modes for anchors.
+- **One asset group per session and commit**, art only (no gameplay changes in the same commit).
 
-## Player colours: one body, four players
+## Player colours: one sprite, four players
 
-The body is drawn **once**. Its swappable areas (the body fill and its shadow) are marked in a **mask texture**, a Unity sprite **secondary texture** named `_MaskTex`:
+The body is drawn **once, in P1's blue ramp** (`#2B5BC0`, `#4C8DFF`, `#BFD6FF`). The sprite shader `Assets/_Project/Art/Shaders/SpriteRampFlash.shader` (materials `SpritePlayer` and `SpriteFlash` in `Art/Materials`) swaps exactly those three colours for the player's ramp from `GameConfig` → Player Ramps, so all four players share every frame and stay on the palette. A plain colour tint is not used: it would multiply the shading off the palette. The same shader does the **hit flash**.
 
-- mask **R** = "this pixel is player colour". The value is the strength (soft edges allowed, so anti-aliased ink edges stay smooth).
-- In the main texture, those areas are drawn in **neutral greys** (light grey = base fill, mid grey = shadow).
-- The shader maps grey to the player's ramp (shadow → base → light) inside the mask, and leaves everything else (ink, eyes, gloves, shoes) untouched.
-
-The ramps stay in `GameConfig` → Player Ramps. The same shader still does the **hit flash** (a material property block fades the sprite towards white), and the flash-only variant stays for bosses, dummy and summons. This replaces 8.1's exact-colour ramp swap, which can't work on anti-aliased art.
-
-Hats are **separate sprites** in their own colours (not swapped), parented to the rig's **head bone**, so they bob and squash with the head.
+Gloves, eyes and shoes use white, bone and ink, so they don't swap. Hats are **separate 48×48 sprites** on the Player prefab's `Hat` renderer, in their own palette colours (not swapped).
 
 ## Step by step
 
@@ -77,105 +77,112 @@ Each step is one session and one commit. The prompt for each step is in `docs/PR
 
 ### 1. Look and tech base (no final art yet)
 
-- Switch the shader from exact-colour ramp swap to the mask swap above. Keep the hit flash.
-- Replace the Pixel Perfect Camera with a plain orthographic camera, same 40 × 22.5 unit view (orthographic size 11.25).
-- Add the `FilmLook` URP volume and a **Film effects** on/off toggle in Settings (some players find grain tiring).
-- Add `SteppedAnimator`: drives an Animator at a fixed 24 fps (holds the pose between steps), rate set in a ScriptableObject.
-- Placeholder shapes get a thick dark outline so the look can be judged before real art.
+- 8.1 (done): ramp-swap + hit-flash shader, cleanup script.
+- 8.1b: Pixel Perfect Camera to 960×540 at 24 PPU (same 40 × 22.5 unit view); the `FilmLook` URP volume with a **Film effects** toggle in Settings.
 
-### 2. Player anchor and hats
+### 2. Player style anchor and hats
 
-1. 10–20 candidates of the player prompt; the user picks one and does the hand pass.
-2. Split the anchor into rig layers (head, body, two arms, two legs or feet, eyes and mouth as swap sprites), with greys + mask for the swappable fill. Save as `Assets/_Project/Art/Characters/player_body.psb`.
-3. Hats: plume (P1), horns (P2), crown (P3), wizard hat (P4), generated with the anchor as reference; clean, save as `hat_<name>.png`.
+Make **one** perfect player sprite: the rubber-hose blob knight in P1's blue ramp, no hat.
 
-### 3. Player rig and animations
+1. Generate candidates (side view, 48 px canvas, facing right) with the player prompt below; show 10–20 of the best on a contact sheet.
+2. The user picks one. The cleanup script palette-locks it; the user does a hand pass in Aseprite with the checklist.
+3. Save as `Assets/_Project/Art/Characters/player_body.png` (single frame, the anchor) and record its PixelLab id.
+4. Hats: plume (P1), horns (P2), crown (P3), wizard hat (P4), with the anchor as style reference and placed on its head; clean and save as `hat_<name>.png`.
 
-Rig the anchor in 2D Animation (bones, weights), then key the clips at 24 fps, facing right only:
+### 3. Player animations
 
-| Clip | Feel |
-| --- | --- |
-| `idle` | bouncy rubber-hose bob on twos, arms swaying |
-| `run` | big exaggerated stride, body leans forward, on ones |
-| `jump` / `fall` | stretch up on take-off, squash on landing, arms up while falling |
-| `dodge` | squashes into a ball and rolls, swap to a "ball" sprite mid-roll |
-| `attack1`, `attack2`, `attack3` | punch, second punch, overhead finisher; strong anticipation and smear frames (a swap sprite with a stretched glove) |
-| `hurt` | eyes swap to X / spirals, body snaps back |
-| `ghost` | floating, wavy bottom, translucent |
+Animate the anchor, facing right only. Use a PixelLab template where one fits; otherwise a text-described custom animation. Every frame goes through the cleanup script; the user spot-checks the result.
 
-The Animator is driven by movement, dodge, attack, hurt and ghost state; facing is a flip on the root.
+| Clip | Frames | Feel |
+| --- | --- | --- |
+| `idle` | 4–6 | bouncy rubber-hose bob, arms swaying (12 fps) |
+| `run` | 6–8 | big exaggerated stride, leaning forward |
+| `jump` / `fall` | 2 / 2 | stretch on take-off, arms up while falling |
+| `dodge` | 5 | squashes into a ball and rolls forward |
+| `attack1`, `attack2`, `attack3` | 3–5 each | punch, second punch, overhead finisher; anticipation + a smear frame |
+| `hurt` | 2 | eyes become X / stars, body snaps back |
+| `ghost` | 4 | floating, wavy bottom |
 
-### 4. Bosses: rigs with held key poses
+If generations come out inconsistent, hand-animate in Aseprite: a blob is the easiest character to animate. The agent then imports the frames, builds the clips and an Animator driven by movement, dodge, attack, hurt and ghost state.
 
-Boss wind-ups are timed by the attack data, so a pose has to hold exactly as long as the telegraph. Bosses use **held key poses** on a rig, not free-running clips:
+### 4. Bosses: held key poses
 
-1. One anchor still of the boss (facing left) with the boss prompt and the player anchor as a style reference. Main colour = its arena accent (`docs/GDD.md`). The user picks; hand pass; split into rig layers.
-2. Key poses from the anchor: an `idle` loop, and per attack a **wind-up**, **strike** and **recovery** pose, plus `stagger`/phase change and `death`. New stills (with the anchor as reference) only where a pose can't be reached by bending the rig.
+Boss wind-ups are timed by the attack data, so a pose has to stay up exactly as long as the telegraph. Bosses use **held key poses**, not fixed-frame-rate clips:
+
+1. Generate one still of the boss (side view, facing left, 144–240 px canvas) with the boss prompt and the player anchor as style reference. Main colour = its arena accent (`docs/GDD.md`). The user picks; hand pass in Aseprite. This is the boss anchor.
+2. From the anchor, generate the poses: a short `idle` loop (2–4 frames), and per attack a **wind-up**, **strike** and **recovery** pose. Use the anchor as start frame so poses stay on-model. Add `stagger`/phase-change and `death` poses.
 3. The boss view shows the pose for the current attack phase (wind-up / active / recovery from `AttackData`) and keeps the red telegraph glow on the striking part.
 
 Only make bosses that exist in the game. Order: The Gatekeeper, The Brood Mother, The Bell Twins.
 
-### 5. Arenas
+### 5. Environments
 
-- Each arena is an **illustrated set**, not a tileset: one painted ground/platform layer that matches the colliders, plus 2–3 watercolour background layers with parallax (far: sky and silhouettes, near: props).
-- Paint wide enough for the panning camera (the arena's `ArenaBounds` plus a margin).
-- Colliders stay exactly where they are; art is drawn to fit them, never the other way round.
-- Hub first, then the other arenas using the hub as the style reference, each tinted towards its accent.
+- One 24×24 sidescroller tileset per arena (floor, walls, one-way platform edges), warm and vintage, tinted towards the arena accent. Make the hub's first, then chain every other arena from it so they share a look.
+- Two or three background layers with parallax, painted-looking pixel art (far: sky and silhouettes, near: props), lower contrast than the playfield.
+- Never use telegraph red or weak-point gold in environments.
 
 ### 6. Icons, UI, effects
 
-- Ability icons: a bold ink drawing on a round cream badge, readable at 64 px. Make one, get approval, use it as the reference for the rest.
-- UI: vintage cinema look: cream panels with ink borders, title cards between fights, one hand-lettered display font plus one readable body font (both with a license that allows games, e.g. SIL OFL).
-- Effects: hand-drawn puffs, stars and spark sprites (a few frames each, stepped), plus small Unity particles using those sprites.
+- Ability icons 32×32: a bold ink drawing on a round cream badge. Generate from one approved icon as style reference.
+- UI: vintage cinema look: cream (`#F2E8D5` / paper) panels with ink borders, our own title cards between fights, one pixel display font plus one readable pixel body font.
+- Effects: small pixel sprite sheets for puffs, stars, sparks and dust, held frames.
 
 ## Film look
 
 The `FilmLook` URP volume profile (on the `Game` scene's global volume):
 
-- Film grain (subtle), vignette, a warm colour grade with slightly lifted blacks.
-- A full-screen overlay with dust and scratches, animated at 12–24 fps, low opacity.
-- Optional gate weave: the overlay (not the camera, never the gameplay) shifts by a pixel or two.
-- **Readability check:** telegraph red and weak-point gold must still pop with the film look on. Turn it off in Settings → Film effects.
+- Subtle film grain, vignette, a warm colour grade with slightly lifted blacks.
+- A low-opacity dust-and-scratches overlay at the base resolution (pixel-sized specks), stepped at 12 fps.
+- **Readability check:** telegraph red and weak-point gold must still pop with the film look on. Settings → Film effects turns it off.
 
 ## Prompt templates
 
-Adapt the words in brackets. Keep the fixed parts identical every time.
-
-**Style suffix (always appended):**
-`1930s rubber-hose cartoon style, thick uneven black ink outlines, flat cel colours with one hard shadow tone, pie-cut eyes, lit from top left, clean isolated character on a plain white background, no text, no ground shadow`
+Adapt the words in brackets. Keep the fixed parts identical every time so the style stays consistent.
 
 **Player:**
-`a small round blob knight hero, side view facing right, no hat, round body with tiny arms in white gloves and big round shoes, cheerful and determined, body in light grey, + style suffix`
+`pixel art, 1930s rubber-hose cartoon style, small round blob knight hero, side view facing right, no hat, pie-cut eyes, white gloves, big round shoes, thin bendy arms, cheerful and determined, blue body with three shades, 1px dark outline, simple shading lit from top left, limited palette, transparent background`
 
 **Hat:**
-`a single [tall feather plume] hat for a small round blob knight, side view facing right, + style suffix`
+`pixel art, 1930s rubber-hose cartoon style, a single [tall feather plume] hat for a small round blob knight, side view facing right, 1px dark outline, lit from top left, limited palette, transparent background`
 
 **Boss:**
-`[a giant armored knight with a tower shield and a raised greatsword], boss, side view facing left, big readable silhouette, menacing but funny, [steel grey] main colour, + style suffix`
+`pixel art, 1930s rubber-hose cartoon style, [giant armored knight with a tower shield and a raised greatsword], boss, side view facing left, big readable silhouette, menacing but funny, pie-cut eyes, [muted grey steel] main colour, 1px dark outline, simple shading lit from top left, limited palette, transparent background`
 
 **Ability icon:**
-`an ability icon of [a black hole swirl], bold black ink drawing on a round cream badge, readable at small size, + style suffix`
+`pixel art ability icon, [a black hole swirl], bold black ink drawing on a round cream badge, 1930s cartoon style, readable at small size, 32x32`
 
-**Background:**
-`a soft watercolour background of [a moonlit castle courtyard], 1930s cartoon background painting, paper texture, muted [steel blue] tones, low contrast, no characters, no text`
+**Tileset:**
+`warm vintage [castle stone] tileset for a side-view platformer, 1930s cartoon style, muted tones with a hint of [steel blue], 24x24 tiles, floor, wall and platform edges, lit from top left`
 
-## Hand-pass checklist (every sprite)
+## Cleanup script
 
-- [ ] Ink lines are one consistent weight family, no hairlines, no broken lines.
-- [ ] Fills are flat, at most one hard shadow tone, no AI gradients or noise.
-- [ ] Clean cut-out: no white fringe around the ink, alpha is clean.
+PixelLab output is not always locked to our palette. `tools/art/cleanup.py` runs on every generated frame before anything goes into Unity:
+
+- snaps every pixel to the nearest colour in `docs/art/grace-run.gpl` (gameplay-only colours excluded)
+- makes alpha binary (no semi-transparent pixels)
+- reports outline pixels that are not `#120F18`, gaps in the outline, and stray single pixels
+- trims or pads to the spec canvas, feet on the bottom row (players) / bottom centre (bosses); hats keep their position
+- writes a contact sheet to `scratch/art/` so the user can review a whole animation at once
+
+Run it from the project root (`pip install -r tools/art/requirements.txt` once): `python tools/art/cleanup.py scratch/art/player/raw --kind player` (kinds: `player`, `hat`, `boss` with `--canvas 144`–`240`, `icon`, `tile`). Cleaned PNGs go to `<input folder>/clean`, the contact sheet to `scratch/art/<asset>-sheet.png`.
+
+## Cleanup checklist (every sprite, every frame)
+
+- [ ] Only palette colours. No semi-transparent pixels on the edges.
+- [ ] 1 px outline in `#120F18`, no gaps, no double-thick corners ("jaggies").
+- [ ] No stray single pixels ("noise") inside shapes.
 - [ ] Light comes from the top left on every part.
 - [ ] Filled solid black, the silhouette is still recognizable.
-- [ ] Same proportions as the anchor.
-- [ ] Player bodies: swappable fill in greys, marked in `_MaskTex`; ink, eyes, gloves and shoes outside the mask.
-- [ ] No telegraph red or weak-point gold outside gameplay signals.
+- [ ] Cartoon traits read at 1×: pie-cut eyes, gloves, shoes.
+- [ ] Feet sit on the bottom row (players) so the pivot is bottom centre.
+- [ ] Same size and proportions as the anchor across all frames.
+- [ ] Player bodies use only the P1 blue ramp, the outline, and neutral colours (eyes, gloves, shoes) — anything else won't swap per player.
 - [ ] Nothing that looks copied from Cuphead.
 
 ## Unity import settings
 
 Set these on the importer (the agent does it when the art goes in):
 
-- Pixels Per Unit **96**, Filter Mode **Bilinear**, **Generate Mip Maps** on, Compression **High Quality**, Max Size 4096 for bosses and backgrounds.
-- Pivot **Bottom Center** for characters and bosses (feet on the bottom edge).
-- Player bodies: add the `_MaskTex` secondary texture in the Sprite Editor.
-- Rigged characters come in as `.psb` through the PSD Importer (Character Rig on, Use Layer Grouping on).
+- Pixels Per Unit **24**, Filter Mode **Point (no filter)**, Compression **None**.
+- Pivot **Bottom Center** for characters and bosses.
+- Sprite sheets are sliced on the canvas grid; each clip gets its frames in order. Facing left/right is a sprite flip, not separate art.

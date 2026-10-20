@@ -285,67 +285,67 @@ Add MetaProgress (saved locally per player as JSON): unlocks for new abilities, 
 
 ## M8 — Art and audio pass
 
-Follow `docs/ART_PIPELINE.md` (1930s rubber-hose cartoon look, decision 24). The user makes AI stills and drops candidates into `scratch/art/<asset>/raw/` (or the agent calls an image MCP if one is connected); the agent shows a contact sheet, the user picks and does the hand pass. One step per chat, art-only commits.
+Follow `docs/ART_PIPELINE.md` (pixel art in a 1930s rubber-hose cartoon style, decision 25). Art comes from the PixelLab MCP; the agent shows candidates in `scratch/art/`, the user picks and does the hand pass in Aseprite. One step per chat, art-only commits.
 
-### 8.1 Sprite shader and cleanup script (done, pixel-art version)
+### 8.1 Sprite shader and cleanup script (done)
 ```
 8.1: Build the sprite shader from docs/ART_PIPELINE.md "Player colours": swap the three P1 blue ramp colours for the player's ramp, plus a hit flash via material property block that replaces SpriteFlash's colour tint. Flash-only variant for bosses, dummy and summons. Also write the art cleanup script in tools/art/.
 ```
 **Done when:** placeholders flash on hit as host and client, and P1–P4 keep their colours.
 
-### 8.1b Look and tech base
+### 8.1b Resolution and film look
 ```
-8.1b: Do docs/ART_PIPELINE.md step 1. Change SpriteRampFlash to the mask swap (a _MaskTex secondary texture, R = player-colour strength; greys inside the mask map to the player's ramp from GameConfig; keep the hit flash and the flash-only variant). Replace the Pixel Perfect Camera with a plain orthographic camera at the same 40 x 22.5 unit view. Add a FilmLook URP volume (grain, vignette, warm grade, dust-and-scratches overlay) with a Film effects toggle in Settings, and a SteppedAnimator that samples an Animator at a rate from a ScriptableObject (default 24 fps). Give the placeholder shapes a thick dark outline. Remove the pixel-only checks from tools/art/cleanup.py or retire it.
+8.1b: Do docs/ART_PIPELINE.md step 1 (8.1b). Set the Pixel Perfect Camera to 960x540 at 24 PPU, keeping the 40 x 22.5 unit view and the camera follow and shake working. Add a FilmLook URP volume (subtle grain, vignette, warm grade, a pixel-sized dust-and-scratches overlay stepped at 12 fps) with a Film effects toggle in Settings, strength values in a ScriptableObject.
 ```
-**Done when:** placeholders flash on hit and keep P1–P4 colours as host and client, the view is unchanged in size, the film look shows and the toggle turns it off, and telegraph red still reads clearly with it on.
+**Done when:** the view is the same size in units and crisp at 1920x1080, the film look shows and the toggle turns it off, and telegraph red still reads clearly with it on.
 
 ### 8.2 Player anchor and hats
 ```
-8.2: Make the player anchor per docs/ART_PIPELINE.md step 2. I'll drop 10–20 candidates from the player prompt into scratch/art/player/raw/; build a contact sheet and wait for my pick and hand pass. Then help me split it into rig layers with greys + _MaskTex for the body fill, and import player_body.psb. Then the four hats (plume, horns, crown, wizard) the same way. Record prompts, tool and seeds in docs/art/sources.md. Wire the body and hats into the Player prefab and GameConfig; hats ride on the head bone.
+8.2: Using the PixelLab MCP, make the player style anchor per docs/ART_PIPELINE.md step 2 (48 px canvas, rubber-hose blob knight). Generate candidates into scratch/art/player/, show me a contact sheet of the best 10-20, and wait for my pick. Then run the cleanup script, and I'll do the hand pass. Then generate the four hats (plume, horns, crown, wizard) from the anchor the same way. Record the PixelLab ids in docs/art/pixellab-ids.md. Wire the body and hats into the Player prefab and GameConfig, and stop PlayerVisuals tinting the body.
 ```
 **Done when:** all four players show the new body in their own colour with their own hat, in play mode.
 
-### 8.3 Player rig and animations
+### 8.3 Player animations
 ```
-8.3: Rig player_body.psb in 2D Animation and key the clips from docs/ART_PIPELINE.md step 3 (idle, run, jump, fall, dodge, attack1-3, hurt, ghost), facing right only, played through SteppedAnimator. Show me each clip (a short capture or a pose sheet) before wiring. Add an Animator driven by movement, dodge, attack, hurt and ghost state, with a root flip for facing.
+8.3: Animate the player anchor with the PixelLab MCP per docs/ART_PIPELINE.md step 3 (clip table: idle, run, jump, fall, dodge, attack1-3, hurt, ghost), facing right only, with rubber-hose bounce and smear frames. Show me each clip's contact sheet before importing. Import the frames, build the clips, and add an Animator driven by movement, dodge, attack, hurt and ghost state, with sprite flip for facing.
 ```
 **Done when:** every state plays the right clip for P1–P4, and others see the same animation on a client.
 
-### 8.4 The Gatekeeper
+### 8.4 The Gatekeeper poses
 ```
-8.4: Make The Gatekeeper's art per docs/ART_PIPELINE.md step 4: one anchor still (I drop candidates, you show a sheet, wait for my pick and hand pass), split into a rig, then idle, per-attack wind-up / strike / recovery poses (slams, shield bash, sweep), stagger and death as held key poses. Show the pose that matches each attack phase from AttackData, and keep the red telegraph glow on the striking part.
+8.4: Make The Gatekeeper's art with the PixelLab MCP per docs/ART_PIPELINE.md step 4: one anchor still (show candidates, wait for my pick and hand pass), then idle, per-attack wind-up / strike / recovery poses (slams, shield bash, sweep), stagger and death. Show the boss pose that matches each attack phase from AttackData, and keep the red telegraph glow on the striking part.
 ```
 **Done when:** every attack's telegraph reads clearly in a solo fight and the hitboxes still match the poses.
 
-### 8.5 The Brood Mother
+### 8.5 The Brood Mother poses
 ```
 8.5: The Brood Mother's art, same process as The Gatekeeper (docs/ART_PIPELINE.md step 4), including the Brood Crawler summons.
 ```
 **Done when:** every attack's telegraph reads clearly in a solo fight.
 
-### 8.6 The Bell Twins
+### 8.6 The Bell Twins poses
 ```
-8.6: The Bell Twins' art, same process as The Gatekeeper (docs/ART_PIPELINE.md step 4). Both twins share one style but must be told apart at a glance.
+8.6: The Bell Twins' art, same process as The Gatekeeper (docs/ART_PIPELINE.md step 4). Both twins share one anchor style but must be told apart at a glance.
 ```
 **Done when:** both twins' telegraphs read clearly in a solo fight.
 
 Bosses added later in M7 get the same prompt with their name once they are built.
 
-### 8.7 Arena sets and backgrounds
+### 8.7 Arena tilesets and backgrounds
 ```
-8.7: Illustrated arena sets per docs/ART_PIPELINE.md step 5. Hub first (I drop candidates, wait for my pick), then the Gatekeeper, Brood Mother and Bell Twins arenas with the hub as reference, each tinted to its accent. A painted ground/platform layer drawn to fit the existing colliders, plus 2-3 watercolour parallax layers wide enough for the panning camera. Never change a collider.
+8.7: Arena tilesets with the PixelLab MCP per docs/ART_PIPELINE.md step 5 (24x24 tiles, warm vintage). Hub first (show candidates, wait for my pick), then chain the Gatekeeper, Brood Mother and Bell Twins arenas from it, each tinted to its accent. Floors, walls, one-way platform edges, plus 2-3 parallax background layers. Swap them into the arena prefabs without changing any collider.
 ```
 **Done when:** every arena looks finished and no telegraph is harder to read.
 
 ### 8.8 Ability icons
 ```
-8.8: Ability icons per docs/ART_PIPELINE.md step 6 (ink drawing on a cream badge). One icon first for my approval, then the rest with it as reference, for every ability in the AbilityCatalog. Replace the placeholder icons in the ability assets.
+8.8: Ability icons with the PixelLab MCP per docs/ART_PIPELINE.md step 6 (ink drawing on a cream badge). Make one icon first for my approval, then use it as the style reference for all abilities in the AbilityCatalog. Replace the placeholder icons in the ability assets.
 ```
 **Done when:** the draft cards and HUD slots show readable icons at their real size.
 
 ### 8.9 UI restyle
 ```
-8.9: Restyle the UI in the vintage cinema look from docs/ART_PIPELINE.md step 6: main menu, HUD panels, draft cards, results, Rest Stop, weapon picker, and our own title cards before and after each fight (our own words, nothing from Cuphead). Replace legacy Text with one display font and one body font (license allows games, credited in the README).
+8.9: Restyle the UI in the vintage cinema look from docs/ART_PIPELINE.md step 6: main menu, HUD panels, draft cards, results, Rest Stop, weapon picker, and our own title cards before and after each fight (our own words, nothing from Cuphead). Use PixelLab create_ui_asset for panels and frames where it helps, and replace legacy Text with one pixel display font and one pixel body font (license allows games, credited in the README).
 ```
 **Done when:** every screen is readable at 1920x1080 and 1280x720.
 
