@@ -18,7 +18,7 @@ AI pixel art looks bad when it's generated one image at a time with no style anc
 | Base resolution | **960×540**, scaled ×2 to 1080p (×4 to 4K), Pixel Perfect Camera |
 | Pixels per unit (Unity) | **24** (view stays 40 × 22.5 units, so gameplay sizes don't move) |
 | Player canvas | **48×48**, character about 38–42 px tall, facing right, feet on the bottom row |
-| Hats | **48×48**, drawn on the same canvas as the body so they line up |
+| Hats | **48×64** (body canvas plus 16 rows of headroom), same bottom-centre pivot as the body so they line up; generated at 24×24 and placed with `tools/art/fit_hats.py` |
 | Boss canvas | 144–240 px, boss 120–200 px tall, facing left |
 | Tiles | 24×24 |
 | Ability icons | 32×32 |
@@ -69,7 +69,7 @@ Every character, boss and prop follows these, at pixel scale:
 
 The body is drawn **once, in P1's blue ramp** (`#2B5BC0`, `#4C8DFF`, `#BFD6FF`). The sprite shader `Assets/_Project/Art/Shaders/SpriteRampFlash.shader` (materials `SpritePlayer` and `SpriteFlash` in `Art/Materials`) swaps exactly those three colours for the player's ramp from `GameConfig` → Player Ramps, so all four players share every frame and stay on the palette. A plain colour tint is not used: it would multiply the shading off the palette. The same shader does the **hit flash**.
 
-Gloves, eyes and shoes use white, bone and ink, so they don't swap. Hats are **separate 48×48 sprites** on the Player prefab's `Hat` renderer, in their own palette colours (not swapped).
+Gloves, eyes and shoes use white, bone and ink, so they don't swap. Hats are **separate 48×64 sprites** on the Player prefab's `Hat` renderer, in their own palette colours (not swapped).
 
 ## Step by step
 
@@ -87,7 +87,7 @@ Make **one** perfect player sprite: the rubber-hose blob knight in P1's blue ram
 1. Generate candidates (side view, 48 px canvas, facing right) with the player prompt below; show 10–20 of the best on a contact sheet.
 2. The user picks one. The cleanup script palette-locks it; the user does a hand pass in Aseprite with the checklist.
 3. Save as `Assets/_Project/Art/Characters/player_body.png` (single frame, the anchor) and record its PixelLab id.
-4. Hats: plume (P1), horns (P2), crown (P3), wizard hat (P4), with the anchor as style reference and placed on its head; clean and save as `hat_<name>.png`.
+4. Hats: plume (P1), horns (P2), crown (P3), wizard hat (P4). Generate at 24×24 (a 48×48 canvas makes them body-sized), place on the head with `python tools/art/fit_hats.py <name> <job id> [overlap] 64`, clean with `--kind hat` and save as `hat_<name>.png`. Hats avoid the P1 ramp (it would swap), telegraph red and weak-point gold.
 
 ### 3. Player animations
 

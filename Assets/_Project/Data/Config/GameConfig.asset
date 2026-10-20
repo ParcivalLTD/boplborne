@@ -36,9 +36,9 @@ MonoBehaviour:
     Mid: {r: 1, g: 0.37254903, b: 0.65882355, a: 1}
     Light: {r: 1, g: 0.76862746, b: 0.87058824, a: 1}
   _hatSprites:
-  - {fileID: 21300000, guid: c72c9da1bf3ce0743af29599f121db6e, type: 3}
-  - {fileID: 21300000, guid: 46d5e9a9462376a4b9bf1a1fa2b0f34f, type: 3}
-  - {fileID: 21300000, guid: 834aa2cbeab9f3449a8fde834080b5f4, type: 3}
-  - {fileID: 21300000, guid: a79f777114ef6c6419dd735dcb39e8a6, type: 3}
+  - {fileID: 21300000, guid: 28adfa465dd27fb42be7820376503400, type: 3}
+  - {fileID: 21300000, guid: dc690ca2efebab14ea00c0a8048ea544, type: 3}
+  - {fileID: 21300000, guid: 90126a2002be68441b82d241ae966224, type: 3}
+  - {fileID: 21300000, guid: d39ac88d76a10354a9ec5d4d6ee614de, type: 3}
   _settings: {fileID: 11400000, guid: 405c7ca8912f91643813a8597a250f42, type: 2}
   _server: {fileID: 11400000, guid: 7acc284a6ae48ac479efd47a76fd524c, type: 2}
