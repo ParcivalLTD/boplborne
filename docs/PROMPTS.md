@@ -293,7 +293,7 @@ Follow `docs/ART_PIPELINE.md` (pixel art in a 1930s rubber-hose cartoon style, d
 ```
 **Done when:** placeholders flash on hit as host and client, and P1–P4 keep their colours.
 
-### 8.1b Resolution and film look
+### 8.1b Resolution and film look (done)
 ```
 8.1b: Do docs/ART_PIPELINE.md step 1 (8.1b). Set the Pixel Perfect Camera to 960x540 at 24 PPU, keeping the 40 x 22.5 unit view and the camera follow and shake working. Add a FilmLook URP volume (subtle grain, vignette, warm grade, a pixel-sized dust-and-scratches overlay stepped at 12 fps) with a Film effects toggle in Settings, strength values in a ScriptableObject.
 ```

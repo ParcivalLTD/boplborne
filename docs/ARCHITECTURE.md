@@ -10,7 +10,7 @@ The repo root **is** the Unity project root (`Assets/`, `Packages/`, `ProjectSet
 Assets/
   _Project/
     Scripts/
-      Core/          Bootstrap, GameConfig, Layers, Juice (hitstop, shake, flash), Framing (follow camera, arena bounds, edge-marker math), AudioCue, SaveSystem
+      Core/          Bootstrap, GameConfig, Layers, Juice (hitstop, shake, flash), Framing (follow camera, arena bounds, edge-marker math), Film (film look volume + dust overlay), AudioCue, SaveSystem
       Net/           ConnectionManager, ConnectionApproval, CommandLineArgs, NetworkClock helpers
       Player/        PlayerController, PlayerMovement, PlayerDodge, PlayerStamina, PlayerInputReader, PlayerVisuals
       Combat/        Health, DamageInfo, Hitbox, Hurtbox, DamageService, Knockback, ReviveSystem, Ghost
@@ -148,6 +148,7 @@ Everything tunable is here. Default values are the starting values in `docs/GDD.
 - Screen shake through Cinemachine impulse, scaled by the settings slider. The impulse listener sits on the same `ArenaCamera` that `ArenaCameraRig` moves, so shake and panning add up.
 - Flash: white sprite flash via a material property block.
 - Squash and stretch on jump, land, dodge.
+- Film look (`Core/Film`, tuning in `Data/Config/FilmLookData.asset`): `FilmLook` on the Game scene's global `FilmLook` Volume (profile `Data/Config/FilmLookProfile.asset`) writes grain, vignette, warm grade and lifted blacks into a runtime copy of the profile; `FilmDust` on the `FilmDust` overlay canvas (sort order -100, under the HUD) steps the procedural `GraceRun/Film Dust` shader at 12 fps on unscaled time. Settings → Film effects sets the volume weight to 0 and hides the dust. Local only.
 
 ## Content builders (editor)
 

@@ -13,6 +13,8 @@ namespace GraceRun.Core.Settings
         [SerializeField, Range(0f, 1f)] private float _masterVolume = 0.8f;
         [SerializeField, Range(0f, 1f)] private float _sfxVolume = 1f;
         [SerializeField, Range(0f, 2f)] private float _screenShake = 1f;
+        [SerializeField, Tooltip("Film grain, vignette, warm grade and dust (FilmLook).")]
+        private bool _filmEffects = true;
         [SerializeField] private bool _fullscreen = true;
         [SerializeField] private bool _vSync = true;
 
@@ -25,6 +27,7 @@ namespace GraceRun.Core.Settings
         public float MasterVolume => _masterVolume;
         public float SfxVolume => _sfxVolume;
         public float ScreenShake => _screenShake;
+        public bool FilmEffects => _filmEffects;
         public bool Fullscreen => _fullscreen;
         public bool VSync => _vSync;
         public float Step => _step;

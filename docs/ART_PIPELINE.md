@@ -78,7 +78,7 @@ Each step is one session and one commit. The prompt for each step is in `docs/PR
 ### 1. Look and tech base (no final art yet)
 
 - 8.1 (done): ramp-swap + hit-flash shader, cleanup script.
-- 8.1b: Pixel Perfect Camera to 960×540 at 24 PPU (same 40 × 22.5 unit view); the `FilmLook` URP volume with a **Film effects** toggle in Settings.
+- 8.1b (done): Pixel Perfect Camera to 960×540 at 24 PPU (same 40 × 22.5 unit view); the `FilmLook` URP volume with a **Film effects** toggle in Settings.
 
 ### 2. Player style anchor and hats
 

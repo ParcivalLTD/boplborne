@@ -5,8 +5,8 @@ using UnityEngine;
 namespace GraceRun.Core.Settings
 {
     /// <summary>
-    /// The player's own settings on this PC: volumes, screen shake, display mode, resolution and
-    /// vsync. Saved in PlayerPrefs and applied at once. Local only, never networked; a server-only
+    /// The player's own settings on this PC: volumes, screen shake, film effects, display mode,
+    /// resolution and vsync. Saved in PlayerPrefs and applied at once. Local only, never networked; a server-only
     /// build leaves the screen alone. Until <see cref="EnsureLoaded"/> runs every value is neutral (1).
     /// </summary>
     public static class GameSettings
@@ -14,6 +14,7 @@ namespace GraceRun.Core.Settings
         private const string MasterKey = "settings.masterVolume";
         private const string SfxKey = "settings.sfxVolume";
         private const string ShakeKey = "settings.screenShake";
+        private const string FilmKey = "settings.filmEffects";
         private const string FullscreenKey = "settings.fullscreen";
         private const string VSyncKey = "settings.vsync";
         private const string WidthKey = "settings.width";
@@ -36,6 +37,7 @@ namespace GraceRun.Core.Settings
         public static float MasterVolume { get; private set; } = 1f;
         public static float SfxVolume { get; private set; } = 1f;
         public static float ShakeMultiplier { get; private set; } = 1f;
+        public static bool FilmEffects { get; private set; } = true;
         public static bool Fullscreen { get; private set; } = true;
         public static bool VSync { get; private set; } = true;
 
@@ -80,6 +82,7 @@ namespace GraceRun.Core.Settings
             MasterVolume = PlayerPrefs.GetFloat(MasterKey, defaults.MasterVolume);
             SfxVolume = PlayerPrefs.GetFloat(SfxKey, defaults.SfxVolume);
             ShakeMultiplier = PlayerPrefs.GetFloat(ShakeKey, defaults.ScreenShake);
+            FilmEffects = PlayerPrefs.GetInt(FilmKey, defaults.FilmEffects ? 1 : 0) == 1;
             Fullscreen = PlayerPrefs.GetInt(FullscreenKey, defaults.Fullscreen ? 1 : 0) == 1;
             VSync = PlayerPrefs.GetInt(VSyncKey, defaults.VSync ? 1 : 0) == 1;
             Resolution = new Vector2Int(PlayerPrefs.GetInt(WidthKey, 0), PlayerPrefs.GetInt(HeightKey, 0));
@@ -91,6 +94,7 @@ namespace GraceRun.Core.Settings
         public static void SetMasterVolume(float value) => Change(() => MasterVolume = Mathf.Clamp01(value));
         public static void SetSfxVolume(float value) => Change(() => SfxVolume = Mathf.Clamp01(value));
         public static void SetShake(float value) => Change(() => ShakeMultiplier = Mathf.Max(0f, value));
+        public static void SetFilmEffects(bool on) => Change(() => FilmEffects = on);
         public static void SetVSync(bool on) => Change(() => VSync = on);
         public static void SetFullscreen(bool on) => Change(() => Fullscreen = on, true);
         public static void SetResolution(Vector2Int size) => Change(() => Resolution = size, true);
@@ -124,6 +128,7 @@ namespace GraceRun.Core.Settings
                 MasterVolume = _defaults.MasterVolume;
                 SfxVolume = _defaults.SfxVolume;
                 ShakeMultiplier = _defaults.ScreenShake;
+                FilmEffects = _defaults.FilmEffects;
                 Fullscreen = _defaults.Fullscreen;
                 VSync = _defaults.VSync;
                 Resolution = Vector2Int.zero;
@@ -157,6 +162,7 @@ namespace GraceRun.Core.Settings
             PlayerPrefs.SetFloat(MasterKey, MasterVolume);
             PlayerPrefs.SetFloat(SfxKey, SfxVolume);
             PlayerPrefs.SetFloat(ShakeKey, ShakeMultiplier);
+            PlayerPrefs.SetInt(FilmKey, FilmEffects ? 1 : 0);
             PlayerPrefs.SetInt(FullscreenKey, Fullscreen ? 1 : 0);
             PlayerPrefs.SetInt(VSyncKey, VSync ? 1 : 0);
             PlayerPrefs.SetInt(WidthKey, Resolution.x);
@@ -194,6 +200,7 @@ namespace GraceRun.Core.Settings
             _defaults = null;
             ResolutionList.Clear();
             MasterVolume = SfxVolume = ShakeMultiplier = 1f;
+            FilmEffects = true;
             Nickname = string.Empty;
             Scheme = ControlScheme.KeyboardOnly;
             Custom = CustomControls.Default;
