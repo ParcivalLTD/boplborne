@@ -7,6 +7,7 @@ namespace GraceRun.Bosses
         Approaching,
         Attacking,
         Recovering,
+        Staggered,
         Dead
     }
 }

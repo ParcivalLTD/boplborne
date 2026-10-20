@@ -164,6 +164,8 @@ namespace GraceRun.Bosses
                 case BossState.Approaching:
                     Choose();
                     break;
+                case BossState.Staggered:
+                    return;
             }
         }
 
@@ -183,6 +185,24 @@ namespace GraceRun.Bosses
             _phase.Value = 2;
             _idleMultiplier = Mathf.Clamp(idleMultiplier, 0.2f, 1f);
             _motor.ServerSetSpeedMultiplier(speedMultiplier);
+        }
+
+        /// <summary>Server only: breaks posture, immobilizing the boss and opening a critical punish window.</summary>
+        public void ServerStaggerBreak(float duration)
+        {
+            if (!IsServer || State == BossState.Dead) return;
+            State = BossState.Staggered;
+            _motor.ServerStop();
+            _runner.ServerCancel();
+            _targets.AllowSwitch = false;
+        }
+
+        /// <summary>Server only: recovers from a posture break stagger back to idle.</summary>
+        public void ServerRecoverFromStagger()
+        {
+            if (!IsServer || State != BossState.Staggered) return;
+            _targets.AllowSwitch = true;
+            EnterIdle();
         }
 
         /// <summary>Server only: a ghost's poke holds an idle or walking boss in place a moment. Attacks run on.</summary>

@@ -12,6 +12,7 @@ namespace GraceRun.Core.Settings
     public static class GameSettings
     {
         private const string MasterKey = "settings.masterVolume";
+        private const string MusicKey = "settings.musicVolume";
         private const string SfxKey = "settings.sfxVolume";
         private const string ShakeKey = "settings.screenShake";
         private const string FullscreenKey = "settings.fullscreen";
@@ -34,6 +35,7 @@ namespace GraceRun.Core.Settings
         public static event Action Changed;
 
         public static float MasterVolume { get; private set; } = 1f;
+        public static float MusicVolume { get; private set; } = 1f;
         public static float SfxVolume { get; private set; } = 1f;
         public static float ShakeMultiplier { get; private set; } = 1f;
         public static bool Fullscreen { get; private set; } = true;
@@ -78,6 +80,7 @@ namespace GraceRun.Core.Settings
             if (IsLoaded || defaults == null) return;
             _defaults = defaults;
             MasterVolume = PlayerPrefs.GetFloat(MasterKey, defaults.MasterVolume);
+            MusicVolume = PlayerPrefs.GetFloat(MusicKey, defaults.MusicVolume);
             SfxVolume = PlayerPrefs.GetFloat(SfxKey, defaults.SfxVolume);
             ShakeMultiplier = PlayerPrefs.GetFloat(ShakeKey, defaults.ScreenShake);
             Fullscreen = PlayerPrefs.GetInt(FullscreenKey, defaults.Fullscreen ? 1 : 0) == 1;
@@ -89,6 +92,7 @@ namespace GraceRun.Core.Settings
         }
 
         public static void SetMasterVolume(float value) => Change(() => MasterVolume = Mathf.Clamp01(value));
+        public static void SetMusicVolume(float value) => Change(() => MusicVolume = Mathf.Clamp01(value));
         public static void SetSfxVolume(float value) => Change(() => SfxVolume = Mathf.Clamp01(value));
         public static void SetShake(float value) => Change(() => ShakeMultiplier = Mathf.Max(0f, value));
         public static void SetVSync(bool on) => Change(() => VSync = on);
@@ -122,6 +126,7 @@ namespace GraceRun.Core.Settings
             Change(() =>
             {
                 MasterVolume = _defaults.MasterVolume;
+                MusicVolume = _defaults.MusicVolume;
                 SfxVolume = _defaults.SfxVolume;
                 ShakeMultiplier = _defaults.ScreenShake;
                 Fullscreen = _defaults.Fullscreen;
@@ -155,6 +160,7 @@ namespace GraceRun.Core.Settings
         private static void Save()
         {
             PlayerPrefs.SetFloat(MasterKey, MasterVolume);
+            PlayerPrefs.SetFloat(MusicKey, MusicVolume);
             PlayerPrefs.SetFloat(SfxKey, SfxVolume);
             PlayerPrefs.SetFloat(ShakeKey, ShakeMultiplier);
             PlayerPrefs.SetInt(FullscreenKey, Fullscreen ? 1 : 0);
@@ -193,7 +199,7 @@ namespace GraceRun.Core.Settings
         {
             _defaults = null;
             ResolutionList.Clear();
-            MasterVolume = SfxVolume = ShakeMultiplier = 1f;
+            MasterVolume = MusicVolume = SfxVolume = ShakeMultiplier = 1f;
             Nickname = string.Empty;
             Scheme = ControlScheme.KeyboardOnly;
             Custom = CustomControls.Default;

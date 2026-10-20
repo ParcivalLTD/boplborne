@@ -11,6 +11,7 @@ namespace GraceRun.Core.Settings
     {
         [Header("Defaults")]
         [SerializeField, Range(0f, 1f)] private float _masterVolume = 0.8f;
+        [SerializeField, Range(0f, 1f)] private float _musicVolume = 0.8f;
         [SerializeField, Range(0f, 1f)] private float _sfxVolume = 1f;
         [SerializeField, Range(0f, 2f)] private float _screenShake = 1f;
         [SerializeField] private bool _fullscreen = true;
@@ -23,6 +24,7 @@ namespace GraceRun.Core.Settings
         private float _maxScreenShake = 2f;
 
         public float MasterVolume => _masterVolume;
+        public float MusicVolume => _musicVolume;
         public float SfxVolume => _sfxVolume;
         public float ScreenShake => _screenShake;
         public bool Fullscreen => _fullscreen;

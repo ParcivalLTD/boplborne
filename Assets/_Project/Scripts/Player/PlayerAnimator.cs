@@ -124,7 +124,7 @@ namespace GraceRun.Player
         {
             if (_currentState == state) return;
             _currentState = state;
-            if (_animator.runtimeAnimatorController != null)
+            if (_animator != null && _animator.runtimeAnimatorController != null)
                 _animator.Play(state, 0, 0f);
         }
 

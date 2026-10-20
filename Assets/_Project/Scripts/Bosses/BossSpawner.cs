@@ -62,6 +62,9 @@ namespace GraceRun.Bosses
             Behaviours.BroodCrawler.ServerDespawnAll();
             Behaviours.WebZone.ServerDespawnAll();
             Behaviours.BellShockwave.ServerDespawnAll();
+            Behaviours.BossProjectile.ServerDespawnAll();
+            Behaviours.SteamVent.ServerDespawnAll();
+            Behaviours.SplitLantern.ServerDespawnAll();
             var all = BossBrain.All;
             for (var i = all.Count - 1; i >= 0; i--)
             {

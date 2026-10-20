@@ -27,6 +27,8 @@ namespace GraceRun.UI.Menus
             MenuKit.Label(column, "SETTINGS", MenuStyle.HeadingSize, MenuStyle.Gold);
             rows.Add(MenuKit.Option(column, "Master volume", () => SettingsRules.Percent(GameSettings.MasterVolume),
                 d => GameSettings.SetMasterVolume(SettingsRules.Step(GameSettings.MasterVolume, d, step, 0f, 1f))));
+            rows.Add(MenuKit.Option(column, "Music volume", () => SettingsRules.Percent(GameSettings.MusicVolume),
+                d => GameSettings.SetMusicVolume(SettingsRules.Step(GameSettings.MusicVolume, d, step, 0f, 1f))));
             rows.Add(MenuKit.Option(column, "Sound effects", () => SettingsRules.Percent(GameSettings.SfxVolume),
                 d => GameSettings.SetSfxVolume(SettingsRules.Step(GameSettings.SfxVolume, d, step, 0f, 1f))));
             rows.Add(MenuKit.Option(column, "Screen shake", () => SettingsRules.Percent(GameSettings.ShakeMultiplier),

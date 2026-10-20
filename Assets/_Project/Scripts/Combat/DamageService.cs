@@ -27,10 +27,20 @@ namespace GraceRun.Combat
             if (amount > 0 && StatusEffects.TryFind(info.AttackerId, out var attackerStatus))
                 amount = DamageMath.Scaled(amount, attackerStatus.OutgoingDamageMultiplier);
 
+            var isStaggered = target.TryGetComponent(out Bosses.BossPosture posture) && posture.IsStaggered;
+            if (isStaggered)
+                amount = Bosses.BossPostureRules.StaggerDamage(amount, true, posture.StaggerDamageMultiplier);
+
             var hp = DamageMath.Resolve(target.Current, amount, friendly,
                 combat.FriendlyFireDamageMultiplier, combat.FriendlyFireMinHP, target.GodMode);
             var dealt = target.Current - hp;
             target.ServerSetCurrent(hp);
+
+            if (!friendly && dealt > 0 && posture != null)
+            {
+                var isHeavy = info.Knockback.sqrMagnitude >= 49f || info.Amount >= 14;
+                posture.ServerInflictDamage(dealt, isHeavy);
+            }
 
             if (info.Knockback != Vector2.zero && target.TryGetComponent(out Knockback knockback))
                 knockback.PushRpc(info.Knockback);
