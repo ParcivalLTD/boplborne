@@ -53,3 +53,6 @@ CLAUDE.local.md
 .DS_Store
 Thumbs.db
 desktop.ini
+
+# Local scratch
+/scratch/

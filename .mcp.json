@@ -1,7 +1,7 @@
 {
   "mcpServers": {
     "unity": {
-      "command": "unity",
+      "command": "${LOCALAPPDATA}/Unity/bin/unity.exe",
       "args": ["mcp"]
     }
   }

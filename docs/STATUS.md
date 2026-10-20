@@ -25,7 +25,7 @@ The agent updates this file at the end of every step. Humans may edit it too.
 
 ## Known issues
 
-- The `unity` MCP server in `.mcp.json` runs plain `unity`, but the CLI lives in `%LOCALAPPDATA%\Unity\bin` and is no longer on the user PATH; the server fails with "Connection closed" until that folder is on PATH (the CLI by full path works: `unity command ...`).
+- The `unity` MCP server in `.mcp.json` now runs `${LOCALAPPDATA}/Unity/bin/unity.exe` (the CLI is not on PATH). Restart the Claude session to pick it up; if it still fails, check `unity status`.
 - `Grace Run → Build Extra Abilities` overwrites the tuning on the 20 assets it owns. Tune the assets directly from now on.
 - The 20 new abilities and the new movement (wall jump, ledge drop, fast fall, apex hang) have only been fired / checked on a host by script, never felt by a person or tried as a client.
 
