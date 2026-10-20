@@ -53,7 +53,7 @@ namespace GraceRun.Bosses.Behaviours
 
             if (abilityToCast == null || abilityToCast.EffectPrefab == null) return;
 
-            var targetPos = ResolveTargetPosition(runner);
+            var targetPos = runner.Target != null ? (Vector2)runner.Target.transform.position : (Vector2)runner.transform.position + new Vector2(runner.Facing * 6f, 0f);
             var origin = (Vector2)runner.transform.position + new Vector2(runner.Facing * 1.5f, 0.5f);
             var aim = (targetPos - origin).normalized;
             if (aim == Vector2.zero) aim = new Vector2(runner.Facing, 0f);
@@ -68,19 +68,6 @@ namespace GraceRun.Bosses.Behaviours
             {
                 netObj.Spawn(true);
             }
-        }
-
-        private static Vector2 ResolveTargetPosition(BossAttackRunner runner)
-        {
-            var targetId = runner.TargetId;
-            var players = PlayerIdentity.All;
-            for (var i = 0; i < players.Count; i++)
-            {
-                var p = players[i];
-                if (p != null && p.IsSpawned && p.NetworkObjectId == targetId)
-                    return p.transform.position;
-            }
-            return (Vector2)runner.transform.position + new Vector2(runner.Facing * 6f, 0f);
         }
     }
 }

@@ -36,12 +36,6 @@ namespace GraceRun.Core.Audio
             voice.Play();
         }
 
-        /// <summary>Plays an <see cref="AudioCue"/> in 2D space (helper alias for cue.Play()).</summary>
-        public static void Play2D(AudioCue cue)
-        {
-            if (cue != null) cue.Play();
-        }
-
         private static void CreateVoices()
         {
             var holder = new GameObject("AudioCuePlayer") { hideFlags = HideFlags.HideInHierarchy };
