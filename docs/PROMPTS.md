@@ -285,15 +285,23 @@ Add MetaProgress (saved locally per player as JSON): unlocks for new abilities, 
 
 ## M8 — Art and audio pass
 
-Follow `docs/ART_PIPELINE.md` to make the art first. Then:
+Follow `docs/ART_PIPELINE.md`. Art comes from the PixelLab MCP; the user picks candidates and does the hand pass. One step per chat, art-only commits.
 
-### 8.1 Import pipeline
+### 8.1 Sprite shader
 ```
-Set up importing per docs/ART_PIPELINE.md: Aseprite importer settings (16 PPU, point filter, no compression, bottom-center pivot), animation clips from tags, and an Animator for the player with states idle, run, jump, fall, dodge, attack1-3, hurt, ghost driven by PlayerMovement/Combat state. Use Assets/_Project/Art/Characters/player.aseprite.
+Add a sprite shader + material per docs/ART_PIPELINE.md "Player colours": swap the three P1 blue ramp colours for the player's ramp from the palette, and a hit flash through a material property block that replaces SpriteFlash's colour tint. Flash-only variant for bosses, the dummy and summons. Write the art cleanup script in tools/art/ too.
 ```
+**Done when:** placeholder shapes flash on hit for host and client, and P1–P4 keep their colours.
 
-### 8.2 Swap placeholders
-One chat per item: players, then each boss (`Rig the <boss> sprite parts with 2D Animation bones and drive its attacks' wind-up/active/recovery poses`), then arenas, ability effects, UI.
+### 8.2 Player anchor, hats and animations
+```
+Using the PixelLab MCP, make the player style anchor and the four hats (ART_PIPELINE steps 2), then the player animations and an Animator driven by movement, dodge, attack, hurt and ghost state (step 3).
+```
+Split into two chats if it grows: anchor + hats, then animations.
+**Done when:** all four players animate in their own colour and hat, facing both ways, in play mode.
+
+### 8.2b Bosses, arenas, icons
+One chat per item: each existing boss's held key poses (`ART_PIPELINE` step 4: The Gatekeeper, The Brood Mother, The Bell Twins), then arena tilesets, then ability icons and UI.
 
 ### 8.3 Audio
 ```
