@@ -23,9 +23,9 @@ MonoBehaviour:
   - {r: 0.23529412, g: 0.79607844, b: 0.49803922, a: 1}
   - {r: 1, g: 0.37254903, b: 0.65882355, a: 1}
   _hatSprites:
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
+  - {fileID: 21300000, guid: c72c9da1bf3ce0743af29599f121db6e, type: 3}
+  - {fileID: 21300000, guid: 46d5e9a9462376a4b9bf1a1fa2b0f34f, type: 3}
+  - {fileID: 21300000, guid: 834aa2cbeab9f3449a8fde834080b5f4, type: 3}
+  - {fileID: 21300000, guid: a79f777114ef6c6419dd735dcb39e8a6, type: 3}
   _settings: {fileID: 11400000, guid: 405c7ca8912f91643813a8597a250f42, type: 2}
   _server: {fileID: 11400000, guid: 7acc284a6ae48ac479efd47a76fd524c, type: 2}

@@ -35,7 +35,6 @@ namespace GraceRun.Editor.Content
             Edit(DummyPath, AddStatus);
             foreach (var guid in AssetDatabase.FindAssets("t:Prefab", new[] { BossFolder }))
                 Edit(AssetDatabase.GUIDToAssetPath(guid), AddStatus);
-            PlayerAnimationSetup.Apply();
         }
 
         private static void AddPlatformDrop(GameObject root)

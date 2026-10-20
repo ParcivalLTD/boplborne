@@ -17,7 +17,7 @@ namespace GraceRun.Player
         {
             var color = config.GetPlayerColor(playerIndex);
             _body.color = color;
-            _hat.color = Color.white;
+            _hat.color = color;
 
             var hat = config.GetHatSprite(playerIndex);
             _hat.sprite = hat;
