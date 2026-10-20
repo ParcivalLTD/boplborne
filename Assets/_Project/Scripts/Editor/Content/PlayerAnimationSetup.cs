@@ -161,10 +161,10 @@ namespace GraceRun.Editor.Content
 
             var hatPaths = new[]
             {
-                "Assets/_Project/Art/Characters/Placeholder/hat_plume.png",
-                "Assets/_Project/Art/Characters/Placeholder/hat_horns.png",
-                "Assets/_Project/Art/Characters/Placeholder/hat_crown.png",
-                "Assets/_Project/Art/Characters/Placeholder/hat_wizard.png"
+                "Assets/_Project/Art/Characters/hat_plume.png",
+                "Assets/_Project/Art/Characters/hat_horns.png",
+                "Assets/_Project/Art/Characters/hat_crown.png",
+                "Assets/_Project/Art/Characters/hat_wizard.png"
             };
 
             var so = new SerializedObject(config);

@@ -425,13 +425,6 @@ namespace GraceRun.Run
 
         private void OnBuffValueChanged(PartyBuff previous, PartyBuff current) => ActiveBuffChanged?.Invoke(current);
 
-        private void OnRunResultValueChanged(RunResultData previous, RunResultData current)
-        {
-            if (current.IsValid)
-            {
-                MetaProgress.RecordRun(current);
-            }
-            RunResultChanged?.Invoke(current);
-        }
+        private void OnRunResultValueChanged(RunResultData previous, RunResultData current) => RunResultChanged?.Invoke(current);
     }
 }

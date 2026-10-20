@@ -15,9 +15,6 @@ namespace GraceRun.UI
         [SerializeField, Tooltip("Pivot on the left; scaled on x by the HP fraction.")]
         private RectTransform _fill;
         [SerializeField] private RectTransform _phaseTick;
-        [SerializeField, Tooltip("Optional posture fill bar (pivot on left, orange-gold when building up/staggered).")]
-        private RectTransform _postureFill;
-        [SerializeField] private Image _postureImage;
 
         private BossBrain _boss;
 
@@ -33,16 +30,6 @@ namespace GraceRun.UI
         {
             if (_boss == null || !_boss.Health.IsSpawned) return;
             _fill.localScale = new Vector3(BossBrain.EncounterNormalizedHP, 1f, 1f);
-
-            if (_postureFill != null && _boss.TryGetComponent(out BossPosture posture))
-            {
-                var norm = posture.Normalized;
-                _postureFill.localScale = new Vector3(norm, 1f, 1f);
-                if (_postureImage != null)
-                {
-                    _postureImage.color = posture.IsStaggered ? new Color(1f, 0.85f, 0.2f, 1f) : new Color(0.85f, 0.45f, 0.15f, 0.9f);
-                }
-            }
         }
 
         private void Bind(BossBrain boss)

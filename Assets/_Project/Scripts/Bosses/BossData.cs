@@ -22,20 +22,6 @@ namespace GraceRun.Bosses
         private float _hpScalePerExtraPlayer = 0.6f;
         [SerializeField, Range(0f, 1f)] private float _phase2Threshold = 0.5f;
 
-        [Header("Posture & Stagger (Elden Ring)")]
-        [SerializeField, Min(1f), Tooltip("Max posture before the boss staggers into a vulnerable critical state.")]
-        private float _maxPosture = 100f;
-        [SerializeField, Min(0f), Tooltip("Seconds without taking damage before posture begins recovering.")]
-        private float _postureRecoveryDelay = 4f;
-        [SerializeField, Min(0f), Tooltip("Posture points recovered per second after the recovery delay.")]
-        private float _postureRecoveryRate = 20f;
-        [SerializeField, Min(0.1f), Tooltip("Seconds the boss is stunned and takes critical damage during a posture break.")]
-        private float _staggerDuration = 3.5f;
-        [SerializeField, Min(1f), Tooltip("Damage multiplier applied to hits landed while the boss is staggered.")]
-        private float _staggerDamageMultiplier = 1.5f;
-        [SerializeField, Tooltip("Telegraph cue played when the boss posture breaks.")]
-        private GraceRun.Core.Audio.AudioCue _staggerCue;
-
         [Header("Attacks")]
         [SerializeField] private AttackData[] _phase1Attacks;
         [SerializeField, Tooltip("Empty = phase 2 keeps using the phase 1 attacks.")]
@@ -67,12 +53,6 @@ namespace GraceRun.Bosses
         public int MaxHP => _baseHP;
         public float HpScalePerExtraPlayer => _hpScalePerExtraPlayer;
         public float Phase2Threshold => _phase2Threshold;
-        public float MaxPosture => _maxPosture;
-        public float PostureRecoveryDelay => _postureRecoveryDelay;
-        public float PostureRecoveryRate => _postureRecoveryRate;
-        public float StaggerDuration => _staggerDuration;
-        public float StaggerDamageMultiplier => _staggerDamageMultiplier;
-        public GraceRun.Core.Audio.AudioCue StaggerCue => _staggerCue;
         public float IdleTime => _idleTime;
         public float TargetSwitchInterval => _targetSwitchInterval;
         public float WalkSpeed => _walkSpeed;

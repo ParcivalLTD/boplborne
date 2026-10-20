@@ -23,7 +23,6 @@ namespace GraceRun.Bosses
         private AttackData _anchoredFor;
         private Vector3 _anchor;
         private float _groundY;
-        private bool _staggerOverride;
 
         private void Awake()
         {
@@ -34,16 +33,6 @@ namespace GraceRun.Bosses
 
         private void LateUpdate()
         {
-            if (_staggerOverride)
-            {
-                var pulse = 1f + (_look.WeakPointPulseScale * Mathf.Sin(Time.time * _look.WeakPointPulseRate * 2f * Mathf.PI));
-                _weakPoint.transform.localScale = _weakPointScale * 1.5f * pulse;
-                _weakPoint.enabled = true;
-                _zone.enabled = false;
-                ShowGlow(-1, 0f);
-                return;
-            }
-
             var attack = _runner.Attack;
             if (attack == null)
             {
@@ -133,24 +122,6 @@ namespace GraceRun.Bosses
             point.localScale = _weakPointScale * pulse;
             _weakPoint.color = _look.WeakPointGold;
             _weakPoint.enabled = true;
-        }
-
-        /// <summary>Displays or hides the pulsing critical weak point when boss posture is broken.</summary>
-        public void SetStaggerWeakPoint(bool show)
-        {
-            _staggerOverride = show;
-            if (show)
-            {
-                var point = _weakPoint.transform;
-                point.localPosition = new Vector3(0f, 1.5f, 0f);
-                point.localScale = _weakPointScale * 1.5f;
-                _weakPoint.color = _look.WeakPointGold;
-                _weakPoint.enabled = true;
-            }
-            else
-            {
-                HideWeakPoint();
-            }
         }
 
         private void HideWeakPoint() => _weakPoint.enabled = false;

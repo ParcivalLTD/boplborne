@@ -55,25 +55,6 @@ namespace GraceRun.UI
 
         private bool _shownOpen;
         private Font _font;
-        private string _unlocksBannerText = string.Empty;
-
-        private void OnEnable()
-        {
-            MetaProgress.UnlocksEarned += OnUnlocksEarned;
-        }
-
-        private void OnDisable()
-        {
-            MetaProgress.UnlocksEarned -= OnUnlocksEarned;
-        }
-
-        private void OnUnlocksEarned(MetaProgressData data, System.Collections.Generic.IReadOnlyList<string> unlocks)
-        {
-            if (unlocks != null && unlocks.Count > 0)
-            {
-                _unlocksBannerText = "★ NEW UNLOCKS: " + string.Join(", ", unlocks) + " ★";
-            }
-        }
 
         private void Awake()
         {
@@ -138,10 +119,7 @@ namespace GraceRun.UI
 
             if (_subtitleText != null)
             {
-                var floorSummary = RunResultRules.FormatFloors(result.IsVictory, result.FloorReached, result.TotalFloors);
-                _subtitleText.text = !string.IsNullOrEmpty(_unlocksBannerText)
-                    ? $"{floorSummary}\n<color=#{ColorUtility.ToHtmlStringRGB(GoldColor)}>{_unlocksBannerText}</color>"
-                    : floorSummary;
+                _subtitleText.text = RunResultRules.FormatFloors(result.IsVictory, result.FloorReached, result.TotalFloors);
             }
 
             // Overview Summary
@@ -216,7 +194,6 @@ namespace GraceRun.UI
 
         private void OnReturnToHub()
         {
-            _unlocksBannerText = string.Empty;
             var loop = FightLoop.Instance;
             if (loop != null && loop.IsLocalLeader) loop.StartFightRpc();
         }
@@ -244,7 +221,7 @@ namespace GraceRun.UI
             SetRect(_titleText.rectTransform, new Vector2(0.5f, 0.93f), new Vector2(0.5f, 0.93f), new Vector2(0.5f, 0.5f), new Vector2(800, 60), Vector2.zero);
 
             _subtitleText = CreateText("Subtitle", _root.transform, "All Floors Cleared!", 22, FontStyle.Normal, TextAnchor.MiddleCenter, BoneColor);
-            SetRect(_subtitleText.rectTransform, new Vector2(0.5f, 0.87f), new Vector2(0.5f, 0.87f), new Vector2(0.5f, 0.5f), new Vector2(800, 50), Vector2.zero);
+            SetRect(_subtitleText.rectTransform, new Vector2(0.5f, 0.87f), new Vector2(0.5f, 0.87f), new Vector2(0.5f, 0.5f), new Vector2(800, 36), Vector2.zero);
 
             // 3 Summary Chips (Time, Floors, Damage)
             var chipY = 0.80f;

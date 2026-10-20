@@ -35,11 +35,6 @@ namespace GraceRun.Editor.Content
             ("TestBossArena", 28f, 0f),
             ("BroodMotherArena", 32f, 0f),
             ("BellTwinsArena", 40f, 0f),
-            ("StormWyrmArena", 36f, 8f),
-            ("MirrorDuelistArena", 34f, 0f),
-            ("ClockworkColossusArena", 38f, 6f),
-            ("LanternWitchArena", 36f, 4f),
-            ("CrownedHollowArena", 40f, 8f),
             ("FinalTestBossArena", 36f, 10f),
         };
 
@@ -54,14 +49,6 @@ namespace GraceRun.Editor.Content
         private static void Apply(string name, float half, float extra)
         {
             var path = Folder + name + ".prefab";
-            if (!System.IO.File.Exists(path))
-            {
-                var template = Folder + "GatekeeperArena.prefab";
-                if (System.IO.File.Exists(template))
-                {
-                    AssetDatabase.CopyAsset(template, path);
-                }
-            }
             var root = PrefabUtility.LoadPrefabContents(path);
             try
             {
