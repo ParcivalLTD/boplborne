@@ -20,6 +20,11 @@ namespace GraceRun.Core
         private float _splashSeconds = 3f;
         [SerializeField, Min(0f), Tooltip("Fade time of the splash: black lifting at the start, the splash fading at the end.")]
         private float _splashFadeSeconds = 0.5f;
+        [SerializeField, Min(0f), Tooltip("The loading window stays up at least this long, so a quick connect does not flash it.")]
+        private float _loadingMinSeconds = 0.8f;
+        [SerializeField, Min(0f)] private float _loadingFadeSeconds = 0.25f;
+        [SerializeField, Min(1f), Tooltip("How long each tip on the loading window stays before the next one.")]
+        private float _loadingTipSeconds = 4f;
         [SerializeField] private Color[] _playerColors;
         [SerializeField, Tooltip("Body shades per player; the sprite shader swaps P1's ramp for these.")]
         private PlayerRamp[] _playerRamps;
@@ -34,6 +39,9 @@ namespace GraceRun.Core
         public string GameVersion => _gameVersion;
         public string DefaultAddress => _defaultAddress;
 
+        public float LoadingMinSeconds => _loadingMinSeconds;
+        public float LoadingFadeSeconds => _loadingFadeSeconds;
+        public float LoadingTipSeconds => _loadingTipSeconds;
         public float SplashSeconds => _splashSeconds;
         public float SplashFadeSeconds => _splashFadeSeconds;
 

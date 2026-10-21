@@ -1,8 +1,10 @@
-# Boplborne (working title)
+# Boplborne
 
-A 2D online co-op boss-rush roguelite for 1–4 friends. Climb a tower of souls-style bosses, draft abilities between fights, and combine them in ways that break the game.
+![Boplborne](docs/art/brand/banner_1280x640.png)
 
-Built in **Unity 6** with an AI agent (**Claude Code** or **Antigravity**) connected to the Unity Editor through **Unity's MCP server**. Friends play together over **Hamachi**: one person hosts, everyone else joins their IP.
+**Climb the tower. Bop the bosses.** A 2D online co-op boss-rush roguelite for 1–4 friends, drawn like a 1930s cartoon. Draft abilities between fights and combine them in ways that break the game.
+
+Built in **Unity 6** with an AI agent (**Claude Code** or **Antigravity**) connected to the Unity Editor through **Unity's MCP server**. Friends play together over **Unity Relay**: one person hosts and shares a room code (or lists the room publicly), everyone else joins with it. No VPN, no port forwarding. Name, logo, colours and store text: `docs/BRAND.md`.
 
 ---
 
@@ -26,6 +28,7 @@ Built in **Unity 6** with an AI agent (**Claude Code** or **Antigravity**) conne
 | `docs/SERVER.md` | Running a dedicated server around the clock: restart script, port forwarding, starting at boot. |
 | `docs/ART_PIPELINE.md` | How to generate, clean up and import sprites and animations. |
 | `docs/art/grace-run.gpl` | The colour palette, loadable in Aseprite. The art style is in `docs/ART_PIPELINE.md`. |
+| `docs/BRAND.md` | Name, logo (the Bopped Bell), icon files, colours, store text and release notes template. |
 | `docs/DECISIONS.md` | Decisions already made, so nobody (human or AI) re-argues them. |
 | `docs/PLAYTEST.md` | Playtest checklist and feedback template. |
 
@@ -55,7 +58,7 @@ Follow `docs/SETUP.md` from top to bottom. It takes about an hour.
 
 ## Play together
 
-The host clicks **Host** in the main menu (or runs the server build). Friends join the host's Hamachi network, then click **Join** and enter the host's Hamachi IPv4. Full guide and troubleshooting: `docs/NETWORKING.md`.
+The host clicks **Host game** in the main menu, picks **Private** or **Public** and opens the room (or runs the server build). The room code shows in the hub under the start button. Friends click **Join code** and type it, or open **Rooms** to pick a public room. Hamachi or a direct IP still works as a fallback. Full guide and troubleshooting: `docs/NETWORKING.md`.
 
 ## Rules of thumb
 
@@ -67,6 +70,6 @@ The host clicks **Host** in the main menu (or runs the server build). Friends jo
 
 ## Credits
 
-- Pixel art (characters, bosses, weapons, arenas, icons) is made with PixelLab (pixellab.ai), used under PixelLab's terms for subscriber output (https://pixellab.ai/termsofservice), then palette-cleaned and edited for this game.
+- Pixel art (characters, bosses, weapons, arenas, icons, the app icon) is made with PixelLab (pixellab.ai), used under PixelLab's terms for subscriber output (https://pixellab.ai/termsofservice), then palette-cleaned and edited for this game.
 - Fonts "Grace Display" and "Grace Body": generated with PixelLab `create_font`, then extended with a few hand-drawn glyphs. UI sprites in `Assets/_Project/Art/UI/Cinema` are hand-pixelled for this game.
 - All sound effects and music loops are synthesised by the scripts in `tools/audio/` (no third-party audio).

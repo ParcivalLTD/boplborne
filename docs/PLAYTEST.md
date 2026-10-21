@@ -3,8 +3,8 @@
 ## Before the session (host)
 
 - [ ] Everyone has the **same build** (check the version on the main menu).
-- [ ] Everyone is online in the Hamachi network (green dots).
-- [ ] Host starts the game and clicks Host; share the Hamachi IPv4.
+- [ ] Everyone has the same version. Nobody needs a VPN: the host opens a room and shares the code.
+- [ ] Host clicks Host game (Private or Public) and shares the room code from the hub; friends use Join code, or Rooms for a public one.
 - [ ] Someone records the screen (OBS) or at least takes notes. Funny moments matter as much as bugs.
 
 ## During

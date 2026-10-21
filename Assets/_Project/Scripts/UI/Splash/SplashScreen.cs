@@ -134,6 +134,11 @@ namespace GraceRun.UI.Splash
             ribbon.gameObject.AddComponent<ToonPopIn>().Configure(0.7f, 0.5f);
 
             ToonMascot.Create(root, new Vector2(0f, 60f), 6f);
+
+            var logo = BrandKit.AddLogo(root, new Vector2(0f, 400f), 220f);
+            if (logo == null) return;
+            logo.gameObject.AddComponent<ToonFloat>().Configure(8f, 1.5f, 1.3f);
+            logo.gameObject.AddComponent<ToonPopIn>().Configure(0f, 0.5f);
         }
 
         private static void BuildPlainLogo(Transform root)

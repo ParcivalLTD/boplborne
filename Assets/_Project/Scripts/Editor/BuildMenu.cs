@@ -67,6 +67,8 @@ namespace GraceRun.Editor
         public static BuildReport BuildWindows()
         {
             var version = ReadGameVersion();
+            // The exe's file properties (Details tab) show this version.
+            PlayerSettings.bundleVersion = version;
             var folderName = $"Boplborne_v{version}";
             var outputDir = Path.Combine(BuildFolderRoot, folderName);
             Directory.CreateDirectory(outputDir);

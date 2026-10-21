@@ -51,6 +51,9 @@ namespace GraceRun.Net
         /// <summary>Status line for the menu (connecting, refused, timed out).</summary>
         public event Action<string> StatusChanged;
 
+        /// <summary>Same messages as <see cref="StatusChanged"/> but static, for screens that outlive scene loads (the loading window).</summary>
+        public static event Action<string> StatusAnnounced;
+
         private void Awake()
         {
             if (Instance != null && Instance != this)
@@ -76,6 +79,7 @@ namespace GraceRun.Net
                 return;
             }
 
+            GraceRun.UI.Splash.LoadingScreen.Create(this, _config);
             SceneManager.LoadScene(Scenes.MainMenu);
             if (args.HasConnectAddress) Join(args.ConnectAddress);
             else GraceRun.UI.Splash.SplashScreen.PlayOnce(_config);
@@ -321,6 +325,10 @@ namespace GraceRun.Net
             _timeout = null;
         }
 
-        private void SetStatus(string message) => StatusChanged?.Invoke(message ?? RefusedMessage);
+        private void SetStatus(string message)
+        {
+            StatusChanged?.Invoke(message ?? RefusedMessage);
+            StatusAnnounced?.Invoke(message ?? RefusedMessage);
+        }
     }
 }
