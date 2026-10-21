@@ -59,8 +59,8 @@ Transform:
   m_GameObject: {fileID: 1216705844767872562}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1.5, y: 2.5, z: 1}
+  m_LocalPosition: {x: 0, y: -1.375, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 4586577459693935661}
@@ -114,8 +114,8 @@ SpriteRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_MaskInteraction: 0
-  m_Sprite: {fileID: 21300000, guid: 1295cd58abca1a248bc18d5b5b71a8ae, type: 3}
-  m_Color: {r: 0.54901963, g: 0.5176471, b: 0.627451, a: 1}
+  m_Sprite: {fileID: 21300000, guid: bcb6c8daa3f95884a84f5fa4d52ebf31, type: 3}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -141,7 +141,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &8883622509725260482
 Transform:
   m_ObjectHideFlags: 0
@@ -455,6 +455,7 @@ GameObject:
   - component: {fileID: 1583267947289685945}
   - component: {fileID: 8050882961274295411}
   - component: {fileID: 2893526863342725014}
+  - component: {fileID: 7337170793809353869}
   m_Layer: 11
   m_Name: TrainingDummy
   m_TagString: Untagged
@@ -760,6 +761,35 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: GraceRun.Runtime::GraceRun.Combat.StatusEffects
   ShowTopMostFoldoutHeaderGroup: 1
+--- !u!114 &7337170793809353869
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5053195406287751259}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9cef5c98467ebf64fa5b0e01d7cb7bda, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: GraceRun.Runtime::GraceRun.Combat.TrainingDummyView
+  _data: {fileID: 11400000, guid: d5ce4d27ab48ea24d9ebe54eb076b7db, type: 2}
+  _health: {fileID: 2076174738241347071}
+  _body: {fileID: 8832951378157866332}
+  _idle:
+  - {fileID: 21300000, guid: bcb6c8daa3f95884a84f5fa4d52ebf31, type: 3}
+  - {fileID: 21300000, guid: 2aa8149131129fe46862631e95b9a569, type: 3}
+  - {fileID: 21300000, guid: d41d07e532b16704da0be170d7eed9bf, type: 3}
+  - {fileID: 21300000, guid: ad5c814dbd14ed4478f88afc52aeb796, type: 3}
+  - {fileID: 21300000, guid: 1e5cd091dfefbf8489c43218896bc01d, type: 3}
+  - {fileID: 21300000, guid: dad6c1771c366f44db51d431578a47c9, type: 3}
+  - {fileID: 21300000, guid: 7d88da39615c1be4ea22977896cf0d75, type: 3}
+  - {fileID: 21300000, guid: b5ade5315309cc545b6f9acc898d3d1a, type: 3}
+  _hit:
+  - {fileID: 21300000, guid: 216e41e76cf60c543bccba3e3d37dd43, type: 3}
+  - {fileID: 21300000, guid: 9f53861d96b535143836198a1c5fed81, type: 3}
+  - {fileID: 21300000, guid: 0659ce507604fba468bcfbba7f888455, type: 3}
+  - {fileID: 21300000, guid: 7959f5a00246a224587f92a95481079e, type: 3}
 --- !u!1 &7453521252568706224
 GameObject:
   m_ObjectHideFlags: 0

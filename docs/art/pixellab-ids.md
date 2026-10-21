@@ -179,3 +179,7 @@ Not PixelLab: `tower.png` (160x480), `window_lit.png`, `window_dark.png` (24x24)
 ## App icon (2026-10-21)
 
 - Boplborne icon, concept 1 "Bopped Bell": `create_image_pro` 64×64, job `475d7a53-2389-4496-96f4-8016523fb4ab`, 16 candidates, **candidate 2** picked by the agent (clear dent, star burst, bold plume). Candidate 15 is the runner-up. Palette: game palette plus plum `#7A3B5C` / `#5A2744`. Files: `Art/Icon/boplborne_icon_64.png` (source), `boplborne_icon.png` (4× nearest, 256 px, the Player Settings default icon).
+
+## Training dummy (hub)
+
+`create_image_pro` 48x64, job `bcc1e3d5-876f-43ae-a3f4-196821138539`, 16 candidates, **candidate 5** picked (stitched burlap dummy). Idle sway: `animate_image_pixminimax` job `4edb21f2-9db8-4d8f-aa2c-988737652619` (8 frames). Hit reaction: job `66cf7965-7358-4cce-b491-f5c19b518268`, frames 4-7 used (frames 1-3 have stray puff outlines). Files: `Art/Props/Dummy/idle_00-07.png`, `hit_00-03.png`; wired by Grace Run → Build Training Dummy Art.

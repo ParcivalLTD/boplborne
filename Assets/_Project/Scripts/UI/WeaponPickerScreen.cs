@@ -99,7 +99,7 @@ namespace GraceRun.UI
         }
 
         private const float RackSlot = 112f;
-        private const float RackGap = 18f;
+        private const float RackGap = 38f; // room for the 1.1x hover swell, the tilt and the labels between neighbours
 
         /// <summary>The armory rack: a row of round weapon medals in the top-right corner, labelled underneath.</summary>
         private void BuildRack(PlayerWeapon weapon)
@@ -110,7 +110,7 @@ namespace GraceRun.UI
             var rect = (RectTransform)_root.transform;
             rect.anchorMin = rect.anchorMax = rect.pivot = new Vector2(1f, 1f);
             rect.sizeDelta = new Vector2(weapons.Count * (RackSlot + RackGap) - RackGap, RackSlot + 50f);
-            rect.anchoredPosition = new Vector2(-30f, -20f);
+            rect.anchoredPosition = new Vector2(-36f, -20f);
 
             _buttons = new Button[weapons.Count];
             _frames = new Image[weapons.Count];
@@ -144,7 +144,7 @@ namespace GraceRun.UI
             icon.raycastTarget = false;
             var ir = (RectTransform)iconGo.transform;
             ir.anchorMin = ir.anchorMax = new Vector2(0.5f, 0.56f);
-            ir.sizeDelta = new Vector2(74f, 74f);
+            ir.sizeDelta = new Vector2(66f, 66f); // the 38-degree tilt of a long weapon must stay inside the medal
             ir.localRotation = Quaternion.Euler(0f, 0f, data.Sprite != null ? 38f : 0f);
 
             var label = UiKit.NewText(go.transform, "Label", data.DisplayName.ToUpperInvariant(), UiKit.DisplaySmall, UiPalette.Cream, TextAnchor.MiddleCenter, true);

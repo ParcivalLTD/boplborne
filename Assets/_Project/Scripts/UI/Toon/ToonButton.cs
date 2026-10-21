@@ -22,6 +22,10 @@ namespace GraceRun.UI.Toon
         private float _idleSway = 0.8f;
         [SerializeField] private float _restTilt;
 
+        // Once the mouse has touched any button, a leftover keyboard / gamepad selection (the draft opens with
+        // card 1 selected) stops lifting its button, so only the hovered one reacts. Arrow keys / stick bring it back.
+        private static bool s_pointerDriven;
+
         private Spring _scaleX = new(1f);
         private Spring _scaleY = new(1f);
         private Spring _tilt;
@@ -69,7 +73,7 @@ namespace GraceRun.UI.Toon
         private void Update()
         {
             var interactable = _selectable == null || _selectable.IsInteractable();
-            var lifted = interactable && (_over || _selected);
+            var lifted = interactable && (_over || (_selected && !s_pointerDriven));
             var targetX = lifted ? _hoverScale : 1f;
             var targetY = targetX;
             if (_pressed && interactable)
@@ -95,11 +99,22 @@ namespace GraceRun.UI.Toon
             transform.localRotation = Quaternion.Euler(0f, 0f, _tilt.Value);
         }
 
-        public void OnPointerEnter(PointerEventData eventData) => _over = true;
+        public void OnPointerEnter(PointerEventData eventData)
+        {
+            _over = true;
+            s_pointerDriven = true;
+        }
+
         public void OnPointerExit(PointerEventData eventData) { _over = false; _pressed = false; }
         public void OnPointerDown(PointerEventData eventData) => _pressed = true;
         public void OnPointerUp(PointerEventData eventData) => _pressed = false;
-        public void OnSelect(BaseEventData eventData) => _selected = true;
+
+        public void OnSelect(BaseEventData eventData)
+        {
+            _selected = true;
+            if (eventData is AxisEventData) s_pointerDriven = false;
+        }
+
         public void OnDeselect(BaseEventData eventData) => _selected = false;
     }
 }
