@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: DodgeCue
   m_EditorClassIdentifier: GraceRun.Runtime::GraceRun.Core.Audio.AudioCue
   _clips:
-  - {fileID: 8300000, guid: 662f799d3397f594a8ef02807e39a2aa, type: 3}
-  _volume: 0.45
-  _pitchRange: {x: 0.95, y: 1.1}
+  - {fileID: 8300000, guid: c9765833afa5beb4f86317a1a98e4e24, type: 3}
+  _volume: 0.6
+  _pitchRange: {x: 0.96, y: 1.04}
   _minInterval: 0.03

@@ -56,3 +56,6 @@ desktop.ini
 
 # Local scratch
 /scratch/
+
+# Python bytecode (tools/audio, tools/art)
+__pycache__/

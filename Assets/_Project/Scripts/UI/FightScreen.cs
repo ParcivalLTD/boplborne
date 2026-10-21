@@ -108,7 +108,7 @@ namespace GraceRun.UI
         {
             if (run == null || !run.IsSpawned || run.InHub) return string.Empty;
             var boss = run.CurrentBoss;
-            var bossName = boss != null ? $" — {boss.DisplayName}" : string.Empty;
+            var bossName = boss != null ? $": {boss.DisplayName}" : string.Empty;
             var label = run.IsFinalFloor ? $"Final Floor ({run.Floor}/{run.TotalFloors})" : $"Floor {run.Floor}/{run.TotalFloors}";
             return label + bossName;
         }

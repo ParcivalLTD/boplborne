@@ -47,6 +47,8 @@ namespace GraceRun.Bosses
         private BossAttackBehaviour _behaviour;
         [SerializeField, Tooltip("Telegraph sound played when the wind-up starts (one per boss telegraph).")]
         private AudioCue _windupCue;
+        [SerializeField, Tooltip("Impact sound played when the attack goes live (the active phase starts). Empty: silent.")]
+        private AudioCue _strikeCue;
 
         [Header("Choice")]
         [SerializeField, Min(0f)] private float _weight = 1f;
@@ -74,6 +76,7 @@ namespace GraceRun.Bosses
         public AttackData FollowUp => _followUp;
         public BossAttackBehaviour Behaviour => _behaviour;
         public AudioCue WindupCue => _windupCue;
+        public AudioCue StrikeCue => _strikeCue;
         public float Weight => _weight;
         public float Cooldown => _cooldown;
         public float MinRange => _minRange;

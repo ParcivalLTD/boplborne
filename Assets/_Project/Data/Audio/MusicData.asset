@@ -1,0 +1,43 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ef5999dcf5a9b1b49b26a897f300c0c9, type: 3}
+  m_Name: MusicData
+  m_EditorClassIdentifier: GraceRun.Runtime::GraceRun.Core.Audio.MusicData
+  _hub:
+    Clip: {fileID: 8300000, guid: 0d0bbe5eced2465469382f74a1d591ce, type: 3}
+    Volume: 0.4
+  _rest:
+    Clip: {fileID: 8300000, guid: 733803cce7f3e3e4aa80531bd08a0f36, type: 3}
+    Volume: 0.4
+  _victory:
+    Clip: {fileID: 8300000, guid: dc127a99fc4b7484dad81b6700d69085, type: 3}
+    Volume: 0.4
+  _defeat:
+    Clip: {fileID: 0}
+    Volume: 0
+  _bosses:
+  - Boss: {fileID: 11400000, guid: 243d465cef93a004d8ad3e878cf6e71b, type: 2}
+    Track:
+      Clip: {fileID: 8300000, guid: 193e0c06fb901f143b28397d54d11e4c, type: 3}
+      Volume: 0.4
+  - Boss: {fileID: 11400000, guid: 36077fc37a74ede43bc151b97fadadac, type: 2}
+    Track:
+      Clip: {fileID: 8300000, guid: c45e9475b2007414ca7b97d035dcecbd, type: 3}
+      Volume: 0.4
+  - Boss: {fileID: 11400000, guid: 7d87600d87eb06f45859113eb7f202bf, type: 2}
+    Track:
+      Clip: {fileID: 8300000, guid: 94809640429962c48bc3841fdcc01aa0, type: 3}
+      Volume: 0.4
+  _defaultBoss:
+    Clip: {fileID: 8300000, guid: 193e0c06fb901f143b28397d54d11e4c, type: 3}
+    Volume: 0.4
+  _crossfadeSeconds: 1.6

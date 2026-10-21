@@ -24,6 +24,12 @@ MonoBehaviour:
   _telegraphType: 1
   _glowPart: 1
   _weakPointOffset: {x: 0, y: 1}
+  _lungeDistance: 0
+  _lungeTime: 0.2
+  _followUp: {fileID: 0}
+  _behaviour: {fileID: 0}
+  _windupCue: {fileID: 11400000, guid: 46fe4f61e9b99c4409889096b364f769, type: 2}
+  _strikeCue: {fileID: 11400000, guid: 561c29ef418663748ab4e6e00d7560fe, type: 2}
   _weight: 1
   _cooldown: 0
   _minRange: 0

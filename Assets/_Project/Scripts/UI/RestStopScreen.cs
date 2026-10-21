@@ -1,6 +1,7 @@
 using GraceRun.Abilities;
 using GraceRun.Core;
 using GraceRun.Run;
+using GraceRun.UI.Skin;
 using Unity.Netcode;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -15,12 +16,15 @@ namespace GraceRun.UI
     /// </summary>
     public class RestStopScreen : MonoBehaviour
     {
-        private static readonly Color NightColor = new(0.071f, 0.063f, 0.102f, 0.92f);
-        private static readonly Color StoneColor = new(0.165f, 0.145f, 0.200f);
-        private static readonly Color StoneLightColor = new(0.290f, 0.259f, 0.337f);
-        private static readonly Color FogColor = new(0.549f, 0.518f, 0.627f);
-        private static readonly Color BoneColor = new(0.929f, 0.906f, 0.965f);
-        private static readonly Color GoldColor = new(1.000f, 0.788f, 0.290f);
+        // Cinema look: cream cards with ink text on a dimmed sepia backdrop; text drawn straight on the backdrop is cream / paper / brass.
+        private static readonly Color NightColor = new(0.071f, 0.059f, 0.094f, 0.93f);
+        private static readonly Color CardColor = Color.white;
+        private static readonly Color OnDark = UiPalette.Cream;
+        private static readonly Color OnDarkSoft = UiPalette.Paper;
+        private static readonly Color Brass = UiPalette.Brass;
+        private static readonly Color CardInk = UiPalette.Ink;
+        private static readonly Color CardSoft = UiPalette.Sepia;
+        private static readonly Color CardAccent = UiPalette.SepiaDark;
 
         private GameObject _root;
         private Text _currencyText;
@@ -45,12 +49,9 @@ namespace GraceRun.UI
         private Text _waitingLeaderText;
 
         private bool _shownOpen;
-        private Font _font;
 
         private void Awake()
         {
-            _font = Resources.GetBuiltinResource<Font>("LegacyRuntime.ttf");
-            if (_font == null) _font = Resources.GetBuiltinResource<Font>("Arial.ttf");
             BuildUi();
             if (_root != null) _root.SetActive(false);
         }
@@ -104,7 +105,7 @@ namespace GraceRun.UI
             var buff = run.ActiveBuff;
 
             if (_currencyText != null)
-                _currencyText.text = $"Shared Currency:  <color=#{ColorUtility.ToHtmlStringRGB(GoldColor)}>✦ {currency}</color>";
+                _currencyText.text = $"Shared Currency:  <color=#{ColorUtility.ToHtmlStringRGB(Brass)}>✦ {currency}</color>";
 
             // 1. Team Reroll Card
             var rerollCost = config != null ? config.RerollCost : 50;
@@ -133,7 +134,7 @@ namespace GraceRun.UI
                     if (!hasAbility)
                         _upgradeSlotNames[i].text = $"Slot {i + 1}: Empty";
                     else if (level >= 2)
-                        _upgradeSlotNames[i].text = $"Slot {i + 1}: {ability.DisplayName} <color=#{ColorUtility.ToHtmlStringRGB(GoldColor)}>[LEVEL 2 MAX]</color>";
+                        _upgradeSlotNames[i].text = $"Slot {i + 1}: {ability.DisplayName} <color=#{ColorUtility.ToHtmlStringRGB(CardAccent)}>[LEVEL 2 MAX]</color>";
                     else
                         _upgradeSlotNames[i].text = $"Slot {i + 1}: {ability.DisplayName} (Level 1)";
                 }
@@ -161,7 +162,7 @@ namespace GraceRun.UI
                 if (buff == PartyBuff.None)
                     _buffStatusText.text = "Active: None (buy one below for the next fight)";
                 else
-                    _buffStatusText.text = $"Active: <color=#{ColorUtility.ToHtmlStringRGB(GoldColor)}>{BuffName(buff, tuning)}</color>";
+                    _buffStatusText.text = $"Active: <color=#{ColorUtility.ToHtmlStringRGB(CardAccent)}>{BuffName(buff, tuning)}</color>";
             }
 
             RefreshBuffButton(_buff1Button, _buff1Text, PartyBuff.EmpoweredAttacks, buff, currency, buffCost, tuning);
@@ -251,70 +252,66 @@ namespace GraceRun.UI
             _root = CreatePanel("RestStopRoot", transform, new Vector2(0, 0), new Vector2(1, 1), Vector2.zero, Vector2.zero, NightColor);
 
             // Title & Subtitle Banner
-            var title = CreateText("Title", _root.transform, "REST STOP", 40, FontStyle.Bold, TextAnchor.MiddleCenter, BoneColor);
-            SetRect(title.rectTransform, new Vector2(0.5f, 0.93f), new Vector2(0.5f, 0.93f), new Vector2(0.5f, 0.5f), new Vector2(600, 50), Vector2.zero);
+            var title = CreateText("Title", _root.transform, "REST STOP", 80, FontStyle.Bold, TextAnchor.MiddleCenter, OnDark);
+            SetRect(title.rectTransform, new Vector2(0.5f, 0.93f), new Vector2(0.5f, 0.93f), new Vector2(0.5f, 0.5f), new Vector2(1000, 100), Vector2.zero);
 
-            var flaskStatus = CreateText("FlaskStatus", _root.transform, "Flasks refilled to full (2 charges)", 20, FontStyle.Normal, TextAnchor.MiddleCenter, FogColor);
-            SetRect(flaskStatus.rectTransform, new Vector2(0.5f, 0.88f), new Vector2(0.5f, 0.88f), new Vector2(0.5f, 0.5f), new Vector2(600, 30), Vector2.zero);
+            var flaskStatus = CreateText("FlaskStatus", _root.transform, "Flasks refilled to full (2 charges)", 24, FontStyle.Normal, TextAnchor.MiddleCenter, OnDarkSoft);
+            SetRect(flaskStatus.rectTransform, new Vector2(0.5f, 0.865f), new Vector2(0.5f, 0.865f), new Vector2(0.5f, 0.5f), new Vector2(1000, 36), Vector2.zero);
 
-            _currencyText = CreateText("CurrencyText", _root.transform, "Shared Currency: ✦ 0", 28, FontStyle.Bold, TextAnchor.MiddleCenter, BoneColor);
+            _currencyText = CreateText("CurrencyText", _root.transform, "Shared Currency: ✦ 0", 32, FontStyle.Normal, TextAnchor.MiddleCenter, OnDark);
             _currencyText.supportRichText = true;
-            SetRect(_currencyText.rectTransform, new Vector2(0.5f, 0.83f), new Vector2(0.5f, 0.83f), new Vector2(0.5f, 0.5f), new Vector2(600, 40), Vector2.zero);
+            SetRect(_currencyText.rectTransform, new Vector2(0.5f, 0.815f), new Vector2(0.5f, 0.815f), new Vector2(0.5f, 0.5f), new Vector2(1000, 44), Vector2.zero);
 
             // 3 Column Cards
             var cardWidth = 520f;
-            var cardHeight = 440f;
-            var centerY = 500f;
+            var cardHeight = 600f;
+            var centerY = 450f;
 
             // Card 1: Team Reroll
             var card1 = CreateCard("CardReroll", _root.transform, new Vector2(360, centerY), new Vector2(cardWidth, cardHeight));
-            CreateText("Card1Title", card1.transform, "TEAM REROLL", 24, FontStyle.Bold, TextAnchor.MiddleCenter, BoneColor, new Vector2(0.5f, 0.88f), new Vector2(cardWidth - 40, 40));
-            CreateText("Card1Desc", card1.transform, "Gives every party member +1 reroll\nfor upcoming ability drafts.", 18, FontStyle.Normal, TextAnchor.MiddleCenter, FogColor, new Vector2(0.5f, 0.68f), new Vector2(cardWidth - 40, 60));
-            _rerollStatusText = CreateText("Card1Status", card1.transform, "Bonus Rerolls Purchased: 0", 18, FontStyle.Italic, TextAnchor.MiddleCenter, BoneColor, new Vector2(0.5f, 0.45f), new Vector2(cardWidth - 40, 30));
-            _rerollButton = CreateButton("BuyRerollBtn", card1.transform, "+1 Team Reroll (50 ✦)", new Vector2(0.5f, 0.22f), new Vector2(cardWidth - 80, 56), OnBuyReroll, out _rerollButtonText);
+            CreateText("Card1Title", card1.transform, "TEAM REROLL", 32, FontStyle.Bold, TextAnchor.MiddleCenter, CardInk, new Vector2(0.5f, 0.90f), new Vector2(cardWidth - 60, 48));
+            CreateText("Card1Desc", card1.transform, "Gives every party member +1 reroll\nfor upcoming ability drafts.", 24, FontStyle.Normal, TextAnchor.MiddleCenter, CardSoft, new Vector2(0.5f, 0.70f), new Vector2(cardWidth - 60, 76));
+            _rerollStatusText = CreateText("Card1Status", card1.transform, "Bonus Rerolls Purchased: 0", 24, FontStyle.Normal, TextAnchor.MiddleCenter, CardInk, new Vector2(0.5f, 0.47f), new Vector2(cardWidth - 60, 40));
+            _rerollButton = CreateButton("BuyRerollBtn", card1.transform, "+1 Team Reroll (50 ✦)", new Vector2(0.5f, 0.22f), new Vector2(cardWidth - 80, 72), OnBuyReroll, out _rerollButtonText);
 
             // Card 2: Ability Upgrade (Level 2)
             var card2 = CreateCard("CardUpgrade", _root.transform, new Vector2(960, centerY), new Vector2(cardWidth, cardHeight));
-            CreateText("Card2Title", card2.transform, "UPGRADE ABILITY", 24, FontStyle.Bold, TextAnchor.MiddleCenter, BoneColor, new Vector2(0.5f, 0.90f), new Vector2(cardWidth - 40, 40));
-            CreateText("Card2Desc", card2.transform, "Upgrade an ability to Level 2:\n<color=#FFC94A>Cooldown -20% | Power +25%</color>", 16, FontStyle.Normal, TextAnchor.MiddleCenter, FogColor, new Vector2(0.5f, 0.77f), new Vector2(cardWidth - 40, 45));
+            CreateText("Card2Title", card2.transform, "UPGRADE ABILITY", 32, FontStyle.Bold, TextAnchor.MiddleCenter, CardInk, new Vector2(0.5f, 0.92f), new Vector2(cardWidth - 60, 48));
+            CreateText("Card2Desc", card2.transform, "Upgrade an ability to Level 2:\n<color=#3B2A1E>Cooldown -20% | Power +25%</color>", 24, FontStyle.Normal, TextAnchor.MiddleCenter, CardSoft, new Vector2(0.5f, 0.80f), new Vector2(cardWidth - 60, 76));
 
-            var slotY = new[] { 0.58f, 0.38f, 0.18f };
+            var slotY = new[] { 0.60f, 0.39f, 0.18f };
             for (var i = 0; i < AbilityLoadout.SlotCount; i++)
             {
                 var slot = i;
-                _upgradeSlotNames[i] = CreateText($"Slot{i}Name", card2.transform, $"Slot {i + 1}: Empty", 16, FontStyle.Bold, TextAnchor.MiddleLeft, BoneColor, new Vector2(0.32f, slotY[i]), new Vector2(250, 30));
+                _upgradeSlotNames[i] = CreateText($"Slot{i}Name", card2.transform, $"Slot {i + 1}: Empty", 24, FontStyle.Normal, TextAnchor.MiddleCenter, CardInk, new Vector2(0.5f, slotY[i] + 0.055f), new Vector2(cardWidth - 40, 40));
                 _upgradeSlotNames[i].supportRichText = true;
-                _upgradeButtons[i] = CreateButton($"Slot{i}Btn", card2.transform, "Upgrade (100 ✦)", new Vector2(0.76f, slotY[i]), new Vector2(180, 42), () => OnBuyUpgrade(slot), out _upgradeButtonTexts[i]);
+                _upgradeButtons[i] = CreateButton($"Slot{i}Btn", card2.transform, "Upgrade (100 ✦)", new Vector2(0.5f, slotY[i] - 0.03f), new Vector2(cardWidth - 80, 56), () => OnBuyUpgrade(slot), out _upgradeButtonTexts[i]);
             }
 
             // Card 3: One-off Party Buff
             var card3 = CreateCard("CardBuff", _root.transform, new Vector2(1560, centerY), new Vector2(cardWidth, cardHeight));
-            CreateText("Card3Title", card3.transform, "ONE-OFF PARTY BUFF", 24, FontStyle.Bold, TextAnchor.MiddleCenter, BoneColor, new Vector2(0.5f, 0.90f), new Vector2(cardWidth - 40, 40));
-            _buffStatusText = CreateText("Card3Status", card3.transform, "Active: None (buy one below)", 16, FontStyle.Italic, TextAnchor.MiddleCenter, FogColor, new Vector2(0.5f, 0.78f), new Vector2(cardWidth - 40, 36));
+            CreateText("Card3Title", card3.transform, "PARTY BUFF", 32, FontStyle.Bold, TextAnchor.MiddleCenter, CardInk, new Vector2(0.5f, 0.92f), new Vector2(cardWidth - 60, 48));
+            _buffStatusText = CreateText("Card3Status", card3.transform, "Active: None (buy one below)", 24, FontStyle.Normal, TextAnchor.MiddleCenter, CardSoft, new Vector2(0.5f, 0.78f), new Vector2(cardWidth - 60, 76));
             _buffStatusText.supportRichText = true;
 
-            _buff1Button = CreateButton("Buff1Btn", card3.transform, "Empowered Strikes (+20% Dmg) — 75 ✦", new Vector2(0.5f, 0.58f), new Vector2(cardWidth - 60, 48), () => OnBuyBuff(PartyBuff.EmpoweredAttacks), out _buff1Text);
-            _buff2Button = CreateButton("Buff2Btn", card3.transform, "Iron Skin (+25 Max HP) — 75 ✦", new Vector2(0.5f, 0.38f), new Vector2(cardWidth - 60, 48), () => OnBuyBuff(PartyBuff.IronSkin), out _buff2Text);
-            _buff3Button = CreateButton("Buff3Btn", card3.transform, "Swiftstride (+15% Spd) — 75 ✦", new Vector2(0.5f, 0.18f), new Vector2(cardWidth - 60, 48), () => OnBuyBuff(PartyBuff.Swiftstride), out _buff3Text);
+            _buff1Button = CreateButton("Buff1Btn", card3.transform, "Empowered Strikes (+20% Dmg) — 75 ✦", new Vector2(0.5f, 0.55f), new Vector2(cardWidth - 60, 84), () => OnBuyBuff(PartyBuff.EmpoweredAttacks), out _buff1Text);
+            _buff2Button = CreateButton("Buff2Btn", card3.transform, "Iron Skin (+25 Max HP) — 75 ✦", new Vector2(0.5f, 0.35f), new Vector2(cardWidth - 60, 84), () => OnBuyBuff(PartyBuff.IronSkin), out _buff2Text);
+            _buff3Button = CreateButton("Buff3Btn", card3.transform, "Swiftstride (+15% Spd) — 75 ✦", new Vector2(0.5f, 0.15f), new Vector2(cardWidth - 60, 84), () => OnBuyBuff(PartyBuff.Swiftstride), out _buff3Text);
 
             // Bottom Continue Section
-            _advanceButton = CreateButton("AdvanceBtn", _root.transform, "Continue to Next Floor", new Vector2(0.5f, 0.10f), new Vector2(360, 60), OnAdvance, out _advanceButtonText);
-            _advanceButton.image.color = new Color(0.30f, 0.25f, 0.40f);
-            if (_advanceButtonText != null)
-            {
-                _advanceButtonText.color = BoneColor;
-                _advanceButtonText.fontSize = 22;
-                _advanceButtonText.fontStyle = FontStyle.Bold;
-            }
+            _advanceButton = CreateButton("AdvanceBtn", _root.transform, "Continue to Next Floor", new Vector2(0.5f, 0.09f), new Vector2(560, 80), OnAdvance, out _advanceButtonText);
+            if (_advanceButtonText != null) UiKit.StyleText(_advanceButtonText, false, 32, CardInk);
 
-            _waitingLeaderText = CreateText("WaitingLeaderText", _root.transform, "Waiting for the host to continue to next floor...", 20, FontStyle.Italic, TextAnchor.MiddleCenter, FogColor);
-            SetRect(_waitingLeaderText.rectTransform, new Vector2(0.5f, 0.10f), new Vector2(0.5f, 0.10f), new Vector2(0.5f, 0.5f), new Vector2(600, 40), Vector2.zero);
+            _waitingLeaderText = CreateText("WaitingLeaderText", _root.transform, "Waiting for the host to continue to next floor...", 24, FontStyle.Normal, TextAnchor.MiddleCenter, OnDarkSoft);
+            SetRect(_waitingLeaderText.rectTransform, new Vector2(0.5f, 0.09f), new Vector2(0.5f, 0.09f), new Vector2(0.5f, 0.5f), new Vector2(1000, 44), Vector2.zero);
         }
 
         private GameObject CreateCard(string name, Transform parent, Vector2 pos, Vector2 size)
         {
-            var panel = CreatePanel(name, parent, new Vector2(0, 0), new Vector2(0, 0), new Vector2(0.5f, 0.5f), size, StoneColor);
+            var panel = CreatePanel(name, parent, new Vector2(0, 0), new Vector2(0, 0), new Vector2(0.5f, 0.5f), size, CardColor);
             panel.GetComponent<RectTransform>().anchoredPosition = pos;
+            var theme = UiTheme.Current;
+            UiKit.Slice(panel.GetComponent<Image>(), theme != null ? theme.PanelCream : null);
             return panel;
         }
 
@@ -334,12 +331,12 @@ namespace GraceRun.UI
             var go = new GameObject(name, typeof(RectTransform), typeof(Text));
             go.transform.SetParent(parent, false);
             var txt = go.GetComponent<Text>();
-            txt.font = _font;
-            txt.fontSize = size;
-            txt.fontStyle = style;
+            // One pixel look: display font for titles (bold 32+ or 64+), body font for the rest.
+            UiKit.StyleText(txt, size >= 64 || (style == FontStyle.Bold && size >= 32), size, color);
             txt.alignment = align;
-            txt.color = color;
             txt.text = content;
+            txt.horizontalOverflow = HorizontalWrapMode.Wrap;
+            txt.verticalOverflow = VerticalWrapMode.Overflow;
             txt.raycastTarget = false;
 
             if (anchorNorm != default)
@@ -357,20 +354,18 @@ namespace GraceRun.UI
             var rect = go.GetComponent<RectTransform>();
             SetRect(rect, anchorNorm, anchorNorm, new Vector2(0.5f, 0.5f), sizeDelta, Vector2.zero);
 
-            var img = go.GetComponent<Image>();
-            img.color = StoneLightColor;
-
             var btn = go.GetComponent<Button>();
-            var colors = btn.colors;
-            colors.normalColor = StoneLightColor;
-            colors.highlightedColor = new Color(0.42f, 0.38f, 0.48f);
-            colors.pressedColor = new Color(0.24f, 0.20f, 0.28f);
-            colors.disabledColor = new Color(0.18f, 0.16f, 0.22f, 0.6f);
-            btn.colors = colors;
             btn.onClick.AddListener(action);
 
-            labelText = CreateText("Label", go.transform, label, 16, FontStyle.Bold, TextAnchor.MiddleCenter, BoneColor);
+            labelText = CreateText("Label", go.transform, label, 24, FontStyle.Normal, TextAnchor.MiddleCenter, CardInk);
             SetRect(labelText.rectTransform, Vector2.zero, Vector2.one, new Vector2(0.5f, 0.5f), Vector2.zero, Vector2.zero);
+            labelText.rectTransform.offsetMin = new Vector2(12f, 4f);
+            labelText.rectTransform.offsetMax = new Vector2(-12f, -4f);
+            // Long labels (buff names) shrink a little instead of overflowing the button.
+            labelText.resizeTextForBestFit = true;
+            labelText.resizeTextMinSize = 16;
+            labelText.resizeTextMaxSize = 24;
+            UiKit.StyleButton(btn, labelText, 24);
             return btn;
         }
 

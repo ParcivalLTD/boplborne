@@ -19,7 +19,7 @@ MonoBehaviour:
   _smear: {fileID: 0}
   _animations: {fileID: 0}
   _swingStyle: 1
-  _bodyPoses: {fileID: 0}
+  _bodyPoses: {fileID: 11400000, guid: ebe9c64086179554b88eac08ac0e1f3f, type: 2}
   _windAngle: 0
   _sweepAngle: 0
   _swingReach: 0.7
@@ -27,67 +27,71 @@ MonoBehaviour:
   _combo:
   - _damage: 8
     _knockback: {x: 0, y: 0}
-    _hitboxSize: {x: 1.4, y: 1}
+    _hitboxSize: {x: 1.3, y: 1}
     _hitboxOffset: {x: 0.9, y: 0}
     _startup: 0.08
     _active: 0.1
-    _recovery: 0.22
-    _staminaCost: 10
+    _recovery: 0.18
+    _staminaCost: 9
   - _damage: 8
     _knockback: {x: 0, y: 0}
-    _hitboxSize: {x: 1.4, y: 1}
+    _hitboxSize: {x: 1.3, y: 1}
     _hitboxOffset: {x: 0.9, y: 0}
     _startup: 0.08
     _active: 0.1
-    _recovery: 0.22
-    _staminaCost: 10
+    _recovery: 0.18
+    _staminaCost: 9
   - _damage: 8
     _knockback: {x: 10, y: 5}
-    _hitboxSize: {x: 1.8, y: 1.2}
-    _hitboxOffset: {x: 1.1, y: 0}
+    _hitboxSize: {x: 1.5, y: 1.2}
+    _hitboxOffset: {x: 1.05, y: 0}
     _startup: 0.14
     _active: 0.12
-    _recovery: 0.35
-    _staminaCost: 10
+    _recovery: 0.28
+    _staminaCost: 9
   _heavy:
     _damage: 14
     _knockback: {x: 11, y: 5}
     _hitboxSize: {x: 1.6, y: 1.2}
-    _hitboxOffset: {x: 1, y: 0}
+    _hitboxOffset: {x: 1.1, y: 0}
     _startup: 0.2
     _active: 0.1
     _recovery: 0.3
-    _staminaCost: 18
-  _hasAerial: 0
+    _staminaCost: 16
+  _hasAerial: 1
   _aerial:
-    _damage: 0
-    _knockback: {x: 0, y: 0}
-    _hitboxSize: {x: 0, y: 0}
-    _hitboxOffset: {x: 0, y: 0}
-    _startup: 0
-    _active: 0
-    _recovery: 0
-    _staminaCost: 0
-  _hasUp: 0
+    _damage: 9
+    _knockback: {x: 5, y: 3}
+    _hitboxSize: {x: 1.4, y: 1}
+    _hitboxOffset: {x: 0.7, y: 0}
+    _startup: 0.06
+    _active: 0.14
+    _recovery: 0.2
+    _staminaCost: 10
+  _hasUp: 1
   _up:
-    _damage: 0
-    _knockback: {x: 0, y: 0}
-    _hitboxSize: {x: 0, y: 0}
-    _hitboxOffset: {x: 0, y: 0}
-    _startup: 0
-    _active: 0
-    _recovery: 0
-    _staminaCost: 0
-  _hasDown: 0
+    _damage: 9
+    _knockback: {x: 2, y: 10}
+    _hitboxSize: {x: 1, y: 1.7}
+    _hitboxOffset: {x: 0.25, y: 1}
+    _startup: 0.08
+    _active: 0.1
+    _recovery: 0.22
+    _staminaCost: 10
+  _hasDown: 1
   _down:
-    _damage: 0
-    _knockback: {x: 0, y: 0}
-    _hitboxSize: {x: 0, y: 0}
-    _hitboxOffset: {x: 0, y: 0}
-    _startup: 0
-    _active: 0
-    _recovery: 0
-    _staminaCost: 0
+    _damage: 9
+    _knockback: {x: 2, y: -7}
+    _hitboxSize: {x: 1.1, y: 1.2}
+    _hitboxOffset: {x: 0.5, y: -0.7}
+    _startup: 0.1
+    _active: 0.12
+    _recovery: 0.25
+    _staminaCost: 10
   _inputBuffer: 0.3
   _chainWindow: 0.35
+  _swingCue: {fileID: 11400000, guid: 3c617e702a88e024a915ec71a4aa3250, type: 2}
+  _finisherCue: {fileID: 11400000, guid: 712abe5d174e8d545a90a141197ea709, type: 2}
+  _hitCue: {fileID: 11400000, guid: b1ec340df4e9be44f823603ba8de481c, type: 2}
+  _heavyHitCue: {fileID: 11400000, guid: 69f241abf38a76f4a932a5547f93bc6e, type: 2}
   _moveSpeedMultiplier: 0.2

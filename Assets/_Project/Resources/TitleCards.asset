@@ -1,0 +1,41 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f13e57975b47a484fb781c53bd696c1b, type: 3}
+  m_Name: TitleCards
+  m_EditorClassIdentifier: GraceRun.Runtime::GraceRun.UI.TitleCards.TitleCardData
+  _fallbackTagline: Somebody has to do it.
+  _entries:
+  - BossId: gatekeeper
+    Tagline: No key, no entry, no excuses.
+    VictoryTagline: The gate swings open.
+  - BossId: brood_mother
+    Tagline: Mind the webs, and mind the children.
+    VictoryTagline: The nursery falls silent.
+  - BossId: bell_twins
+    Tagline: Two chimes, one nasty ring.
+    VictoryTagline: The last echo fades.
+  - BossId: test_boss
+    Tagline: A very patient tutorial.
+    VictoryTagline: Lesson learned.
+  - BossId: final_test_boss
+    Tagline: The big finish, rehearsed.
+    VictoryTagline: A flawless rehearsal.
+  _victoryTitle: THAT'S A WRAP
+  _fallbackVictoryTagline: Scene cleared. Take a bow.
+  _finalVictoryTitle: CURTAIN CALL
+  _finalVictoryTagline: Every floor cleared. The house is on its feet.
+  _defeatTitle: TAKE TWO
+  _defeatTagline: The reel runs out. Roll it back and go again.
+  _slideIn: 0.35
+  _hold: 1.3
+  _slideOut: 0.3
+  _framesPerSecond: 12

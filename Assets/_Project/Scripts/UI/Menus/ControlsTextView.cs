@@ -12,7 +12,8 @@ namespace GraceRun.UI.Menus
         {
             var text = GetComponent<Text>();
             text.supportRichText = true;
-            text.text = ControlSchemeRules.Describe(GameSettings.Layout);
+            // The rules text marks action names in the old gold; on a cream page they are sepia.
+            text.text = ControlSchemeRules.Describe(GameSettings.Layout).Replace("#FFC94A", "#7A5C3E");
         }
     }
 }

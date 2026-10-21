@@ -30,9 +30,9 @@ MonoBehaviour:
     Windup: {fileID: 21300000, guid: 542b17f65df16d64a88ba34ce7b20d1b, type: 3}
     Strike: {fileID: 21300000, guid: e92a83483df314c45b6a7b510750e603, type: 3}
     Recovery: {fileID: 21300000, guid: 4715079ad7db2a444aec9b3f3886cee5, type: 3}
-    HatWindup: {x: -0.47916666, y: 0}
-    HatStrike: {x: 0.0625, y: -0.33333334}
-    HatRecovery: {x: 0.020833334, y: -0.29166666}
+    HatWindup: {x: -0.375, y: 0.125}
+    HatStrike: {x: -0.20833333, y: -0.041666668}
+    HatRecovery: {x: -0.14583333, y: 0.041666668}
   _aerial:
     Windup: {fileID: 21300000, guid: 7f199371066666f4d92a4149057b669b, type: 3}
     Strike: {fileID: 21300000, guid: ef594e0f2664ea340ad38ecdbe3bb411, type: 3}

@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: PlayerHurtCue
   m_EditorClassIdentifier: GraceRun.Runtime::GraceRun.Core.Audio.AudioCue
   _clips:
-  - {fileID: 8300000, guid: 6fd8a582e87f50049a241ecff75dddb4, type: 3}
+  - {fileID: 8300000, guid: 801f1d47167322b4a93a73cb2ece9c18, type: 3}
   _volume: 0.8
-  _pitchRange: {x: 0.95, y: 1.05}
+  _pitchRange: {x: 0.96, y: 1.04}
   _minInterval: 0.03

@@ -1,3 +1,4 @@
+using GraceRun.Core.Audio;
 using UnityEngine;
 
 namespace GraceRun.Player
@@ -51,6 +52,12 @@ namespace GraceRun.Player
         [SerializeField, Min(0f), Tooltip("After a swing ends, a press within this time continues the combo instead of restarting it.")]
         private float _chainWindow = 0.35f;
 
+        [Header("Sounds (empty = the generic cues in PlayerFeedbackData / HitFeedbackData)")]
+        [SerializeField, Tooltip("Light swings.")] private AudioCue _swingCue;
+        [SerializeField, Tooltip("The last light hit and Heavy.")] private AudioCue _finisherCue;
+        [SerializeField, Tooltip("A light hit lands.")] private AudioCue _hitCue;
+        [SerializeField, Tooltip("A heavy hit lands (empty: the hit cue).")] private AudioCue _heavyHitCue;
+
         [Header("Movement")]
         [SerializeField, Range(0f, 1f), Tooltip("Run speed multiplier while swinging.")]
         private float _moveSpeedMultiplier = 0.2f;
@@ -67,6 +74,10 @@ namespace GraceRun.Player
         public float InputBuffer => _inputBuffer;
         public float ChainWindow => _chainWindow;
         public float MoveSpeedMultiplier => _moveSpeedMultiplier;
+        public AudioCue SwingCue => _swingCue;
+        public AudioCue FinisherCue => _finisherCue;
+        public AudioCue HitCue => _hitCue;
+        public AudioCue HeavyHitCue => _heavyHitCue != null ? _heavyHitCue : _hitCue;
 
         /// <summary>The attacks flattened for <see cref="LightAttackCombo"/>.</summary>
         public WeaponMoveSet BuildMoves() => new(_combo, _heavy,

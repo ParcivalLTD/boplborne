@@ -1,0 +1,28 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4be4555c623160948a177571c6bbf327, type: 3}
+  m_Name: UiTheme
+  m_EditorClassIdentifier: GraceRun.Runtime::GraceRun.UI.Skin.UiTheme
+  _display: {fileID: 12800000, guid: 79677acf8492f2e45b054e0df78922f9, type: 3}
+  _body: {fileID: 12800000, guid: 5cd36d0b10d537a4aafd9a23ed4da897, type: 3}
+  _panelCream: {fileID: 21300000, guid: 608a4e20288bcfe4887ea61a49dacfae, type: 3}
+  _panelPaper: {fileID: 21300000, guid: 84b3742947a74f34b84f4faedbe78e30, type: 3}
+  _panelInk: {fileID: 21300000, guid: f95dd2b22a2c9d04d99856ebe86883a0, type: 3}
+  _button: {fileID: 21300000, guid: 2a7ceff40c8d2294bacedd02b876a1e1, type: 3}
+  _barFrame: {fileID: 21300000, guid: dc65e43e663a62f4a9d10ae28b9e7f25, type: 3}
+  _slot: {fileID: 21300000, guid: 44e4c0d2f08cc364d9b18d8616adfdf3, type: 3}
+  _field: {fileID: 21300000, guid: 13c9aa5f7e1566e47ac2c0e95eb10740, type: 3}
+  _cardFrame: {fileID: 21300000, guid: df905b8cee5191446b56aca91a59eeba, type: 3}
+  _titleCard: {fileID: 21300000, guid: df9c83f2a8930d345947b79d659de25c, type: 3}
+  _arrow: {fileID: 21300000, guid: 99be2f78bec4d004cbf2e68fbc29c8cf, type: 3}
+  _flaskPip: {fileID: 21300000, guid: 2e726ad8ba8796249896bb1c4614fab0, type: 3}
+  _divider: {fileID: 21300000, guid: f0ca2bd0c9b12554786e64bacf3f0f3d, type: 3}

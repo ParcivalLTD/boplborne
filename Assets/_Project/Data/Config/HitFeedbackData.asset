@@ -20,6 +20,6 @@ MonoBehaviour:
   _heavyHitShake: 0.5
   _hurtShake: 0.7
   _sparks: {fileID: 2440934937971166020, guid: 4e128ca4d39dd3c47aa7d479633411c6, type: 3}
-  _hitCue: {fileID: 11400000, guid: ee0ee6c0135fbb34ca784be2ba3c55e7, type: 2}
-  _heavyHitCue: {fileID: 11400000, guid: 89eb2800efff36148b610c31c7a024f1, type: 2}
+  _hitCue: {fileID: 11400000, guid: b1ec340df4e9be44f823603ba8de481c, type: 2}
+  _heavyHitCue: {fileID: 11400000, guid: 69f241abf38a76f4a932a5547f93bc6e, type: 2}
   _playerHurtCue: {fileID: 11400000, guid: ea6530d8c1f0ecb43ad0096f8193ff5d, type: 2}

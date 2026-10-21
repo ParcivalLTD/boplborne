@@ -127,3 +127,25 @@ Idle / run / jump / fall with the weapon in hand (`animate_image_pixminimax`, sa
 | Spear | `1b47373c-93a3-4c89-ac80-685468fc3935` | `757e8eb3-0668-4716-afbe-e7d4b853dedb` | `f24f2b72-64cd-440a-b9cb-a0b6ba638a69` | `54cf9264-bb5f-41d9-8f19-0221ce7ddae0` |
 | Hammer | `4d4564ce-2c1b-4631-8af1-58298084ad43` | `01351194-f896-4ea9-b620-1e3388ffa0cd` | `9441c5ce-47fa-4562-a88b-4d238060f68a` | `b5e71665-bf7d-4504-824c-dda62ed40335` |
 
+## Weapons second pass (2026-10-21)
+
+## pixellab-ids.md rows (all animate_image_pixminimax, 64x64, east, side)
+Anchors: plain player upload:662e3ab3-3209-46f6-8f1f-31b9fe29a5e8 (anim/anchor64.png), sword/spear/hammer anchors = weaponbody/sword2.png etc.
+| Asset | Job id | Frames used |
+| Fists LightA / LightB / Heavy (seeds 11/12/13) | 14dba869-742c-4b99-9476-b656fcc00e37 / 83e6f582-b19d-42ca-8a28-35fcaaa625b6 / 04ebce3c-a937-4c92-81d7-acd5e5160ace | 3,5,8 / 2,4,8 / 3,6,8 |
+| Fists Aerial / Up / Down (14/15/16) | 0aede81a-91fa-4f54-b4c1-d8482cab3afd / 02ce7e74-12a0-4c87-b658-859bd0a60773 / 030b8b8d-291b-4f96-91ba-430308917897 | 3,8,0 / 4,8,0 / 2,6,0 |
+| Sword aerial redo (21) / heavy redo (51) | 1de97f83-5cbd-438e-8e69-fca6d72b06c2 / e6945a3d-97bf-471a-a495-6c25bb491d8a | 3,7,8 / 4,8,1 |
+| Spear up redo (22) / down redo (23) | 70929cdc-7771-4d98-be04-c11209b1d612 / dfff632d-5c6f-4659-8be5-551300f9dcc5 | 3,8,1 / 4,7,1 |
+| Hammer heavy redo (52) | c3fe1aa6-c18e-4b4b-b432-fa1be4c8f19c | 4,8,1 |
+| Dodge Sword / Spear / Hammer (41/42/43) | 5b036eff-17e3-4f0c-ad20-410331af0eb8 / 811a8a2f-ce3d-4e58-83d8-2a103ef0b878 / 8aa43ddb-24ff-4532-a4ed-7ae0043e675c | 3-7 / 3,5-8 / 3,5-8 |
+| Hurt Sword / Spear / Hammer (31/32/33) | 433281bc-0341-4397-b2f1-eee390a6318c / 0601c984-4a34-4de1-8c8a-a22dbd49b696 / ead82973-651d-434c-821e-308122714a37 | 2,3,4 each |
+Scripts (git-ignored): scratch/art/weaponbody/{fetch2,select2,mkghost,apply_balance,balance,contact}.py.
+
+## Environments (8.7)
+
+## pixellab-ids.md rows
+| env hub backdrop | create_image_pro | f3bc8781-aeef-46c9-9147-079b5cf932ca |
+| env gatekeeper backdrop | create_image_pro | 244538b5-de29-4bec-ba3c-0ea4d6052acd |
+| env broodmother backdrop | create_image_pro | 102bdc2e-7a87-45c6-8294-8fdcdc62eaba |
+| env belltwins backdrop | create_image_pro | a99b20b4-ed2e-4a92-8f32-1ea695f781db |
+| env hub tile test (unused) | create_tiles_pro | a5bae08c-4f50-4d39-a502-78911e54747e |

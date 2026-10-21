@@ -13,9 +13,12 @@ MonoBehaviour:
   m_Name: SettingsData
   m_EditorClassIdentifier: GraceRun.Runtime::GraceRun.Core.Settings.SettingsData
   _masterVolume: 0.8
+  _musicVolume: 0.7
   _sfxVolume: 1
   _screenShake: 1
+  _filmEffects: 1
   _fullscreen: 1
   _vSync: 1
+  _mixer: {fileID: 24100000, guid: 08953705dbf946c4081c0c1e9f7ffb19, type: 2}
   _step: 0.1
   _maxScreenShake: 2

@@ -12,7 +12,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 08fe8345ddb71344fbf5a7a728c05294, type: 3}
   m_Name: PlayerFeedbackData
   m_EditorClassIdentifier: GraceRun.Runtime::GraceRun.Player.PlayerFeedbackData
-  _swingCue: {fileID: 11400000, guid: 077d356729d9ba641b53925251264df4, type: 2}
-  _finisherCue: {fileID: 11400000, guid: 0e173589b2f6e3646aa523d98c6562a9, type: 2}
+  _swingCue: {fileID: 11400000, guid: 3c617e702a88e024a915ec71a4aa3250, type: 2}
+  _finisherCue: {fileID: 11400000, guid: 712abe5d174e8d545a90a141197ea709, type: 2}
   _dodgeCue: {fileID: 11400000, guid: abaee0e0db04a0b4ba785e724802d69e, type: 2}
   _dodgeDust: {fileID: 5735265676757191501, guid: d4c52465e30b548429d571fab725554f, type: 3}
+  _jumpCue: {fileID: 11400000, guid: eeeb3e195eec7da4fb0b70ad00223dd1, type: 2}
+  _landCue: {fileID: 11400000, guid: 8c3c02c393ba32a4eae45ea8d0ed4ca8, type: 2}
+  _flaskCue: {fileID: 11400000, guid: 087a2503939e74c4dabca7e99ff71d1f, type: 2}
+  _reviveCue: {fileID: 11400000, guid: fc54ce16fdc775d409a0d171b1b6880f, type: 2}

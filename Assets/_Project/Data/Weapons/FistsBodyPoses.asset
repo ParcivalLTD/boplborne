@@ -1,0 +1,56 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4f4f91515152a4e429c6ad77b52c6a83, type: 3}
+  m_Name: FistsBodyPoses
+  m_EditorClassIdentifier: GraceRun.Runtime::GraceRun.Player.WeaponBodyPoses
+  _lightA:
+    Windup: {fileID: 21300000, guid: 51b7f13e791cf4549af12c81e13c3833, type: 3}
+    Strike: {fileID: 21300000, guid: 0b36e96276ed2a94aa0403407c386fa4, type: 3}
+    Recovery: {fileID: 21300000, guid: 0f440ae9d37cf3d4686d0e11886cbdb4, type: 3}
+    HatWindup: {x: 0, y: -0.041666668}
+    HatStrike: {x: 0.375, y: -0.083333336}
+    HatRecovery: {x: 0.125, y: -0.041666668}
+  _lightB:
+    Windup: {fileID: 21300000, guid: 69f57c2ceacb4ed41ad281c88ae066f6, type: 3}
+    Strike: {fileID: 21300000, guid: c0bb9f1163e704447ae0721410ed663b, type: 3}
+    Recovery: {fileID: 21300000, guid: 7ab8400409c950147bb25dc56af3325b, type: 3}
+    HatWindup: {x: -0.041666668, y: 0.083333336}
+    HatStrike: {x: 0.20833333, y: -0.083333336}
+    HatRecovery: {x: 0, y: 0}
+  _heavy:
+    Windup: {fileID: 21300000, guid: c5ec5b0ed958b9547a5a15a5bd93f960, type: 3}
+    Strike: {fileID: 21300000, guid: 9644a80f7626c2642b544225fec03376, type: 3}
+    Recovery: {fileID: 21300000, guid: 9e276c842b229794f85a73e5f07bd95b, type: 3}
+    HatWindup: {x: -0.47916666, y: 0}
+    HatStrike: {x: 0.29166666, y: -0.083333336}
+    HatRecovery: {x: 0.20833333, y: -0.083333336}
+  _aerial:
+    Windup: {fileID: 21300000, guid: a04246573d5e80a4f80df4aaf97d52c6, type: 3}
+    Strike: {fileID: 21300000, guid: 8fa0c6c4bad70074ba021ff8532e3cf0, type: 3}
+    Recovery: {fileID: 21300000, guid: bfa131581ee747240b1ca506f48cc232, type: 3}
+    HatWindup: {x: -0.29166666, y: 0.041666668}
+    HatStrike: {x: 0.125, y: 0}
+    HatRecovery: {x: 0, y: 0}
+  _up:
+    Windup: {fileID: 21300000, guid: 6b92e97ee399d8f45bfcc81d506154ea, type: 3}
+    Strike: {fileID: 21300000, guid: 9666c24f53af67d47b7f282fe8e4410c, type: 3}
+    Recovery: {fileID: 21300000, guid: 64ea25a247ec60b4c8e6ada9afeb0630, type: 3}
+    HatWindup: {x: 0.3125, y: -0.29166666}
+    HatStrike: {x: 0.020833334, y: 0.20833333}
+    HatRecovery: {x: 0, y: 0}
+  _down:
+    Windup: {fileID: 21300000, guid: 163c99da02c242b49a9e4bd670c12ce4, type: 3}
+    Strike: {fileID: 21300000, guid: f3b60c1d6d166334f99139b07dd7a120, type: 3}
+    Recovery: {fileID: 21300000, guid: 706afeda18820064ea5df5aa06322465, type: 3}
+    HatWindup: {x: 0, y: 0.125}
+    HatStrike: {x: 0.33333334, y: -0.20833333}
+    HatRecovery: {x: 0, y: 0}

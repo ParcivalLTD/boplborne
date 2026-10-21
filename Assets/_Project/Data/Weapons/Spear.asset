@@ -25,26 +25,26 @@ MonoBehaviour:
   _swingReach: 1
   _smearScale: 0.9
   _combo:
-  - _damage: 6
+  - _damage: 7
     _knockback: {x: 1.5, y: 0.5}
-    _hitboxSize: {x: 2.6, y: 0.6}
-    _hitboxOffset: {x: 1.8, y: 0}
+    _hitboxSize: {x: 2.2, y: 0.55}
+    _hitboxOffset: {x: 1.3, y: 0}
     _startup: 0.09
     _active: 0.08
     _recovery: 0.18
     _staminaCost: 9
-  - _damage: 6
+  - _damage: 7
     _knockback: {x: 1.5, y: 0.5}
-    _hitboxSize: {x: 2.6, y: 0.6}
-    _hitboxOffset: {x: 1.8, y: 0}
+    _hitboxSize: {x: 2.2, y: 0.55}
+    _hitboxOffset: {x: 1.3, y: 0}
     _startup: 0.09
     _active: 0.08
     _recovery: 0.18
     _staminaCost: 9
-  - _damage: 9
+  - _damage: 10
     _knockback: {x: 8, y: 3}
-    _hitboxSize: {x: 3, y: 0.7}
-    _hitboxOffset: {x: 2, y: 0}
+    _hitboxSize: {x: 2.5, y: 0.6}
+    _hitboxOffset: {x: 1.5, y: 0}
     _startup: 0.12
     _active: 0.1
     _recovery: 0.3
@@ -52,8 +52,8 @@ MonoBehaviour:
   _heavy:
     _damage: 18
     _knockback: {x: 11, y: 3}
-    _hitboxSize: {x: 3.4, y: 0.7}
-    _hitboxOffset: {x: 2.2, y: 0}
+    _hitboxSize: {x: 2.8, y: 0.6}
+    _hitboxOffset: {x: 1.6, y: 0}
     _startup: 0.25
     _active: 0.1
     _recovery: 0.35
@@ -62,8 +62,8 @@ MonoBehaviour:
   _aerial:
     _damage: 9
     _knockback: {x: 5, y: 3}
-    _hitboxSize: {x: 2.4, y: 0.7}
-    _hitboxOffset: {x: 1.4, y: -0.2}
+    _hitboxSize: {x: 2, y: 0.7}
+    _hitboxOffset: {x: 1.1, y: -0.2}
     _startup: 0.08
     _active: 0.14
     _recovery: 0.22
@@ -72,22 +72,26 @@ MonoBehaviour:
   _up:
     _damage: 10
     _knockback: {x: 1.5, y: 10}
-    _hitboxSize: {x: 0.7, y: 2.6}
-    _hitboxOffset: {x: 0.2, y: 1.6}
+    _hitboxSize: {x: 0.7, y: 2}
+    _hitboxOffset: {x: 0.2, y: 1.4}
     _startup: 0.1
     _active: 0.12
     _recovery: 0.25
-    _staminaCost: 10
+    _staminaCost: 11
   _hasDown: 1
   _down:
     _damage: 10
     _knockback: {x: 1, y: -6}
-    _hitboxSize: {x: 0.8, y: 2.2}
-    _hitboxOffset: {x: 0.3, y: -1.4}
+    _hitboxSize: {x: 0.8, y: 1.8}
+    _hitboxOffset: {x: 0.3, y: -1.3}
     _startup: 0.1
     _active: 0.12
     _recovery: 0.25
-    _staminaCost: 10
+    _staminaCost: 11
   _inputBuffer: 0.3
   _chainWindow: 0.35
+  _swingCue: {fileID: 11400000, guid: 77b93d6918b3d804fb6b613f4e4c915c, type: 2}
+  _finisherCue: {fileID: 11400000, guid: dad88520c077b1747a156b579202c64e, type: 2}
+  _hitCue: {fileID: 11400000, guid: e4b90e045fb62804aaadd31059b2e235, type: 2}
+  _heavyHitCue: {fileID: 11400000, guid: a9a06557dbe769147bd5fa6b49297e12, type: 2}
   _moveSpeedMultiplier: 0.2

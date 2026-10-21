@@ -17,7 +17,7 @@ namespace GraceRun.UI.Menus
 
         public static GameObject Build(Transform parent, MenuPages pages, out Selectable first)
         {
-            var column = MenuKit.Column(parent, "ControlsSetup", MenuStyle.PanelWidth + 80f);
+            var column = MenuKit.Column(parent, "ControlsSetup", MenuStyle.PanelWidth + 240f);
             MenuKit.Label(column, "CONTROLS SETUP", MenuStyle.HeadingSize, MenuStyle.Gold);
             var hint = MenuKit.Label(column, string.Empty, MenuStyle.SmallSize, MenuStyle.Fog);
             var rows = new List<MenuOptionRow>();

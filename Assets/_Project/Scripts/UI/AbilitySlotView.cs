@@ -1,3 +1,4 @@
+using GraceRun.UI.Skin;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -33,21 +34,19 @@ namespace GraceRun.UI
         private void EnsureLevelBadge()
         {
             if (_levelBadge != null) return;
-            var go = new GameObject("LevelBadge", typeof(RectTransform), typeof(Text));
+            var go = new GameObject("LevelBadge", typeof(RectTransform), typeof(Text), typeof(Outline));
             go.transform.SetParent(transform, false);
             var rect = go.GetComponent<RectTransform>();
             rect.anchorMin = new Vector2(1f, 1f);
             rect.anchorMax = new Vector2(1f, 1f);
             rect.pivot = new Vector2(1f, 1f);
-            rect.sizeDelta = new Vector2(18f, 14f);
+            rect.sizeDelta = new Vector2(24f, 20f);
             rect.anchoredPosition = new Vector2(2f, 2f);
 
             _levelBadge = go.GetComponent<Text>();
-            _levelBadge.font = Resources.GetBuiltinResource<Font>("LegacyRuntime.ttf");
-            _levelBadge.fontSize = 11;
-            _levelBadge.fontStyle = FontStyle.Bold;
+            UiKit.StyleText(_levelBadge, true, 16, UiPalette.Cream);
+            UiKit.InkOutline(_levelBadge, 1f);
             _levelBadge.alignment = TextAnchor.MiddleCenter;
-            _levelBadge.color = new Color(1f, 0.788f, 0.29f); // Gold #FFC94A
             _levelBadge.text = "II";
             _levelBadge.raycastTarget = false;
             go.SetActive(false);

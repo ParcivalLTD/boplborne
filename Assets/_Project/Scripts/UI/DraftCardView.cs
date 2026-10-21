@@ -12,6 +12,7 @@ namespace GraceRun.UI
     public class DraftCardView : MonoBehaviour
     {
         private const string ComboPrefix = "Combo: ";
+        private const float RarityTextDarken = 0.4f;
 
         [SerializeField] private Button _button;
         [SerializeField] private Image _frame;
@@ -47,8 +48,8 @@ namespace GraceRun.UI
             _icon.sprite = ability.Icon;
             _name.text = ability.DisplayName;
             _rarity.text = ability.Rarity.ToString().ToUpperInvariant();
-            _rarity.color = frame;
-            _tags.text = ability.Tags.ToString().Replace(", ", " · ");
+            _rarity.color = new Color(frame.r * RarityTextDarken, frame.g * RarityTextDarken, frame.b * RarityTextDarken, 1f);
+            _tags.text = ability.Tags.ToString().Replace(", ", " / ");
             _cooldown.text = $"{ability.Cooldown:0.#} s cooldown";
             _description.text = ability.Description;
             _combo.text = ComboPrefix + ability.ComboHook;

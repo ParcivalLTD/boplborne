@@ -31,24 +31,24 @@ MonoBehaviour:
     _hitboxOffset: {x: 1, y: 0}
     _startup: 0.05
     _active: 0.08
-    _recovery: 0.14
-    _staminaCost: 8
+    _recovery: 0.16
+    _staminaCost: 9
   - _damage: 7
     _knockback: {x: 2, y: 1}
     _hitboxSize: {x: 1.5, y: 1.1}
     _hitboxOffset: {x: 1, y: 0}
     _startup: 0.05
     _active: 0.08
-    _recovery: 0.14
-    _staminaCost: 8
+    _recovery: 0.16
+    _staminaCost: 9
   - _damage: 10
     _knockback: {x: 9, y: 5}
     _hitboxSize: {x: 1.8, y: 1.2}
     _hitboxOffset: {x: 1.1, y: 0}
     _startup: 0.08
     _active: 0.1
-    _recovery: 0.26
-    _staminaCost: 8
+    _recovery: 0.3
+    _staminaCost: 9
   _heavy:
     _damage: 17
     _knockback: {x: 12, y: 6}
@@ -56,8 +56,8 @@ MonoBehaviour:
     _hitboxOffset: {x: 1.1, y: 0}
     _startup: 0.2
     _active: 0.1
-    _recovery: 0.3
-    _staminaCost: 20
+    _recovery: 0.32
+    _staminaCost: 19
   _hasAerial: 1
   _aerial:
     _damage: 10
@@ -67,7 +67,7 @@ MonoBehaviour:
     _startup: 0.05
     _active: 0.15
     _recovery: 0.2
-    _staminaCost: 10
+    _staminaCost: 11
   _hasUp: 1
   _up:
     _damage: 9
@@ -90,4 +90,8 @@ MonoBehaviour:
     _staminaCost: 10
   _inputBuffer: 0.3
   _chainWindow: 0.35
+  _swingCue: {fileID: 11400000, guid: e05ee1d3e047ea34c9360604b5f23673, type: 2}
+  _finisherCue: {fileID: 11400000, guid: 3f5b27672baf3b3488e4fd4cb09aa33b, type: 2}
+  _hitCue: {fileID: 11400000, guid: 7fe379a661f6f07488bb799215442502, type: 2}
+  _heavyHitCue: {fileID: 11400000, guid: b52e9fc16a076bb4d930a33932fa96d1, type: 2}
   _moveSpeedMultiplier: 0.25

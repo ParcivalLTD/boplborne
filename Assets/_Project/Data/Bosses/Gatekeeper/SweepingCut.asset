@@ -28,7 +28,8 @@ MonoBehaviour:
   _lungeTime: 0.2
   _followUp: {fileID: 0}
   _behaviour: {fileID: 0}
-  _windupCue: {fileID: 11400000, guid: db44826c1c239b24b9a95d8b506368d3, type: 2}
+  _windupCue: {fileID: 11400000, guid: b2684044f8ba7024791444f26d8b7aab, type: 2}
+  _strikeCue: {fileID: 11400000, guid: a0d642902a53a2e48a33e741c9feaca7, type: 2}
   _weight: 0.8
   _cooldown: 3
   _minRange: 0

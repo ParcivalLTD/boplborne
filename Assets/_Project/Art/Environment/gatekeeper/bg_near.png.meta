@@ -1,0 +1,3239 @@
+fileFormatVersion: 2
+guid: a8dd1a9dcde5cc3438fbf92f2c74b2fb
+TextureImporter:
+  internalIDToNameTable:
+  - first:
+      213: 5240957011244312935
+    second: bg_near_0
+  - first:
+      213: 7608046017763111759
+    second: bg_near_1
+  - first:
+      213: 6413468232190011737
+    second: bg_near_2
+  - first:
+      213: 2709018934453415251
+    second: bg_near_3
+  - first:
+      213: -557644334715903510
+    second: bg_near_4
+  - first:
+      213: 4112034051102946632
+    second: bg_near_5
+  - first:
+      213: 6968917753834172949
+    second: bg_near_6
+  - first:
+      213: -6214666821899453877
+    second: bg_near_7
+  - first:
+      213: 2310364842407315776
+    second: bg_near_8
+  - first:
+      213: -1505215358037261816
+    second: bg_near_9
+  - first:
+      213: -5089723242569114852
+    second: bg_near_10
+  - first:
+      213: 2146560137973702934
+    second: bg_near_11
+  - first:
+      213: 5012713510429195306
+    second: bg_near_12
+  - first:
+      213: 2609683364970325328
+    second: bg_near_13
+  - first:
+      213: 6966946815148453495
+    second: bg_near_14
+  - first:
+      213: 8164500841407194778
+    second: bg_near_15
+  - first:
+      213: 4336741358967526922
+    second: bg_near_16
+  - first:
+      213: 9079135879131235659
+    second: bg_near_17
+  - first:
+      213: -4633317249596552497
+    second: bg_near_18
+  - first:
+      213: 9186856974160868075
+    second: bg_near_19
+  - first:
+      213: -4627224854719889932
+    second: bg_near_20
+  - first:
+      213: -8025849659607081154
+    second: bg_near_21
+  - first:
+      213: -9174745907262711293
+    second: bg_near_22
+  - first:
+      213: 3943154165682731729
+    second: bg_near_23
+  - first:
+      213: 416008470201895868
+    second: bg_near_24
+  - first:
+      213: -6351981238914391273
+    second: bg_near_25
+  - first:
+      213: 2287037790269434039
+    second: bg_near_26
+  - first:
+      213: 6985478825318810119
+    second: bg_near_27
+  - first:
+      213: 7176493826064954507
+    second: bg_near_28
+  - first:
+      213: 2461638310274733531
+    second: bg_near_29
+  - first:
+      213: 7279605719463106533
+    second: bg_near_30
+  - first:
+      213: 8407367874271646491
+    second: bg_near_31
+  - first:
+      213: -8496338540749679228
+    second: bg_near_32
+  - first:
+      213: 6312961724350676822
+    second: bg_near_33
+  - first:
+      213: -5907260224160073573
+    second: bg_near_34
+  - first:
+      213: 1747743107062140455
+    second: bg_near_35
+  - first:
+      213: 4680544668690224000
+    second: bg_near_36
+  - first:
+      213: 1073790593838670630
+    second: bg_near_37
+  - first:
+      213: 1869642735508164924
+    second: bg_near_38
+  - first:
+      213: 6550512971601456644
+    second: bg_near_39
+  - first:
+      213: -1952831128706645912
+    second: bg_near_40
+  - first:
+      213: 8189897644991654134
+    second: bg_near_41
+  - first:
+      213: 5263354226222392554
+    second: bg_near_42
+  - first:
+      213: 8361108369101291157
+    second: bg_near_43
+  - first:
+      213: -944813446410818631
+    second: bg_near_44
+  - first:
+      213: -40039148667998167
+    second: bg_near_45
+  - first:
+      213: 1794311938116291418
+    second: bg_near_46
+  - first:
+      213: 1951700357715756588
+    second: bg_near_47
+  - first:
+      213: 1099175902627629109
+    second: bg_near_48
+  - first:
+      213: 6184449779657298697
+    second: bg_near_49
+  - first:
+      213: 4505166063802866848
+    second: bg_near_50
+  - first:
+      213: 8248441764281466057
+    second: bg_near_51
+  - first:
+      213: -4331670858736325277
+    second: bg_near_52
+  - first:
+      213: 6691351585601628686
+    second: bg_near_53
+  - first:
+      213: 7483236104662939790
+    second: bg_near_54
+  - first:
+      213: 1871041989893344830
+    second: bg_near_55
+  - first:
+      213: 4360343407649055773
+    second: bg_near_56
+  - first:
+      213: -8272554138414019861
+    second: bg_near_57
+  - first:
+      213: 676707984635742079
+    second: bg_near_58
+  - first:
+      213: 6829162834888769412
+    second: bg_near_59
+  - first:
+      213: -8269181379976879388
+    second: bg_near_60
+  - first:
+      213: 3713366423744275782
+    second: bg_near_61
+  - first:
+      213: -8897848207685339675
+    second: bg_near_62
+  - first:
+      213: -8004386013994324600
+    second: bg_near_63
+  - first:
+      213: 1837572196136212137
+    second: bg_near_64
+  - first:
+      213: -7310680530071876649
+    second: bg_near_65
+  - first:
+      213: -34634840523518603
+    second: bg_near_66
+  - first:
+      213: -846736224412862794
+    second: bg_near_67
+  - first:
+      213: 4076235949100645011
+    second: bg_near_68
+  - first:
+      213: 1286249928091441609
+    second: bg_near_69
+  - first:
+      213: 1639180490360501148
+    second: bg_near_70
+  - first:
+      213: 3536267024027104317
+    second: bg_near_71
+  - first:
+      213: -5009678645218305659
+    second: bg_near_72
+  - first:
+      213: 6372966381148328428
+    second: bg_near_73
+  - first:
+      213: 3388074362837463294
+    second: bg_near_74
+  - first:
+      213: 2182336595796665810
+    second: bg_near_75
+  - first:
+      213: 4900611218537865545
+    second: bg_near_76
+  - first:
+      213: -3411279375349147167
+    second: bg_near_77
+  - first:
+      213: -4864771645576091155
+    second: bg_near_78
+  - first:
+      213: 1058030019613238648
+    second: bg_near_79
+  - first:
+      213: -943235452957392320
+    second: bg_near_80
+  - first:
+      213: 9049198669021562059
+    second: bg_near_81
+  - first:
+      213: 8891501748576928374
+    second: bg_near_82
+  - first:
+      213: -597040935513001917
+    second: bg_near_83
+  - first:
+      213: -1794802318041277936
+    second: bg_near_84
+  - first:
+      213: -6974314695041074932
+    second: bg_near_85
+  - first:
+      213: -4633960588135686841
+    second: bg_near_86
+  - first:
+      213: 7304160425217967969
+    second: bg_near_87
+  - first:
+      213: -176334600942967755
+    second: bg_near_88
+  - first:
+      213: 7854727777928357672
+    second: bg_near_89
+  - first:
+      213: -7197428217216328129
+    second: bg_near_90
+  - first:
+      213: -4201712164002965552
+    second: bg_near_91
+  - first:
+      213: -7721483072439108012
+    second: bg_near_92
+  - first:
+      213: -1888780213676531682
+    second: bg_near_93
+  - first:
+      213: -4604791686853437886
+    second: bg_near_94
+  - first:
+      213: -9026962743375034723
+    second: bg_near_95
+  - first:
+      213: 3705282685048963005
+    second: bg_near_96
+  - first:
+      213: -795071521386339215
+    second: bg_near_97
+  - first:
+      213: -280142954643793992
+    second: bg_near_98
+  - first:
+      213: -6450180048207329797
+    second: bg_near_99
+  - first:
+      213: 2131851911163367167
+    second: bg_near_100
+  - first:
+      213: 2767008848391343223
+    second: bg_near_101
+  - first:
+      213: 3821176746920015576
+    second: bg_near_102
+  - first:
+      213: 3778176661917064572
+    second: bg_near_103
+  - first:
+      213: -4998293975343013274
+    second: bg_near_104
+  - first:
+      213: 3476389040386304024
+    second: bg_near_105
+  - first:
+      213: 4476263707708345233
+    second: bg_near_106
+  - first:
+      213: -2248130180906763728
+    second: bg_near_107
+  - first:
+      213: -5521115631609844311
+    second: bg_near_108
+  - first:
+      213: 2095055546819628651
+    second: bg_near_109
+  - first:
+      213: 4925529375935436173
+    second: bg_near_110
+  - first:
+      213: 6659697669829644453
+    second: bg_near_111
+  - first:
+      213: 2923692620480515917
+    second: bg_near_112
+  - first:
+      213: -6427569632455820162
+    second: bg_near_113
+  - first:
+      213: -1094409874219003889
+    second: bg_near_114
+  - first:
+      213: -6629330212663200985
+    second: bg_near_115
+  - first:
+      213: -8572726471146173751
+    second: bg_near_116
+  - first:
+      213: 7104438420756455852
+    second: bg_near_117
+  - first:
+      213: 321711801641562738
+    second: bg_near_118
+  - first:
+      213: -6106851555404078517
+    second: bg_near_119
+  externalObjects: {}
+  serializedVersion: 13
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+    flipGreenChannel: 0
+  isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMipmapLimit: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: 0
+    aniso: 1
+    mipBias: 0
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 1
+  spriteExtrude: 1
+  spriteMeshType: 0
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 12
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationMethod: 0
+  spriteTessellationDetail: -1
+  spriteGeometrySubdivision: -1
+  textureType: 8
+  textureShape: 1
+  singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  ignorePngGamma: 0
+  applyGammaDecoding: 0
+  swizzle: 50462976
+  cookieLightType: 0
+  platformSettings:
+  - serializedVersion: 4
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 0
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: bg_near_0
+      rect:
+        serializedVersion: 2
+        x: 87
+        y: 158
+        width: 29
+        height: 112
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 7696f4a42ae9bb840800000000000000
+      internalID: 5240957011244312935
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: bg_near_1
+      rect:
+        serializedVersion: 2
+        x: 111
+        y: 253
+        width: 7
+        height: 7
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: f4378934b85359960800000000000000
+      internalID: 7608046017763111759
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: bg_near_2
+      rect:
+        serializedVersion: 2
+        x: 119
+        y: 255
+        width: 7
+        height: 7
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 95920fd8067310950800000000000000
+      internalID: 6413468232190011737
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: bg_near_3
+      rect:
+        serializedVersion: 2
+        x: 127
+        y: 257
+        width: 7
+        height: 7
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 35d27ed2e5e589520800000000000000
+      internalID: 2709018934453415251
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: bg_near_4
+      rect:
+        serializedVersion: 2
+        x: 135
+        y: 258
+        width: 7
+        height: 7
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: ae1ef3e9e69d248f0800000000000000
+      internalID: -557644334715903510
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: bg_near_5
+      rect:
+        serializedVersion: 2
+        x: 143
+        y: 258
+        width: 7
+        height: 7
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 8453d48de21e01930800000000000000
+      internalID: 4112034051102946632
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: bg_near_6
+      rect:
+        serializedVersion: 2
+        x: 151
+        y: 258
+        width: 7
+        height: 7
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 512f23236c196b060800000000000000
+      internalID: 6968917753834172949
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: bg_near_7
+      rect:
+        serializedVersion: 2
+        x: 159
+        y: 257
+        width: 7
+        height: 7
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: b4af643c37111c9a0800000000000000
+      internalID: -6214666821899453877
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: bg_near_8
+      rect:
+        serializedVersion: 2
+        x: 167
+        y: 255
+        width: 7
+        height: 7
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 0494d355590101020800000000000000
+      internalID: 2310364842407315776
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: bg_near_9
+      rect:
+        serializedVersion: 2
+        x: 175
+        y: 253
+        width: 7
+        height: 7
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 8020ab95b966c1be0800000000000000
+      internalID: -1505215358037261816
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: bg_near_10
+      rect:
+        serializedVersion: 2
+        x: 303
+        y: 252
+        width: 7
+        height: 7
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c1b5e996dabad59b0800000000000000
+      internalID: -5089723242569114852
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: bg_near_11
+      rect:
+        serializedVersion: 2
+        x: 311
+        y: 255
+        width: 7
+        height: 7
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 611afe0921d1acd10800000000000000
+      internalID: 2146560137973702934
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: bg_near_12
+      rect:
+        serializedVersion: 2
+        x: 319
+        y: 257
+        width: 7
+        height: 7
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: a2cfee5116cb09540800000000000000
+      internalID: 5012713510429195306
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: bg_near_13
+      rect:
+        serializedVersion: 2
+        x: 327
+        y: 158
+        width: 29
+        height: 112
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 0556d499135773420800000000000000
+      internalID: 2609683364970325328
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: bg_near_14
+      rect:
+        serializedVersion: 2
+        x: 351
+        y: 257
+        width: 7
+        height: 7
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 77e66f547319fa060800000000000000
+      internalID: 6966946815148453495
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: bg_near_15
+      rect:
+        serializedVersion: 2
+        x: 359
+        y: 255
+        width: 7
+        height: 7
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: a96247402422e4170800000000000000
+      internalID: 8164500841407194778
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: bg_near_16
+      rect:
+        serializedVersion: 2
+        x: 367
+        y: 252
+        width: 7
+        height: 7
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: a061108f9433f2c30800000000000000
+      internalID: 4336741358967526922
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: bg_near_17
+      rect:
+        serializedVersion: 2
+        x: 586
+        y: 252
+        width: 7
+        height: 7
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: b450f1f8af19ffd70800000000000000
+      internalID: 9079135879131235659
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: bg_near_18
+      rect:
+        serializedVersion: 2
+        x: 594
+        y: 255
+        width: 7
+        height: 7
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: fca8b16828623bfb0800000000000000
+      internalID: -4633317249596552497
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: bg_near_19
+      rect:
+        serializedVersion: 2
+        x: 602
+        y: 257
+        width: 7
+        height: 7
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: be2bd237eb54e7f70800000000000000
+      internalID: 9186856974160868075
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: bg_near_20
+      rect:
+        serializedVersion: 2
+        x: 604
+        y: 158
+        width: 29
+        height: 112
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 4fdff8eb28bc8cfb0800000000000000
+      internalID: -4627224854719889932
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: bg_near_21
+      rect:
+        serializedVersion: 2
+        x: 634
+        y: 257
+        width: 7
+        height: 7
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e3f1e62e1447e9090800000000000000
+      internalID: -8025849659607081154
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: bg_near_22
+      rect:
+        serializedVersion: 2
+        x: 642
+        y: 255
+        width: 7
+        height: 7
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 30a132d0531cca080800000000000000
+      internalID: -9174745907262711293
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: bg_near_23
+      rect:
+        serializedVersion: 2
+        x: 650
+        y: 252
+        width: 7
+        height: 7
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 1dafe1c62d5e8b630800000000000000
+      internalID: 3943154165682731729
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: bg_near_24
+      rect:
+        serializedVersion: 2
+        x: 778
+        y: 253
+        width: 7
+        height: 7
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: cbb00f1ef75f5c500800000000000000
+      internalID: 416008470201895868
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: bg_near_25
+      rect:
+        serializedVersion: 2
+        x: 786
+        y: 255
+        width: 7
+        height: 7
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 713ef8aa7ba39d7a0800000000000000
+      internalID: -6351981238914391273
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: bg_near_26
+      rect:
+        serializedVersion: 2
+        x: 794
+        y: 257
+        width: 7
+        height: 7
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 7b867e4c0c03dbf10800000000000000
+      internalID: 2287037790269434039
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: bg_near_27
+      rect:
+        serializedVersion: 2
+        x: 802
+        y: 258
+        width: 7
+        height: 7
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 70204212bf761f060800000000000000
+      internalID: 6985478825318810119
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: bg_near_28
+      rect:
+        serializedVersion: 2
+        x: 810
+        y: 258
+        width: 7
+        height: 7
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: b84b263bc17089360800000000000000
+      internalID: 7176493826064954507
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: bg_near_29
+      rect:
+        serializedVersion: 2
+        x: 818
+        y: 258
+        width: 7
+        height: 7
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: bd51b69300f792220800000000000000
+      internalID: 2461638310274733531
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: bg_near_30
+      rect:
+        serializedVersion: 2
+        x: 826
+        y: 257
+        width: 7
+        height: 7
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 5e7108535da560560800000000000000
+      internalID: 7279605719463106533
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: bg_near_31
+      rect:
+        serializedVersion: 2
+        x: 834
+        y: 255
+        width: 7
+        height: 7
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: b131ef99988fca470800000000000000
+      internalID: 8407367874271646491
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: bg_near_32
+      rect:
+        serializedVersion: 2
+        x: 842
+        y: 253
+        width: 7
+        height: 7
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 485972bdc11f61a80800000000000000
+      internalID: -8496338540749679228
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: bg_near_33
+      rect:
+        serializedVersion: 2
+        x: 844
+        y: 158
+        width: 29
+        height: 112
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 65f3f84ad352c9750800000000000000
+      internalID: 6312961724350676822
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: bg_near_34
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 246
+        width: 6
+        height: 7
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: b98f427cf12350ea0800000000000000
+      internalID: -5907260224160073573
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: bg_near_35
+      rect:
+        serializedVersion: 2
+        x: 7
+        y: 243
+        width: 7
+        height: 7
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 72e831f881b314810800000000000000
+      internalID: 1747743107062140455
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: bg_near_36
+      rect:
+        serializedVersion: 2
+        x: 183
+        y: 250
+        width: 7
+        height: 7
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 08311acd392a4f040800000000000000
+      internalID: 4680544668690224000
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: bg_near_37
+      rect:
+        serializedVersion: 2
+        x: 191
+        y: 247
+        width: 7
+        height: 7
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 623e8ec1bded6ee00800000000000000
+      internalID: 1073790593838670630
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: bg_near_38
+      rect:
+        serializedVersion: 2
+        x: 199
+        y: 243
+        width: 7
+        height: 7
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c319ad2892e42f910800000000000000
+      internalID: 1869642735508164924
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: bg_near_39
+      rect:
+        serializedVersion: 2
+        x: 279
+        y: 243
+        width: 7
+        height: 7
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 40ea4e077d818ea50800000000000000
+      internalID: 6550512971601456644
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: bg_near_40
+      rect:
+        serializedVersion: 2
+        x: 287
+        y: 246
+        width: 7
+        height: 7
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 8608d1b5f6626e4e0800000000000000
+      internalID: -1952831128706645912
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: bg_near_41
+      rect:
+        serializedVersion: 2
+        x: 295
+        y: 250
+        width: 7
+        height: 7
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 6f82984248c58a170800000000000000
+      internalID: 8189897644991654134
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: bg_near_42
+      rect:
+        serializedVersion: 2
+        x: 375
+        y: 250
+        width: 7
+        height: 7
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: ae4690548c03b0940800000000000000
+      internalID: 5263354226222392554
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: bg_near_43
+      rect:
+        serializedVersion: 2
+        x: 383
+        y: 247
+        width: 7
+        height: 7
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 59ef3dc33cf980470800000000000000
+      internalID: 8361108369101291157
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: bg_near_44
+      rect:
+        serializedVersion: 2
+        x: 391
+        y: 243
+        width: 7
+        height: 7
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 9bbaba32d2953e2f0800000000000000
+      internalID: -944813446410818631
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: bg_near_45
+      rect:
+        serializedVersion: 2
+        x: 471
+        y: 243
+        width: 7
+        height: 7
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 920f88e3b90c17ff0800000000000000
+      internalID: -40039148667998167
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: bg_near_46
+      rect:
+        serializedVersion: 2
+        x: 482
+        y: 243
+        width: 7
+        height: 7
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: a5b0aa7733da6e810800000000000000
+      internalID: 1794311938116291418
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: bg_near_47
+      rect:
+        serializedVersion: 2
+        x: 562
+        y: 243
+        width: 7
+        height: 7
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c2686a18225d51b10800000000000000
+      internalID: 1951700357715756588
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: bg_near_48
+      rect:
+        serializedVersion: 2
+        x: 570
+        y: 247
+        width: 7
+        height: 7
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 5380ac5e8ae014f00800000000000000
+      internalID: 1099175902627629109
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: bg_near_49
+      rect:
+        serializedVersion: 2
+        x: 578
+        y: 250
+        width: 7
+        height: 7
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 90357b7de4493d550800000000000000
+      internalID: 6184449779657298697
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: bg_near_50
+      rect:
+        serializedVersion: 2
+        x: 658
+        y: 250
+        width: 7
+        height: 7
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 0ac5d176aa0958e30800000000000000
+      internalID: 4505166063802866848
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: bg_near_51
+      rect:
+        serializedVersion: 2
+        x: 666
+        y: 246
+        width: 7
+        height: 7
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 9cc3e7e151a587270800000000000000
+      internalID: 8248441764281466057
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: bg_near_52
+      rect:
+        serializedVersion: 2
+        x: 674
+        y: 243
+        width: 7
+        height: 7
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 36d2c1ddd40d2e3c0800000000000000
+      internalID: -4331670858736325277
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: bg_near_53
+      rect:
+        serializedVersion: 2
+        x: 754
+        y: 243
+        width: 7
+        height: 7
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e0a280790d47cdc50800000000000000
+      internalID: 6691351585601628686
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: bg_near_54
+      rect:
+        serializedVersion: 2
+        x: 762
+        y: 247
+        width: 7
+        height: 7
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e88ffccd69bc9d760800000000000000
+      internalID: 7483236104662939790
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: bg_near_55
+      rect:
+        serializedVersion: 2
+        x: 770
+        y: 250
+        width: 7
+        height: 7
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e3ece6fc6c647f910800000000000000
+      internalID: 1871041989893344830
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: bg_near_56
+      rect:
+        serializedVersion: 2
+        x: 946
+        y: 243
+        width: 7
+        height: 7
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: d1463a72a3d038c30800000000000000
+      internalID: 4360343407649055773
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: bg_near_57
+      rect:
+        serializedVersion: 2
+        x: 954
+        y: 246
+        width: 6
+        height: 7
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: bea05aa47dbf13d80800000000000000
+      internalID: -8272554138414019861
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: bg_near_58
+      rect:
+        serializedVersion: 2
+        x: 15
+        y: 240
+        width: 7
+        height: 7
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: f7742e0a356246900800000000000000
+      internalID: 676707984635742079
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: bg_near_59
+      rect:
+        serializedVersion: 2
+        x: 23
+        y: 238
+        width: 7
+        height: 7
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 48f38d67a6f06ce50800000000000000
+      internalID: 6829162834888769412
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: bg_near_60
+      rect:
+        serializedVersion: 2
+        x: 31
+        y: 236
+        width: 7
+        height: 7
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 4e2243fc857fd3d80800000000000000
+      internalID: -8269181379976879388
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: bg_near_61
+      rect:
+        serializedVersion: 2
+        x: 39
+        y: 235
+        width: 7
+        height: 7
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 645e3209617888330800000000000000
+      internalID: 3713366423744275782
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: bg_near_62
+      rect:
+        serializedVersion: 2
+        x: 47
+        y: 234
+        width: 7
+        height: 7
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 5e5b19ba23e748480800000000000000
+      internalID: -8897848207685339675
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: bg_near_63
+      rect:
+        serializedVersion: 2
+        x: 55
+        y: 235
+        width: 7
+        height: 7
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 88d63ce4455bae090800000000000000
+      internalID: -8004386013994324600
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: bg_near_64
+      rect:
+        serializedVersion: 2
+        x: 63
+        y: 236
+        width: 7
+        height: 7
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 9a655df2d2e508910800000000000000
+      internalID: 1837572196136212137
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: bg_near_65
+      rect:
+        serializedVersion: 2
+        x: 71
+        y: 238
+        width: 7
+        height: 7
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 7db83b2aace3b8a90800000000000000
+      internalID: -7310680530071876649
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: bg_near_66
+      rect:
+        serializedVersion: 2
+        x: 79
+        y: 240
+        width: 7
+        height: 7
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 57d4eb9cbc3f48ff0800000000000000
+      internalID: -34634840523518603
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: bg_near_67
+      rect:
+        serializedVersion: 2
+        x: 207
+        y: 240
+        width: 7
+        height: 7
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 6b67a6dd3e9cf34f0800000000000000
+      internalID: -846736224412862794
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: bg_near_68
+      rect:
+        serializedVersion: 2
+        x: 215
+        y: 238
+        width: 7
+        height: 7
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 39a32d6bff2b19830800000000000000
+      internalID: 4076235949100645011
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: bg_near_69
+      rect:
+        serializedVersion: 2
+        x: 223
+        y: 236
+        width: 7
+        height: 7
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 9c91348ae7da9d110800000000000000
+      internalID: 1286249928091441609
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: bg_near_70
+      rect:
+        serializedVersion: 2
+        x: 231
+        y: 235
+        width: 7
+        height: 7
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c9330b2a8f98fb610800000000000000
+      internalID: 1639180490360501148
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: bg_near_71
+      rect:
+        serializedVersion: 2
+        x: 239
+        y: 234
+        width: 7
+        height: 7
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: d3430165f18531130800000000000000
+      internalID: 3536267024027104317
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: bg_near_72
+      rect:
+        serializedVersion: 2
+        x: 247
+        y: 235
+        width: 7
+        height: 7
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 58917e880db0a7ab0800000000000000
+      internalID: -5009678645218305659
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: bg_near_73
+      rect:
+        serializedVersion: 2
+        x: 255
+        y: 236
+        width: 7
+        height: 7
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: ce15ad18823517850800000000000000
+      internalID: 6372966381148328428
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: bg_near_74
+      rect:
+        serializedVersion: 2
+        x: 263
+        y: 238
+        width: 7
+        height: 7
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: ef0f885aeabd40f20800000000000000
+      internalID: 3388074362837463294
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: bg_near_75
+      rect:
+        serializedVersion: 2
+        x: 271
+        y: 240
+        width: 7
+        height: 7
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 2d5abc44297394e10800000000000000
+      internalID: 2182336595796665810
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: bg_near_76
+      rect:
+        serializedVersion: 2
+        x: 399
+        y: 240
+        width: 7
+        height: 7
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 9416e3f40f7720440800000000000000
+      internalID: 4900611218537865545
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: bg_near_77
+      rect:
+        serializedVersion: 2
+        x: 407
+        y: 238
+        width: 7
+        height: 7
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 1e992ba5b73b8a0d0800000000000000
+      internalID: -3411279375349147167
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: bg_near_78
+      rect:
+        serializedVersion: 2
+        x: 415
+        y: 236
+        width: 7
+        height: 7
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: de96b0886fbdc7cb0800000000000000
+      internalID: -4864771645576091155
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: bg_near_79
+      rect:
+        serializedVersion: 2
+        x: 423
+        y: 235
+        width: 7
+        height: 7
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 8752fb872b0eeae00800000000000000
+      internalID: 1058030019613238648
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: bg_near_80
+      rect:
+        serializedVersion: 2
+        x: 431
+        y: 234
+        width: 7
+        height: 7
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 0428bee5a54f8e2f0800000000000000
+      internalID: -943235452957392320
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: bg_near_81
+      rect:
+        serializedVersion: 2
+        x: 439
+        y: 235
+        width: 7
+        height: 7
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: bc4c7f8ae36359d70800000000000000
+      internalID: 9049198669021562059
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: bg_near_82
+      rect:
+        serializedVersion: 2
+        x: 447
+        y: 236
+        width: 7
+        height: 7
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 67241bb2bb5f46b70800000000000000
+      internalID: 8891501748576928374
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: bg_near_83
+      rect:
+        serializedVersion: 2
+        x: 455
+        y: 238
+        width: 7
+        height: 7
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 3407162be62e6b7f0800000000000000
+      internalID: -597040935513001917
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: bg_near_84
+      rect:
+        serializedVersion: 2
+        x: 463
+        y: 240
+        width: 7
+        height: 7
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 01a1a1f0dc49717e0800000000000000
+      internalID: -1794802318041277936
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: bg_near_85
+      rect:
+        serializedVersion: 2
+        x: 490
+        y: 240
+        width: 7
+        height: 7
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c093a428cb1463f90800000000000000
+      internalID: -6974314695041074932
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: bg_near_86
+      rect:
+        serializedVersion: 2
+        x: 498
+        y: 238
+        width: 7
+        height: 7
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 74d1309956dd0bfb0800000000000000
+      internalID: -4633960588135686841
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: bg_near_87
+      rect:
+        serializedVersion: 2
+        x: 506
+        y: 236
+        width: 7
+        height: 7
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 167459725379d5560800000000000000
+      internalID: 7304160425217967969
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: bg_near_88
+      rect:
+        serializedVersion: 2
+        x: 514
+        y: 235
+        width: 7
+        height: 7
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 5342f2d5d988d8df0800000000000000
+      internalID: -176334600942967755
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: bg_near_89
+      rect:
+        serializedVersion: 2
+        x: 522
+        y: 234
+        width: 7
+        height: 7
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 82720d24c49910d60800000000000000
+      internalID: 7854727777928357672
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: bg_near_90
+      rect:
+        serializedVersion: 2
+        x: 530
+        y: 235
+        width: 7
+        height: 7
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: f3e92788b299d1c90800000000000000
+      internalID: -7197428217216328129
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: bg_near_91
+      rect:
+        serializedVersion: 2
+        x: 538
+        y: 236
+        width: 7
+        height: 7
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 0d75a286c0580b5c0800000000000000
+      internalID: -4201712164002965552
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: bg_near_92
+      rect:
+        serializedVersion: 2
+        x: 546
+        y: 238
+        width: 7
+        height: 7
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 45e33184e08c7d490800000000000000
+      internalID: -7721483072439108012
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: bg_near_93
+      rect:
+        serializedVersion: 2
+        x: 554
+        y: 240
+        width: 7
+        height: 7
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e1026012764b9c5e0800000000000000
+      internalID: -1888780213676531682
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: bg_near_94
+      rect:
+        serializedVersion: 2
+        x: 682
+        y: 240
+        width: 7
+        height: 7
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 246dd68ab5e7810c0800000000000000
+      internalID: -4604791686853437886
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: bg_near_95
+      rect:
+        serializedVersion: 2
+        x: 690
+        y: 238
+        width: 7
+        height: 7
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: d9602783639c9b280800000000000000
+      internalID: -9026962743375034723
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: bg_near_96
+      rect:
+        serializedVersion: 2
+        x: 698
+        y: 236
+        width: 7
+        height: 7
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: dbfbfba78fecb6330800000000000000
+      internalID: 3705282685048963005
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: bg_near_97
+      rect:
+        serializedVersion: 2
+        x: 706
+        y: 235
+        width: 7
+        height: 7
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 174ecbce9a657f4f0800000000000000
+      internalID: -795071521386339215
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: bg_near_98
+      rect:
+        serializedVersion: 2
+        x: 714
+        y: 234
+        width: 7
+        height: 7
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 8b7d02e877bbc1cf0800000000000000
+      internalID: -280142954643793992
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: bg_near_99
+      rect:
+        serializedVersion: 2
+        x: 722
+        y: 235
+        width: 7
+        height: 7
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: bf54a41bb6b5c76a0800000000000000
+      internalID: -6450180048207329797
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: bg_near_100
+      rect:
+        serializedVersion: 2
+        x: 730
+        y: 236
+        width: 7
+        height: 7
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: ffe41a6a40cd59d10800000000000000
+      internalID: 2131851911163367167
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: bg_near_101
+      rect:
+        serializedVersion: 2
+        x: 738
+        y: 238
+        width: 7
+        height: 7
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 77c8aba23e3666620800000000000000
+      internalID: 2767008848391343223
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: bg_near_102
+      rect:
+        serializedVersion: 2
+        x: 746
+        y: 240
+        width: 7
+        height: 7
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 8d67620810c870530800000000000000
+      internalID: 3821176746920015576
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: bg_near_103
+      rect:
+        serializedVersion: 2
+        x: 874
+        y: 240
+        width: 7
+        height: 7
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c7ddc3808a7ce6430800000000000000
+      internalID: 3778176661917064572
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: bg_near_104
+      rect:
+        serializedVersion: 2
+        x: 882
+        y: 238
+        width: 7
+        height: 7
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 66264bc8c1e72aab0800000000000000
+      internalID: -4998293975343013274
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: bg_near_105
+      rect:
+        serializedVersion: 2
+        x: 890
+        y: 236
+        width: 7
+        height: 7
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 818694dd96d9e3030800000000000000
+      internalID: 3476389040386304024
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: bg_near_106
+      rect:
+        serializedVersion: 2
+        x: 898
+        y: 235
+        width: 7
+        height: 7
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 19bcdea3022ee1e30800000000000000
+      internalID: 4476263707708345233
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: bg_near_107
+      rect:
+        serializedVersion: 2
+        x: 906
+        y: 234
+        width: 7
+        height: 7
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 03ab736f2890dc0e0800000000000000
+      internalID: -2248130180906763728
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: bg_near_108
+      rect:
+        serializedVersion: 2
+        x: 914
+        y: 235
+        width: 7
+        height: 7
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 9ade90ec59e0163b0800000000000000
+      internalID: -5521115631609844311
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: bg_near_109
+      rect:
+        serializedVersion: 2
+        x: 922
+        y: 236
+        width: 7
+        height: 7
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: b6e45e47be1231d10800000000000000
+      internalID: 2095055546819628651
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: bg_near_110
+      rect:
+        serializedVersion: 2
+        x: 930
+        y: 238
+        width: 7
+        height: 7
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: d85126feedefa5440800000000000000
+      internalID: 4925529375935436173
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: bg_near_111
+      rect:
+        serializedVersion: 2
+        x: 938
+        y: 240
+        width: 7
+        height: 7
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 5a051b10fbffb6c50800000000000000
+      internalID: 6659697669829644453
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: bg_near_112
+      rect:
+        serializedVersion: 2
+        x: 26
+        y: 52
+        width: 25
+        height: 55
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: d4f0c2ca2fa039820800000000000000
+      internalID: 2923692620480515917
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: bg_near_113
+      rect:
+        serializedVersion: 2
+        x: 156
+        y: 52
+        width: 25
+        height: 56
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e7cf168597facc6a0800000000000000
+      internalID: -6427569632455820162
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: bg_near_114
+      rect:
+        serializedVersion: 2
+        x: 286
+        y: 52
+        width: 25
+        height: 68
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: f001f709400efc0f0800000000000000
+      internalID: -1094409874219003889
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: bg_near_115
+      rect:
+        serializedVersion: 2
+        x: 406
+        y: 52
+        width: 25
+        height: 76
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 723f1779b43eff3a0800000000000000
+      internalID: -6629330212663200985
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: bg_near_116
+      rect:
+        serializedVersion: 2
+        x: 529
+        y: 52
+        width: 25
+        height: 76
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 9ca8ebad1be870980800000000000000
+      internalID: -8572726471146173751
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: bg_near_117
+      rect:
+        serializedVersion: 2
+        x: 649
+        y: 52
+        width: 25
+        height: 68
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: ca163dd4a19089260800000000000000
+      internalID: 7104438420756455852
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: bg_near_118
+      rect:
+        serializedVersion: 2
+        x: 779
+        y: 52
+        width: 25
+        height: 56
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 27275e8dd23f67400800000000000000
+      internalID: 321711801641562738
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: bg_near_119
+      rect:
+        serializedVersion: 2
+        x: 909
+        y: 52
+        width: 25
+        height: 55
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: b422918adda104ba0800000000000000
+      internalID: -6106851555404078517
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    customData: 
+    physicsShape: []
+    bones: []
+    spriteID: 5e97eb03825dee720800000000000000
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+    spriteCustomMetadata:
+      entries: []
+    nameFileIdTable:
+      bg_near_0: 5240957011244312935
+      bg_near_1: 7608046017763111759
+      bg_near_10: -5089723242569114852
+      bg_near_100: 2131851911163367167
+      bg_near_101: 2767008848391343223
+      bg_near_102: 3821176746920015576
+      bg_near_103: 3778176661917064572
+      bg_near_104: -4998293975343013274
+      bg_near_105: 3476389040386304024
+      bg_near_106: 4476263707708345233
+      bg_near_107: -2248130180906763728
+      bg_near_108: -5521115631609844311
+      bg_near_109: 2095055546819628651
+      bg_near_11: 2146560137973702934
+      bg_near_110: 4925529375935436173
+      bg_near_111: 6659697669829644453
+      bg_near_112: 2923692620480515917
+      bg_near_113: -6427569632455820162
+      bg_near_114: -1094409874219003889
+      bg_near_115: -6629330212663200985
+      bg_near_116: -8572726471146173751
+      bg_near_117: 7104438420756455852
+      bg_near_118: 321711801641562738
+      bg_near_119: -6106851555404078517
+      bg_near_12: 5012713510429195306
+      bg_near_13: 2609683364970325328
+      bg_near_14: 6966946815148453495
+      bg_near_15: 8164500841407194778
+      bg_near_16: 4336741358967526922
+      bg_near_17: 9079135879131235659
+      bg_near_18: -4633317249596552497
+      bg_near_19: 9186856974160868075
+      bg_near_2: 6413468232190011737
+      bg_near_20: -4627224854719889932
+      bg_near_21: -8025849659607081154
+      bg_near_22: -9174745907262711293
+      bg_near_23: 3943154165682731729
+      bg_near_24: 416008470201895868
+      bg_near_25: -6351981238914391273
+      bg_near_26: 2287037790269434039
+      bg_near_27: 6985478825318810119
+      bg_near_28: 7176493826064954507
+      bg_near_29: 2461638310274733531
+      bg_near_3: 2709018934453415251
+      bg_near_30: 7279605719463106533
+      bg_near_31: 8407367874271646491
+      bg_near_32: -8496338540749679228
+      bg_near_33: 6312961724350676822
+      bg_near_34: -5907260224160073573
+      bg_near_35: 1747743107062140455
+      bg_near_36: 4680544668690224000
+      bg_near_37: 1073790593838670630
+      bg_near_38: 1869642735508164924
+      bg_near_39: 6550512971601456644
+      bg_near_4: -557644334715903510
+      bg_near_40: -1952831128706645912
+      bg_near_41: 8189897644991654134
+      bg_near_42: 5263354226222392554
+      bg_near_43: 8361108369101291157
+      bg_near_44: -944813446410818631
+      bg_near_45: -40039148667998167
+      bg_near_46: 1794311938116291418
+      bg_near_47: 1951700357715756588
+      bg_near_48: 1099175902627629109
+      bg_near_49: 6184449779657298697
+      bg_near_5: 4112034051102946632
+      bg_near_50: 4505166063802866848
+      bg_near_51: 8248441764281466057
+      bg_near_52: -4331670858736325277
+      bg_near_53: 6691351585601628686
+      bg_near_54: 7483236104662939790
+      bg_near_55: 1871041989893344830
+      bg_near_56: 4360343407649055773
+      bg_near_57: -8272554138414019861
+      bg_near_58: 676707984635742079
+      bg_near_59: 6829162834888769412
+      bg_near_6: 6968917753834172949
+      bg_near_60: -8269181379976879388
+      bg_near_61: 3713366423744275782
+      bg_near_62: -8897848207685339675
+      bg_near_63: -8004386013994324600
+      bg_near_64: 1837572196136212137
+      bg_near_65: -7310680530071876649
+      bg_near_66: -34634840523518603
+      bg_near_67: -846736224412862794
+      bg_near_68: 4076235949100645011
+      bg_near_69: 1286249928091441609
+      bg_near_7: -6214666821899453877
+      bg_near_70: 1639180490360501148
+      bg_near_71: 3536267024027104317
+      bg_near_72: -5009678645218305659
+      bg_near_73: 6372966381148328428
+      bg_near_74: 3388074362837463294
+      bg_near_75: 2182336595796665810
+      bg_near_76: 4900611218537865545
+      bg_near_77: -3411279375349147167
+      bg_near_78: -4864771645576091155
+      bg_near_79: 1058030019613238648
+      bg_near_8: 2310364842407315776
+      bg_near_80: -943235452957392320
+      bg_near_81: 9049198669021562059
+      bg_near_82: 8891501748576928374
+      bg_near_83: -597040935513001917
+      bg_near_84: -1794802318041277936
+      bg_near_85: -6974314695041074932
+      bg_near_86: -4633960588135686841
+      bg_near_87: 7304160425217967969
+      bg_near_88: -176334600942967755
+      bg_near_89: 7854727777928357672
+      bg_near_9: -1505215358037261816
+      bg_near_90: -7197428217216328129
+      bg_near_91: -4201712164002965552
+      bg_near_92: -7721483072439108012
+      bg_near_93: -1888780213676531682
+      bg_near_94: -4604791686853437886
+      bg_near_95: -9026962743375034723
+      bg_near_96: 3705282685048963005
+      bg_near_97: -795071521386339215
+      bg_near_98: -280142954643793992
+      bg_near_99: -6450180048207329797
+  mipmapLimitGroupName: 
+  pSDRemoveMatte: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

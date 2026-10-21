@@ -40,7 +40,7 @@ MonoBehaviour:
     _startup: 0.2
     _active: 0.12
     _recovery: 0.4
-    _staminaCost: 14
+    _staminaCost: 15
   _heavy:
     _damage: 30
     _knockback: {x: 18, y: 9}
@@ -49,7 +49,7 @@ MonoBehaviour:
     _startup: 0.4
     _active: 0.14
     _recovery: 0.55
-    _staminaCost: 30
+    _staminaCost: 32
   _hasAerial: 1
   _aerial:
     _damage: 14
@@ -59,7 +59,7 @@ MonoBehaviour:
     _startup: 0.15
     _active: 0.15
     _recovery: 0.3
-    _staminaCost: 16
+    _staminaCost: 15
   _hasUp: 1
   _up:
     _damage: 14
@@ -69,7 +69,7 @@ MonoBehaviour:
     _startup: 0.18
     _active: 0.12
     _recovery: 0.35
-    _staminaCost: 16
+    _staminaCost: 15
   _hasDown: 1
   _down:
     _damage: 14
@@ -79,7 +79,11 @@ MonoBehaviour:
     _startup: 0.2
     _active: 0.12
     _recovery: 0.35
-    _staminaCost: 16
+    _staminaCost: 15
   _inputBuffer: 0.4
   _chainWindow: 0.5
+  _swingCue: {fileID: 11400000, guid: 22b21264fb6139e41a088820e6474db6, type: 2}
+  _finisherCue: {fileID: 11400000, guid: a21742d086b44a14eb0c0619cb7b32eb, type: 2}
+  _hitCue: {fileID: 11400000, guid: 1209e578bf6773a4da47dd2f75a19b90, type: 2}
+  _heavyHitCue: {fileID: 11400000, guid: 75582de9516d38c469c08a4399ab718a, type: 2}
   _moveSpeedMultiplier: 0.1

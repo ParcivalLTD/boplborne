@@ -12,6 +12,7 @@ namespace GraceRun.Core.Settings
     public static class GameSettings
     {
         private const string MasterKey = "settings.masterVolume";
+        private const string MusicKey = "settings.musicVolume";
         private const string SfxKey = "settings.sfxVolume";
         private const string ShakeKey = "settings.screenShake";
         private const string FilmKey = "settings.filmEffects";
@@ -35,6 +36,7 @@ namespace GraceRun.Core.Settings
         public static event Action Changed;
 
         public static float MasterVolume { get; private set; } = 1f;
+        public static float MusicVolume { get; private set; } = 1f;
         public static float SfxVolume { get; private set; } = 1f;
         public static float ShakeMultiplier { get; private set; } = 1f;
         public static bool FilmEffects { get; private set; } = true;
@@ -79,7 +81,9 @@ namespace GraceRun.Core.Settings
         {
             if (IsLoaded || defaults == null) return;
             _defaults = defaults;
+            Audio.AudioLevels.Bind(defaults.Mixer);
             MasterVolume = PlayerPrefs.GetFloat(MasterKey, defaults.MasterVolume);
+            MusicVolume = PlayerPrefs.GetFloat(MusicKey, defaults.MusicVolume);
             SfxVolume = PlayerPrefs.GetFloat(SfxKey, defaults.SfxVolume);
             ShakeMultiplier = PlayerPrefs.GetFloat(ShakeKey, defaults.ScreenShake);
             FilmEffects = PlayerPrefs.GetInt(FilmKey, defaults.FilmEffects ? 1 : 0) == 1;
@@ -92,6 +96,7 @@ namespace GraceRun.Core.Settings
         }
 
         public static void SetMasterVolume(float value) => Change(() => MasterVolume = Mathf.Clamp01(value));
+        public static void SetMusicVolume(float value) => Change(() => MusicVolume = Mathf.Clamp01(value));
         public static void SetSfxVolume(float value) => Change(() => SfxVolume = Mathf.Clamp01(value));
         public static void SetShake(float value) => Change(() => ShakeMultiplier = Mathf.Max(0f, value));
         public static void SetFilmEffects(bool on) => Change(() => FilmEffects = on);
@@ -126,6 +131,7 @@ namespace GraceRun.Core.Settings
             Change(() =>
             {
                 MasterVolume = _defaults.MasterVolume;
+                MusicVolume = _defaults.MusicVolume;
                 SfxVolume = _defaults.SfxVolume;
                 ShakeMultiplier = _defaults.ScreenShake;
                 FilmEffects = _defaults.FilmEffects;
@@ -148,7 +154,9 @@ namespace GraceRun.Core.Settings
 
         private static void Apply(bool screen)
         {
-            AudioListener.volume = MasterVolume;
+            var mixed = Audio.AudioLevels.HasMixer;
+            AudioListener.volume = mixed ? 1f : MasterVolume;
+            if (mixed) Audio.AudioLevels.Apply(MasterVolume, MusicVolume, SfxVolume);
             if (Application.isBatchMode) return;
             QualitySettings.vSyncCount = VSync ? 1 : 0;
             if (!screen || Application.isEditor) return;
@@ -160,6 +168,7 @@ namespace GraceRun.Core.Settings
         private static void Save()
         {
             PlayerPrefs.SetFloat(MasterKey, MasterVolume);
+            PlayerPrefs.SetFloat(MusicKey, MusicVolume);
             PlayerPrefs.SetFloat(SfxKey, SfxVolume);
             PlayerPrefs.SetFloat(ShakeKey, ShakeMultiplier);
             PlayerPrefs.SetInt(FilmKey, FilmEffects ? 1 : 0);
@@ -199,7 +208,7 @@ namespace GraceRun.Core.Settings
         {
             _defaults = null;
             ResolutionList.Clear();
-            MasterVolume = SfxVolume = ShakeMultiplier = 1f;
+            MasterVolume = MusicVolume = SfxVolume = ShakeMultiplier = 1f;
             FilmEffects = true;
             Nickname = string.Empty;
             Scheme = ControlScheme.KeyboardOnly;

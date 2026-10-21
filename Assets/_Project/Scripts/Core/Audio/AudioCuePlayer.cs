@@ -30,8 +30,9 @@ namespace GraceRun.Core.Audio
             }
             _next = (_next + 1) % VoiceCount;
 
+            if (AudioLevels.HasMixer && voice.outputAudioMixerGroup == null) voice.outputAudioMixerGroup = AudioLevels.SfxGroup;
             voice.clip = clip;
-            voice.volume = volume * Settings.GameSettings.SfxVolume;
+            voice.volume = AudioLevels.HasMixer ? volume : volume * Settings.GameSettings.SfxVolume;
             voice.pitch = pitch;
             voice.Play();
         }
@@ -46,6 +47,7 @@ namespace GraceRun.Core.Audio
                 var source = holder.AddComponent<AudioSource>();
                 source.playOnAwake = false;
                 source.spatialBlend = 0f;
+                source.outputAudioMixerGroup = AudioLevels.SfxGroup;
                 _voices[i] = source;
             }
             _next = 0;

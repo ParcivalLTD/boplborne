@@ -1,4 +1,6 @@
+using GraceRun.Core.Audio;
 using GraceRun.Core.Juice;
+using GraceRun.Player;
 using Unity.Netcode;
 using UnityEngine;
 
@@ -55,10 +57,24 @@ namespace GraceRun.Combat
             var victimIsLocal = _health.NetworkObject.IsLocalPlayer;
             var cue = _health.NetworkObject.IsPlayerObject ? _data.PlayerHurtCue
                 : heavy ? _data.HeavyHitCue : _data.HitCue;
+            var weaponCue = WeaponHitCue(attacker, heavy);
+            if (weaponCue != null && !_health.NetworkObject.IsPlayerObject) cue = weaponCue;
             if (cue != null) cue.Play();
 
             if (victimIsLocal) Shake.Play(_data.HurtShake);
             else if (heavy && hasAttacker && attacker.IsLocalPlayer) Shake.Play(_data.HeavyHitShake);
+        }
+
+        /// <summary>The sound of the attacker's equipped weapon, while that player is mid-swing (so ability hits keep the generic sound).</summary>
+        private static AudioCue WeaponHitCue(NetworkObject attacker, bool heavy)
+        {
+            if (attacker == null || !attacker.IsPlayerObject) return null;
+            var swing = attacker.GetComponentInChildren<PlayerLightAttack>();
+            var weapon = attacker.GetComponentInChildren<PlayerWeapon>();
+            if (swing == null || weapon == null || !swing.IsSwinging) return null;
+            var data = weapon.Current;
+            if (data == null) return null;
+            return heavy ? data.HeavyHitCue : data.HitCue;
         }
 
         private NetworkObject FindAttacker(ulong attackerId)

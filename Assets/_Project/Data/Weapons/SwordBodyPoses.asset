@@ -30,16 +30,16 @@ MonoBehaviour:
     Windup: {fileID: 21300000, guid: 55f067f50321d234f9ceb451c5c11ff2, type: 3}
     Strike: {fileID: 21300000, guid: d48f688aa26d59f439c2e3136f5c16f0, type: 3}
     Recovery: {fileID: 21300000, guid: 3d14be0100c170744bbbcd1f38b12b48, type: 3}
-    HatWindup: {x: -0.20833333, y: 0}
-    HatStrike: {x: -0.041666668, y: -0.29166666}
-    HatRecovery: {x: 0.125, y: 0.041666668}
+    HatWindup: {x: -0.083333336, y: 0.083333336}
+    HatStrike: {x: 0, y: -0.041666668}
+    HatRecovery: {x: 0, y: 0}
   _aerial:
     Windup: {fileID: 21300000, guid: 53ef6132dfb17944cb2dfd513b301a08, type: 3}
     Strike: {fileID: 21300000, guid: 34ba0f8afb960c5449612e73fedddc91, type: 3}
     Recovery: {fileID: 21300000, guid: 2db1f7da4dff4c249a63075796fbac2a, type: 3}
-    HatWindup: {x: 0.083333336, y: 0.20833333}
-    HatStrike: {x: 0, y: 0.25}
-    HatRecovery: {x: 0.041666668, y: 0.125}
+    HatWindup: {x: -0.083333336, y: 0.041666668}
+    HatStrike: {x: -0.041666668, y: -0.125}
+    HatRecovery: {x: -0.14583333, y: -0.041666668}
   _up:
     Windup: {fileID: 21300000, guid: afa439e326f907c4f93e073bec827077, type: 3}
     Strike: {fileID: 21300000, guid: a95a33a77fe0d9b4994a0c057ad364e6, type: 3}

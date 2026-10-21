@@ -54,15 +54,15 @@ Every player carries one weapon (Brawlhalla-style), Fists until they pick anothe
 
 - **Light combo**: the light button chains the weapon's hits (3 for Sword and Spear, 2 for Hammer, 3 for Fists); the last one hits harder and knocks back.
 - **Heavy**: one slow, strong swing on the heavy button.
-- **Aerial**: the light button while airborne. **Up** / **Down**: the light button while holding up / down (ground or air). A weapon without one of these uses its light combo there (Fists have none, so nothing changes for them).
+- **Aerial**: the light button while airborne. **Up** / **Down**: the light button while holding up / down (ground or air). A weapon without one of these uses its light combo there (all four weapons have them now).
 - Every swing costs stamina, slows running while it lasts and is cancelled by a dodge. Hits are detected on the attacker's PC and resolved by the server like every player attack; friendly fire rules apply.
 
 | Weapon | Feel | Light combo (damage) | Heavy | Aerial / Up / Down | Reach |
 | --- | --- | --- | --- | --- | --- |
-| Fists | the old default | 8 · 8 · 8 (knockback on the last) | 14 | none, uses the light combo | short |
-| Sword | fast, balanced | 7 · 7 · 10, quick | 17, fast for a heavy | 10 / 9 / 9 | medium |
-| Spear | long, narrow | 6 · 6 · 9 | 18, longest reach | 9 / 10 / 10, thin tall hitboxes | long |
-| Hammer | slow, huge knockback | 11 · 16 (two hits) | 30, 0.4 s wind-up | 14 / 14 / 14, big knockback | medium |
+| Fists | the old default | 8 · 8 · 8 (knockback on the last), 9 stamina | 14 | 9 / 9 / 9 | short (1.55–1.9) |
+| Sword | fast, balanced | 7 · 7 · 10, quick, 9 stamina | 17, fast for a heavy | 10 / 9 / 9 | medium (1.75–2.0) |
+| Spear | long, narrow | 7 · 7 · 10, 9 stamina | 18, longest reach | 9 / 10 / 10, thin tall hitboxes | long (2.4–3.0) |
+| Hammer | slow, huge knockback | 11 · 16 (two hits) | 30, 0.4 s wind-up | 14 / 14 / 14, big knockback | medium (1.8–2.2) |
 
 **Getting one:** in the hub (from the starter draft until the run starts, so you can try each on the training dummy) and at every rest stop, a row of weapon buttons in the top-right corner picks any weapon for free. It cannot change during a fight or a later draft. A new run (back in the hub) starts everyone with Fists again. Weapons are not cards: they never take an ability slot and never take part in `ComboRules`.
 

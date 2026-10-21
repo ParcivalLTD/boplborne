@@ -1,5 +1,6 @@
 using GraceRun.Player;
 using GraceRun.Run;
+using GraceRun.UI.Skin;
 using Unity.Netcode;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -15,14 +16,13 @@ namespace GraceRun.UI
     /// </summary>
     public class WeaponPickerScreen : MonoBehaviour
     {
-        private static readonly Color StoneLight = new(0.290f, 0.259f, 0.337f);
-        private static readonly Color Bone = new(0.929f, 0.906f, 0.965f);
-        private static readonly Color Gold = new(1.000f, 0.788f, 0.290f);
-        private static readonly Color Night = new(0.071f, 0.063f, 0.102f, 0.85f);
+        private static readonly Color Idle = Color.white;
+        private static readonly Color Carried = new(0.80f, 0.62f, 0.40f);
 
-        private const float ButtonWidth = 120f;
-        private const float ButtonHeight = 40f;
+        private const float ButtonWidth = 108f;
+        private const float ButtonHeight = 56f;
         private const float Gap = 10f;
+        private const float Pad = 22f;
 
         private GameObject _root;
         private Button[] _buttons;
@@ -69,14 +69,15 @@ namespace GraceRun.UI
             EnsureCanvas();
 
             var weapons = weapon.Catalog.Weapons;
-            var width = weapons.Count * ButtonWidth + (weapons.Count - 1) * Gap + 2f * Gap;
+            var width = weapons.Count * ButtonWidth + (weapons.Count - 1) * Gap + 2f * Pad;
             _root = new GameObject("WeaponBar", typeof(RectTransform), typeof(Image));
             _root.transform.SetParent(transform, false);
-            _root.GetComponent<Image>().color = Night;
+            var theme = UiTheme.Current;
+            UiKit.Slice(_root.GetComponent<Image>(), theme != null ? theme.PanelPaper : null);
             var rect = (RectTransform)_root.transform;
             rect.anchorMin = rect.anchorMax = rect.pivot = Vector2.one;
-            rect.sizeDelta = new Vector2(width, ButtonHeight + 2f * Gap);
-            rect.anchoredPosition = new Vector2(-20f, -20f);
+            rect.sizeDelta = new Vector2(width, ButtonHeight + 2f * Pad);
+            rect.anchoredPosition = new Vector2(-24f, -24f);
 
             _buttons = new Button[weapons.Count];
             _frames = new Image[weapons.Count];
@@ -95,31 +96,31 @@ namespace GraceRun.UI
             var go = new GameObject(data.DisplayName, typeof(RectTransform), typeof(Image), typeof(Button));
             go.transform.SetParent(_root.transform, false);
             frame = go.GetComponent<Image>();
+            UiKit.Slice(frame, UiTheme.Current != null ? UiTheme.Current.Button : null);
             var rect = (RectTransform)go.transform;
             rect.anchorMin = rect.anchorMax = rect.pivot = new Vector2(0f, 0.5f);
             rect.sizeDelta = new Vector2(ButtonWidth, ButtonHeight);
-            rect.anchoredPosition = new Vector2(Gap + index * (ButtonWidth + Gap), 0f);
+            rect.anchoredPosition = new Vector2(Pad + index * (ButtonWidth + Gap), 0f);
 
             var label = new GameObject("Label", typeof(RectTransform), typeof(Text));
             label.transform.SetParent(go.transform, false);
             var text = label.GetComponent<Text>();
-            text.font = Resources.GetBuiltinResource<Font>("LegacyRuntime.ttf");
+            UiKit.StyleText(text, false, UiKit.BodySmall, UiPalette.Ink);
             text.text = data.DisplayName;
-            text.fontSize = 18;
-            text.fontStyle = FontStyle.Bold;
             text.alignment = TextAnchor.MiddleCenter;
-            text.color = data.VisualSize.x > 0f ? Color.Lerp(Bone, data.Color, 0.6f) : Bone;
             text.raycastTarget = false;
             var labelRect = (RectTransform)label.transform;
             labelRect.anchorMin = Vector2.zero;
             labelRect.anchorMax = Vector2.one;
             labelRect.offsetMin = labelRect.offsetMax = Vector2.zero;
-            return go.GetComponent<Button>();
+            var button = go.GetComponent<Button>();
+            button.colors = UiKit.ButtonColors();
+            return button;
         }
 
         private void Refresh(PlayerWeapon weapon)
         {
-            for (var i = 0; i < _frames.Length; i++) _frames[i].color = i == weapon.Id ? Gold * 0.7f : StoneLight;
+            for (var i = 0; i < _frames.Length; i++) _frames[i].color = i == weapon.Id ? Carried : Idle;
         }
 
         private void EnsureCanvas()

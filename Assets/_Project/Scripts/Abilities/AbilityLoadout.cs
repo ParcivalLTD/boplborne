@@ -21,6 +21,9 @@ namespace GraceRun.Abilities
         /// <summary>Raised on every PC when a slot gets a different ability (or is cleared).</summary>
         public event Action<int> SlotReplaced;
 
+        /// <summary>Raised on every PC when an ability is used (its cooldown restarts), for sounds.</summary>
+        public static event Action<AbilityData> AbilityUsed;
+
         public AbilityCatalog Catalog => _catalog;
 
         public override void OnNetworkSpawn()
@@ -87,7 +90,11 @@ namespace GraceRun.Abilities
         {
             if (change.Type == NetworkListEvent<AbilitySlotState>.EventType.Value &&
                 change.PreviousValue.AbilityId == change.Value.AbilityId &&
-                change.PreviousValue.Level == change.Value.Level) return;
+                change.PreviousValue.Level == change.Value.Level)
+            {
+                if (change.Value.ReadyAt > change.PreviousValue.ReadyAt) AbilityUsed?.Invoke(Get(change.Index));
+                return;
+            }
             SlotReplaced?.Invoke(change.Index);
         }
     }

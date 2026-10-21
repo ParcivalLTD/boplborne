@@ -1,6 +1,7 @@
 using GraceRun.Core;
 using GraceRun.Player;
 using GraceRun.Run;
+using GraceRun.UI.Skin;
 using Unity.Netcode;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -15,13 +16,14 @@ namespace GraceRun.UI
     /// </summary>
     public class ResultScreen : MonoBehaviour
     {
-        private static readonly Color NightColor = new(0.071f, 0.063f, 0.102f, 0.95f);
-        private static readonly Color StoneColor = new(0.165f, 0.145f, 0.200f);
-        private static readonly Color StoneLightColor = new(0.290f, 0.259f, 0.337f);
-        private static readonly Color FogColor = new(0.549f, 0.518f, 0.627f);
-        private static readonly Color BoneColor = new(0.929f, 0.906f, 0.965f);
-        private static readonly Color GoldColor = new(1.000f, 0.788f, 0.290f);
-        private static readonly Color DefeatColor = new(0.878f, 0.294f, 0.294f);
+        // Cinema look: cream cards with ink text on a dimmed sepia backdrop; text drawn straight on the backdrop is cream / paper.
+        private static readonly Color NightColor = new(0.071f, 0.059f, 0.094f, 0.93f);
+        private static readonly Color CardColor = Color.white;
+        private static readonly Color OnDark = UiPalette.Cream;
+        private static readonly Color OnDarkSoft = UiPalette.Paper;
+        private static readonly Color CardInk = UiPalette.Ink;
+        private static readonly Color CardSoft = UiPalette.Sepia;
+        private static readonly Color CardAccent = UiPalette.SepiaDark;
 
         private static readonly Color[] DefaultPlayerColors =
         {
@@ -54,12 +56,9 @@ namespace GraceRun.UI
         private Text _waitingLeaderText;
 
         private bool _shownOpen;
-        private Font _font;
 
         private void Awake()
         {
-            _font = Resources.GetBuiltinResource<Font>("LegacyRuntime.ttf");
-            if (_font == null) _font = Resources.GetBuiltinResource<Font>("Arial.ttf");
             BuildUi();
             if (_root != null) _root.SetActive(false);
         }
@@ -114,7 +113,7 @@ namespace GraceRun.UI
             if (_titleText != null)
             {
                 _titleText.text = result.IsVictory ? "RUN VICTORY" : "RUN DEFEAT";
-                _titleText.color = result.IsVictory ? GoldColor : DefeatColor;
+                _titleText.color = result.IsVictory ? OnDark : OnDarkSoft;
             }
 
             if (_subtitleText != null)
@@ -157,9 +156,9 @@ namespace GraceRun.UI
                 if (_playerBadges[i] != null)
                 {
                     if (i == topDamageSlot && damageList[i] > 0)
-                        _playerBadges[i].text = "★ TOP DAMAGE";
+                        _playerBadges[i].text = "* TOP DAMAGE *";
                     else if (i == topCulpritSlot && knockbackList[i] > 0)
-                        _playerBadges[i].text = "⚠ TEAM MENACE";
+                        _playerBadges[i].text = "! TEAM MENACE !";
                     else
                         _playerBadges[i].text = string.Empty;
                 }
@@ -167,13 +166,13 @@ namespace GraceRun.UI
 
             // Funniest Stat Card
             if (_funStatTitleText != null)
-                _funStatTitleText.text = "★ FUNNIEST STAT: FRIENDLY-FIRE KNOCKBACKS ★";
+                _funStatTitleText.text = "FUNNIEST STAT: FRIENDLY-FIRE KNOCKBACKS";
 
             if (_funStatHighlightText != null)
             {
                 if (topCulpritSlot >= 0)
                 {
-                    _funStatHighlightText.text = $"<color=#{ColorUtility.ToHtmlStringRGB(GoldColor)}>👑 Most Dangerous Teammate:</color>  {PlayerIdentity.NameOfSlot(topCulpritSlot)} with {knockbackList[topCulpritSlot]} friendly pushes!";
+                    _funStatHighlightText.text = $"<color=#{ColorUtility.ToHtmlStringRGB(CardAccent)}>Most Dangerous Teammate:</color>  {PlayerIdentity.NameOfSlot(topCulpritSlot)} with {knockbackList[topCulpritSlot]} friendly pushes!";
                 }
                 else
                 {
@@ -183,7 +182,7 @@ namespace GraceRun.UI
 
             if (_funStatDetailText != null)
             {
-                _funStatDetailText.text = $"Total Friendly-Fire Pushes: {totalKnockbacks}  |  {PlayerIdentity.NameOfSlot(0)}: {result.KnockbacksP1}  {PlayerIdentity.NameOfSlot(1)}: {result.KnockbacksP2}  {PlayerIdentity.NameOfSlot(2)}: {result.KnockbacksP3}  {PlayerIdentity.NameOfSlot(3)}: {result.KnockbacksP4}";
+                _funStatDetailText.text = $"Total: {totalKnockbacks}  |  {PlayerIdentity.NameOfSlot(0)}: {result.KnockbacksP1}  {PlayerIdentity.NameOfSlot(1)}: {result.KnockbacksP2}  {PlayerIdentity.NameOfSlot(2)}: {result.KnockbacksP3}  {PlayerIdentity.NameOfSlot(3)}: {result.KnockbacksP4}";
             }
 
             // Return to Hub Button
@@ -217,29 +216,29 @@ namespace GraceRun.UI
             _root = CreatePanel("ResultRoot", transform, Vector2.zero, Vector2.one, Vector2.zero, Vector2.zero, NightColor);
 
             // Title & Subtitle Banner
-            _titleText = CreateText("Title", _root.transform, "RUN VICTORY", 46, FontStyle.Bold, TextAnchor.MiddleCenter, GoldColor);
-            SetRect(_titleText.rectTransform, new Vector2(0.5f, 0.93f), new Vector2(0.5f, 0.93f), new Vector2(0.5f, 0.5f), new Vector2(800, 60), Vector2.zero);
+            _titleText = CreateText("Title", _root.transform, "RUN VICTORY", 96, FontStyle.Bold, TextAnchor.MiddleCenter, OnDark);
+            SetRect(_titleText.rectTransform, new Vector2(0.5f, 0.925f), new Vector2(0.5f, 0.925f), new Vector2(0.5f, 0.5f), new Vector2(1400, 120), Vector2.zero);
 
-            _subtitleText = CreateText("Subtitle", _root.transform, "All Floors Cleared!", 22, FontStyle.Normal, TextAnchor.MiddleCenter, BoneColor);
-            SetRect(_subtitleText.rectTransform, new Vector2(0.5f, 0.87f), new Vector2(0.5f, 0.87f), new Vector2(0.5f, 0.5f), new Vector2(800, 36), Vector2.zero);
+            _subtitleText = CreateText("Subtitle", _root.transform, "All Floors Cleared!", 32, FontStyle.Normal, TextAnchor.MiddleCenter, OnDark);
+            SetRect(_subtitleText.rectTransform, new Vector2(0.5f, 0.855f), new Vector2(0.5f, 0.855f), new Vector2(0.5f, 0.5f), new Vector2(1200, 44), Vector2.zero);
 
             // 3 Summary Chips (Time, Floors, Damage)
-            var chipY = 0.80f;
-            _timeSummaryText = CreateText("TimeChip", _root.transform, "TIME: 00:00", 20, FontStyle.Bold, TextAnchor.MiddleCenter, FogColor);
-            SetRect(_timeSummaryText.rectTransform, new Vector2(0.28f, chipY), new Vector2(0.28f, chipY), new Vector2(0.5f, 0.5f), new Vector2(280, 36), Vector2.zero);
+            var chipY = 0.785f;
+            _timeSummaryText = CreateText("TimeChip", _root.transform, "TIME: 00:00", 24, FontStyle.Bold, TextAnchor.MiddleCenter, OnDarkSoft);
+            SetRect(_timeSummaryText.rectTransform, new Vector2(0.25f, chipY), new Vector2(0.25f, chipY), new Vector2(0.5f, 0.5f), new Vector2(420, 40), Vector2.zero);
 
-            _floorSummaryText = CreateText("FloorChip", _root.transform, "FLOORS: 3/3", 20, FontStyle.Bold, TextAnchor.MiddleCenter, FogColor);
-            SetRect(_floorSummaryText.rectTransform, new Vector2(0.50f, chipY), new Vector2(0.50f, chipY), new Vector2(0.5f, 0.5f), new Vector2(280, 36), Vector2.zero);
+            _floorSummaryText = CreateText("FloorChip", _root.transform, "FLOORS: 3/3", 24, FontStyle.Bold, TextAnchor.MiddleCenter, OnDarkSoft);
+            SetRect(_floorSummaryText.rectTransform, new Vector2(0.50f, chipY), new Vector2(0.50f, chipY), new Vector2(0.5f, 0.5f), new Vector2(420, 40), Vector2.zero);
 
-            _damageSummaryText = CreateText("DamageChip", _root.transform, "TOTAL DAMAGE: 0 DMG", 20, FontStyle.Bold, TextAnchor.MiddleCenter, FogColor);
-            SetRect(_damageSummaryText.rectTransform, new Vector2(0.72f, chipY), new Vector2(0.72f, chipY), new Vector2(0.5f, 0.5f), new Vector2(340, 36), Vector2.zero);
+            _damageSummaryText = CreateText("DamageChip", _root.transform, "TOTAL DAMAGE: 0 DMG", 24, FontStyle.Bold, TextAnchor.MiddleCenter, OnDarkSoft);
+            SetRect(_damageSummaryText.rectTransform, new Vector2(0.75f, chipY), new Vector2(0.75f, chipY), new Vector2(0.5f, 0.5f), new Vector2(520, 40), Vector2.zero);
 
             // 4 Player Damage Cards
             var cardWidth = 380f;
-            var cardHeight = 240f;
+            var cardHeight = 250f;
             var startX = 225f;
             var gapX = 490f;
-            var cardCenterY = 560f;
+            var cardCenterY = 540f;
 
             for (var i = 0; i < 4; i++)
             {
@@ -248,52 +247,47 @@ namespace GraceRun.UI
 
                 // Color Stripe at top
                 var playerColor = DefaultPlayerColors[i];
-                var stripe = CreatePanel($"Stripe{i}", card.transform, new Vector2(0f, 0.94f), new Vector2(1f, 1f), Vector2.zero, Vector2.zero, playerColor);
+                var stripe = CreatePanel($"Stripe{i}", card.transform, new Vector2(0f, 0.9f), new Vector2(1f, 0.94f), Vector2.zero, Vector2.zero, playerColor);
+                stripe.GetComponent<RectTransform>().offsetMin = new Vector2(24f, 0f);
+                stripe.GetComponent<RectTransform>().offsetMax = new Vector2(-24f, 0f);
 
                 // Player Header
-                _playerHeaders[i] = CreateText($"P{i}Header", card.transform, $"PLAYER {i + 1}", 24, FontStyle.Bold, TextAnchor.MiddleCenter, playerColor, new Vector2(0.5f, 0.80f), new Vector2(cardWidth - 40, 32));
+                _playerHeaders[i] = CreateText($"P{i}Header", card.transform, $"PLAYER {i + 1}", 32, FontStyle.Bold, TextAnchor.MiddleCenter, CardInk, new Vector2(0.5f, 0.78f), new Vector2(cardWidth - 40, 44));
 
                 // Badge
-                _playerBadges[i] = CreateText($"P{i}Badge", card.transform, string.Empty, 14, FontStyle.Bold, TextAnchor.MiddleCenter, GoldColor, new Vector2(0.5f, 0.65f), new Vector2(cardWidth - 40, 24));
+                _playerBadges[i] = CreateText($"P{i}Badge", card.transform, string.Empty, 24, FontStyle.Bold, TextAnchor.MiddleCenter, CardAccent, new Vector2(0.5f, 0.62f), new Vector2(cardWidth - 40, 32));
 
                 // Damage
-                CreateText($"P{i}DmgLabel", card.transform, "Damage to Bosses", 14, FontStyle.Normal, TextAnchor.MiddleCenter, FogColor, new Vector2(0.5f, 0.48f), new Vector2(cardWidth - 40, 22));
-                _playerDamageTexts[i] = CreateText($"P{i}Damage", card.transform, "0 DMG", 24, FontStyle.Bold, TextAnchor.MiddleCenter, BoneColor, new Vector2(0.5f, 0.35f), new Vector2(cardWidth - 40, 30));
+                CreateText($"P{i}DmgLabel", card.transform, "Damage to Bosses", 24, FontStyle.Normal, TextAnchor.MiddleCenter, CardSoft, new Vector2(0.5f, 0.45f), new Vector2(cardWidth - 40, 32));
+                _playerDamageTexts[i] = CreateText($"P{i}Damage", card.transform, "0 DMG", 32, FontStyle.Bold, TextAnchor.MiddleCenter, CardInk, new Vector2(0.5f, 0.31f), new Vector2(cardWidth - 40, 44));
 
                 // Knockbacks
-                _playerKnockbackTexts[i] = CreateText($"P{i}Knockback", card.transform, "0 friendly pushes", 15, FontStyle.Italic, TextAnchor.MiddleCenter, FogColor, new Vector2(0.5f, 0.16f), new Vector2(cardWidth - 40, 24));
+                _playerKnockbackTexts[i] = CreateText($"P{i}Knockback", card.transform, "0 friendly pushes", 24, FontStyle.Normal, TextAnchor.MiddleCenter, CardSoft, new Vector2(0.5f, 0.14f), new Vector2(cardWidth - 40, 32));
             }
 
             // Funniest Stat Highlight Section
-            var funBox = CreateCard("FunStatBox", _root.transform, new Vector2(960, 260), new Vector2(1200, 150));
-            _funStatTitleText = CreateText("FunTitle", funBox.transform, "★ FUNNIEST STAT: FRIENDLY-FIRE KNOCKBACKS ★", 20, FontStyle.Bold, TextAnchor.MiddleCenter, GoldColor, new Vector2(0.5f, 0.80f), new Vector2(1100, 32));
+            var funBox = CreateCard("FunStatBox", _root.transform, new Vector2(960, 250), new Vector2(1300, 190), true);
+            _funStatTitleText = CreateText("FunTitle", funBox.transform, "FUNNIEST STAT: FRIENDLY-FIRE KNOCKBACKS", 24, FontStyle.Bold, TextAnchor.MiddleCenter, CardAccent, new Vector2(0.5f, 0.80f), new Vector2(1200, 36));
 
-            _funStatHighlightText = CreateText("FunHighlight", funBox.transform, "Most Dangerous Teammate: -", 20, FontStyle.Bold, TextAnchor.MiddleCenter, BoneColor, new Vector2(0.5f, 0.50f), new Vector2(1100, 32));
+            _funStatHighlightText = CreateText("FunHighlight", funBox.transform, "Most Dangerous Teammate: -", 32, FontStyle.Bold, TextAnchor.MiddleCenter, CardInk, new Vector2(0.5f, 0.52f), new Vector2(1240, 44));
             _funStatHighlightText.supportRichText = true;
 
-            _funStatDetailText = CreateText("FunDetail", funBox.transform, "Friendly-fire knockbacks count", 15, FontStyle.Normal, TextAnchor.MiddleCenter, FogColor, new Vector2(0.5f, 0.22f), new Vector2(1100, 26));
+            _funStatDetailText = CreateText("FunDetail", funBox.transform, "Friendly-fire knockbacks count", 24, FontStyle.Normal, TextAnchor.MiddleCenter, CardSoft, new Vector2(0.5f, 0.2f), new Vector2(1240, 36));
 
             // Return to Hub Button
-            _returnButton = CreateButton("ReturnBtn", _root.transform, "Return to Hub", new Vector2(0.5f, 0.08f), new Vector2(360, 60), OnReturnToHub, out _returnButtonText);
-            _returnButton.image.color = new Color(0.32f, 0.26f, 0.42f);
-            if (_returnButtonText != null)
-            {
-                _returnButtonText.color = BoneColor;
-                _returnButtonText.fontSize = 22;
-                _returnButtonText.fontStyle = FontStyle.Bold;
-            }
+            _returnButton = CreateButton("ReturnBtn", _root.transform, "Return to Hub", new Vector2(0.5f, 0.09f), new Vector2(480, 80), OnReturnToHub, out _returnButtonText);
+            if (_returnButtonText != null) UiKit.StyleText(_returnButtonText, false, 32, CardInk);
 
-            _waitingLeaderText = CreateText("WaitingText", _root.transform, "Waiting for the host to return to the Hub...", 20, FontStyle.Italic, TextAnchor.MiddleCenter, FogColor);
-            SetRect(_waitingLeaderText.rectTransform, new Vector2(0.5f, 0.08f), new Vector2(0.5f, 0.08f), new Vector2(0.5f, 0.5f), new Vector2(600, 40), Vector2.zero);
+            _waitingLeaderText = CreateText("WaitingText", _root.transform, "Waiting for the host to return to the Hub...", 24, FontStyle.Normal, TextAnchor.MiddleCenter, OnDarkSoft);
+            SetRect(_waitingLeaderText.rectTransform, new Vector2(0.5f, 0.09f), new Vector2(0.5f, 0.09f), new Vector2(0.5f, 0.5f), new Vector2(900, 44), Vector2.zero);
         }
 
-        private GameObject CreateCard(string name, Transform parent, Vector2 anchoredPosition, Vector2 size)
+        private GameObject CreateCard(string name, Transform parent, Vector2 anchoredPosition, Vector2 size, bool paper = false)
         {
-            var card = CreatePanel(name, parent, new Vector2(0.5f, 0.5f), new Vector2(0.5f, 0.5f), new Vector2(0.5f, 0.5f), size, StoneColor);
+            var card = CreatePanel(name, parent, new Vector2(0.5f, 0.5f), new Vector2(0.5f, 0.5f), new Vector2(0.5f, 0.5f), size, CardColor);
             card.GetComponent<RectTransform>().anchoredPosition = new Vector2(anchoredPosition.x - 960f, anchoredPosition.y - 540f);
-            var outline = card.AddComponent<Outline>();
-            outline.effectColor = StoneLightColor;
-            outline.effectDistance = new Vector2(2, -2);
+            var theme = UiTheme.Current;
+            UiKit.Slice(card.GetComponent<Image>(), theme != null ? (paper ? theme.PanelPaper : theme.PanelCream) : null);
             return card;
         }
 
@@ -312,12 +306,13 @@ namespace GraceRun.UI
             var go = new GameObject(name, typeof(RectTransform), typeof(CanvasRenderer), typeof(Text));
             go.transform.SetParent(parent, false);
             var text = go.GetComponent<Text>();
-            text.font = _font;
+            // One pixel look: display font for the big banners, body font for the rest; no synthetic bold / italic.
+            UiKit.StyleText(text, fontSize >= 64, fontSize, color);
             text.text = content;
-            text.fontSize = fontSize;
-            text.fontStyle = style;
             text.alignment = align;
-            text.color = color;
+            text.raycastTarget = false;
+            text.horizontalOverflow = HorizontalWrapMode.Wrap;
+            text.verticalOverflow = VerticalWrapMode.Overflow;
 
             if (size != default)
             {
@@ -342,19 +337,11 @@ namespace GraceRun.UI
             rect.sizeDelta = size;
             rect.anchoredPosition = Vector2.zero;
 
-            var image = go.GetComponent<Image>();
-            image.color = StoneLightColor;
-
             var button = go.GetComponent<Button>();
-            var colors = button.colors;
-            colors.normalColor = Color.white;
-            colors.highlightedColor = new Color(1.2f, 1.2f, 1.2f, 1f);
-            colors.pressedColor = new Color(0.8f, 0.8f, 0.8f, 1f);
-            colors.disabledColor = new Color(0.4f, 0.4f, 0.4f, 0.5f);
-            button.colors = colors;
             if (action != null) button.onClick.AddListener(action);
 
-            labelText = CreateText("Label", go.transform, label, 18, FontStyle.Bold, TextAnchor.MiddleCenter, BoneColor);
+            labelText = CreateText("Label", go.transform, label, 32, FontStyle.Normal, TextAnchor.MiddleCenter, CardInk);
+            UiKit.StyleButton(button, labelText, 32);
             SetRect(labelText.rectTransform, Vector2.zero, Vector2.one, new Vector2(0.5f, 0.5f), Vector2.zero, Vector2.zero);
             return button;
         }

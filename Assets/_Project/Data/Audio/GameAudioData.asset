@@ -1,0 +1,65 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f4cd0d287ab9b204791987906673a485, type: 3}
+  m_Name: GameAudioData
+  m_EditorClassIdentifier: GraceRun.Runtime::GraceRun.Core.Audio.GameAudioData
+  _uiHover: {fileID: 11400000, guid: efe16e355dc2ea6488e789bb3931f37d, type: 2}
+  _uiClick: {fileID: 11400000, guid: 2493a6f3c7fe7de46a8c3d347503b107, type: 2}
+  _uiConfirm: {fileID: 11400000, guid: f0781aa41b2f2a544a1ceae5a97314a3, type: 2}
+  _uiBack: {fileID: 11400000, guid: 27cc743060853df4aa51c3b78325d26c, type: 2}
+  _uiDeny: {fileID: 11400000, guid: f52b8b555f662b54c81a6fa3f83050c1, type: 2}
+  _draftPick: {fileID: 11400000, guid: 3fe129ce9e2d2854fb44d4b123f989a7, type: 2}
+  _doorStart: {fileID: 11400000, guid: 093009699871e764e869f22afcafd9e1, type: 2}
+  _victorySting: {fileID: 11400000, guid: 706fa8e950be7e8428b8ee3fb09abe1d, type: 2}
+  _defeatSting: {fileID: 11400000, guid: 2ba9b3ced7d8c5b4aafe8e8137c472d0, type: 2}
+  _coin: {fileID: 11400000, guid: 2d74397a3dce9a14a946fb76586835e2, type: 2}
+  _shopBuy: {fileID: 11400000, guid: 3978124dab3eea34cacadd7aeafeb9fa, type: 2}
+  _bossPhaseRoar: {fileID: 11400000, guid: 08e47028aa3062042a6cb18f6738ca2a, type: 2}
+  _bossDeath: {fileID: 11400000, guid: acba751c1b6bc944faeda1a7cd9a7ebd, type: 2}
+  _projectile: {fileID: 11400000, guid: d98629571b12d9541a72369f089356e9, type: 2}
+  _area: {fileID: 11400000, guid: 1ae667cc250d09a47a770f079fbb54f8, type: 2}
+  _movement: {fileID: 11400000, guid: d96890aee70310c4393b3195b38b5f92, type: 2}
+  _summon: {fileID: 11400000, guid: 37b5fce49da25cf40be72abb27fb0803, type: 2}
+  _fallbackAbility: {fileID: 11400000, guid: 1ae667cc250d09a47a770f079fbb54f8, type: 2}
+  _abilityOverrides:
+  - Ability: {fileID: 11400000, guid: c3374bbe71c9b284185e96d781e4c5ff, type: 2}
+    Cue: {fileID: 11400000, guid: b1cda9f92c121b846bb5fa73dabfb0b2, type: 2}
+  - Ability: {fileID: 11400000, guid: ed6fb37a6403cd047a146c40eee64e58, type: 2}
+    Cue: {fileID: 11400000, guid: 23c826588fb266a49b4880c8f9df4a88, type: 2}
+  - Ability: {fileID: 11400000, guid: 0e8988439e09db94680bbed798701a52, type: 2}
+    Cue: {fileID: 11400000, guid: 302a5120ab1f00c4eb4f7879bd32b887, type: 2}
+  - Ability: {fileID: 11400000, guid: d51e9d7a8e7a7694287c1bd1e2a12c16, type: 2}
+    Cue: {fileID: 11400000, guid: b645b03706cf8104fb61a111954bbb55, type: 2}
+  - Ability: {fileID: 11400000, guid: 93affec10b9f2c14e95202afd56311e4, type: 2}
+    Cue: {fileID: 11400000, guid: b645b03706cf8104fb61a111954bbb55, type: 2}
+  - Ability: {fileID: 11400000, guid: 350eec5eb9d2d8547b682df0710dda03, type: 2}
+    Cue: {fileID: 11400000, guid: b645b03706cf8104fb61a111954bbb55, type: 2}
+  - Ability: {fileID: 11400000, guid: 810454970dbe42b42a2e4a65e3f075ea, type: 2}
+    Cue: {fileID: 11400000, guid: b645b03706cf8104fb61a111954bbb55, type: 2}
+  - Ability: {fileID: 11400000, guid: eb60efbc667f0ba41976e4c048ecfa7c, type: 2}
+    Cue: {fileID: 11400000, guid: 8fa532b206a96da4fb179a912e73b976, type: 2}
+  - Ability: {fileID: 11400000, guid: 383e60ea8b46ada4688c99d4dcb81255, type: 2}
+    Cue: {fileID: 11400000, guid: 8fa532b206a96da4fb179a912e73b976, type: 2}
+  - Ability: {fileID: 11400000, guid: fe5447732f91efb4abe0cda0b828371c, type: 2}
+    Cue: {fileID: 11400000, guid: e81baee1bedac114eb0bc21cfc23a072, type: 2}
+  - Ability: {fileID: 11400000, guid: 14f06a860be625941b96dc2dbe3bf8ac, type: 2}
+    Cue: {fileID: 11400000, guid: 49d33be6017a1424a8622c2a67ce6da1, type: 2}
+  - Ability: {fileID: 11400000, guid: 6c22a94f42ca76848bfc73efecde37b0, type: 2}
+    Cue: {fileID: 11400000, guid: 49d33be6017a1424a8622c2a67ce6da1, type: 2}
+  - Ability: {fileID: 11400000, guid: b56c84eeb77b8154c88d01536ab771d4, type: 2}
+    Cue: {fileID: 11400000, guid: 49d33be6017a1424a8622c2a67ce6da1, type: 2}
+  - Ability: {fileID: 11400000, guid: ca10fdee88a28a94a9cd6207f59deb6f, type: 2}
+    Cue: {fileID: 11400000, guid: fb0f23fa5fc292f40ba45f84b22ba668, type: 2}
+  - Ability: {fileID: 11400000, guid: 572e27950159e594fa586017e464f55d, type: 2}
+    Cue: {fileID: 11400000, guid: 7f13f5bad8a344340bf4e52b04205de6, type: 2}
+  - Ability: {fileID: 11400000, guid: 89916d7993eb3b342b67ce5dcfe874b5, type: 2}
+    Cue: {fileID: 11400000, guid: 7f13f5bad8a344340bf4e52b04205de6, type: 2}

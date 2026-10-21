@@ -106,10 +106,11 @@ namespace GraceRun.Editor.Content
         private static readonly (string folder, bool loop)[] LocomotionClips =
         {
             ("idle", true), ("run", true), ("jump", false), ("fall", true),
+            ("dodge", false), ("hurt", false), ("ghost", true),
         };
 
         /// <summary>
-        /// Builds idle / run / jump / fall with the weapon in hand from Art/Characters/Weapons/&lt;weapon&gt;/Loco/&lt;clip&gt;/*.png
+        /// Builds idle / run / jump / fall / dodge / hurt / ghost with the weapon in hand from Art/Characters/Weapons/&lt;weapon&gt;/Loco/&lt;clip&gt;/*.png
         /// and an override of the player's Animator for them; null when the weapon has no such folder (Fists).
         /// </summary>
         private static AnimatorOverrideController BuildAnimations(string weapon)

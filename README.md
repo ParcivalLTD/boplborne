@@ -64,3 +64,9 @@ The host clicks **Host** in the main menu (or runs the server build). Friends jo
 - If the agent goes in circles for more than two tries, run `git restore .`, start a new session, and ask for a smaller step.
 - Tune numbers yourself in the Inspector. Everything tunable lives in data assets under `Assets/_Project/Data`.
 - Use one agent at a time. Switching between Claude Code and Antigravity is fine between steps (after a commit), never in the middle of one.
+
+## Credits
+
+- Pixel art (characters, bosses, weapons, arenas, icons) is made with PixelLab (pixellab.ai), used under PixelLab's terms for subscriber output (https://pixellab.ai/termsofservice), then palette-cleaned and edited for this game.
+- Fonts "Grace Display" and "Grace Body": generated with PixelLab `create_font`, then extended with a few hand-drawn glyphs. UI sprites in `Assets/_Project/Art/UI/Cinema` are hand-pixelled for this game.
+- All sound effects and music loops are synthesised by the scripts in `tools/audio/` (no third-party audio).

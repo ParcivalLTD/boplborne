@@ -1,21 +1,22 @@
 using GraceRun.Core.Settings;
 using GraceRun.Net;
 using GraceRun.UI.Menus;
+using GraceRun.UI.Skin;
 using UnityEngine;
 using UnityEngine.UI;
 
 namespace GraceRun.UI
 {
     /// <summary>
-    /// Main menu (uGUI, built in code): Host, Join by IP (accepts "ip:port"), Settings, Controls and
-    /// Quit, navigable with mouse, keyboard and gamepad (Esc / B goes back). While a host or join is
-    /// starting it shows the progress with a Cancel button. The status line shows refusals, timeouts
-    /// and "Host left the game.". Loads the saved settings on first show.
+    /// Main menu (uGUI, built in code, cinema look): a cream title card, then Host, Join by IP (accepts
+    /// "ip:port"), Settings, Controls and Quit, navigable with mouse, keyboard and gamepad (Esc / B goes
+    /// back). While a host or join is starting it shows the progress with a Cancel button. The status
+    /// line shows refusals, timeouts and "Host left the game.". Loads the saved settings on first show.
     /// </summary>
     public class MainMenuScreen : MonoBehaviour
     {
         private const string Title = "GRACE RUN";
-        private const string Tagline = "Co-op boss rush for 1–4 friends";
+        private const string Tagline = "Co-op boss rush for 1-4 friends";
         private const int SortingOrder = 50;
 
         private MenuPages _pages;
@@ -61,14 +62,13 @@ namespace GraceRun.UI
             var canvas = MenuKit.CreateCanvas("MainMenuCanvas", SortingOrder);
             canvas.transform.SetParent(transform, false);
             var root = canvas.transform;
-            MenuKit.Fill(root, "Backdrop", MenuStyle.Backdrop);
+            var shade = UiPalette.SepiaDark;
+            MenuKit.Fill(root, "Backdrop", new Color(shade.r, shade.g, shade.b, 0.94f));
             _pages = canvas.gameObject.AddComponent<MenuPages>();
 
-            Place(MenuKit.Label(root, Title, MenuStyle.TitleSize, MenuStyle.Gold).rectTransform, 0.86f, 110f);
-            var version = _connection != null ? $"   ·   v{_connection.Config.GameVersion}" : "";
-            Place(MenuKit.Label(root, Tagline + version, MenuStyle.SmallSize, MenuStyle.Fog).rectTransform, 0.79f, 40f);
-            _status = MenuKit.Label(root, "", MenuStyle.SmallSize, MenuStyle.Bone);
-            Place(_status.rectTransform, 0.07f, 60f);
+            BuildTitleCard(root);
+            _status = MenuKit.Label(root, "", MenuStyle.SmallSize, MenuStyle.OnBackdrop);
+            Place(_status.rectTransform, 0.03f, 44f);
 
             if (_connection == null)
             {
@@ -91,9 +91,25 @@ namespace GraceRun.UI
             _pages.Reset(_main);
         }
 
+        /// <summary>The cream title card at the top: the game name in the display font, the tagline and version below.</summary>
+        private void BuildTitleCard(Transform root)
+        {
+            var theme = UiTheme.Current;
+            var card = UiKit.NewImage(root, "TitleCard", theme != null ? theme.TitleCard : null, Color.white);
+            var rect = card.rectTransform;
+            rect.anchorMin = rect.anchorMax = new Vector2(0.5f, 0.875f);
+            rect.sizeDelta = new Vector2(1100f, 250f);
+            rect.anchoredPosition = Vector2.zero;
+            var title = UiKit.NewText(card.transform, "Title", Title, MenuStyle.TitleSize, UiPalette.Ink, TextAnchor.MiddleCenter, true);
+            Place(title.rectTransform, 0.58f, 120f);
+            var version = _connection != null ? $"   /   v{_connection.Config.GameVersion}" : "";
+            var tagline = UiKit.NewText(card.transform, "Tagline", Tagline + version, MenuStyle.SmallSize, UiPalette.Sepia);
+            Place(tagline.rectTransform, 0.22f, 40f);
+        }
+
         private GameObject BuildMain(Transform parent)
         {
-            var column = MenuKit.Column(parent, "Main", MenuStyle.PanelWidth - 160f);
+            var column = MenuKit.Column(parent, "Main", MenuStyle.PanelWidth - 120f);
             MenuKit.Label(column, "Your name (shown to the others)", MenuStyle.SmallSize, MenuStyle.Fog);
             _nickname = MenuKit.Field(column, GameSettings.Nickname, NicknameRules.MaxLength);
             _nickname.onEndEdit.AddListener(_ => CommitNickname());
@@ -143,8 +159,8 @@ namespace GraceRun.UI
             rect.SetParent(root, false);
             rect.anchorMin = Vector2.zero;
             rect.anchorMax = Vector2.one;
-            rect.offsetMin = new Vector2(0f, 0f);
-            rect.offsetMax = new Vector2(0f, -200f);
+            rect.offsetMin = new Vector2(0f, 40f);
+            rect.offsetMax = new Vector2(0f, -290f);
             return rect;
         }
 

@@ -3,6 +3,7 @@ using GraceRun.Bosses;
 using GraceRun.Combat;
 using GraceRun.Core.Framing;
 using GraceRun.Player;
+using GraceRun.UI.Skin;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -137,27 +138,40 @@ namespace GraceRun.UI
             _diamond = MakeSprite(false);
         }
 
-        /// <summary>A 16x16 white shape: a right-pointing arrow head, or a diamond.</summary>
+        /// <summary>A 16x16 shape: a right-pointing arrow head, or a diamond; white (tinted per marker) with a 1 px ink outline.</summary>
         private static Sprite MakeSprite(bool arrow)
         {
             const int size = 16;
             var texture = new Texture2D(size, size, TextureFormat.RGBA32, false) { filterMode = FilterMode.Point };
             var pixels = new Color32[size * size];
+            var ink = (Color32)UiPalette.Ink;
             for (var y = 0; y < size; y++)
             {
                 for (var x = 0; x < size; x++)
                 {
-                    var dy = Mathf.Abs(y - (size - 1) * 0.5f);
-                    var dx = x - (size - 1) * 0.5f;
-                    var inside = arrow
-                        ? x >= 2 && dy <= (size - 1 - x) * 0.55f
-                        : Mathf.Abs(dx) + dy <= size * 0.5f - 0.5f;
-                    pixels[y * size + x] = inside ? new Color32(255, 255, 255, 255) : new Color32(0, 0, 0, 0);
+                    if (!Inside(arrow, x, y, size))
+                    {
+                        pixels[y * size + x] = new Color32(0, 0, 0, 0);
+                        continue;
+                    }
+                    var edge = !Inside(arrow, x - 1, y, size) || !Inside(arrow, x + 1, y, size)
+                        || !Inside(arrow, x, y - 1, size) || !Inside(arrow, x, y + 1, size);
+                    pixels[y * size + x] = edge ? ink : new Color32(255, 255, 255, 255);
                 }
             }
             texture.SetPixels32(pixels);
             texture.Apply();
             return Sprite.Create(texture, new Rect(0, 0, size, size), new Vector2(0.5f, 0.5f), size);
+        }
+
+        private static bool Inside(bool arrow, int x, int y, int size)
+        {
+            if (x < 0 || y < 0 || x >= size || y >= size) return false;
+            var dy = Mathf.Abs(y - (size - 1) * 0.5f);
+            var dx = x - (size - 1) * 0.5f;
+            return arrow
+                ? x >= 2 && dy <= (size - 1 - x) * 0.55f
+                : Mathf.Abs(dx) + dy <= size * 0.5f - 0.5f;
         }
     }
 }

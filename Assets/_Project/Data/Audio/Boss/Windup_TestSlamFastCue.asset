@@ -1,0 +1,19 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a4e7cd5856233554284d6f4cc1741ae3, type: 3}
+  m_Name: Windup_TestSlamFastCue
+  m_EditorClassIdentifier: GraceRun.Runtime::GraceRun.Core.Audio.AudioCue
+  _clips:
+  - {fileID: 8300000, guid: 1b7dfe41b7e879f43b9b2ad4ecfcc4b5, type: 3}
+  _volume: 0.75
+  _pitchRange: {x: 1, y: 1}
+  _minInterval: 0.1
