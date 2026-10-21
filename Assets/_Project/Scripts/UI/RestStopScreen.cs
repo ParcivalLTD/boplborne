@@ -2,6 +2,7 @@ using GraceRun.Abilities;
 using GraceRun.Core;
 using GraceRun.Run;
 using GraceRun.UI.Skin;
+using GraceRun.UI.Toon;
 using Unity.Netcode;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -310,9 +311,31 @@ namespace GraceRun.UI
         {
             var panel = CreatePanel(name, parent, new Vector2(0, 0), new Vector2(0, 0), new Vector2(0.5f, 0.5f), size, CardColor);
             panel.GetComponent<RectTransform>().anchoredPosition = pos;
-            var theme = UiTheme.Current;
-            UiKit.Slice(panel.GetComponent<Image>(), theme != null ? theme.PanelCream : null);
+            UiKit.Slice(panel.GetComponent<Image>(), UiKit.CardPanel());
+            panel.GetComponent<Image>().color = Color.white;
+            if (ToonKit.Available) AddAwning(panel.transform, size.x);
             return panel;
+        }
+
+        /// <summary>A striped shop awning over a card, so the rest stop reads as a row of market stalls.</summary>
+        private static void AddAwning(Transform card, float width)
+        {
+            var theme = ToonTheme.Current;
+            var ink = UiKit.NewImage(card, "AwningInk", null, UiPalette.Ink);
+            var stripes = UiKit.NewImage(card, "Awning", theme.Stripes, Color.white);
+            foreach (var image in new[] { ink, stripes })
+            {
+                image.raycastTarget = false;
+                var rect = image.rectTransform;
+                rect.anchorMin = rect.anchorMax = new Vector2(0.5f, 1f);
+                rect.pivot = new Vector2(0.5f, 0f);
+            }
+            ink.rectTransform.sizeDelta = new Vector2(width + 12f, 70f);
+            ink.rectTransform.anchoredPosition = new Vector2(0f, -8f);
+            stripes.type = Image.Type.Tiled;
+            stripes.pixelsPerUnitMultiplier = 1f / 3f;
+            stripes.rectTransform.sizeDelta = new Vector2(width + 4f, 58f);
+            stripes.rectTransform.anchoredPosition = new Vector2(0f, -2f);
         }
 
         private GameObject CreatePanel(string name, Transform parent, Vector2 anchorMin, Vector2 anchorMax, Vector2 pivot, Vector2 size, Color color)
@@ -365,7 +388,8 @@ namespace GraceRun.UI
             labelText.resizeTextForBestFit = true;
             labelText.resizeTextMinSize = 16;
             labelText.resizeTextMaxSize = 24;
-            UiKit.StyleButton(btn, labelText, 24);
+            var tint = name.StartsWith("Advance") ? ToonTint.Orange : name.StartsWith("Buff") ? ToonTint.Mint : name.StartsWith("Slot") ? ToonTint.Sky : ToonTint.Pink;
+            UiKit.StyleButton(btn, labelText, 24, tint);
             return btn;
         }
 

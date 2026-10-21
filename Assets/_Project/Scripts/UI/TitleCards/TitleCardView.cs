@@ -1,6 +1,7 @@
 using GraceRun.Run;
 using GraceRun.UI.Menus;
 using GraceRun.UI.Skin;
+using GraceRun.UI.Toon;
 using Unity.Netcode;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -20,7 +21,7 @@ namespace GraceRun.UI.TitleCards
     {
         private const int SortingOrder = 15;
         private const float CardWidth = 1120f;
-        private const float CardHeight = 260f;
+        private const float CardHeight = 300f;
         private const float AnchorY = 0.74f;
 
         private TitleCardData _data;
@@ -32,6 +33,7 @@ namespace GraceRun.UI.TitleCards
         private Text _tagline;
         private float _time;
         private bool _showing;
+        private bool _shout;
 
         /// <summary>True while a card is on screen.</summary>
         public static bool IsShowing { get; private set; }
@@ -101,15 +103,15 @@ namespace GraceRun.UI.TitleCards
             {
                 case FightPhase.Countdown:
                     _title.text = TitleCardRules.IntroTitle(floor, final, boss != null ? boss.DisplayName : null);
-                    _tagline.text = _data.TaglineFor(id);
+                    _tagline.text = Tag(_data.TaglineFor(id));
                     break;
                 case FightPhase.Victory:
                     _title.text = final ? _data.FinalVictoryTitle : _data.VictoryTitle;
-                    _tagline.text = final ? _data.FinalVictoryTagline : _data.VictoryTaglineFor(id);
+                    _tagline.text = Tag(final ? _data.FinalVictoryTagline : _data.VictoryTaglineFor(id));
                     break;
                 default:
                     _title.text = _data.DefeatTitle;
-                    _tagline.text = _data.DefeatTagline;
+                    _tagline.text = Tag(_data.DefeatTagline);
                     break;
             }
             _time = 0f;
@@ -117,6 +119,8 @@ namespace GraceRun.UI.TitleCards
             IsShowing = true;
             _group.gameObject.SetActive(true);
         }
+
+        private string Tag(string text) => _shout && text != null ? text.ToUpperInvariant() : text;
 
         private void Animate()
         {
@@ -189,6 +193,40 @@ namespace GraceRun.UI.TitleCards
             divider.rectTransform.sizeDelta = new Vector2(192f, 28f);
             _tagline = UiKit.NewText(_card, "Tagline", "", UiKit.BodyNormal, UiPalette.Sepia);
             Place(_tagline.rectTransform, 0.25f, 48f);
+            if (ToonKit.Available) Toonify(card, divider);
+        }
+
+        /// <summary>The cartoon title card: a plum marquee with chasing bulbs, the tagline on an orange ribbon, two stars.</summary>
+        private void Toonify(Image card, Image divider)
+        {
+            var theme = ToonTheme.Current;
+            _shout = true;
+            UiKit.Slice(card, theme.PosterPlum, ToonKit.Scale);
+            divider.gameObject.SetActive(false);
+            UiKit.StyleText(_title, true, UiKit.DisplayMedium, UiPalette.Cream);
+            UiKit.InkOutline(_title, 4f);
+            Place(_title.rectTransform, 0.64f, 90f);
+            ToonKit.AddBulbs(_card, 16f, 40f);
+
+            Destroy(_tagline.gameObject);
+            var ribbon = ToonKit.NewRibbon(_card, "", ToonTint.Orange, new Vector2(900f, 88f), UiKit.DisplaySmall);
+            var rr = ribbon.rectTransform;
+            rr.anchorMin = rr.anchorMax = new Vector2(0.5f, 0f);
+            rr.pivot = new Vector2(0.5f, 0.5f);
+            rr.anchoredPosition = new Vector2(0f, 20f);
+            _tagline = ribbon.GetComponentInChildren<Text>();
+
+            for (var side = -1; side <= 1; side += 2)
+            {
+                var star = UiKit.NewImage(_card, "Star", side < 0 ? theme.Star : theme.StarOrange, Color.white);
+                star.type = Image.Type.Simple;
+                star.raycastTarget = false;
+                var sr = star.rectTransform;
+                sr.anchorMin = sr.anchorMax = new Vector2(side < 0 ? 0f : 1f, 1f);
+                sr.sizeDelta = new Vector2(96f, 96f);
+                sr.anchoredPosition = new Vector2(side * -10f, -6f);
+                star.gameObject.AddComponent<ToonFloat>().Configure(6f, 10f, 1.4f);
+            }
         }
 
         private static void Place(RectTransform rect, float anchorY, float height)

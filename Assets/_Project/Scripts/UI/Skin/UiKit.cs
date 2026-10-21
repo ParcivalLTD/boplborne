@@ -35,6 +35,14 @@ namespace GraceRun.UI.Skin
 
         public static Font DisplayFont => UiTheme.Current != null && UiTheme.Current.Display != null ? UiTheme.Current.Display : Fallback;
 
+        /// <summary>The 9-slice sprite for a content card: the cartoon poster, or the cream cinema panel without the toon theme.</summary>
+        public static Sprite CardPanel(bool paper = false)
+        {
+            if (Toon.ToonKit.Available) return paper ? Toon.ToonTheme.Current.PosterPaper : Toon.ToonTheme.Current.Poster;
+            var theme = UiTheme.Current;
+            return theme == null ? null : paper ? theme.PanelPaper : theme.PanelCream;
+        }
+
         /// <summary>Gives <paramref name="image"/> a 9-slice <paramref name="sprite"/> drawn at <paramref name="scale"/>x; a null sprite leaves a flat colour.</summary>
         public static void Slice(Image image, Sprite sprite, float scale = PixelScale)
         {
@@ -110,8 +118,13 @@ namespace GraceRun.UI.Skin
         };
 
         /// <summary>Makes an existing button a cream 9-slice button with the cinema colour states and ink label.</summary>
-        public static void StyleButton(Selectable button, Text label, int size = BodyNormal)
+        public static void StyleButton(Selectable button, Text label, int size = BodyNormal, Toon.ToonTint tint = Toon.ToonTint.Cream, float tilt = 0f)
         {
+            if (Toon.ToonKit.Available)
+            {
+                Toon.ToonKit.StyleButton(button, label, tint, size, tilt, 0.4f, size >= DisplaySmall);
+                return;
+            }
             var theme = UiTheme.Current;
             if (button.targetGraphic == null) button.targetGraphic = button.GetComponent<Image>();
             var image = button.targetGraphic as Image;

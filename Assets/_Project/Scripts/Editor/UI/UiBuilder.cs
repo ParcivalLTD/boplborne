@@ -35,6 +35,7 @@ namespace GraceRun.Editor.UI
             BuildTitleCards();
             SkinPrefab(theme);
             SkinScene(theme);
+            ToonBuilder.ApplyToGame();
             AssetDatabase.SaveAssets();
             Debug.Log("UI built.");
         }

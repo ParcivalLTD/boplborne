@@ -1,5 +1,6 @@
 using System;
 using GraceRun.UI.Skin;
+using GraceRun.UI.Toon;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.Events;
@@ -55,7 +56,7 @@ namespace GraceRun.UI.Menus
             rect.anchorMin = rect.anchorMax = rect.pivot = new Vector2(0.5f, 0.5f);
             rect.sizeDelta = new Vector2(width, 0f);
             var image = rect.gameObject.AddComponent<Image>();
-            UiKit.Slice(image, UiTheme.Current != null ? UiTheme.Current.PanelCream : null);
+            UiKit.Slice(image, ToonKit.Available ? ToonTheme.Current.Poster : UiTheme.Current != null ? UiTheme.Current.PanelCream : null);
             var layout = rect.gameObject.AddComponent<VerticalLayoutGroup>();
             layout.padding = new RectOffset(MenuStyle.Padding, MenuStyle.Padding, MenuStyle.Padding, MenuStyle.Padding);
             layout.spacing = MenuStyle.Spacing;
@@ -63,6 +64,17 @@ namespace GraceRun.UI.Menus
             layout.childForceExpandWidth = true;
             layout.childForceExpandHeight = false;
             rect.gameObject.AddComponent<ContentSizeFitter>().verticalFit = ContentSizeFitter.FitMode.PreferredSize;
+            return rect;
+        }
+
+        /// <summary>Like <see cref="Column"/> but without a panel behind it (buttons standing on the stage).</summary>
+        public static RectTransform Stack(Transform parent, string name, float width, float spacing = 18f)
+        {
+            var rect = Column(parent, name, width);
+            rect.GetComponent<Image>().enabled = false;
+            var layout = rect.GetComponent<VerticalLayoutGroup>();
+            layout.padding = new RectOffset(0, 0, 0, 0);
+            layout.spacing = spacing;
             return rect;
         }
 
@@ -100,9 +112,9 @@ namespace GraceRun.UI.Menus
             return label;
         }
 
-        public static Button Button(Transform parent, string text, UnityAction onClick)
+        public static Button Button(Transform parent, string text, UnityAction onClick, ToonTint tint = ToonTint.Cream, float tilt = 0f, int size = UiKit.DisplaySmall, float height = 0f)
         {
-            var button = Row<Button>(parent, text, out var label);
+            var button = Row<Button>(parent, text, out var label, tint, tilt, size, height);
             label.alignment = TextAnchor.MiddleCenter;
             button.onClick.AddListener(onClick);
             return button;
@@ -111,9 +123,13 @@ namespace GraceRun.UI.Menus
         /// <summary>A settings row: <paramref name="text"/> on the left, the value with arrows on the right.</summary>
         public static MenuOptionRow Option(Transform parent, string text, Func<string> read, Action<int> adjust)
         {
-            var row = Row<MenuOptionRow>(parent, text, out var label);
+            var row = Row<MenuOptionRow>(parent, text, out var label, ToonTint.Cream, 0f, UiKit.BodyNormal, 0f, false);
             label.alignment = TextAnchor.MiddleLeft;
-            label.rectTransform.offsetMin = new Vector2(28f, 0f);
+            label.rectTransform.offsetMin = new Vector2(28f, label.rectTransform.offsetMin.y);
+            label.rectTransform.offsetMax = new Vector2(-(ValueWidth + ArrowWidth * 2f + 50f), label.rectTransform.offsetMax.y);
+            label.resizeTextForBestFit = true;
+            label.resizeTextMinSize = UiKit.BodySmall - 4;
+            label.resizeTextMaxSize = UiKit.BodyNormal;
             var value = Label(row.transform, "", MenuStyle.BodySize, MenuStyle.Gold, TextAnchor.MiddleCenter);
             value.resizeTextForBestFit = true;
             value.resizeTextMinSize = UiKit.BodySmall - 8;
@@ -126,7 +142,7 @@ namespace GraceRun.UI.Menus
         }
 
         private const float ArrowWidth = 28f;
-        private const float ValueWidth = 290f;
+        private const float ValueWidth = 340f;
 
         /// <summary>A clickable arrow at the right end of an option row; a click steps the value by <paramref name="delta"/>.</summary>
         private static void Arrow(MenuOptionRow row, int delta, float fromRight)
@@ -155,12 +171,12 @@ namespace GraceRun.UI.Menus
         }
 
         /// <summary>A single-line text field (the join address).</summary>
-        public static InputField Field(Transform parent, string value, int characterLimit = 0)
+        public static InputField Field(Transform parent, string value, int characterLimit = 0, float height = 0f)
         {
             var rect = Rect(parent, "Field");
-            rect.gameObject.AddComponent<LayoutElement>().minHeight = MenuStyle.RowHeight;
+            rect.gameObject.AddComponent<LayoutElement>().minHeight = height > 0f ? height : MenuStyle.RowHeight;
             var image = rect.gameObject.AddComponent<Image>();
-            UiKit.Slice(image, UiTheme.Current != null ? UiTheme.Current.Field : null);
+            UiKit.Slice(image, ToonKit.Available ? ToonTheme.Current.PosterPaper : UiTheme.Current != null ? UiTheme.Current.Field : null);
             var field = rect.gameObject.AddComponent<InputField>();
             field.targetGraphic = image;
             field.colors = UiKit.ButtonColors();
@@ -193,16 +209,21 @@ namespace GraceRun.UI.Menus
             }
         }
 
-        private static T Row<T>(Transform parent, string text, out Text label) where T : Selectable
+        private static T Row<T>(Transform parent, string text, out Text label, ToonTint tint = ToonTint.Cream, float tilt = 0f, int size = UiKit.DisplaySmall, float height = 0f, bool display = true) where T : Selectable
         {
             var rect = Rect(parent, text);
-            rect.gameObject.AddComponent<LayoutElement>().minHeight = MenuStyle.RowHeight;
+            rect.gameObject.AddComponent<LayoutElement>().minHeight = height > 0f ? height : MenuStyle.RowHeight;
             var image = rect.gameObject.AddComponent<Image>();
             var selectable = rect.gameObject.AddComponent<T>();
             selectable.targetGraphic = image;
             label = Label(rect, text, MenuStyle.BodySize, MenuStyle.Bone);
             Stretch(label.rectTransform, Vector2.zero, Vector2.zero);
-            UiKit.StyleButton(selectable, label, MenuStyle.BodySize);
+            if (ToonKit.Available)
+            {
+                if (display) label.text = text.ToUpperInvariant();
+                ToonKit.StyleButton(selectable, label, tint, size, tilt, 0.8f, display);
+            }
+            else UiKit.StyleButton(selectable, label, MenuStyle.BodySize);
             return selectable;
         }
 

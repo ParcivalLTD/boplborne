@@ -2,6 +2,7 @@ using GraceRun.Core;
 using GraceRun.Player;
 using GraceRun.Run;
 using GraceRun.UI.Skin;
+using GraceRun.UI.Toon;
 using Unity.Netcode;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -286,8 +287,8 @@ namespace GraceRun.UI
         {
             var card = CreatePanel(name, parent, new Vector2(0.5f, 0.5f), new Vector2(0.5f, 0.5f), new Vector2(0.5f, 0.5f), size, CardColor);
             card.GetComponent<RectTransform>().anchoredPosition = new Vector2(anchoredPosition.x - 960f, anchoredPosition.y - 540f);
-            var theme = UiTheme.Current;
-            UiKit.Slice(card.GetComponent<Image>(), theme != null ? (paper ? theme.PanelPaper : theme.PanelCream) : null);
+            UiKit.Slice(card.GetComponent<Image>(), UiKit.CardPanel(paper));
+            card.GetComponent<Image>().color = Color.white;
             return card;
         }
 
@@ -341,7 +342,7 @@ namespace GraceRun.UI
             if (action != null) button.onClick.AddListener(action);
 
             labelText = CreateText("Label", go.transform, label, 32, FontStyle.Normal, TextAnchor.MiddleCenter, CardInk);
-            UiKit.StyleButton(button, labelText, 32);
+            UiKit.StyleButton(button, labelText, 32, ToonTint.Orange, -1f);
             SetRect(labelText.rectTransform, Vector2.zero, Vector2.one, new Vector2(0.5f, 0.5f), Vector2.zero, Vector2.zero);
             return button;
         }

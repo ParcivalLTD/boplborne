@@ -1,0 +1,67 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dd4822df8da04f2448242c7a95959830, type: 3}
+  m_Name: ToonTheme
+  m_EditorClassIdentifier: GraceRun.Runtime::GraceRun.UI.Toon.ToonTheme
+  _buttons:
+  - {fileID: 21300000, guid: 03c7a34f63eb2da43ade3f5d65f41ce6, type: 3}
+  - {fileID: 21300000, guid: 145cb0fba1e60854180c360f17f7ff3d, type: 3}
+  - {fileID: 21300000, guid: eadb822f5363aa34a9d7e4b81ee197ea, type: 3}
+  - {fileID: 21300000, guid: b4b6dc4a6b74b2e4485778d85653cbfe, type: 3}
+  - {fileID: 21300000, guid: f0b416a46a0582f44a272d51e4ca5cc7, type: 3}
+  - {fileID: 21300000, guid: 2e19b46e21415354788e26e432ca4908, type: 3}
+  - {fileID: 21300000, guid: ccd74794296632d4d937fc624edc0114, type: 3}
+  _roundButton: {fileID: 21300000, guid: 8580b857c3c89e5408da763c522ba937, type: 3}
+  _roundButtonOrange: {fileID: 21300000, guid: ea41933ed9f92b54099440e58c9f0b4f, type: 3}
+  _poster: {fileID: 21300000, guid: 758dedc53ee715743a6981ce462cff98, type: 3}
+  _posterPaper: {fileID: 21300000, guid: 1df97e8ffd8f3a140b37b579cd566994, type: 3}
+  _posterPlum: {fileID: 21300000, guid: 017919a801a56ff46bea0c2cf73ebf19, type: 3}
+  _ticket: {fileID: 21300000, guid: 30f802bf0b9cb304aa0326dcead6f604, type: 3}
+  _ribbons:
+  - {fileID: 21300000, guid: 90010f1c4ad763f4a89d6bdae985ca11, type: 3}
+  - {fileID: 21300000, guid: 3bcaf0f4b53f2854d9299b3280cef77b, type: 3}
+  - {fileID: 21300000, guid: 1c8a1d82ec11b9c4caa8e6e79f2cfce2, type: 3}
+  - {fileID: 21300000, guid: 00b1161691f36554991913b61b257172, type: 3}
+  - {fileID: 21300000, guid: ba806369412eb4d4e815550e12a54154, type: 3}
+  - {fileID: 21300000, guid: 84223c8f5dc104d45ad5e7bcee042ad2, type: 3}
+  _badge: {fileID: 21300000, guid: 872084e43487fd4469ebeb94cb15c14e, type: 3}
+  _badgeOrange: {fileID: 21300000, guid: a4ce88bb2911ad24dbaf565400ec945e, type: 3}
+  _bulbOn: {fileID: 21300000, guid: 04a4d19b002c0144da6e1b32934ee0f0, type: 3}
+  _bulbOff: {fileID: 21300000, guid: cc1d32dce63028048acbbff43fa4bcd6, type: 3}
+  _star: {fileID: 21300000, guid: 708c3fb6fa28c744993ae2322c4bc0f7, type: 3}
+  _starOrange: {fileID: 21300000, guid: 95703be85140ab544b0a547531663217, type: 3}
+  _sparkle: {fileID: 21300000, guid: 56f98157fcc5af948a4a438523f1a40b, type: 3}
+  _curtain: {fileID: 21300000, guid: f5693721b31bbd24e86a0e9c8a655134, type: 3}
+  _valance: {fileID: 21300000, guid: e2cab5e5c235d51468e9dcb20a799b69, type: 3}
+  _spotlight: {fileID: 21300000, guid: f1d7ffd19dc09be49a247ddb8c09bd66, type: 3}
+  _stripes: {fileID: 21300000, guid: 9b90dbb1ac95d73469f25d4bbf1fa68f, type: 3}
+  _barFrame: {fileID: 21300000, guid: 5541d90fd22fd6f45abb94897c83d036, type: 3}
+  _fistIcon: {fileID: 21300000, guid: bad0d723da89b904a920c3337d003198, type: 3}
+  _mascotFrames:
+  - {fileID: 21300000, guid: f3ec05247a3fced47ab278e445a4e166, type: 3}
+  - {fileID: 21300000, guid: 16ff4cf5272ed5e47bc0afbf48bc2068, type: 3}
+  - {fileID: 21300000, guid: 9de5e39b95b0620468652ec1501d8a89, type: 3}
+  - {fileID: 21300000, guid: ef7d426aa8acdfc479e175df9f64c1cb, type: 3}
+  - {fileID: 21300000, guid: 2aac98d764603e84395298f0e4942234, type: 3}
+  - {fileID: 21300000, guid: db765528759baed46b4fb25cc912e743, type: 3}
+  - {fileID: 21300000, guid: 3d4fa83d945006c4888dc88e32d32011, type: 3}
+  - {fileID: 21300000, guid: 741023ee7d7d15643a400c32bb6205ce, type: 3}
+  _mascotHat: {fileID: 21300000, guid: 28adfa465dd27fb42be7820376503400, type: 3}
+  _mascotHatPixels:
+  - {x: 0, y: 2}
+  - {x: 0, y: 3}
+  - {x: 0, y: 1}
+  - {x: 0.5, y: -2}
+  - {x: 0, y: 0}
+  - {x: 0, y: 3}
+  - {x: 0, y: 2}
+  - {x: 0, y: 0}

@@ -1,6 +1,7 @@
 using GraceRun.Player;
 using GraceRun.Run;
 using GraceRun.UI.Skin;
+using GraceRun.UI.Toon;
 using Unity.Netcode;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -68,6 +69,12 @@ namespace GraceRun.UI
             if (_root != null) Destroy(_root);
             EnsureCanvas();
 
+            if (ToonKit.Available)
+            {
+                BuildRack(weapon);
+                return;
+            }
+
             var weapons = weapon.Catalog.Weapons;
             var width = weapons.Count * ButtonWidth + (weapons.Count - 1) * Gap + 2f * Pad;
             _root = new GameObject("WeaponBar", typeof(RectTransform), typeof(Image));
@@ -89,6 +96,71 @@ namespace GraceRun.UI
             }
             _shownOpen = false;
             _root.SetActive(false);
+        }
+
+        private const float RackSlot = 112f;
+        private const float RackGap = 18f;
+
+        /// <summary>The armory rack: a row of round weapon medals in the top-right corner, labelled underneath.</summary>
+        private void BuildRack(PlayerWeapon weapon)
+        {
+            var weapons = weapon.Catalog.Weapons;
+            _root = new GameObject("WeaponRack", typeof(RectTransform));
+            _root.transform.SetParent(transform, false);
+            var rect = (RectTransform)_root.transform;
+            rect.anchorMin = rect.anchorMax = rect.pivot = new Vector2(1f, 1f);
+            rect.sizeDelta = new Vector2(weapons.Count * (RackSlot + RackGap) - RackGap, RackSlot + 50f);
+            rect.anchoredPosition = new Vector2(-30f, -20f);
+
+            _buttons = new Button[weapons.Count];
+            _frames = new Image[weapons.Count];
+            for (var i = 0; i < weapons.Count; i++)
+            {
+                var id = (byte)i;
+                _buttons[i] = MakeMedal(weapons[i], i, out _frames[i]);
+                _buttons[i].onClick.AddListener(() => weapon.SelectRpc(id));
+            }
+            _shownOpen = false;
+            _root.SetActive(false);
+        }
+
+        private Button MakeMedal(WeaponData data, int index, out Image frame)
+        {
+            var theme = ToonTheme.Current;
+            var go = new GameObject(data.DisplayName, typeof(RectTransform), typeof(Image), typeof(Button));
+            go.transform.SetParent(_root.transform, false);
+            frame = go.GetComponent<Image>();
+            frame.sprite = theme.RoundButton;
+            var rect = (RectTransform)go.transform;
+            rect.anchorMin = rect.anchorMax = rect.pivot = new Vector2(0f, 1f);
+            rect.sizeDelta = new Vector2(RackSlot, RackSlot);
+            rect.anchoredPosition = new Vector2(index * (RackSlot + RackGap), 0f);
+
+            var iconGo = new GameObject("Icon", typeof(RectTransform), typeof(Image));
+            iconGo.transform.SetParent(go.transform, false);
+            var icon = iconGo.GetComponent<Image>();
+            icon.sprite = data.Sprite != null ? data.Sprite : theme.FistIcon;
+            icon.preserveAspect = true;
+            icon.raycastTarget = false;
+            var ir = (RectTransform)iconGo.transform;
+            ir.anchorMin = ir.anchorMax = new Vector2(0.5f, 0.56f);
+            ir.sizeDelta = new Vector2(74f, 74f);
+            ir.localRotation = Quaternion.Euler(0f, 0f, data.Sprite != null ? 38f : 0f);
+
+            var label = UiKit.NewText(go.transform, "Label", data.DisplayName.ToUpperInvariant(), UiKit.DisplaySmall, UiPalette.Cream, TextAnchor.MiddleCenter, true);
+            UiKit.InkOutline(label, 4f);
+            var lr = label.rectTransform;
+            lr.anchorMin = lr.anchorMax = new Vector2(0.5f, 0f);
+            lr.pivot = new Vector2(0.5f, 1f);
+            lr.sizeDelta = new Vector2(150f, 40f);
+            lr.anchoredPosition = new Vector2(0f, -2f);
+            label.horizontalOverflow = HorizontalWrapMode.Overflow;
+
+            var button = go.GetComponent<Button>();
+            button.targetGraphic = frame;
+            button.transition = Selectable.Transition.None;
+            go.AddComponent<ToonButton>().Configure(index % 2 == 0 ? -3f : 3f, 1.2f, 1.1f);
+            return button;
         }
 
         private Button MakeButton(WeaponData data, int index, out Image frame)
@@ -120,7 +192,12 @@ namespace GraceRun.UI
 
         private void Refresh(PlayerWeapon weapon)
         {
-            for (var i = 0; i < _frames.Length; i++) _frames[i].color = i == weapon.Id ? Carried : Idle;
+            var theme = ToonTheme.Current;
+            for (var i = 0; i < _frames.Length; i++)
+            {
+                if (ToonKit.Available) _frames[i].sprite = i == weapon.Id ? theme.RoundButtonOrange : theme.RoundButton;
+                else _frames[i].color = i == weapon.Id ? Carried : Idle;
+            }
         }
 
         private void EnsureCanvas()

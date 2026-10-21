@@ -26,9 +26,9 @@ namespace GraceRun.UI
         private const string RestOtherText = "Flasks refilled. Waiting for the host to continue.";
         private const string DefeatSubText = "Everyone is down.";
         private const string RestartOtherText = "Waiting for the host.";
-        private const string StartRunLabel = "Start run";
-        private const string NextFloorLabel = "Next floor";
-        private const string ReturnHubLabel = "Return to Hub";
+        private const string StartRunLabel = "START THE SHOW!";
+        private const string NextFloorLabel = "NEXT FLOOR!";
+        private const string ReturnHubLabel = "BACK TO THE HUB";
 
         [SerializeField] private GameObject _root;
         [SerializeField] private Text _title;

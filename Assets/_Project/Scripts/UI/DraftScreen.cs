@@ -2,6 +2,7 @@ using GraceRun.Abilities;
 using GraceRun.Core;
 using GraceRun.Player;
 using GraceRun.Run;
+using GraceRun.UI.Toon;
 using Unity.Netcode;
 using UnityEngine;
 using UnityEngine.EventSystems;
@@ -132,6 +133,7 @@ namespace GraceRun.UI
             if (loadout == null) return;
             if (HasEmptySlot(loadout))
             {
+                Celebrate(card);
                 _manager.PickRpc((byte)card, 0);
                 return;
             }
@@ -148,8 +150,17 @@ namespace GraceRun.UI
 
         private void OnReplace(int slot)
         {
+            if (_pendingCard >= 0) Celebrate(_pendingCard);
             if (_pendingCard >= 0) _manager.PickRpc((byte)_pendingCard, (byte)slot);
             CloseReplace();
+        }
+
+        /// <summary>A pop of stars from the picked card (cosmetic).</summary>
+        private void Celebrate(int card)
+        {
+            if (card < 0 || card >= _cards.Length) return;
+            var local = _root.transform.InverseTransformPoint(_cards[card].transform.position);
+            ToonBurst.Play(_root.transform, new Vector2(local.x, local.y), 14);
         }
 
         private void OnReroll()

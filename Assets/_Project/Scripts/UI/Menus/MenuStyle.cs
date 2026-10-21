@@ -23,7 +23,7 @@ namespace GraceRun.UI.Menus
         public const int HeadingSize = UiKit.DisplayMedium;
         public const int BodySize = UiKit.BodyNormal;
         public const int SmallSize = UiKit.BodySmall;
-        public const float RowHeight = 64f;
+        public const float RowHeight = 84f;
         public const float PanelWidth = 760f;
         public const float Spacing = 10f;
         public const int Padding = 40;

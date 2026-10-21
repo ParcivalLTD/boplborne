@@ -2,6 +2,7 @@ using GraceRun.Core.Settings;
 using GraceRun.Net;
 using GraceRun.UI.Menus;
 using GraceRun.UI.Skin;
+using GraceRun.UI.Toon;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -28,6 +29,8 @@ namespace GraceRun.UI
         private InputField _nickname;
         private ConnectionManager _connection;
         private (GameObject join, GameObject settings, GameObject controls) _mainPages;
+        private GameObject _header;
+        private RectTransform _area;
 
         private void Awake()
         {
@@ -55,6 +58,7 @@ namespace GraceRun.UI
             var busy = _connection.IsBusy;
             if (busy && _pages.Current != _busy) _pages.Reset(_busy);
             else if (!busy && _pages.Current == _busy) _pages.Reset(_main);
+            ShowHeader(_pages.Current != _mainPages.settings && _pages.Current != _mainPages.controls);
         }
 
         private void Build()
@@ -62,11 +66,19 @@ namespace GraceRun.UI
             var canvas = MenuKit.CreateCanvas("MainMenuCanvas", SortingOrder);
             canvas.transform.SetParent(transform, false);
             var root = canvas.transform;
-            var shade = UiPalette.SepiaDark;
-            MenuKit.Fill(root, "Backdrop", new Color(shade.r, shade.g, shade.b, 0.94f));
             _pages = canvas.gameObject.AddComponent<MenuPages>();
 
-            BuildTitleCard(root);
+            if (ToonKit.Available)
+            {
+                var version = _connection != null ? $"v{_connection.Config.GameVersion}" : "";
+                _header = MainMenuStage.Build(root, Title, Tagline.ToUpperInvariant(), version);
+            }
+            else
+            {
+                var shade = UiPalette.SepiaDark;
+                MenuKit.Fill(root, "Backdrop", new Color(shade.r, shade.g, shade.b, 0.94f));
+                BuildTitleCard(root);
+            }
             _status = MenuKit.Label(root, "", MenuStyle.SmallSize, MenuStyle.OnBackdrop);
             Place(_status.rectTransform, 0.03f, 44f);
 
@@ -77,6 +89,7 @@ namespace GraceRun.UI
             }
 
             var pages = Area(root);
+            _area = (RectTransform)pages;
             _main = BuildMain(pages);
             var join = BuildJoin(pages, out var joinFirst);
             _busy = BuildBusy(pages, out var cancel);
@@ -109,19 +122,21 @@ namespace GraceRun.UI
 
         private GameObject BuildMain(Transform parent)
         {
-            var column = MenuKit.Column(parent, "Main", MenuStyle.PanelWidth - 120f);
-            MenuKit.Label(column, "Your name (shown to the others)", MenuStyle.SmallSize, MenuStyle.Fog);
-            _nickname = MenuKit.Field(column, GameSettings.Nickname, NicknameRules.MaxLength);
+            var toon = ToonKit.Available;
+            var column = toon ? MenuKit.Stack(parent, "Main", 640f, 10f) : MenuKit.Column(parent, "Main", MenuStyle.PanelWidth - 120f);
+            var nameColor = toon ? UiPalette.Cream : MenuStyle.Fog;
+            MenuKit.Label(column, toon ? "YOUR STAGE NAME" : "Your name (shown to the others)", MenuStyle.SmallSize, nameColor);
+            _nickname = MenuKit.Field(column, GameSettings.Nickname, NicknameRules.MaxLength, toon ? 68f : 0f);
             _nickname.onEndEdit.AddListener(_ => CommitNickname());
             var host = MenuKit.Button(column, "Host game", () =>
             {
                 CommitNickname();
                 _connection.Host();
-            });
-            MenuKit.Button(column, "Join game", () => _pages.Open(_mainPages.join));
-            MenuKit.Button(column, "Settings", () => _pages.Open(_mainPages.settings));
-            MenuKit.Button(column, "Controls", () => _pages.Open(_mainPages.controls));
-            MenuKit.Button(column, "Quit", Quit);
+            }, ToonTint.Orange, -1f, UiKit.DisplayMedium, 100f);
+            MenuKit.Button(column, "Join game", () => _pages.Open(_mainPages.join), ToonTint.Mint, 1f, UiKit.DisplayMedium, 100f);
+            MenuKit.Button(column, "Settings", () => _pages.Open(_mainPages.settings), ToonTint.Sky, -1f, UiKit.DisplaySmall, 84f);
+            MenuKit.Button(column, "Controls", () => _pages.Open(_mainPages.controls), ToonTint.Pink, 1f, UiKit.DisplaySmall, 84f);
+            MenuKit.Button(column, "Quit", Quit, ToonTint.Stone, -1f, UiKit.DisplaySmall, 84f);
             MenuKit.ChainVertical(column);
             _pages.Add(column.gameObject, host);
             return column.gameObject;
@@ -152,6 +167,14 @@ namespace GraceRun.UI
             return column.gameObject;
         }
 
+        /// <summary>The title sign hides on the tall sub-pages (settings, controls) so they have the room.</summary>
+        private void ShowHeader(bool show)
+        {
+            if (_header == null || _area == null || _header.activeSelf == show) return;
+            _header.SetActive(show);
+            _area.offsetMax = new Vector2(0f, show ? -400f : -40f);
+        }
+
         private static Transform Area(Transform root)
         {
             var go = new GameObject("Pages", typeof(RectTransform));
@@ -160,7 +183,7 @@ namespace GraceRun.UI
             rect.anchorMin = Vector2.zero;
             rect.anchorMax = Vector2.one;
             rect.offsetMin = new Vector2(0f, 40f);
-            rect.offsetMax = new Vector2(0f, -290f);
+            rect.offsetMax = new Vector2(0f, ToonKit.Available ? -400f : -290f);
             return rect;
         }
 
