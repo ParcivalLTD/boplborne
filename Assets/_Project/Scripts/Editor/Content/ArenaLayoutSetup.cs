@@ -27,26 +27,94 @@ namespace GraceRun.Editor.Content
         private const float HighWidth = 7f;
         private const float PillarSpacing = 16f;
 
-        /// <summary>Inner half width and extra height above the standard 22.5-unit view, per arena.</summary>
-        private static readonly (string Name, float HalfWidth, float ExtraHeight)[] Layouts =
+        /// <summary>One ledge, mirrored to the other side unless X is 0: centre x, top above the floor, width.</summary>
+        private readonly struct Ledge
         {
-            ("HubArena", 16f, 0f),
-            ("GatekeeperArena", 28f, 0f),
-            ("TestBossArena", 28f, 0f),
-            ("BroodMotherArena", 32f, 0f),
-            ("BellTwinsArena", 40f, 0f),
-            ("FinalTestBossArena", 36f, 10f),
+            public readonly string Id;
+            public readonly float X, Rise, Width;
+            public Ledge(string id, float x, float rise, float width) { Id = id; X = x; Rise = rise; Width = width; }
+        }
+
+        // Rises stay under the jump + air jump reach (checked in Validate); gaps between ledges are crossed by running.
+
+        // The Gatekeeper teaches dodging: a clear duel floor in the middle (his slam and sweep reach 4.5),
+        // low guard ledges to hop over the sweep, balconies for aerial pokes at his head, one risky perch above the gate.
+        private static readonly Ledge[] GatekeeperLedges =
+        {
+            new Ledge("Perch", 0f, 6f, 4f),
+            new Ledge("Guard", 11f, 2.5f, 6f),
+            new Ledge("Step", 16.5f, 4f, 3.5f),
+            new Ledge("Balcony", 22f, 5.5f, 7f),
         };
+
+        // The Brood Mother punishes bunching and clutter: stepping stones above her webs and crawlers (a crawler hops
+        // about 2 units), staggered heights so the group spreads out, and a clear middle where her ceiling drop lands.
+        private static readonly Ledge[] BroodMotherLedges =
+        {
+            new Ledge("Stone", 7f, 2.5f, 5f),
+            new Ledge("Branch", 14f, 4.5f, 6f),
+            new Ledge("Root", 20.5f, 2.5f, 5f),
+            new Ledge("Rafter", 25.5f, 5f, 5f),
+            new Ledge("Corner", 30f, 3f, 3f),
+        };
+
+        // The Bell Twins split the team: two mirrored belfry stacks (one per twin) with a low bridge between them,
+        // plenty of airtime over the floor shockwaves, and high perches for the pair that must both hit a toll.
+        private static readonly Ledge[] BellTwinsLedges =
+        {
+            new Ledge("Bridge", 0f, 5.5f, 6f),
+            new Ledge("Landing", 9f, 3f, 6f),
+            new Ledge("Gallery", 18f, 5.5f, 7f),
+            new Ledge("Stage", 27f, 3f, 7f),
+            new Ledge("Loft", 35f, 5.5f, 6f),
+        };
+
+        /// <summary>Inner half width, extra height above the standard 22.5-unit view and ledges (null = the generic grid), per arena.</summary>
+        private static readonly (string Name, float HalfWidth, float ExtraHeight, Ledge[] Ledges)[] Layouts =
+        {
+            ("HubArena", 16f, 0f, null),
+            ("GatekeeperArena", 28f, 0f, GatekeeperLedges),
+            ("TestBossArena", 28f, 0f, null),
+            ("BroodMotherArena", 32f, 0f, BroodMotherLedges),
+            ("BellTwinsArena", 40f, 0f, BellTwinsLedges),
+            ("FinalTestBossArena", 36f, 10f, null),
+            ("StormWyrmArena", 34f, 0f, null),
+            ("MirrorDuelistArena", 30f, 0f, null),
+        };
+
+        /// <summary>Lays out just the arena called <paramref name="name"/> from its row in the table.</summary>
+        public static void LayOut(string name)
+        {
+            foreach (var layout in Layouts)
+                if (layout.Name == name) Apply(layout.Name, layout.HalfWidth, layout.ExtraHeight, layout.Ledges);
+        }
 
         [MenuItem("Grace Run/Lay Out Wide Arenas")]
         public static void Run()
         {
-            foreach (var layout in Layouts) Apply(layout.Name, layout.HalfWidth, layout.ExtraHeight);
+            foreach (var layout in Layouts) Apply(layout.Name, layout.HalfWidth, layout.ExtraHeight, layout.Ledges);
             AssetDatabase.SaveAssets();
             Debug.Log("Arena prefabs laid out.");
         }
 
-        private static void Apply(string name, float half, float extra)
+        private static void AddLedges(Transform root, float half, Ledge[] ledges)
+        {
+            const float maxRise = 6.5f; // 4.5 jump + 3 air jump, less a margin
+            foreach (var l in ledges)
+            {
+                if (l.Rise > maxRise) Debug.LogError($"{root.name}: ledge {l.Id} is {l.Rise} high, out of jump reach.");
+                if (Mathf.Abs(l.X) + l.Width * 0.5f > half - 0.5f) Debug.LogError($"{root.name}: ledge {l.Id} pokes into the wall.");
+                var y = FloorTop + l.Rise - PlatformThickness * 0.5f;
+                if (l.X == 0f) Add(root, "Platform" + l.Id, 0f, y, l.Width);
+                else
+                {
+                    Add(root, "Platform" + l.Id + "Left", -l.X, y, l.Width);
+                    Add(root, "Platform" + l.Id + "Right", l.X, y, l.Width);
+                }
+            }
+        }
+
+        private static void Apply(string name, float half, float extra, Ledge[] ledges)
         {
             var path = Folder + name + ".prefab";
             var root = PrefabUtility.LoadPrefabContents(path);
@@ -61,7 +129,8 @@ namespace GraceRun.Editor.Content
                 SetBox(root, "WallLeft", -(half + WallThickness * 0.5f), wallY, WallThickness, wallHeight);
                 SetBox(root, "WallRight", half + WallThickness * 0.5f, wallY, WallThickness, wallHeight);
                 AddPillars(root.transform, half);
-                AddPlatforms(root.transform, half, extra);
+                if (ledges != null) AddLedges(root.transform, half, ledges);
+                else AddPlatforms(root.transform, half, extra);
 
                 var bounds = root.GetComponent<ArenaBounds>();
                 if (bounds == null) bounds = root.AddComponent<ArenaBounds>();

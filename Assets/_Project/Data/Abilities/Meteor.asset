@@ -34,7 +34,7 @@ MonoBehaviour:
   _launchSpeed: 5
   _maxFlightTime: 5
   _gravityScale: 0.4
-  _damage: 45
+  _damage: 70
   _knockback: 22
   _knockbackLift: 14
   _forceSpeed: 0
