@@ -136,7 +136,7 @@ Add game feel from docs/ARCHITECTURE.md (Juice): hitstop that freezes only the t
 Build the boss framework from docs/ARCHITECTURE.md ("Boss attack flow"):
 - BossData and AttackData assets, BossBrain (server-only state machine: idle, choose attack, run attack, recover), target switching, phase 2 at the threshold, HP scaling formula from docs/GDD.md with an EditMode test.
 - CurrentAttack NetworkVariable (attack id, start tick, target); BossAttackRunner on every client plays wind-up/active/recovery from the shared tick.
-- Telegraph component: red glow on the boss part plus optional red ground zone; gold weak-point marker during recovery.
+- Telegraph component: gold weak-point marker during recovery (the red glow and ground zone were removed later, decision 26).
 - Boss HP bar UI at the top with the boss name and a phase-2 tick at 50%.
 - Debug: skip to boss, set boss HP.
 Use a placeholder test boss with one simple attack to prove it.
@@ -313,7 +313,7 @@ Follow `docs/ART_PIPELINE.md` (pixel art in a 1930s rubber-hose cartoon style, d
 
 ### 8.4 The Gatekeeper poses
 ```
-8.4: Make The Gatekeeper's art with the PixelLab MCP per docs/ART_PIPELINE.md step 4: one anchor still (show candidates, wait for my pick and hand pass), then idle, per-attack wind-up / strike / recovery poses (slams, shield bash, sweep), stagger and death. Show the boss pose that matches each attack phase from AttackData, with no red glow on the art (the pose, the red ground zone and the sound are the telegraph); then tune each attack's hitbox and range to the drawn pose.
+8.4: Make The Gatekeeper's art with the PixelLab MCP per docs/ART_PIPELINE.md step 4: one anchor still (show candidates, wait for my pick and hand pass), then idle, per-attack wind-up / strike / recovery poses (slams, shield bash, sweep), stagger and death. Show the boss pose that matches each attack phase from AttackData, with no red glow on the art (the pose and the sound are the telegraph); then tune each attack's hitbox and range to the drawn pose.
 ```
 **Done when:** every attack's telegraph reads clearly in a solo fight and the hitboxes still match the poses.
 

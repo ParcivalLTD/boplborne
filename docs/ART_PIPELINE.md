@@ -111,7 +111,7 @@ Boss wind-ups are timed by the attack data, so a pose has to stay up exactly as 
 
 1. Generate one still of the boss (side view, facing left, 144–240 px canvas) with the boss prompt and the player anchor as style reference. Main colour = its arena accent (`docs/GDD.md`). The user picks; hand pass in Aseprite. This is the boss anchor.
 2. From the anchor, generate the poses: a short `idle` loop (2–4 frames), and per attack a **wind-up**, **strike** and **recovery** pose. Use the anchor as start frame so poses stay on-model. Add `stagger`/phase-change and `death` poses.
-3. The boss view shows the pose for the current attack phase (wind-up / active / recovery from `AttackData`) with no red glow on the art: the telegraph is the pose, the red ground zone and the sound cue (decision 26). Draw each strike pose so its reach matches that attack's hitbox, and tune the `AttackData` hitbox and `MaxRange` to the drawn reach.
+3. The boss view shows the pose for the current attack phase (wind-up / active / recovery from `AttackData`) with no red glow or red zone: the telegraph is the pose and the sound cue (decision 26). Draw each strike pose so its reach matches that attack's hitbox, and tune the `AttackData` hitbox and `MaxRange` to the drawn reach.
 
 Only make bosses that exist in the game. Order: The Gatekeeper, The Brood Mother, The Bell Twins.
 

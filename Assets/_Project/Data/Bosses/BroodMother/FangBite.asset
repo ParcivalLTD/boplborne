@@ -19,8 +19,8 @@ MonoBehaviour:
   _punishWindow: 0.75
   _damage: 25
   _knockback: {x: 11, y: 5}
-  _hitboxOffset: {x: 3, y: -1}
-  _hitboxSize: {x: 4, y: 3.5}
+  _hitboxOffset: {x: 2.05, y: -1}
+  _hitboxSize: {x: 2.7, y: 3.5}
   _telegraphType: 1
   _glowPart: 1
   _weakPointOffset: {x: 0.8, y: 0.8}
@@ -32,4 +32,4 @@ MonoBehaviour:
   _weight: 1.2
   _cooldown: 0
   _minRange: 0
-  _maxRange: 8.5
+  _maxRange: 7

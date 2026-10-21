@@ -26,6 +26,12 @@ namespace GraceRun.Bosses
 
         private void OnPhaseChanged(int phase) => _staggerUntil = Time.time + _poses.StaggerTime;
 
+        /// <summary>Swaps the pose set at runtime (a boss prefab shared by two bodies, e.g. the Bell Twins).</summary>
+        public void SetPoses(BossPoseSet poses)
+        {
+            if (poses != null) _poses = poses;
+        }
+
         private void LateUpdate()
         {
             if (_health.IsDead)

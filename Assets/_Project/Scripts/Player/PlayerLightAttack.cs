@@ -47,6 +47,12 @@ namespace GraceRun.Player
 
         public SwingPhase Phase => _combo.Phase;
 
+        /// <summary>The body animation the current (or last) swing uses.</summary>
+        public BodyMove CurrentBodyMove => BodyMoves.Pick(_moves.MoveOf(_combo.HitIndex), _moves.IsFinisher(_combo.HitIndex), _combo.HitIndex);
+
+        /// <summary>How far through the current swing phase it is, 0 to 1.</summary>
+        public float PhaseProgress => _combo.PhaseProgress;
+
         /// <summary>True for the last light hit and for Heavy: the big swings that get the heavy sound.</summary>
         public bool IsFinisher(int hitIndex) => _moves.IsFinisher(hitIndex);
 

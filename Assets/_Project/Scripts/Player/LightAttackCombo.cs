@@ -43,6 +43,17 @@ namespace GraceRun.Player
 
         public LightAttackHit CurrentHit => _hits[HitIndex];
 
+        /// <summary>How far through the current phase the swing is, 0 to 1 (1 while idle). For visuals only.</summary>
+        public float PhaseProgress
+        {
+            get
+            {
+                if (Phase == SwingPhase.Idle) return 1f;
+                var duration = PhaseDuration();
+                return duration <= 0f ? 1f : Math.Min(1f, _phaseTime / duration);
+            }
+        }
+
         public event Action<int> SwingStarted;
         public event Action<int> ActiveStarted;
         public event Action ActiveEnded;

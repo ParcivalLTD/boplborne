@@ -25,13 +25,21 @@ namespace GraceRun.Player
         [SerializeField] private PlayerAnimData _data;
         [SerializeField] private PlayerStatsData _stats;
         [SerializeField] private Animator _animator;
+        [SerializeField, Tooltip("The plain controller, used by a weapon without its own animations.")]
+        private RuntimeAnimatorController _baseController;
         [SerializeField, Tooltip("Mirrored on X for facing left; holds the body and the hat.")]
         private Transform _rig;
         [SerializeField] private PlayerAnimSync _sync;
         [SerializeField] private PlayerDodge _dodge;
         [SerializeField] private PlayerLightAttack _attack;
+        [SerializeField] private PlayerWeapon _weapon;
+        [SerializeField, Tooltip("The body sprite the swing poses are drawn on.")] private SpriteRenderer _body;
+        [SerializeField, Tooltip("The hat, moved with the head in each pose.")] private Transform _hat;
         [SerializeField] private Health _health;
         [SerializeField] private Ghost _ghost;
+
+        /// <summary>Not an Animator state: a weapon's held pose, set straight on the body sprite.</summary>
+        private const int PosedState = -1;
 
         private int _current;
         private int _attackState = Attack1Id;
@@ -45,7 +53,8 @@ namespace GraceRun.Player
             _attack.SwingStarted += OnSwingStarted;
             _dodge.RollStarted += OnRollStarted;
             _health.Changed += OnHealthChanged;
-            _current = 0;
+            _weapon.Changed += OnWeaponChanged;
+            OnWeaponChanged(_weapon.Current);
         }
 
         private void OnDisable()
@@ -53,6 +62,15 @@ namespace GraceRun.Player
             _attack.SwingStarted -= OnSwingStarted;
             _dodge.RollStarted -= OnRollStarted;
             _health.Changed -= OnHealthChanged;
+            _weapon.Changed -= OnWeaponChanged;
+        }
+
+        /// <summary>A weapon with its own idle, run, jump and fall holds it in hand; the controller swap restarts the clip.</summary>
+        private void OnWeaponChanged(WeaponData weapon)
+        {
+            RuntimeAnimatorController controller = weapon.Animations != null ? weapon.Animations : _baseController;
+            if (_animator.runtimeAnimatorController != controller) _animator.runtimeAnimatorController = controller;
+            _current = 0;
         }
 
         private void Update()
@@ -62,8 +80,20 @@ namespace GraceRun.Player
 
             var swinging = _attack.IsSwinging;
             var state = PickState(swinging);
-            var facing = swinging && state == _attackState ? _attackSide : _sync.Facing;
+            var attackLike = state == _attackState || state == PosedState;
+            var facing = swinging && attackLike ? _attackSide : _sync.Facing;
             _rig.localScale = new Vector3(facing, 1f, 1f);
+
+            if (state == PosedState)
+            {
+                ShowPose();
+                return;
+            }
+            if (!_animator.enabled)
+            {
+                _animator.enabled = true;
+                _current = 0;
+            }
 
             var restart = state == _attackState && _restartAttack;
             _restartAttack = false;
@@ -78,7 +108,7 @@ namespace GraceRun.Player
             if (_ghost.IsGhost) return GhostId;
             if (_hurtLeft > 0f) return HurtId;
             if (_dodgeLeft > 0f) return DodgeId;
-            if (swinging) return _attackState;
+            if (swinging) return _weapon.Current.BodyPoses != null ? PosedState : _attackState;
 
             return _sync.Locomotion switch
             {
@@ -87,6 +117,16 @@ namespace GraceRun.Player
                 PlayerLocomotion.Fall => FallId,
                 _ => IdleId,
             };
+        }
+
+        /// <summary>A weapon with its own body poses holds one pose per swing phase, so the art matches the move's timing.</summary>
+        private void ShowPose()
+        {
+            _animator.enabled = false;
+            var poses = _weapon.Current.BodyPoses.Get(_attack.CurrentBodyMove);
+            var sprite = WeaponBodyPoses.SpriteFor(poses, _attack.Phase);
+            if (sprite != null) _body.sprite = sprite;
+            _hat.localPosition = WeaponBodyPoses.HatFor(poses, _attack.Phase);
         }
 
         private void OnSwingStarted(int hitIndex, float side)

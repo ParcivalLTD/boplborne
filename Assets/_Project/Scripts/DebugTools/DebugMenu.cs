@@ -16,7 +16,8 @@ namespace GraceRun.DebugTools
         private const string MapName = "Debug";
         private const string ToggleActionName = "ToggleMenu";
         private const string Title = "Debug (F1)";
-        private static readonly Rect PanelRect = new Rect(10f, 10f, 260f, 700f);
+        private const float PanelMargin = 10f;
+        private const float PanelWidth = 300f;
 
         [SerializeField] private InputActionAsset _controls;
         [SerializeField] private CombatData _combat;
@@ -25,6 +26,7 @@ namespace GraceRun.DebugTools
         private InputAction _toggle;
         private readonly DebugAbilityPanel _abilityPanel = new();
         private string _bossHpText = "100";
+        private Vector2 _scroll;
 
         public static DebugMenu Instance { get; private set; }
         public bool IsVisible { get; private set; }
@@ -70,13 +72,17 @@ namespace GraceRun.DebugTools
         private void OnGUI()
         {
             if (!IsVisible) return;
-            GUILayout.BeginArea(PanelRect, Title, GUI.skin.window);
+            // The panel fits the screen and scrolls, so a long ability list never gets cut off.
+            var panel = new Rect(PanelMargin, PanelMargin, PanelWidth, Screen.height - 2f * PanelMargin);
+            GUILayout.BeginArea(panel, Title, GUI.skin.window);
+            _scroll = GUILayout.BeginScrollView(_scroll);
             DrawCombatCommands();
             _abilityPanel.Draw();
             DrawBossCommands();
             DrawJuiceCommands();
             if (GUILayout.Button($"Show hitboxes: {(ShowHitboxes ? "ON" : "off")}")) ShowHitboxes = !ShowHitboxes;
             DrawSessionCommands();
+            GUILayout.EndScrollView();
             GUILayout.EndArea();
         }
 

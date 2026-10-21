@@ -79,8 +79,6 @@ namespace GraceRun.Editor.Content
                 foreach (var placeholder in new[] { "Sword", "Shield", "Eye" }) visuals.Find(placeholder).gameObject.SetActive(false);
                 var body = visuals.Find("Body").GetComponent<SpriteRenderer>();
                 Place(body, poses.Idle[0]);
-                // No red glow on the art: the Telegraph glow parts stay (other bosses use them) but draw nothing here.
-                foreach (var glow in new[] { "BodyGlow", "SwordGlow", "ShieldGlow" }) visuals.Find(glow).GetComponent<SpriteRenderer>().sprite = null;
 
                 var view = root.GetComponent<BossPoseView>() ?? root.AddComponent<BossPoseView>();
                 var so = new SerializedObject(view);
@@ -103,6 +101,7 @@ namespace GraceRun.Editor.Content
         {
             renderer.sprite = sprite;
             renderer.flipX = true;
+            renderer.color = Color.white; // the placeholder accent tint would multiply the art's colours down
             renderer.transform.localPosition = new Vector3(0f, FeetOffset, 0f);
             renderer.transform.localScale = Vector3.one;
         }

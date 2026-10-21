@@ -15,6 +15,15 @@ MonoBehaviour:
   _displayName: Fists
   _color: {r: 1, g: 1, b: 1, a: 1}
   _visualSize: {x: 0, y: 0}
+  _sprite: {fileID: 0}
+  _smear: {fileID: 0}
+  _animations: {fileID: 0}
+  _swingStyle: 1
+  _bodyPoses: {fileID: 0}
+  _windAngle: 0
+  _sweepAngle: 0
+  _swingReach: 0.7
+  _smearScale: 0.55
   _combo:
   - _damage: 8
     _knockback: {x: 0, y: 0}

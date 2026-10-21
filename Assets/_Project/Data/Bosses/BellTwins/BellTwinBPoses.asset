@@ -1,0 +1,48 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5c8eee4c924d6104080ad550ea7f9512, type: 3}
+  m_Name: BellTwinBPoses
+  m_EditorClassIdentifier: GraceRun.Runtime::GraceRun.Bosses.BossPoseSet
+  _idle:
+  - {fileID: 21300000, guid: d58f1b08e4fbbaf459fe097292b99d8f, type: 3}
+  - {fileID: 21300000, guid: 0b60e094086df6f4e898e95fb0309af4, type: 3}
+  - {fileID: 21300000, guid: fbbcf31d752dd5c459237cb334f58fb7, type: 3}
+  - {fileID: 21300000, guid: 43c46428cdd30c84eb772cd17000cfbc, type: 3}
+  _idleFps: 6
+  _stagger: {fileID: 21300000, guid: c6ce1c079e3da6b42934e7c6922d603d, type: 3}
+  _staggerTime: 0.8
+  _death:
+  - {fileID: 21300000, guid: 6437de1d966d5e44b8b44ad26e301b29, type: 3}
+  - {fileID: 21300000, guid: 1fd591fa8c5a6de49a76d8cceba13166, type: 3}
+  - {fileID: 21300000, guid: e8a6b559df6f6eb4caa0043019926196, type: 3}
+  - {fileID: 21300000, guid: cf15c7f4b71cc884ab395d1085363962, type: 3}
+  _deathFps: 5
+  _attacks:
+  - AttackIds:
+    - clapper_swing
+    - clapper_swing_double
+    - clapper_swing_second
+    Windup: {fileID: 21300000, guid: 3a98b0ad3d8f43648a8a8ac05adb8164, type: 3}
+    Strike: {fileID: 21300000, guid: e7a0479e999970e49820730d414f9118, type: 3}
+    Recovery: {fileID: 21300000, guid: 9921b19d0cab8d54aaf17ebbae3e1cfb, type: 3}
+  - AttackIds:
+    - ringing_toll
+    - enraged_ringing_toll
+    - enraged_ringing_echo
+    Windup: {fileID: 21300000, guid: 0b44545a4ebe9a646ac49b5bbbd78197, type: 3}
+    Strike: {fileID: 21300000, guid: 02768005a2ac8ac43935c86645f1f18c, type: 3}
+    Recovery: {fileID: 21300000, guid: 06d352d4ac3ccc647b73fe6a3981d2c8, type: 3}
+  - AttackIds:
+    - vaulting_dash
+    Windup: {fileID: 21300000, guid: 75e9a14139fb4f44abda77124a2e2908, type: 3}
+    Strike: {fileID: 21300000, guid: 48770c6e4bdd2c242b12cb459a656085, type: 3}
+    Recovery: {fileID: 21300000, guid: 5129445b02c253f44aed2c698815219c, type: 3}

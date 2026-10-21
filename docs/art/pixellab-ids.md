@@ -46,3 +46,84 @@ Gatekeeper poses (8.4), all from `animate_image_pixminimax` on the cleaned ancho
 | sweep | `c43799fd-5e62-468b-aebe-f23f3139bd31` | 2, 4, 6 |
 | stagger | `afacb10d-8ada-4383-beff-9687db47c755` | 2 |
 | death | `e98ff883-f43b-4ddd-8beb-106116f5caca` | 5–8 |
+
+## Brood Mother (8.5)
+
+Made by an agent without a user pick (the user can reject the pick; the other candidates are in `scratch/art/broodmother/`). The anchor was recoloured fog → accent #A3A35A in Python, then `cleanup.py --kind anim --canvas 170`.
+
+| Asset | Job id | Index | Tool | Notes |
+| --- | --- | --- | --- | --- |
+| The Brood Mother anchor | `5571e095-531b-4d05-9e99-bb1531d385a2` | 3 | `create_image_pro`, 170×170 | Upload `2d37570f-a71d-4cf0-8302-a3dd7fe8753c`. |
+| Brood Crawler | `dd2c6c54-551f-4215-8910-94e5da223b30` | 24 (hit pose: 34) | `create_image_pro`, 40×40 | Upload `fe33957c-f93d-443c-bce7-c652a4fdce84`. |
+
+| Pose | Job id | Frames used (job index) |
+| --- | --- | --- |
+| idle | `5487a08b-651a-44da-8df5-245d6f54723b` | 0, 2, 4, 6 |
+| bite | `a645c71b-f236-4575-adba-221031b3bcee` | 3, 6, 8 |
+| web spit | `af4a284a-e6f0-4abd-a470-957114053a22` | 3, 5, 8 |
+| spawn crawlers | `bd6227ad-76d6-4010-9fb1-2415e4d7404a` | 4, 6, 8 |
+| ceiling drop | `6a088b9b-c6d3-48fb-bc4a-3ddfde465b7a` | 5, 8, 1 |
+| stagger | `6e77b0d2-e590-497c-8532-3a5ace63f921` | 2 |
+| death | `b565f446-a170-465d-aa74-be624bf72a51` | 5–8 |
+| crawler walk (idle = index 0) | `cfca13cc-eb9e-485c-ad05-536bcfbac497` | 1–8 |
+
+## Bell Twins (8.6)
+
+Also made by an agent without a user pick; other candidates are in `scratch/art/belltwins/raw/`.
+
+| Asset | Job id | Index | Tool | Notes |
+| --- | --- | --- | --- | --- |
+| Twin A anchor (brass, spiked mace) | `ab22e5ca-205a-4605-b219-1dea89e3ff80` | 2 | `create_image_pro`, 170×170 | Cleaned copy `scratch/art/belltwins/belltwin_a_anchor.png` (upload `67d9b1b6-5921-4402-9b3d-05823ff7fb0f`). |
+| Twin B anchor (silver, iron ball club) | `24eacaad-ab4d-4644-a708-8a3bb7893fb0` | 0 | `edit_image` (recolour of twin A's cleaned anchor) | Cleaned copy `belltwin_b_anchor.png` (upload `59f260db-2bfc-49eb-8a52-2b8fb2a1bc13`). |
+
+All poses: `animate_image_pixminimax`, 170×170, west, side, then `cleanup.py --kind anim --canvas 170`.
+
+| Pose | Twin A job | Frames | Twin B job | Frames |
+| --- | --- | --- | --- | --- |
+| idle | `485a9b37-5033-4312-9e43-2b95501cc0b9` | 1–4 | `d7a86b73-3f16-49da-abc6-eb6942ccfdaa` | 1–4 |
+| clapper swing | `f2fa3a9e-4c41-4251-a542-e50b75e8206a` | 4, 6, 8 | `1913953f-0128-484f-ae44-42683e9401cc` (seed 7) | 4, 5, 8 |
+| ringing toll | `b178cee6-5792-48bd-ba09-43695dc98de5` | 4, 6, 8 | `488945c8-4748-4f27-969b-0b0b2831e446` | 4, 6, 8 |
+| vaulting dash | `6712bffa-f42b-429d-ac54-5b7e416054c6` | 3, 5, 8 | `2880dd88-38b3-4832-bde6-4d3350b84155` | 3, 5, 8 |
+| stagger / enrage | `8ffac949-94e1-434f-b4e6-12d4909e1208` | 4 | `58c9a9d2-31d9-433d-9c53-952eb7bc4454` | 4 |
+| death | `7c9293b7-baa4-4e0d-a0c7-27f4431071d0` | 2, 4, 6, 8 | `3b7dc314-85cf-442b-8427-b2805dbc9099` | 3, 5, 6, 8 |
+
+## Brood Mother web (8.5 follow-up)
+
+| Asset | Job id | Index | Tool | Notes |
+| --- | --- | --- | --- | --- |
+| Web zone (`web_zone.png`) | `ce5d8d87-ad4a-4b50-adfb-f42c68f78894` | 3 | `create_image_pro`, 128×32, palette ink + olive + bone | Picked 2026-10-21; palette-snapped and cropped to its bounding box (106×26). Not part of the Brood Mother table above. |
+
+## Weapons (2026-10-21)
+
+All `create_image_pro`, palette-snapped (slash: alpha only) and cropped to the sprite's bounding box; candidates in `scratch/art/weapons/`.
+
+| Asset | Job id | Index |
+| --- | --- | --- |
+| Sword (`weapon_sword.png`, 41×18) | `3afdbd5d-1ca8-4921-af5f-f904d87aebaf` | 12 |
+| Spear (`weapon_spear.png`, 61×9) | `2a44dc73-552f-41c2-a1b8-a4070474de9a` | 5 |
+| Hammer (`weapon_hammer.png`, 40×26) | `4671d05b-dbe8-4f21-ac1d-6415660bedcb` | 8 |
+| Glove for Fists (`weapon_glove.png`, 18×15) | `6244e8d2-0c88-4d69-be4b-0a3f2e9e2916` | 36 |
+| Slash smear (`weapon_slash.png`, 30×32) | `fdc97f67-99e3-4b2a-a6a2-646b4054289a` | 22 |
+
+## Weapon body animations (2026-10-21)
+
+Weapon-in-hand anchors: `edit_image_pixen` on `scratch/art/anim/anchor64.png`: sword job `63dc89fa-079f-4e99-bb6c-879066c7f26a`, spear `adcb8790-06e9-480f-9d93-fb7a999088a1`, hammer `bfa745a6-3488-4024-9e76-12ae9fc8a24a` (all seed 2). Each move is `animate_image_pixminimax` (64×64, east, side, 8 frames) from its weapon's anchor; the picked frames are in `docs/STATUS.md`'s scripts-free form in `scratch/art/weaponbody/select.py` (git-ignored; frame numbers are job indexes).
+
+| Weapon | Move | Job id |
+| --- | --- | --- |
+| Sword | LightA (second try, seed 5) | `7d9491f4-662d-490c-ad88-5f48fe11c348` |
+| Sword | LightB (second try, seed 6) | `f1074638-7487-4d81-960c-f26063941f88` |
+| Sword | Heavy / Aerial / Up / Down | `a29e4c4a-0224-4481-95f5-7416be18f98b` / `799acd16-23c3-4a6e-84e9-179647a39327` / `dec09313-6b01-4855-a589-37c040cfa0da` / `2c3b368c-fadf-4f84-b7c9-2c6d19f52b57` |
+| Spear | LightA / LightB / Heavy | `197984d7-63f9-4ad4-aa6c-6c3e398b5672` / `36043e9a-a209-4a52-a4dd-192ae33b6b99` / `2624d6a3-02d0-4cd0-8b7b-eeaadd1c2774` |
+| Spear | Aerial / Up / Down | `9e452fa8-bbd7-46fe-b01a-020942f1c9b4` / `c88046f5-58b5-47d7-a6cb-d1d718c7a1fa` / `d54788e6-885f-44b1-9a00-21da27d322d8` |
+| Hammer | LightA / LightB / Heavy | `2242bef5-0917-4f40-8d10-42758b5201ce` / `ef837f1d-70d3-4ac3-8f62-5c8cd62e1792` / `bf20f4cf-cfd0-402c-a2f1-66bffba9c6c7` |
+| Hammer | Aerial / Up / Down | `5e976e99-f669-407e-b97c-b5258af0e32b` / `f184cc2f-eefc-4b4c-96cd-6220baeee030` / `8ab4907d-d306-4605-8a0a-4274d342c897` |
+
+Idle / run / jump / fall with the weapon in hand (`animate_image_pixminimax`, same anchors; picked frames in `scratch/art/weaponbody/selectloco.py`):
+
+| Weapon | Idle | Run | Jump | Fall |
+| --- | --- | --- | --- | --- |
+| Sword | `bfaaef4f-db9f-4c9a-98d2-4bed80c670d6` | `dfec33db-470e-415f-8098-3b224c103417` | `f699e327-ec62-4a51-afaa-96c0a08566dd` | `160cda6d-4135-4488-b547-e41ac9590bd8` |
+| Spear | `1b47373c-93a3-4c89-ac80-685468fc3935` | `757e8eb3-0668-4716-afbe-e7d4b853dedb` | `f24f2b72-64cd-440a-b9cb-a0b6ba638a69` | `54cf9264-bb5f-41d9-8f19-0221ce7ddae0` |
+| Hammer | `4d4564ce-2c1b-4631-8af1-58298084ad43` | `01351194-f896-4ea9-b620-1e3388ffa0cd` | `9441c5ce-47fa-4562-a88b-4d238060f68a` | `b5e71665-bf7d-4504-824c-dda62ed40335` |
+

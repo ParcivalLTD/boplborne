@@ -34,6 +34,9 @@ namespace GraceRun.Editor.Content
             ("attack3", "Attack3", false), ("hurt", "Hurt", false), ("ghost", "Ghost", true),
         };
 
+        /// <summary>The anchor's head position, to measure a pose's hat offset against.</summary>
+        internal static Vector2 AnchorHead() => HeadOf(AnchorPath, (Canvas - 48) / 2);
+
         [MenuItem("Grace Run/Build Player Animations")]
         public static void Build()
         {
@@ -66,7 +69,7 @@ namespace GraceRun.Editor.Content
             Debug.Log("Player animations built.");
         }
 
-        private static AnimationClip BuildClip(string dir, string name, float fps, bool loop, Vector2 anchorHead)
+        internal static AnimationClip BuildClip(string dir, string name, float fps, bool loop, Vector2 anchorHead)
         {
             var paths = Directory.GetFiles(dir, "*.png").Select(p => p.Replace('\\', '/')).OrderBy(p => p).ToArray();
             foreach (var path in paths) Import(path);
@@ -120,7 +123,7 @@ namespace GraceRun.Editor.Content
         /// highest row with a run of body blue at least <see cref="HeadRun"/> wide, so raised
         /// gloves, smear lines and shake marks don't count as the head.
         /// </summary>
-        private static Vector2 HeadOf(string path, int padX)
+        internal static Vector2 HeadOf(string path, int padX)
         {
             var tex = new Texture2D(2, 2);
             tex.LoadImage(File.ReadAllBytes(path));
@@ -140,9 +143,10 @@ namespace GraceRun.Editor.Content
             return new Vector2(w / 2f, h);
         }
 
-        private static bool IsBodyBlue(Color32 c) => c.a > 0 && c.b > 150 && c.b > c.r + 20;
+        // The P1 ramp only (#2B5BC0, #4C8DFF, #BFD6FF): steel weapons (#8C8FA3) must not count as head.
+        private static bool IsBodyBlue(Color32 c) => c.a > 0 && c.b > 180 && c.b > c.r + 30;
 
-        private static float FpsOf(PlayerAnimData data, string folder) => folder switch
+        internal static float FpsOf(PlayerAnimData data, string folder) => folder switch
         {
             "idle" => data.IdleFps,
             "run" => data.RunFps,
@@ -195,10 +199,14 @@ namespace GraceRun.Editor.Content
                 SerializedFields.Set(viewSo, "_data", data);
                 SerializedFields.Set(viewSo, "_stats", AssetDatabase.LoadAssetAtPath<PlayerStatsData>(StatsPath));
                 SerializedFields.Set(viewSo, "_animator", animator);
+                SerializedFields.Set(viewSo, "_baseController", controller);
                 SerializedFields.Set(viewSo, "_rig", rig);
                 SerializedFields.Set(viewSo, "_sync", sync);
                 SerializedFields.Set(viewSo, "_dodge", root.GetComponent<PlayerDodge>());
                 SerializedFields.Set(viewSo, "_attack", root.GetComponent<PlayerLightAttack>());
+                SerializedFields.Set(viewSo, "_weapon", root.GetComponent<PlayerWeapon>());
+                SerializedFields.Set(viewSo, "_body", rig.Find("Body").GetComponent<SpriteRenderer>());
+                SerializedFields.Set(viewSo, "_hat", rig.Find("Hat"));
                 SerializedFields.Set(viewSo, "_health", root.GetComponent<Health>());
                 SerializedFields.Set(viewSo, "_ghost", root.GetComponent<Ghost>());
                 viewSo.ApplyModifiedPropertiesWithoutUndo();

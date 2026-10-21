@@ -15,6 +15,15 @@ MonoBehaviour:
   _displayName: Sword
   _color: {r: 0.78, g: 0.84, b: 0.95, a: 1}
   _visualSize: {x: 1.5, y: 0.14}
+  _sprite: {fileID: 21300000, guid: d23906e3638d5d140897a9a2f26c1fb4, type: 3}
+  _smear: {fileID: 21300000, guid: 097e05c57275f5b42857575f970e051d, type: 3}
+  _animations: {fileID: 22100000, guid: 17e34734712a2d94095ada0613c901b3, type: 2}
+  _swingStyle: 0
+  _bodyPoses: {fileID: 11400000, guid: be583243dcf5d8a48b8407eb0c5659b0, type: 2}
+  _windAngle: 65
+  _sweepAngle: 115
+  _swingReach: 0.5
+  _smearScale: 1.35
   _combo:
   - _damage: 7
     _knockback: {x: 2, y: 1}

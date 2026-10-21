@@ -1,0 +1,27 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 487c62069654f22459fd5371f77d6c4f, type: 3}
+  m_Name: CrawlerArt
+  m_EditorClassIdentifier: GraceRun.Runtime::GraceRun.Bosses.Behaviours.CrawlerArtSet
+  _walk:
+  - {fileID: 21300000, guid: f6ee8a78f3545784ebb7a631ab8efe21, type: 3}
+  - {fileID: 21300000, guid: 9dec507999c8b6c47977eeb6d7c43704, type: 3}
+  - {fileID: 21300000, guid: 9089dc5ac2139cb44a2c6eb084bc1706, type: 3}
+  - {fileID: 21300000, guid: 1d24bd927ea09d84e8ba1684f9be8e34, type: 3}
+  - {fileID: 21300000, guid: b12c40661e069994b9c8f5b724067846, type: 3}
+  - {fileID: 21300000, guid: d0ee7902447d3f045acd47015fda0f41, type: 3}
+  - {fileID: 21300000, guid: 253788e454294cd4690b00cc26506f84, type: 3}
+  - {fileID: 21300000, guid: c9ebba26850b12d45ae095c008fb536d, type: 3}
+  _walkFps: 10
+  _idle: {fileID: 21300000, guid: d9b56955f751b314d89b0f26e18a5b81, type: 3}
+  _hit: {fileID: 21300000, guid: 322a8e342b34a7345a1300887af025c5, type: 3}
+  _walkSpeedThreshold: 0.4

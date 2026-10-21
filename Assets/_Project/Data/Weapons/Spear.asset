@@ -15,6 +15,15 @@ MonoBehaviour:
   _displayName: Spear
   _color: {r: 0.6, g: 0.85, b: 0.7, a: 1}
   _visualSize: {x: 2.4, y: 0.1}
+  _sprite: {fileID: 21300000, guid: 1786a97587216e544ba4504f039d2dd6, type: 3}
+  _smear: {fileID: 21300000, guid: 097e05c57275f5b42857575f970e051d, type: 3}
+  _animations: {fileID: 22100000, guid: 1d4b6d8ed19cd5b48966b9297d2bdbb3, type: 2}
+  _swingStyle: 1
+  _bodyPoses: {fileID: 11400000, guid: dea2a9590917571449ccc8cd1b07d622, type: 2}
+  _windAngle: 0
+  _sweepAngle: 0
+  _swingReach: 1
+  _smearScale: 0.9
   _combo:
   - _damage: 6
     _knockback: {x: 1.5, y: 0.5}

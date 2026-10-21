@@ -16,6 +16,25 @@ namespace GraceRun.Player
         [SerializeField, Tooltip("Placeholder weapon shape: length and thickness in world units. 0 length draws nothing.")]
         private Vector2 _visualSize = Vector2.zero;
 
+        [Header("Art (Art/Weapons)")]
+        [SerializeField, Tooltip("The held weapon, drawn pointing right with the grip at its pivot. Empty draws nothing.")]
+        private Sprite _sprite;
+        [SerializeField, Tooltip("The swoosh drawn during the swing, convex side pointing right.")]
+        private Sprite _smear;
+        [SerializeField, Tooltip("Idle, run, jump and fall with this weapon in hand (an override of the player's Animator). Empty: the plain clips, and the weapon rests on the back.")]
+        private AnimatorOverrideController _animations;
+        [SerializeField] private WeaponSwingStyle _swingStyle;
+        [SerializeField, Tooltip("The body poses with this weapon drawn in. Empty: the body plays the punch clips (Fists) and the weapon sprite is drawn on top.")]
+        private WeaponBodyPoses _bodyPoses;
+        [SerializeField, Range(0f, 180f), Tooltip("Arc style: degrees above the aim the weapon is raised before the strike.")]
+        private float _windAngle = 70f;
+        [SerializeField, Range(0f, 270f), Tooltip("Arc style: degrees the weapon sweeps through.")]
+        private float _sweepAngle = 110f;
+        [SerializeField, Min(0f), Tooltip("Arc style: grip distance from the player's centre. Thrust style: how far the grip is pushed out.")]
+        private float _swingReach = 0.5f;
+        [SerializeField, Min(0f), Tooltip("Smear size multiplier.")]
+        private float _smearScale = 1f;
+
         [Header("Attacks")]
         [SerializeField] private LightAttackHit[] _combo = { default };
         [SerializeField] private LightAttackHit _heavy;
@@ -39,6 +58,12 @@ namespace GraceRun.Player
         public string DisplayName => _displayName;
         public Color Color => _color;
         public Vector2 VisualSize => _visualSize;
+        public Sprite Sprite => _sprite;
+        public WeaponBodyPoses BodyPoses => _bodyPoses;
+        public AnimatorOverrideController Animations => _animations;
+        public Sprite Smear => _smear;
+        public float SmearScale => _smearScale;
+        public WeaponSwingLook SwingLook => new(_swingStyle, _windAngle, _sweepAngle, _swingReach);
         public float InputBuffer => _inputBuffer;
         public float ChainWindow => _chainWindow;
         public float MoveSpeedMultiplier => _moveSpeedMultiplier;

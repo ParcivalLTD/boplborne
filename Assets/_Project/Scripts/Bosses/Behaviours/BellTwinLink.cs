@@ -22,6 +22,9 @@ namespace GraceRun.Bosses.Behaviours
         private readonly NetworkVariable<NetworkObjectReference> _partnerRef = new(
             default, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Server);
 
+        private readonly NetworkVariable<bool> _partnerBody = new(
+            false, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Server);
+
         private BossBrain _brain;
         private Health _health;
         private BossMotor _motor;
@@ -33,6 +36,9 @@ namespace GraceRun.Bosses.Behaviours
         private int _encounterMaxHP;
         private int _singleBodyMaxHP;
         private int _seededPartnerHP;
+
+        /// <summary>True for the second twin (the one spawned by the primary). Valid on every peer once spawned; used to pick the twin's art.</summary>
+        public bool IsPartnerBody => _isPartner || _partnerBody.Value;
 
         /// <summary>The primary twin link on the server/client, if any.</summary>
         public BellTwinLink Primary => _isPartner && _partner != null ? _partner : this;
@@ -63,6 +69,7 @@ namespace GraceRun.Bosses.Behaviours
             if (_brain.Phase >= 2) ApplyEnrageTint();
             if (!IsServer) return;
 
+            if (_isPartner) _partnerBody.Value = true;
             _health.Changed += OnServerHealthChanged;
             if (_isPartner)
             {

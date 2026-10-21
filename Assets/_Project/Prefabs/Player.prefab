@@ -2072,10 +2072,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: GraceRun.Runtime::GraceRun.Player.WeaponView
   _weapon: {fileID: 1686664829191433301}
   _attack: {fileID: 2042001691053674803}
+  _sync: {fileID: 1578395796415342261}
   _reference: {fileID: 4279113817888160496}
-  _grip: 0.4
-  _windUp: 0.45
   _restOffset: {x: -0.3, y: 0.2}
+  _smearDistance: 1.1
 --- !u!114 &1578395796415342261
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2106,9 +2106,13 @@ MonoBehaviour:
   _data: {fileID: 11400000, guid: 45ac6d82608a3754fa1e00563d73086b, type: 2}
   _stats: {fileID: 11400000, guid: a8d314f02ca76654bb4e20068643a9cd, type: 2}
   _animator: {fileID: 4719141867451221013}
+  _baseController: {fileID: 9100000, guid: 380938993121e6c4091c93e0801aa9af, type: 2}
   _rig: {fileID: 4118385989235321270}
   _sync: {fileID: 1578395796415342261}
   _dodge: {fileID: 4801282400668150400}
   _attack: {fileID: 2042001691053674803}
+  _weapon: {fileID: 1686664829191433301}
+  _body: {fileID: 4279113817888160496}
+  _hat: {fileID: 3179496416960478923}
   _health: {fileID: 2285578246583526149}
   _ghost: {fileID: 4886432173965129126}

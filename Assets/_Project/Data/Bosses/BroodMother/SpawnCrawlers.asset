@@ -20,7 +20,7 @@ MonoBehaviour:
   _damage: 20
   _knockback: {x: 10, y: 5}
   _hitboxOffset: {x: 0, y: -1.5}
-  _hitboxSize: {x: 8, y: 3}
+  _hitboxSize: {x: 6.5, y: 3}
   _telegraphType: 1
   _glowPart: 2
   _weakPointOffset: {x: -1.2, y: 1}

@@ -18,9 +18,9 @@ MonoBehaviour:
   _vignetteColor: {r: 0.07, g: 0.06, b: 0.09, a: 1}
   _vignetteIntensity: 0.3
   _vignetteSmoothness: 0.45
-  _temperature: 12
-  _colorFilter: {r: 1, g: 0.97, b: 0.9, a: 1}
-  _saturation: -5
+  _temperature: 5
+  _colorFilter: {r: 1, g: 0.99, b: 0.95, a: 1}
+  _saturation: 6
   _contrast: 4
   _liftBlacks: 0.004
   _dustOpacity: 0.35

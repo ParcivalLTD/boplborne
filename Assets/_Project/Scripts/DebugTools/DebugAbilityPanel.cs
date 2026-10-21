@@ -11,6 +11,7 @@ namespace GraceRun.DebugTools
     public class DebugAbilityPanel
     {
         private const string PlayerPrefix = "P";
+        private const int Columns = 2;
 
         private int _playerSlot;
         private int _abilitySlot;
@@ -27,8 +28,13 @@ namespace GraceRun.DebugTools
 
             _abilitySlot = GUILayout.Toolbar(_abilitySlot, SlotLabels(loadout));
             var catalog = loadout.Catalog;
-            for (var id = 0; id < catalog.Count; id++)
-                if (GUILayout.Button(catalog.Get(id).DisplayName)) loadout.DebugSetRpc(_abilitySlot, id);
+            for (var id = 0; id < catalog.Count; id += Columns)
+            {
+                GUILayout.BeginHorizontal();
+                for (var column = 0; column < Columns && id + column < catalog.Count; column++)
+                    if (GUILayout.Button(catalog.Get(id + column).DisplayName)) loadout.DebugSetRpc(_abilitySlot, id + column);
+                GUILayout.EndHorizontal();
+            }
             if (GUILayout.Button("Clear slot")) loadout.DebugSetRpc(_abilitySlot, AbilityCatalog.None);
         }
 
