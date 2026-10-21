@@ -212,6 +212,45 @@ def boss_death():
     return S.room(c.buf, 0.6, 0.2)
 
 
+@sound("boss_stagger", 0.85)
+def boss_stagger():
+    c = Canvas(1.4)
+    c.add(P.thump(130, 40, 0.5, 0.16, 0.6, 43, 0.5), 0, 1.0)
+    c.add(P.metal(520, 0.9, 0.35, (1.0, 2.76, 5.4), (1, 0.5, 0.3), 0.4, 43), 0.0, 0.6)
+    c.add(P.slide(900, 260, 0.9, 7, 0.03, 1.2), 0.05, 0.35)
+    c.add(P.boing(300, 0.7, 0.4, 16, 0.14, 43), 0.45, 0.4)
+    return S.room(c.buf, 0.4, 0.15)
+
+
+@sound("boss_enrage", 0.9)
+def boss_enrage():
+    c = Canvas(1.6)
+    c.add(P.growl(1.1, 60, 95, 38, 44), 0, 0.9)
+    c.add(P.thump(70, 38, 0.5, 0.18, 0.4, 44, 0.7), 0.0, 0.9)
+    for i, d in enumerate((0.0, 0.2, 0.4)):
+        c.add(P.bell(S.midi_hz(48 + i), 0.9, 0.5, 44 + i), d, 0.4)
+    c.add(P.cymbal(1.0, 0.3, 44, 4500), 0.5, 0.35)
+    return S.room(c.buf, 0.5, 0.16)
+
+
+@sound("story_card", 0.55)
+def story_card():
+    c = Canvas(0.5)
+    c.add(P.swoosh(0.28, 700, 3400, 1.2, 45, 0.3, 2.0), 0, 0.7)
+    c.add(P.wood(480, 0.08, 0.02, 0.3, 45), 0.22, 0.5)
+    c.add(P.sparkle(0.25, 45), 0.24, 0.2)
+    return c.buf
+
+
+@sound("ascent_chime", 0.65)
+def ascent_chime():
+    c = Canvas(2.4)
+    for i, m in enumerate((72, 76, 79, 84)):
+        c.add(P.bell(S.midi_hz(m), 1.4, 0.8, 46 + i), 0.45 * i, 0.55)
+    c.add(P.sparkle(1.2, 46), 1.0, 0.25)
+    return S.room(c.buf, 0.7, 0.25)
+
+
 # =========================================================== abilities
 @sound("ability_projectile", 0.7)
 def ability_projectile():

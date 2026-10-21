@@ -10,6 +10,10 @@ namespace GraceRun.UI.Story
         public string Title;
         public string Caption;
         public Sprite Picture;
+        public AudioClip Voice;
+
+        /// <summary>The words as read aloud and on the clock: heading, then caption.</summary>
+        public readonly string Spoken => string.IsNullOrEmpty(Title) ? Caption : Title + ". " + Caption;
     }
 
     /// <summary>
@@ -30,6 +34,11 @@ namespace GraceRun.UI.Story
         [SerializeField, TextArea(1, 3)] private string _finalAscentCaption = "The top. The crown is waiting.";
         [SerializeField, TextArea(1, 3), Tooltip("Shown with the Hollow's silhouette before the final fight.")]
         private string _twistLine = "";
+
+        [Header("Voice over (tools/audio/make_voice.ps1, then Grace Run → Build Story Assets)")]
+        [SerializeField] private AudioClip[] _ascentVoices = Array.Empty<AudioClip>();
+        [SerializeField] private AudioClip _finalAscentVoice;
+        [SerializeField] private AudioClip _twistVoice;
 
         [Header("Ending and defeat extras")]
         [SerializeField] private StoryCard[] _ending = Array.Empty<StoryCard>();
@@ -53,9 +62,14 @@ namespace GraceRun.UI.Story
         [SerializeField, Min(1f), Tooltip("Everything moves in steps of 1 / this many seconds, like held frames on a film.")]
         private float _framesPerSecond = 12f;
 
+        [SerializeField, Min(0.5f), Tooltip("Reading speed that sets how long a card stays: words / this, plus the padding.")]
+        private float _wordsPerSecond = 2f;
+        [SerializeField, Min(0f), Tooltip("Seconds added after the words (or the voice over) end.")]
+        private float _readPadding = 1.5f;
+
         [Header("Ascent timing (seconds, real time)")]
         [SerializeField, Min(0.05f)] private float _ascentSlideIn = 0.3f;
-        [SerializeField, Min(0f)] private float _ascentHold = 2.4f;
+        [SerializeField, Min(0f)] private float _ascentHold = 4f;
         [SerializeField, Min(0.05f)] private float _ascentSlideOut = 0.3f;
         [SerializeField, Min(0f)] private float _lanternDelay = 0.5f;
         [SerializeField, Min(0.05f)] private float _lanternTravel = 1.5f;
@@ -75,6 +89,10 @@ namespace GraceRun.UI.Story
         public float CardSlideIn => _cardSlideIn;
         public float CardHold => _cardHold;
         public float CardSlideOut => _cardSlideOut;
+        public float WordsPerSecond => _wordsPerSecond;
+        public float ReadPadding => _readPadding;
+        public AudioClip FinalAscentVoice => _finalAscentVoice;
+        public AudioClip TwistVoice => _twistVoice;
         public float CardSeconds => _cardSlideIn + _cardHold + _cardSlideOut;
         public float FramesPerSecond => _framesPerSecond;
         public float AscentSlideIn => _ascentSlideIn;
@@ -82,6 +100,14 @@ namespace GraceRun.UI.Story
         public float AscentSlideOut => _ascentSlideOut;
         public float LanternDelay => _lanternDelay;
         public float LanternTravel => _lanternTravel;
+
+        /// <summary>The voice over of the ascent to <paramref name="floor"/> (same rule as <see cref="StoryRules.AscentCaption"/>), or null.</summary>
+        public AudioClip AscentVoice(int floor, int totalFloors)
+        {
+            if (totalFloors > 0 && floor >= totalFloors) return _finalAscentVoice;
+            if (_ascentVoices == null || _ascentVoices.Length == 0 || floor < 1) return null;
+            return _ascentVoices[Mathf.Min(floor, _ascentVoices.Length) - 1];
+        }
 
         /// <summary>The trophy sprite of beaten <paramref name="floor"/> (1-based), or null.</summary>
         public Sprite TrophyFor(int floor) =>

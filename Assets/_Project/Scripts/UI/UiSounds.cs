@@ -31,6 +31,28 @@ namespace GraceRun.UI
             if (Application.isBatchMode) enabled = false;
         }
 
+        private void OnEnable()
+        {
+            Story.StoryCardPlayer.CardShown += OnCardShown;
+            Story.AscentView.ClimbStarted += OnClimbStarted;
+        }
+
+        private void OnDisable()
+        {
+            Story.StoryCardPlayer.CardShown -= OnCardShown;
+            Story.AscentView.ClimbStarted -= OnClimbStarted;
+        }
+
+        private void OnCardShown()
+        {
+            if (_sounds != null) Play(_sounds.StoryCard);
+        }
+
+        private void OnClimbStarted()
+        {
+            if (_sounds != null) Play(_sounds.AscentChime);
+        }
+
         private void Update()
         {
             var system = EventSystem.current;

@@ -83,6 +83,10 @@ namespace GraceRun.Editor.Content
             yield return new CueSpec("ShopBuy", "shop_buy", 0.7, 0.03, 0.1);
             yield return new CueSpec("BossPhaseRoar", "boss_phase_roar", 0.9, 0.0, 1.0);
             yield return new CueSpec("BossDeath", "boss_death", 0.95, 0.0, 1.0);
+            yield return new CueSpec("BossStagger", "boss_stagger", 0.85, 0.0, 0.5);
+            yield return new CueSpec("BossEnrage", "boss_enrage", 0.9, 0.0, 1.0);
+            yield return new CueSpec("StoryCard", "story_card", 0.5, 0.03, 0.1);
+            yield return new CueSpec("AscentChime", "ascent_chime", 0.55, 0.0, 1.0);
             yield return new CueSpec("AbilityProjectile", "ability_projectile", 0.55, 0.06, 0.06);
             yield return new CueSpec("AbilityArea", "ability_area", 0.7, 0.04, 0.06);
             yield return new CueSpec("AbilityMovement", "ability_movement", 0.6, 0.05, 0.06);

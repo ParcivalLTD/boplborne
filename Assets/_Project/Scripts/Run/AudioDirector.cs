@@ -19,7 +19,7 @@ namespace GraceRun.Run
         [SerializeField] private MusicData _music;
         [SerializeField] private GameAudioData _sounds;
 
-        private readonly Dictionary<BossBrain, (int phase, bool dead)> _bosses = new();
+        private readonly Dictionary<BossBrain, (int phase, bool dead, bool staggered, bool enraged)> _bosses = new();
         private MusicPlayer _player;
         private FightPhase _lastPhase = FightPhase.Waiting;
         private int _lastCurrency;
@@ -102,12 +102,16 @@ namespace GraceRun.Run
                 var dead = brain.Health != null && brain.Health.IsDead;
                 if (!_bosses.TryGetValue(brain, out var last))
                 {
-                    _bosses[brain] = (brain.Phase, dead);
+                    _bosses[brain] = (brain.Phase, dead, false, false);
                     continue;
                 }
+                var staggered = !dead && brain.GaugeKind == BossGaugeKind.Stagger;
+                var enraged = !dead && brain.IsEnraged;
                 if (_sounds != null && dead && !last.dead) Play(_sounds.BossDeath);
                 else if (_sounds != null && !dead && brain.Phase > last.phase) Play(_sounds.BossPhaseRoar);
-                _bosses[brain] = (brain.Phase, dead);
+                else if (_sounds != null && staggered && !last.staggered) Play(_sounds.BossStagger);
+                else if (_sounds != null && enraged && !last.enraged) Play(_sounds.BossEnrage);
+                _bosses[brain] = (brain.Phase, dead, staggered, enraged);
             }
         }
 

@@ -15,7 +15,9 @@ namespace GraceRun.Editor.UI
     {
         private const string Dir = "Assets/_Project/Art/Story";
         private const string DataPath = "Assets/_Project/Resources/StoryData.asset";
+        private const string VoiceDir = "Assets/_Project/Audio/Voice";
         private const int Trophies = 7;
+        private const int AscentVoices = 7;
 
         [MenuItem("Grace Run/Build Story Assets")]
         public static void Build()
@@ -34,6 +36,14 @@ namespace GraceRun.Editor.UI
             for (var i = 0; i < 5; i++) SetObject(so, $"_opening.Array.data[{i}].Picture", S($"intro_{i + 1}"));
             for (var i = 0; i < 2; i++) SetObject(so, $"_ending.Array.data[{i}].Picture", S($"ending_{i + 1}"));
             SetObject(so, "_defeat.Picture", S("defeat_1"));
+            for (var i = 0; i < 5; i++) SetObject(so, $"_opening.Array.data[{i}].Voice", V($"opening_{i + 1}"));
+            for (var i = 0; i < 2; i++) SetObject(so, $"_ending.Array.data[{i}].Voice", V($"ending_{i + 1}"));
+            SetObject(so, "_defeat.Voice", V("defeat"));
+            SetObject(so, "_finalAscentVoice", V("ascent_final"));
+            SetObject(so, "_twistVoice", V("twist"));
+            var ascentVoices = so.FindProperty("_ascentVoices");
+            ascentVoices.arraySize = AscentVoices;
+            for (var i = 0; i < AscentVoices; i++) ascentVoices.GetArrayElementAtIndex(i).objectReferenceValue = V($"ascent_{i + 1}");
             SetObject(so, "_hollowSilhouette", S("hollow_silhouette"));
             SetObject(so, "_tower", S("tower"));
             SetObject(so, "_windowLit", S("window_lit"));
@@ -60,6 +70,8 @@ namespace GraceRun.Editor.UI
             var path = $"{Dir}/tower_windows.txt";
             return File.Exists(path) ? StoryRules.ParseWindows(File.ReadAllText(path)) : new Vector2[0];
         }
+
+        private static AudioClip V(string name) => AssetDatabase.LoadAssetAtPath<AudioClip>($"{VoiceDir}/{name}.wav");
 
         private static Sprite S(string name) => AssetDatabase.LoadAssetAtPath<Sprite>($"{Dir}/{name}.png");
 

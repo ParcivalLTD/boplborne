@@ -62,7 +62,7 @@ namespace GraceRun.UI.Story
             b.offsetMin = b.offsetMax = Vector2.zero;
             BuildTower();
             BuildCaption(caption, string.IsNullOrEmpty(twist) ? null : twist);
-            Pose(0f);
+            Pose(0f, data.AscentHold);
         }
 
         public void Hide()
@@ -72,10 +72,10 @@ namespace GraceRun.UI.Story
         }
 
         /// <summary>Moves the lantern, window states and slide for <paramref name="time"/> seconds into the ascent. Returns true when finished.</summary>
-        public bool Pose(float time)
+        public bool Pose(float time, float hold)
         {
             var d = _data;
-            var p = TitleCardRules.Progress(time, d.AscentSlideIn, d.AscentHold, d.AscentSlideOut, d.FramesPerSecond);
+            var p = TitleCardRules.Progress(time, d.AscentSlideIn, hold, d.AscentSlideOut, d.FramesPerSecond);
             if (p.done) return true;
             _alpha.alpha = Mathf.Clamp01(p.enter * 2f) * (1f - p.exit);
 

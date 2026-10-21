@@ -97,5 +97,15 @@ namespace GraceRun.Tests
             Assert.AreEqual(2f, StoryRules.SkipTime(1.8f, 5, 0.3f, 1.4f, 0.3f), 0.0001f);
             Assert.AreEqual(10f, StoryRules.SkipTime(9.9f, 5, 0.3f, 1.4f, 0.3f), 0.0001f);
         }
+
+        [Test]
+        public void HoldFollowsReadingTimeAndVoice()
+        {
+            // 8 words at 2 words/s + 1.5 s = 5.5 s.
+            Assert.AreEqual(5.5f, StoryRules.HoldSeconds("one two three four five six seven eight", 0f, 1.4f, 2f, 1.5f), 0.0001f);
+            // A long voice line wins over the reading time; a short text never goes under the minimum.
+            Assert.AreEqual(9.5f, StoryRules.HoldSeconds("hi there", 8f, 1.4f, 2f, 1.5f), 0.0001f);
+            Assert.AreEqual(4f, StoryRules.HoldSeconds("", 0f, 4f, 2f, 1.5f), 0.0001f);
+        }
     }
 }

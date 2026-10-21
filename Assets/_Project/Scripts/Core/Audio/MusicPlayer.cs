@@ -11,6 +11,12 @@ namespace GraceRun.Core.Audio
     {
         [SerializeField] private float _crossfadeSeconds = 1.6f;
 
+        [SerializeField, Range(0f, 1f), Tooltip("Music loudness (x) while a voice over line plays.")]
+        private float _duckLevel = 0.35f;
+        [SerializeField, Tooltip("Seconds to fade the music down or back up around a voice line.")]
+        private float _duckSeconds = 0.4f;
+
+        private float _duck = 1f;
         private AudioSource[] _sources;
         private float[] _targets;
         private float[] _levels;
@@ -46,7 +52,8 @@ namespace GraceRun.Core.Audio
         private void Update()
         {
             var step = Time.unscaledDeltaTime / Mathf.Max(0.05f, _crossfadeSeconds);
-            var gain = AudioLevels.HasMixer ? 1f : GameSettings.MusicVolume;
+            _duck = Mathf.MoveTowards(_duck, VoicePlayer.IsPlaying ? _duckLevel : 1f, Time.unscaledDeltaTime / Mathf.Max(0.05f, _duckSeconds));
+            var gain = (AudioLevels.HasMixer ? 1f : GameSettings.MusicVolume) * _duck;
             for (var i = 0; i < 2; i++)
             {
                 var source = _sources[i];

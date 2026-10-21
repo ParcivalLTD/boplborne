@@ -37,6 +37,12 @@ namespace GraceRun.Core.Audio
         [Header("Boss")]
         [SerializeField] private AudioCue _bossPhaseRoar;
         [SerializeField] private AudioCue _bossDeath;
+        [SerializeField] private AudioCue _bossStagger;
+        [SerializeField] private AudioCue _bossEnrage;
+
+        [Header("Story")]
+        [SerializeField] private AudioCue _storyCard;
+        [SerializeField] private AudioCue _ascentChime;
 
         [Header("Ability use")]
         [SerializeField] private AudioCue _projectile;
@@ -60,6 +66,10 @@ namespace GraceRun.Core.Audio
         public AudioCue ShopBuy => _shopBuy;
         public AudioCue BossPhaseRoar => _bossPhaseRoar;
         public AudioCue BossDeath => _bossDeath;
+        public AudioCue BossStagger => _bossStagger;
+        public AudioCue BossEnrage => _bossEnrage;
+        public AudioCue StoryCard => _storyCard;
+        public AudioCue AscentChime => _ascentChime;
 
         /// <summary>The use sound of <paramref name="ability"/>: its own override, else the one for its first tag.</summary>
         public AudioCue AbilityCue(AbilityData ability)

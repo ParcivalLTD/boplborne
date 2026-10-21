@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using GraceRun.Core.Audio;
 using GraceRun.UI.Menus;
 using GraceRun.UI.Skin;
 using UnityEngine;
@@ -15,8 +16,10 @@ namespace GraceRun.UI.Story
     public class StoryCardPlayer : MonoBehaviour
     {
         private const int SortingOrder = 40;
+        private const float VoiceVolume = 1f;
 
         private readonly StoryCardPanel _panel = new();
+        private float _hold;
         private StoryData _data;
         private IReadOnlyList<StoryCard> _cards;
         private Image _dim;
@@ -25,6 +28,9 @@ namespace GraceRun.UI.Story
 
         /// <summary>Raised when the cards ran out or were skipped (not when <see cref="Stop"/> cuts them off).</summary>
         public event System.Action Completed;
+
+        /// <summary>Raised each time a new card slides in (for the page-turn sound).</summary>
+        public static event System.Action CardShown;
 
         /// <summary>True while cards are on screen.</summary>
         public static bool IsPlaying { get; private set; }
@@ -49,8 +55,8 @@ namespace GraceRun.UI.Story
             if (_cards == null) return;
             _time += Time.unscaledDeltaTime;
             if (SkipAll()) _time = float.MaxValue;
-            else if (SkipOne()) _time = StoryRules.SkipTime(_time, _cards.Count, _data.CardSlideIn, _data.CardHold, _data.CardSlideOut);
-            var p = StoryRules.OpeningProgress(_time, _cards.Count, _data.CardSlideIn, _data.CardHold, _data.CardSlideOut, _data.FramesPerSecond);
+            else if (SkipOne()) _time = StoryRules.SkipTime(_time, _cards.Count, _data.CardSlideIn, _hold, _data.CardSlideOut);
+            var p = StoryRules.OpeningProgress(_time, _cards.Count, _data.CardSlideIn, _hold, _data.CardSlideOut, _data.FramesPerSecond);
             if (p.done)
             {
                 Stop();
@@ -62,6 +68,8 @@ namespace GraceRun.UI.Story
                 _shown = p.card;
                 _panel.Set(_cards[p.card]);
                 _panel.Root.SetActive(true);
+                VoicePlayer.Play(_cards[p.card].Voice, VoiceVolume);
+                CardShown?.Invoke();
             }
             _panel.Pose(p.enter, p.exit);
             var dim = _dim.color;
@@ -75,6 +83,12 @@ namespace GraceRun.UI.Story
             if (data == null || cards == null || cards.Count == 0) return;
             _data = data;
             _cards = cards;
+            _hold = _data.CardHold;
+            for (var i = 0; i < cards.Count; i++)
+            {
+                var voice = cards[i].Voice != null ? cards[i].Voice.length : 0f;
+                _hold = Mathf.Max(_hold, StoryRules.HoldSeconds(cards[i].Spoken, voice, _data.CardHold, _data.WordsPerSecond, _data.ReadPadding));
+            }
             _time = 0f;
             _shown = -1;
             IsPlaying = true;
@@ -84,6 +98,7 @@ namespace GraceRun.UI.Story
         /// <summary>Hides everything and ends the sequence.</summary>
         public void Stop()
         {
+            if (_cards != null) VoicePlayer.Stop();
             _cards = null;
             IsPlaying = false;
             if (_panel.Root != null) _panel.Root.SetActive(false);

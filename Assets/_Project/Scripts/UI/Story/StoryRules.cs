@@ -100,6 +100,26 @@ namespace GraceRun.UI.Story
             return result.ToArray();
         }
 
+        /// <summary>
+        /// How long a story screen holds still: long enough to read <paramref name="text"/> at
+        /// <paramref name="wordsPerSecond"/> plus <paramref name="padding"/>, and to finish the voice over of
+        /// <paramref name="voiceSeconds"/> plus the same padding; never shorter than <paramref name="minimum"/>.
+        /// </summary>
+        public static float HoldSeconds(string text, float voiceSeconds, float minimum, float wordsPerSecond, float padding)
+        {
+            var words = 0;
+            var inWord = false;
+            foreach (var c in text ?? string.Empty)
+            {
+                var letter = !char.IsWhiteSpace(c);
+                if (letter && !inWord) words++;
+                inWord = letter;
+            }
+            var reading = words > 0 ? words / Mathf.Max(0.1f, wordsPerSecond) + padding : 0f;
+            var voice = voiceSeconds > 0f ? voiceSeconds + padding : 0f;
+            return Mathf.Max(minimum, Mathf.Max(reading, voice));
+        }
+
         /// <summary>Which card of the opening is up at <paramref name="time"/>, and where that card is in its own slide-in / hold / slide-out.</summary>
         public static (int card, float enter, float exit, bool done) OpeningProgress(
             float time, int cardCount, float slideIn, float hold, float slideOut, float fps)

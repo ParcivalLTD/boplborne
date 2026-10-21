@@ -16,18 +16,23 @@ MonoBehaviour:
   - Title: BOPLBORNE
     Caption: The bell has been quiet a long time.
     Picture: {fileID: 21300000, guid: 52e994072dba3ea4ab72919545ca9a66, type: 3}
+    Voice: {fileID: 8300000, guid: 20cd0005275bc0747bb79be8a02bc5fe, type: 3}
   - Title: THE GATE
     Caption: Nobody remembers who took the clapper.
     Picture: {fileID: 21300000, guid: 423ed7bf64b574b4d99fc59eb9ef7a9b, type: 3}
+    Voice: {fileID: 8300000, guid: ddeedbd5f368ef24cb1a47e0e39d30ba, type: 3}
   - Title: THE KEY-RING
     Caption: Locked. Naturally.
     Picture: {fileID: 21300000, guid: 00761ec2906a04342b616d3119310ee0, type: 3}
+    Voice: {fileID: 8300000, guid: 6c9d22a344d4ad34f87aa65842eba7f1, type: 3}
   - Title: A SMALLER WAY
     Caption: There is always a smaller way in.
     Picture: {fileID: 21300000, guid: f3f1c78b0cbc4274cafe2e7b3009fba5, type: 3}
+    Voice: {fileID: 8300000, guid: 10cb231547979c54c99334a575e0827b, type: 3}
   - Title: THE HUB
     Caption: No way back but up.
     Picture: {fileID: 21300000, guid: 6195d1d6c89870d43bc21e4b376dd26d, type: 3}
+    Voice: {fileID: 8300000, guid: 7afe5c65ee61301409d5d0155072bb5b, type: 3}
   _ascentCaptions:
   - Floor 1. The key-holder is awake.
   - Floor 2. Something up here is knitting. A lost hat lies on the stairs.
@@ -38,17 +43,30 @@ MonoBehaviour:
   - Floor 7. Someone has been up here before you. Someone with a lot of hats.
   _finalAscentCaption: The top. The crown is waiting.
   _twistLine: It wears every hat it ever found. Some of them look familiar.
+  _ascentVoices:
+  - {fileID: 8300000, guid: fac0c80252b1ca344b525fc9aa231a46, type: 3}
+  - {fileID: 8300000, guid: 8de18305969cc834d8a618638f8c3bd6, type: 3}
+  - {fileID: 8300000, guid: fe7cb07dcc2c4d3478725ba7bbd776c4, type: 3}
+  - {fileID: 8300000, guid: 3c73598480a3b154fa8212aad3ef03e8, type: 3}
+  - {fileID: 8300000, guid: 62e196822d167aa40925c85f88f51400, type: 3}
+  - {fileID: 8300000, guid: 171876c7f235fa94f8a95f3dcc75131d, type: 3}
+  - {fileID: 8300000, guid: 1d673816387a2cf47a2d9e70937aa8f9, type: 3}
+  _finalAscentVoice: {fileID: 8300000, guid: 28ed3bba1354ba64db9e2e10fdddaaa2, type: 3}
+  _twistVoice: {fileID: 8300000, guid: b227e6c949f9d204bbe5e7c62da8c23e, type: 3}
   _ending:
   - Title: THE CROWN COMES OFF
     Caption: 'Under all those hats: one small pilgrim, who hands over the clapper.'
     Picture: {fileID: 21300000, guid: 6cdc40049b0439a45b019bc16542efef, type: 3}
+    Voice: {fileID: 8300000, guid: 3cbb092dd03072142815a74b9b3635da, type: 3}
   - Title: THE BELL RINGS
     Caption: Every hat that climbed, in a row.
     Picture: {fileID: 21300000, guid: 2631f4acc18370340a1fbdc3718334af, type: 3}
+    Voice: {fileID: 8300000, guid: 296cb45b93209b644917026ccc6e7c40, type: 3}
   _defeat:
     Title: TO BE CONTINUED...
     Caption: The lantern goes out. The tower closes over.
     Picture: {fileID: 21300000, guid: 3675aacd4f2c94243aa321499a9b7554, type: 3}
+    Voice: {fileID: 8300000, guid: e17c53e9807d5f74a8c339be03e4bf19, type: 3}
   _hollowSilhouette: {fileID: 21300000, guid: 10b8408301b05a544a3e4214ce54fae4, type: 3}
   _tower: {fileID: 21300000, guid: 7170e8fac6c867d4598dc9466d28a2a9, type: 3}
   _windowLit: {fileID: 21300000, guid: e09a07baf3e17194989c019fa71eb3a0, type: 3}
@@ -76,6 +94,8 @@ MonoBehaviour:
   _cardHold: 1.4
   _cardSlideOut: 0.3
   _framesPerSecond: 12
+  _wordsPerSecond: 2
+  _readPadding: 1.5
   _ascentSlideIn: 0.3
   _ascentHold: 2.4
   _ascentSlideOut: 0.3

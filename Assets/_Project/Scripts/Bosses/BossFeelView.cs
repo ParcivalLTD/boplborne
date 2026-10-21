@@ -16,7 +16,9 @@ namespace GraceRun.Bosses
         private const float BarWidth = 4f;
         private const float BarHeight = 0.28f;
         private const float BarHeightAboveBoss = 5.2f;
-        private const float MarkerHeightAbovePlayer = 2.6f;
+        private const float MarkerHeightAbovePlayer = 2.3f;
+        private const float OwnMarkerScale = 0.6f;
+        private const float OtherMarkerScale = 0.4f;
         private const int SortingOrder = 100;
 
         private static readonly Color Back = new(0f, 0f, 0f, 0.6f);
@@ -171,7 +173,7 @@ namespace GraceRun.Bosses
             {
                 var bob = Mathf.Sin(Time.time * 6f) * 0.15f;
                 overlay.Marker.position = player.transform.position + new Vector3(0f, MarkerHeightAbovePlayer + bob, 0f);
-                overlay.Marker.localScale = Vector3.one * (player.IsOwner ? 1.2f : 0.8f);
+                overlay.Marker.localScale = Vector3.one * (player.IsOwner ? OwnMarkerScale : OtherMarkerScale);
                 overlay.MarkerRenderer.color = player.IsOwner ? TargetYou : TargetOther;
                 visible = true;
             }

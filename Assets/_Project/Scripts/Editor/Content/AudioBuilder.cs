@@ -19,6 +19,7 @@ namespace GraceRun.Editor.Content
     {
         private const string SfxFolder = "Assets/_Project/Audio/SFX/Cartoon";
         private const string MusicFolder = "Assets/_Project/Audio/Music";
+        private const string VoiceFolder = "Assets/_Project/Audio/Voice";
         private const string CueFolder = "Assets/_Project/Data/Audio";
         private const string BossCueFolder = "Assets/_Project/Data/Audio/Boss";
         private const string BootstrapScene = "Assets/_Project/Scenes/Bootstrap.unity";
@@ -45,14 +46,15 @@ namespace GraceRun.Editor.Content
 
         private static void ImportSettings()
         {
-            foreach (var guid in AssetDatabase.FindAssets("t:AudioClip", new[] { SfxFolder, MusicFolder }))
+            foreach (var guid in AssetDatabase.FindAssets("t:AudioClip", new[] { SfxFolder, MusicFolder, VoiceFolder }))
             {
                 var path = AssetDatabase.GUIDToAssetPath(guid);
                 if (AssetImporter.GetAtPath(path) is not AudioImporter importer) continue;
                 var music = path.StartsWith(MusicFolder);
+                var voice = path.StartsWith(VoiceFolder);
                 var settings = importer.defaultSampleSettings;
                 settings.loadType = music ? AudioClipLoadType.CompressedInMemory : AudioClipLoadType.DecompressOnLoad;
-                settings.compressionFormat = music ? AudioCompressionFormat.Vorbis : AudioCompressionFormat.ADPCM;
+                settings.compressionFormat = music || voice ? AudioCompressionFormat.Vorbis : AudioCompressionFormat.ADPCM;
                 settings.quality = 0.6f;
                 settings.preloadAudioData = !music;
                 settings.sampleRateSetting = AudioSampleRateSetting.PreserveSampleRate;
@@ -158,7 +160,8 @@ namespace GraceRun.Editor.Content
                     ["_uiHover"] = "UiHover", ["_uiClick"] = "UiClick", ["_uiConfirm"] = "UiConfirm", ["_uiBack"] = "UiBack",
                     ["_uiDeny"] = "UiDeny", ["_draftPick"] = "DraftPick", ["_doorStart"] = "DoorStart", ["_victorySting"] = "VictorySting",
                     ["_defeatSting"] = "DefeatSting", ["_coin"] = "Coin", ["_shopBuy"] = "ShopBuy", ["_bossPhaseRoar"] = "BossPhaseRoar",
-                    ["_bossDeath"] = "BossDeath", ["_projectile"] = "AbilityProjectile", ["_area"] = "AbilityArea",
+                    ["_bossDeath"] = "BossDeath", ["_bossStagger"] = "BossStagger", ["_bossEnrage"] = "BossEnrage",
+                    ["_storyCard"] = "StoryCard", ["_ascentChime"] = "AscentChime", ["_projectile"] = "AbilityProjectile", ["_area"] = "AbilityArea",
                     ["_movement"] = "AbilityMovement", ["_summon"] = "AbilitySummon", ["_fallbackAbility"] = "AbilityArea",
                 };
                 foreach (var pair in map) SerializedFields.Set(so, pair.Key, cues[pair.Value]);
