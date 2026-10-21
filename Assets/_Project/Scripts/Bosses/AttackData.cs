@@ -50,6 +50,12 @@ namespace GraceRun.Bosses
         [SerializeField, Tooltip("Impact sound played when the attack goes live (the active phase starts). Empty: silent.")]
         private AudioCue _strikeCue;
 
+        [Header("Interrupt")]
+        [SerializeField, Min(0), Tooltip("Damage (at 1 player, scaled with HP) the players must deal during the wind-up to cancel this attack and stagger the boss. 0 = cannot be interrupted.")]
+        private int _interruptDamage;
+        [SerializeField, Min(1), Tooltip("How many different players must each deal a share of the interrupt damage. 2 = one player alone cannot do it. Capped at the player count.")]
+        private int _interruptContributors = 1;
+
         [Header("Choice")]
         [SerializeField, Min(0f)] private float _weight = 1f;
         [SerializeField, Min(0f), Tooltip("Seconds after this attack ends before the brain may pick it again.")]
@@ -77,6 +83,8 @@ namespace GraceRun.Bosses
         public BossAttackBehaviour Behaviour => _behaviour;
         public AudioCue WindupCue => _windupCue;
         public AudioCue StrikeCue => _strikeCue;
+        public int InterruptDamage => _interruptDamage;
+        public int InterruptContributors => _interruptContributors;
         public float Weight => _weight;
         public float Cooldown => _cooldown;
         public float MinRange => _minRange;

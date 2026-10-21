@@ -30,7 +30,7 @@ namespace GraceRun.Bosses
                 return;
             }
 
-            var sinceRecovery = (float)_runner.Elapsed - attack.Windup - attack.Active;
+            var sinceRecovery = _runner.SinceRecovery;
             if (sinceRecovery < attack.PunishWindow) ShowWeakPoint(attack, _runner.Facing, sinceRecovery);
             else _weakPoint.enabled = false;
         }

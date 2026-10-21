@@ -15,7 +15,7 @@ namespace GraceRun.Bosses
     /// </summary>
     [RequireComponent(typeof(Health), typeof(BossAttackRunner), typeof(BossMotor))]
     [RequireComponent(typeof(BossTargetSelector))]
-    public class BossBrain : NetworkBehaviour
+    public partial class BossBrain : NetworkBehaviour
     {
         [SerializeField] private BossData _data;
 
@@ -123,15 +123,17 @@ namespace GraceRun.Bosses
             _phase.OnValueChanged += OnPhaseValueChanged;
             if (!AllActive.Contains(this)) AllActive.Add(this);
             RefreshActive();
+            FeelNetworkSpawn();
             if (!IsServer) return;
 
             _idleMultiplier = 1f;
             _random = new System.Random(_hasSeed ? _seed : Environment.TickCount);
             _readyAt = new float[CountAttackIds()];
+            var players = Mathf.Max(1, NetworkManager.ConnectedClientsIds.Count);
+            var hpScale = FeelServerSpawn(players);
             if (!_isLinkedBody)
             {
-                var players = Mathf.Max(1, NetworkManager.ConnectedClientsIds.Count);
-                var scaled = BossMath.ScaledMaxHP(_data.MaxHP, _data.HpScalePerExtraPlayer, players);
+                var scaled = Mathf.RoundToInt(BossMath.ScaledMaxHP(_data.MaxHP, _data.HpScalePerExtraPlayer, players) * hpScale);
                 _health.ServerSetMax(scaled);
                 _encounterMaxHP.Value = scaled;
             }
@@ -144,6 +146,7 @@ namespace GraceRun.Bosses
         public override void OnNetworkDespawn()
         {
             _phase.OnValueChanged -= OnPhaseValueChanged;
+            FeelNetworkDespawn();
             _health.Changed -= OnHealthChanged;
             _health.Died -= OnDied;
             _runner.PhaseChanged -= OnAttackPhaseChanged;
@@ -154,6 +157,7 @@ namespace GraceRun.Bosses
         private void Update()
         {
             if (!IsServer || !IsSpawned) return;
+            if (FeelTick()) return;
             switch (State)
             {
                 case BossState.Idle:
@@ -205,12 +209,16 @@ namespace GraceRun.Bosses
 
             var attacks = _data.AttacksFor(_phase.Value);
             _options.Clear();
-            _ready.Clear();
             foreach (var attack in attacks) _options.Add(AttackOption.From(attack));
-            for (var i = 0; i < attacks.Length; i++) _ready.Add(Time.time >= _readyAt[_data.AttackId(_phase.Value, i)]);
 
             var distance = Mathf.Abs(target.position.x - transform.position.x);
+            BuildReady(attacks.Length, true);
             var index = AttackPicker.Pick(_options, _ready, distance, _random.NextDouble());
+            if (index < 0)
+            {
+                BuildReady(attacks.Length, false);
+                index = AttackPicker.Pick(_options, _ready, distance, _random.NextDouble());
+            }
             if (index >= 0)
             {
                 StartAttack(_data.AttackId(_phase.Value, index), target.position.x);
@@ -226,6 +234,16 @@ namespace GraceRun.Bosses
             }
         }
 
+        private void BuildReady(int count, bool avoidRepeats)
+        {
+            _ready.Clear();
+            for (var i = 0; i < count; i++)
+            {
+                var id = _data.AttackId(_phase.Value, i);
+                _ready.Add(Time.time >= _readyAt[id] && !(avoidRepeats && FeelIsRepeat(id)));
+            }
+        }
+
         private void StartAttack(int attackId, float targetX)
         {
             var facing = _motor.DirectionTo(targetX);
@@ -234,13 +252,14 @@ namespace GraceRun.Bosses
             _targets.AllowSwitch = false;
             _attackId = attackId;
             State = BossState.Attacking;
-            _runner.ServerStart(attackId, _targets.TargetId, facing);
+            var feint = FeelOnAttackStart(attackId, _data.AttackById(attackId));
+            _runner.ServerStart(attackId, _targets.TargetId, facing, feint);
         }
 
         private void EnterIdle()
         {
             State = BossState.Idle;
-            _idleTimer = _data.IdleTime * _idleMultiplier;
+            _idleTimer = _data.IdleTime * _idleMultiplier * FeelIdleScale();
             _motor.ServerStop();
         }
 
@@ -255,18 +274,22 @@ namespace GraceRun.Bosses
             if (State == BossState.Dead) return;
             if (phase == AttackPhase.Windup) State = BossState.Attacking;
             if (phase == AttackPhase.Recovery) State = BossState.Recovering;
+            if (phase == AttackPhase.Active || phase == AttackPhase.Recovery) FeelOnAttackLeftWindup();
             if (phase != AttackPhase.None || _attackId < 0) return;
 
             _readyAt[_attackId] = Time.time + _data.AttackById(_attackId).Cooldown;
             _attackId = -1;
             _targets.AllowSwitch = true;
+            if (FeelAfterAttack()) return;
             EnterIdle();
+            FeelShapeIdle();
         }
 
         private void OnHealthChanged(int previous, int current)
         {
-            if (!_isLinkedBody && _phase.Value < 2 && BossMath.IsInPhase2(current, _health.Max, _data.Phase2Threshold))
-                _phase.Value = 2;
+            if (_isLinkedBody || _phase.Value >= 2 || !BossMath.IsInPhase2(current, _health.Max, _data.Phase2Threshold)) return;
+            _phase.Value = 2;
+            FeelOnPhase2();
         }
 
         private void OnDied()
@@ -274,6 +297,8 @@ namespace GraceRun.Bosses
             RefreshActive();
             if (!IsServer) return;
             State = BossState.Dead;
+            _transitioning.Value = false;
+            _staggered.Value = false;
             _motor.ServerStop();
             _runner.ServerCancel();
             StartCoroutine(DespawnAfterDelay());

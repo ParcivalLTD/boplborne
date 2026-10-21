@@ -31,6 +31,8 @@ namespace GraceRun.Bosses.Behaviours
         private ContactFilter2D _abilityFilter;
         private sbyte _seededDir = 1;
         private float _seededSpeed;
+        private readonly HashSet<BossBrain> _bossesHit = new();
+        private float _spawnX;
         private float _age;
 
         /// <summary>Number of active shockwaves currently in the arena.</summary>
@@ -57,6 +59,8 @@ namespace GraceRun.Bosses.Behaviours
         {
             if (!Active.Contains(this)) Active.Add(this);
             _age = 0f;
+            _spawnX = transform.position.x;
+            _bossesHit.Clear();
             if (IsServer)
             {
                 _direction.Value = _seededDir;
@@ -84,6 +88,7 @@ namespace GraceRun.Bosses.Behaviours
             UpdateAlpha();
 
             if (!IsServer) return;
+            HitBosses();
             if (_age >= _data.Lifetime ||
                 Mathf.Abs(transform.position.x) >= ArenaBounds.WidenedHalfWidth(_data.ArenaHalfWidth) ||
                 BossBrain.AreAllDefeated ||
@@ -103,6 +108,22 @@ namespace GraceRun.Bosses.Behaviours
                     wave.NetworkObject.Despawn();
             }
             Active.Clear();
+        }
+
+        private void HitBosses()
+        {
+            if (_data.BossDamage <= 0) return;
+            var bosses = BossBrain.All;
+            for (var i = 0; i < bosses.Count; i++)
+            {
+                var boss = bosses[i];
+                if (boss == null || !boss.IsSpawned || boss.Health.IsDead || _bossesHit.Contains(boss)) continue;
+                var x = boss.transform.position.x;
+                if (Mathf.Abs(x - _spawnX) < _data.EmitterSafeDistance) continue;
+                if (Mathf.Abs(x - transform.position.x) > _data.BossHitHalfWidth) continue;
+                _bossesHit.Add(boss);
+                boss.Health.ReportHit(DamageInfo.FromEnvironment(_data.BossDamage));
+            }
         }
 
         private bool HitBlocker(sbyte dir)

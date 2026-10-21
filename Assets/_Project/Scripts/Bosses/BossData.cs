@@ -41,6 +41,9 @@ namespace GraceRun.Bosses
         [SerializeField, Min(0f), Tooltip("Seconds at 0 HP before the boss despawns.")]
         private float _despawnDelay = 1.5f;
 
+        [Header("Fight feel")]
+        [SerializeField] private BossFeelSettings _feel = new();
+
         [Header("Prefabs")]
         [SerializeField] private GameObject _prefab;
         [SerializeField, Tooltip("Arena prefab; empty until arenas exist (M4/M6).")]
@@ -60,6 +63,7 @@ namespace GraceRun.Bosses
         public float ChaseSpeedMultiplier => _chaseSpeedMultiplier;
         public float AttackStartLead => _attackStartLead;
         public float DespawnDelay => _despawnDelay;
+        public BossFeelSettings Feel => _feel ??= new BossFeelSettings();
         public GameObject Prefab => _prefab;
         public GameObject ArenaPrefab => _arenaPrefab;
 

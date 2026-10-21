@@ -132,7 +132,7 @@ namespace GraceRun.Player
                 if (target == null || target == _health || !target.IsSpawned || target.IsDead) continue;
                 if (hurtbox.IsInvulnerable || !_alreadyHit.Add(target)) continue;
                 var push = SliceMath.Knockback(b - a, _data.Knockback, _data.KnockbackLift);
-                target.ReportHit(new DamageInfo(_data.Damage, push, NetworkObjectId, Team.Player));
+                target.ReportHit(new DamageInfo(_data.Damage, push, NetworkObjectId, Team.Player, DamageSource.Melee));
             }
         }
 

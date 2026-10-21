@@ -34,7 +34,7 @@ namespace GraceRun.Abilities.Effects
             var side = velocity.x < 0f ? -1f : 1f;
             var damage = Mathf.RoundToInt(ability.Damage * power);
             var push = new Vector2(side * ability.Knockback * power, ability.KnockbackLift * power);
-            target.ReportHit(new DamageInfo(damage, push, effect.CasterId, Team.Player));
+            target.ReportHit(new DamageInfo(damage, push, effect.CasterId, Team.Player, DamageSource.OfAbility(ability.Id)));
         }
     }
 }

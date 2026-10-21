@@ -60,7 +60,8 @@ namespace GraceRun.Bosses
                 }
             }
 
-            if (Time.time < _staggerUntil && _poses.Stagger != null) Show(_poses.Stagger);
+            var staggered = Time.time < _staggerUntil || _brain.IsStaggered || _brain.IsTransitioning;
+            if (staggered && _poses.Stagger != null) Show(_poses.Stagger);
             else Show(BossPoseSet.Frame(_poses.Idle, _poses.IdleFps, Time.time, true));
         }
 

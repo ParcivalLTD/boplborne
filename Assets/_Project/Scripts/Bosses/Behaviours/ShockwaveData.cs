@@ -13,6 +13,11 @@ namespace GraceRun.Bosses.Behaviours
         [SerializeField, Min(0.2f)] private float _lifetime = 2.2f;
         [SerializeField, Min(1)] private int _damage = 25;
         [SerializeField] private Vector2 _knockback = new(9f, 7f);
+        [SerializeField, Min(0), Tooltip("Damage to a boss body the wave runs through (the other twin): steer waves into it.")]
+        private int _bossDamage = 25;
+        [SerializeField, Min(0.1f)] private float _bossHitHalfWidth = 1.5f;
+        [SerializeField, Min(0f), Tooltip("Bosses closer than this to where the wave spawned are its emitter and are never hit.")]
+        private float _emitterSafeDistance = 2.5f;
         [SerializeField, Min(1f)] private float _arenaHalfWidth = 15.2f;
         [SerializeField, Min(0.1f)] private float _blockerCheckDistance = 0.6f;
         [SerializeField, Min(0f)] private float _fadeOutTime = 0.35f;
@@ -22,6 +27,9 @@ namespace GraceRun.Bosses.Behaviours
         public float Lifetime => _lifetime;
         public int Damage => _damage;
         public Vector2 Knockback => _knockback;
+        public int BossDamage => _bossDamage;
+        public float BossHitHalfWidth => _bossHitHalfWidth;
+        public float EmitterSafeDistance => _emitterSafeDistance;
         public float ArenaHalfWidth => _arenaHalfWidth;
         public float BlockerCheckDistance => _blockerCheckDistance;
         public float FadeOutTime => _fadeOutTime;

@@ -27,6 +27,9 @@ namespace GraceRun.Combat
             if (amount > 0 && StatusEffects.TryFind(info.AttackerId, out var attackerStatus))
                 amount = DamageMath.Scaled(amount, attackerStatus.OutgoingDamageMultiplier);
 
+            if (amount > 0 && !friendly && target.TryGetComponent(out IDamageModifier modifier))
+                amount = modifier.ModifyIncoming(amount, info);
+
             var hp = DamageMath.Resolve(target.Current, amount, friendly,
                 combat.FriendlyFireDamageMultiplier, combat.FriendlyFireMinHP, target.GodMode);
             var dealt = target.Current - hp;

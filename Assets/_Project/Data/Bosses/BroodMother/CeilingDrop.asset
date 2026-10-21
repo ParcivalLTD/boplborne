@@ -30,6 +30,7 @@ MonoBehaviour:
   _behaviour: {fileID: 11400000, guid: b0b30e386301e73498ed74c3b3cc4d16, type: 2}
   _windupCue: {fileID: 11400000, guid: 3d198d7941e121241a76f4660403e029, type: 2}
   _strikeCue: {fileID: 11400000, guid: 2f96aa81d45887d458b816c7845381a8, type: 2}
+  _interruptDamage: 80
   _weight: 1.5
   _cooldown: 5
   _minRange: 0

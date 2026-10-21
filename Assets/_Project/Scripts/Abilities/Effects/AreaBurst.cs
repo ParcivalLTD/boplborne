@@ -57,7 +57,7 @@ namespace GraceRun.Abilities.Effects
                 var power = effect.PowerMultiplier;
                 var damage = Mathf.RoundToInt(ability.Damage * power);
                 var push = AbilityMath.PushAway(point, target.transform.position, ability.Knockback * power, ability.KnockbackLift * power) * strength;
-                target.ReportHit(new DamageInfo(damage, push, effect.CasterId, Team.Player));
+                target.ReportHit(new DamageInfo(damage, push, effect.CasterId, Team.Player, DamageSource.OfAbility(ability.Id)));
             }
             BurstRpc(point);
         }

@@ -22,6 +22,7 @@ namespace GraceRun.Bosses
         private readonly NetworkVariable<BossAttackState> _current = new(
             BossAttackState.None, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Server);
 
+        private BossBrain _brain;
         private AttackData _first;
         private AttackData _attack;
         private BossAttackState _playing = BossAttackState.None;
@@ -38,9 +39,15 @@ namespace GraceRun.Bosses
         public sbyte Facing => _playing.Facing;
         public ulong TargetId => _playing.TargetId;
         public int PlayingId => _playing.AttackId;
+        public bool IsFeint => _playing.Feint;
 
         /// <summary>Seconds since the current link's start on this PC (negative while pending).</summary>
         public double Elapsed => _attack != null && IsSpawned ? NetworkManager.ServerTime.Time - _startTime : 0d;
+
+        /// <summary>Seconds since the recovery began (negative before it). A feint has no active phase.</summary>
+        public float SinceRecovery => _attack == null ? -1f : (float)Elapsed - _attack.Windup - (_playing.Feint ? 0f : _attack.Active);
+
+        private void Awake() => _brain = GetComponent<BossBrain>();
 
         public override void OnNetworkSpawn()
         {
@@ -57,7 +64,8 @@ namespace GraceRun.Bosses
         private void Update()
         {
             if (_first == null || !IsSpawned) return;
-            var link = AttackChain.LinkAt(_first, NetworkManager.ServerTime.Time - _firstStartTime, out var linkStart);
+            var linkStart = 0d;
+            var link = _playing.Feint ? _first : AttackChain.LinkAt(_first, NetworkManager.ServerTime.Time - _firstStartTime, out linkStart);
             var linkChanged = link != _attack;
             if (linkChanged)
             {
@@ -67,12 +75,12 @@ namespace GraceRun.Bosses
                 _startTime = _firstStartTime + linkStart;
             }
 
-            var phase = _attack.PhaseAt(Elapsed);
+            var phase = _playing.Feint ? FeintPhaseAt(_attack, Elapsed) : _attack.PhaseAt(Elapsed);
             if (phase != Phase || linkChanged) SetPhase(phase);
         }
 
         /// <summary>Server only: starts attack <paramref name="attackId"/> a little in the future (the start lead).</summary>
-        public void ServerStart(int attackId, ulong targetId, sbyte facing)
+        public void ServerStart(int attackId, ulong targetId, sbyte facing, bool feint = false)
         {
             if (!IsServer) return;
             var time = NetworkManager.ServerTime;
@@ -83,7 +91,8 @@ namespace GraceRun.Bosses
                 AttackId = (short)attackId,
                 StartTick = time.Tick + leadTicks,
                 TargetId = targetId,
-                Facing = facing
+                Facing = facing,
+                Feint = feint
             };
         }
 
@@ -131,12 +140,20 @@ namespace GraceRun.Bosses
             _attack = null;
         }
 
+        private AttackPhase FeintPhaseAt(AttackData attack, double elapsed)
+        {
+            if (elapsed < 0d) return AttackPhase.Pending;
+            if (elapsed < attack.Windup) return AttackPhase.Windup;
+            return elapsed < attack.Windup + _data.Feel.FeintRecovery ? AttackPhase.Recovery : AttackPhase.None;
+        }
+
         private void ArmHitbox()
         {
             var facing = _playing.Facing;
+            var scale = _brain != null ? _brain.DamageScale : 1f;
             _hitboxShape.size = _attack.HitboxSize;
             _hitboxShape.offset = new Vector2(_attack.HitboxOffset.x * facing, _attack.HitboxOffset.y);
-            _hitbox.Arm(_attack.Damage, new Vector2(_attack.Knockback.x * facing, _attack.Knockback.y));
+            _hitbox.Arm(Mathf.RoundToInt(_attack.Damage * scale), new Vector2(_attack.Knockback.x * facing, _attack.Knockback.y));
         }
     }
 }

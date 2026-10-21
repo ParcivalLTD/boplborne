@@ -17,12 +17,16 @@ namespace GraceRun.Combat
         public ulong AttackerId;
         public Team AttackerTeam;
 
-        public DamageInfo(int amount, Vector2 knockback, ulong attackerId, Team attackerTeam)
+        /// <summary>What dealt the hit (see <see cref="DamageSource"/>); 0 = unknown. Bosses use it to adapt to spam.</summary>
+        public ushort Source;
+
+        public DamageInfo(int amount, Vector2 knockback, ulong attackerId, Team attackerTeam, ushort source = 0)
         {
             Amount = amount;
             Knockback = knockback;
             AttackerId = attackerId;
             AttackerTeam = attackerTeam;
+            Source = source;
         }
 
         /// <summary>Damage from no one in particular, e.g. a hazard or a debug command.</summary>
@@ -35,6 +39,7 @@ namespace GraceRun.Combat
             serializer.SerializeValue(ref Knockback);
             serializer.SerializeValue(ref AttackerId);
             serializer.SerializeValue(ref AttackerTeam);
+            serializer.SerializeValue(ref Source);
         }
     }
 }

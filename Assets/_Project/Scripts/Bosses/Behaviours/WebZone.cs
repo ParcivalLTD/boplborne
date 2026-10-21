@@ -48,6 +48,7 @@ namespace GraceRun.Bosses.Behaviours
         {
             if (!IsSpawned) return;
             var centre = (Vector2)transform.position;
+            if (IsServer) SlowBosses(centre);
             var owned = PlayerMovement.AllOwned;
             for (var i = 0; i < owned.Count; i++)
             {
@@ -55,6 +56,18 @@ namespace GraceRun.Bosses.Behaviours
                 if (movement == null || !movement.IsSpawned) continue;
                 if (BroodMotherMath.IsInWebZone(movement.transform.position, centre, _data.Radius, _data.Height))
                     movement.ApplySlow(_data.SpeedMultiplier, Time.fixedDeltaTime * 2f);
+            }
+        }
+
+        private void SlowBosses(Vector2 centre)
+        {
+            var bosses = BossBrain.All;
+            for (var i = 0; i < bosses.Count; i++)
+            {
+                var boss = bosses[i];
+                if (boss == null || !boss.IsSpawned || boss.Health.IsDead) continue;
+                if (Mathf.Abs(boss.transform.position.x - centre.x) <= _data.Radius)
+                    boss.ServerApplyEnvironmentSlow(_data.BossSpeedMultiplier);
             }
         }
 

@@ -28,6 +28,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: b531b4e7ac3f13043a94e5c46bc61408, type: 2}
   - {fileID: 11400000, guid: 0324fcc9ab5935f48b3f3c139f911e5e, type: 2}
   - {fileID: 11400000, guid: 18f7c4067b8f03445a8f8cc78eaddf4b, type: 2}
+  - {fileID: 11400000, guid: 94415a907e10a1f4d9772b8ed546c344, type: 2}
   _idleTime: 0.45
   _targetSwitchInterval: 8
   _walkSpeed: 4.2
@@ -35,5 +36,35 @@ MonoBehaviour:
   _chaseSpeedMultiplier: 2
   _attackStartLead: 0.1
   _despawnDelay: 1.5
+  _feel:
+    _transitionTime: 1.6
+    _transitionShoveRadius: 9
+    _transitionShove: {x: 14, y: 7}
+    _transitionCue: {fileID: 0}
+    _weakPointMultiplier: 1.75
+    _weakPointGrace: 0.15
+    _enrageAfter: 90
+    _enrageIdleScale: 0.6
+    _enrageSpeedScale: 1.25
+    _maxRepeats: 2
+    _feintChancePhase1: 0.05
+    _feintChancePhase2: 0.2
+    _feintRecovery: 0.8
+    _repositionChance: 0.25
+    _repositionTime: 0.6
+    _repositionBackOffRange: 5
+    _poiseMax: 120
+    _poiseRegen: 8
+    _poiseRegenDelay: 2
+    _staggerTime: 3.5
+    _staggerDamageMultiplier: 1.3
+    _interruptStaggerTime: 2.5
+    _idleShrinkPerExtraPlayer: 0.08
+    _pressureChancePerPlayer: 0.1
+    _variantChance: 0.3
+    _adaptWindow: 14
+    _adaptMinHits: 6
+    _adaptShare: 0.6
+    _adaptResistance: 0.7
   _prefab: {fileID: 6321937765397557630, guid: 8339ee51facf69f43b8ab05af6b455cd, type: 3}
   _arenaPrefab: {fileID: 7121268250761901515, guid: a802a69359850524abfc2255f6762f5b, type: 3}

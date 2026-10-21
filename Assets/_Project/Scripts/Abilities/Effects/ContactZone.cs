@@ -54,7 +54,7 @@ namespace GraceRun.Abilities.Effects
                 var target = found[i];
                 if (_hitEachTargetOnce && !_alreadyHit.Add(target)) continue;
                 var push = AbilityMath.PushAway(centre, target.transform.position, ability.Knockback * power, ability.KnockbackLift * power);
-                target.ReportHit(new DamageInfo(damage, push * _targets.Strengths[i], _effect.CasterId, Team.Player));
+                target.ReportHit(new DamageInfo(damage, push * _targets.Strengths[i], _effect.CasterId, Team.Player, DamageSource.OfAbility(ability.Id)));
             }
 
             if (!_detonateOnce) return;

@@ -15,6 +15,8 @@ namespace GraceRun.Bosses.Behaviours
         private float _height = 1.4f;
         [SerializeField, Range(0.1f, 1f), Tooltip("Player run speed multiplier while standing in the web.")]
         private float _speedMultiplier = 0.45f;
+        [SerializeField, Range(0.1f, 1f), Tooltip("Boss walk speed multiplier while it stands in the web: lure it in.")]
+        private float _bossSpeedMultiplier = 0.7f;
         [SerializeField, Min(0f)] private float _fadeOutTime = 0.7f;
         [SerializeField, Range(0f, 1f)] private float _baseAlpha = 0.75f;
 
@@ -22,6 +24,7 @@ namespace GraceRun.Bosses.Behaviours
         public float Radius => _radius;
         public float Height => _height;
         public float SpeedMultiplier => _speedMultiplier;
+        public float BossSpeedMultiplier => _bossSpeedMultiplier;
         public float FadeOutTime => _fadeOutTime;
         public float BaseAlpha => _baseAlpha;
     }

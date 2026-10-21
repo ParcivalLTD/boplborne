@@ -28,6 +28,8 @@ namespace GraceRun.Bosses
         private float _dropVelocity;
         private float _dropTimer;
         private float _speedMultiplier = 1f;
+        private float _environmentSlow = 1f;
+        private float _environmentSlowUntil;
 
         /// <summary>Server only: walking speed scale from status effects (a frost slow). 1 is normal.</summary>
         public float StatusSpeedMultiplier { get; set; } = 1f;
@@ -76,7 +78,17 @@ namespace GraceRun.Bosses
             }
 
             var chase = BossMath.ChaseSpeedMultiplier(Mathf.Abs(_moveTargetX - _body.position.x), _data.ChaseDistance, _data.ChaseSpeedMultiplier);
-            _body.linearVelocityX = _moveDirection * (_data.WalkSpeed * _speedMultiplier * chase * StatusSpeedMultiplier);
+            var environment = Time.time < _environmentSlowUntil ? _environmentSlow : 1f;
+            _body.linearVelocityX = _moveDirection * (_data.WalkSpeed * _speedMultiplier * chase * StatusSpeedMultiplier * environment);
+        }
+
+        /// <summary>Server only: slows walking while standing in a hazard (web). Call every physics step; it lapses a moment after the last call.</summary>
+        public void ServerApplyEnvironmentSlow(float multiplier)
+        {
+            if (!IsServer) return;
+            var active = Time.time < _environmentSlowUntil;
+            _environmentSlow = active ? Mathf.Min(_environmentSlow, multiplier) : multiplier;
+            _environmentSlowUntil = Time.time + 0.1f;
         }
 
         /// <summary>Server only: scales walking speed (e.g. when a surviving Bell Twin enrages).</summary>
