@@ -83,7 +83,11 @@ namespace GraceRun.Editor.UI
             Style(sub, false, UiKit.BodyNormal, UiPalette.Cream, 3f);
 
             var button = Find(canvas, "Root/Button");
-            Candy(canvas, "Root/Button", ToonTint.Orange, UiKit.DisplayMedium, -1.5f, new Vector2(0f, -300f), new Vector2(780f, 150f));
+            // The start button lives in the top-left corner with the room code under it, clear of the centred title.
+            var buttonRect = (RectTransform)button;
+            buttonRect.anchorMin = buttonRect.anchorMax = buttonRect.pivot = new Vector2(0f, 1f);
+            Candy(canvas, "Root/Button", ToonTint.Orange, UiKit.DisplayMedium, -1.5f, new Vector2(48f, -48f), new Vector2(660f, 140f));
+            RoomCodeCard(canvas);
             var buttonLabel = TextAt(canvas, "Root/Button/Label");
             if (buttonLabel != null)
             {
@@ -95,6 +99,45 @@ namespace GraceRun.Editor.UI
             Bulbs((RectTransform)button, 14f, 36f);
             Ensure<ToonPopIn>(button.gameObject).Configure(0.1f, 0.55f);
             _ = theme;
+        }
+
+        /// <summary>The paper tag under the hub's start button that shows the room code and whether the room is public.</summary>
+        private static void RoomCodeCard(Transform canvas)
+        {
+            var root = Find(canvas, "Root");
+            ClearChild(root, "RoomCode");
+            var card = ToonKit.NewPoster(root, "RoomCode", ToonTheme.Current.PosterPaper);
+            card.raycastTarget = false;
+            var rect = card.rectTransform;
+            rect.anchorMin = rect.anchorMax = rect.pivot = new Vector2(0f, 1f);
+            rect.sizeDelta = new Vector2(620f, 190f);
+            rect.anchoredPosition = new Vector2(68f, -206f);
+            rect.localRotation = Quaternion.Euler(0f, 0f, 1.2f);
+            Ensure<ToonFloat>(card.gameObject).Configure(2f, 0.5f, 0.8f);
+
+            RoomCodeText(rect, "Heading", "ROOM CODE", UiKit.BodySmall, UiPalette.Sepia, new Vector2(0f, 0.72f), new Vector2(1f, 0.98f));
+            var code = RoomCodeText(rect, "Code", "------", 80, UiPalette.Ink, new Vector2(0f, 0.28f), new Vector2(1f, 0.74f));
+            var mode = RoomCodeText(rect, "Mode", "PRIVATE ROOM", UiKit.BodySmall, UiPalette.Sepia, new Vector2(0f, 0.02f), new Vector2(1f, 0.3f));
+
+            var screen = canvas.GetComponent<GraceRun.UI.FightScreen>();
+            if (screen == null) return;
+            var so = new SerializedObject(screen);
+            so.FindProperty("_roomCode").objectReferenceValue = card.gameObject;
+            so.FindProperty("_roomCodeText").objectReferenceValue = code;
+            so.FindProperty("_roomModeText").objectReferenceValue = mode;
+            so.ApplyModifiedPropertiesWithoutUndo();
+            card.gameObject.SetActive(false);
+        }
+
+        private static Text RoomCodeText(RectTransform parent, string name, string content, int size, Color color, Vector2 min, Vector2 max)
+        {
+            var text = UiKit.NewText(parent, name, content, size, color, TextAnchor.MiddleCenter, true);
+            text.horizontalOverflow = HorizontalWrapMode.Overflow;
+            var rect = text.rectTransform;
+            rect.anchorMin = min;
+            rect.anchorMax = max;
+            rect.offsetMin = rect.offsetMax = Vector2.zero;
+            return text;
         }
 
         // ---------- draft ----------

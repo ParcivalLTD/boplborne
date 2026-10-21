@@ -1,3 +1,4 @@
+using GraceRun.Net;
 using GraceRun.Run;
 using UnityEngine;
 using UnityEngine.UI;
@@ -35,6 +36,10 @@ namespace GraceRun.UI
         [SerializeField] private Text _subtitle;
         [SerializeField] private Button _button;
         [SerializeField] private Text _buttonLabel;
+        [SerializeField, Tooltip("The tag under the start button; shown in the hub while this PC hosts an online room.")]
+        private GameObject _roomCode;
+        [SerializeField] private Text _roomCodeText;
+        [SerializeField] private Text _roomModeText;
 
         private FightPhase _shownPhase = (FightPhase)byte.MaxValue;
         private int _shownFloor = -1;
@@ -74,6 +79,7 @@ namespace GraceRun.UI
             _shownFloor = run != null && run.IsSpawned ? run.Floor : 0;
             _shownNumber = -1;
             _root.SetActive(true);
+            ShowRoomCode(phase == FightPhase.Waiting);
 
             var finalFloor = run != null && run.IsSpawned && run.IsFinalFloor;
             var floorBanner = FloorBanner(run);
@@ -105,6 +111,17 @@ namespace GraceRun.UI
                     Set(DefeatText, leader ? DefeatSubText : $"{DefeatSubText} {RestartOtherText}", leader, ReturnHubLabel);
                     break;
             }
+        }
+
+        private void ShowRoomCode(bool inHub)
+        {
+            if (_roomCode == null) return;
+            var connection = ConnectionManager.Instance;
+            var code = connection != null ? connection.JoinCode : null;
+            _roomCode.SetActive(inHub && !string.IsNullOrEmpty(code));
+            if (string.IsNullOrEmpty(code)) return;
+            _roomCodeText.text = code;
+            _roomModeText.text = connection.IsPublic ? "PUBLIC ROOM" : "PRIVATE ROOM";
         }
 
         private static string FloorBanner(RunManager run)

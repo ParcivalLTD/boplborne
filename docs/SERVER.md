@@ -15,10 +15,10 @@ All numbers (grace time, status interval, frame rate) are in `Data/Config/Server
 ## Run it
 
 1. Build the game (**Grace Run → Build Windows**) and copy the build folder to the server PC.
-2. From the repo (or copy `tools/run-server.ps1` next to `GraceRun.exe`):
+2. From the repo (or copy `tools/run-server.ps1` next to `Boplborne.exe`):
 
 ```powershell
-.\tools\run-server.ps1 -Exe C:\GraceRun\GraceRun.exe -Port 7777
+.\tools\run-server.ps1 -Exe C:\Boplborne\Boplborne.exe -Port 7777
 ```
 
 Logs go to `server-logs\` next to the script: `server-<time>.log` per run (the newest 20 are kept), `supervisor.log` for starts and exits, and `status.json`. Stop with Ctrl+C.
@@ -26,7 +26,7 @@ Logs go to `server-logs\` next to the script: `server-<time>.log` per run (the n
 Without the script, the plain command is:
 
 ```powershell
-GraceRun.exe -batchmode -nographics -server -port 7777 -logFile server.log -statusfile status.json
+Boplborne.exe -batchmode -nographics -server -port 7777 -logFile server.log -statusfile status.json
 ```
 
 A server that exits within 20 seconds five times in a row waits two minutes before trying again, so a broken build does not spin.
@@ -44,7 +44,7 @@ Players join with `-connect` or the **Join game** screen, using the server's add
 Windows Firewall rule (run once, as administrator):
 
 ```powershell
-New-NetFirewallRule -DisplayName "Grace Run server" -Direction Inbound -Protocol UDP -LocalPort 7777 -Action Allow
+New-NetFirewallRule -DisplayName "Boplborne server" -Direction Inbound -Protocol UDP -LocalPort 7777 -Action Allow
 ```
 
 ## Start it at boot
@@ -53,7 +53,7 @@ Use Task Scheduler so it runs without anyone logged in:
 
 1. **Create Task**, tick **Run whether user is logged on or not** and **Run with highest privileges**.
 2. Trigger: **At startup**.
-3. Action: program `powershell.exe`, arguments `-NoProfile -ExecutionPolicy Bypass -File C:\GraceRun\tools\run-server.ps1 -Exe C:\GraceRun\GraceRun.exe`.
+3. Action: program `powershell.exe`, arguments `-NoProfile -ExecutionPolicy Bypass -File C:\Boplborne\tools\run-server.ps1 -Exe C:\Boplborne\Boplborne.exe`.
 4. Settings: untick **Stop the task if it runs longer than**.
 
 ## Limits

@@ -16,8 +16,8 @@ namespace GraceRun.UI
     /// </summary>
     public class MainMenuScreen : MonoBehaviour
     {
-        private const string Title = "GRACE RUN";
-        private const string Tagline = "Co-op boss rush for 1-4 friends";
+        private const string Title = "BOPLBORNE";
+        private const string Tagline = "Climb the tower. Bop the bosses.";
         private const int SortingOrder = 50;
 
         private MenuPages _pages;
@@ -28,7 +28,7 @@ namespace GraceRun.UI
         private InputField _address;
         private InputField _nickname;
         private ConnectionManager _connection;
-        private (GameObject join, GameObject settings, GameObject controls) _mainPages;
+        private (GameObject join, GameObject settings, GameObject controls, GameObject host, GameObject rooms) _mainPages;
         private GameObject _header;
         private RectTransform _area;
 
@@ -96,11 +96,16 @@ namespace GraceRun.UI
             var settings = SettingsPage.Build(pages, _pages, out var settingsFirst);
             var controls = ControlsPage.Build(pages, _pages, out var controlsFirst);
 
+            var host = HostPage.Build(pages, _pages, _connection, CommitNickname, out var hostFirst);
+            var rooms = RoomBrowserPage.Build(pages, _pages, _connection, CommitNickname, out var roomsFirst);
+
             _pages.Add(join, joinFirst);
+            _pages.Add(host, hostFirst);
+            _pages.Add(rooms, roomsFirst);
             _pages.Add(_busy, cancel);
             _pages.Add(settings, settingsFirst);
             _pages.Add(controls, controlsFirst);
-            _mainPages = (join, settings, controls);
+            _mainPages = (join, settings, controls, host, rooms);
             _pages.Reset(_main);
         }
 
@@ -123,20 +128,20 @@ namespace GraceRun.UI
         private GameObject BuildMain(Transform parent)
         {
             var toon = ToonKit.Available;
-            var column = toon ? MenuKit.Stack(parent, "Main", 640f, 10f) : MenuKit.Column(parent, "Main", MenuStyle.PanelWidth - 120f);
-            var nameColor = toon ? UiPalette.Cream : MenuStyle.Fog;
-            MenuKit.Label(column, toon ? "YOUR STAGE NAME" : "Your name (shown to the others)", MenuStyle.SmallSize, nameColor);
-            _nickname = MenuKit.Field(column, GameSettings.Nickname, NicknameRules.MaxLength, toon ? 68f : 0f);
+            var column = toon ? MenuKit.Stack(parent, "Main", 700f, 10f) : MenuKit.Column(parent, "Main", MenuStyle.PanelWidth - 120f);
+            if (!toon) MenuKit.Label(column, "Your name (shown to the others)", MenuStyle.SmallSize, MenuStyle.Fog);
+            _nickname = NameTagField.Build(column, GameSettings.Nickname, NicknameRules.MaxLength);
             _nickname.onEndEdit.AddListener(_ => CommitNickname());
-            var host = MenuKit.Button(column, "Host game", () =>
-            {
-                CommitNickname();
-                _connection.Host();
-            }, ToonTint.Orange, -1f, UiKit.DisplayMedium, 100f);
-            MenuKit.Button(column, "Join game", () => _pages.Open(_mainPages.join), ToonTint.Mint, 1f, UiKit.DisplayMedium, 100f);
-            MenuKit.Button(column, "Settings", () => _pages.Open(_mainPages.settings), ToonTint.Sky, -1f, UiKit.DisplaySmall, 84f);
-            MenuKit.Button(column, "Controls", () => _pages.Open(_mainPages.controls), ToonTint.Pink, 1f, UiKit.DisplaySmall, 84f);
-            MenuKit.Button(column, "Quit", Quit, ToonTint.Stone, -1f, UiKit.DisplaySmall, 84f);
+            var host = MenuKit.Button(column, "Host game", () => _pages.Open(_mainPages.host), ToonTint.Orange, -1f, UiKit.DisplayMedium, 96f);
+            var play = MenuKit.Columns(column, "PlayRow", 10f);
+            MenuKit.Button(play, "Join code", () => _pages.Open(_mainPages.join), ToonTint.Mint, 1f, UiKit.DisplaySmall, 88f);
+            MenuKit.Button(play, "Rooms", () => _pages.Open(_mainPages.rooms), ToonTint.Pink, -1f, UiKit.DisplaySmall, 88f);
+            play.gameObject.AddComponent<LayoutElement>().minHeight = 88f;
+            var more = MenuKit.Columns(column, "MoreRow", 10f);
+            MenuKit.Button(more, "Settings", () => _pages.Open(_mainPages.settings), ToonTint.Sky, -1f, UiKit.BodySmall + 4, 72f);
+            MenuKit.Button(more, "Controls", () => _pages.Open(_mainPages.controls), ToonTint.Plum, 1f, UiKit.BodySmall + 4, 72f);
+            MenuKit.Button(more, "Quit", Quit, ToonTint.Stone, -1f, UiKit.BodySmall + 4, 72f);
+            more.gameObject.AddComponent<LayoutElement>().minHeight = 72f;
             MenuKit.ChainVertical(column);
             _pages.Add(column.gameObject, host);
             return column.gameObject;
@@ -145,7 +150,7 @@ namespace GraceRun.UI
         private GameObject BuildJoin(Transform parent, out Selectable first)
         {
             var column = MenuKit.Column(parent, "Join", MenuStyle.PanelWidth);
-            MenuKit.Label(column, "JOIN A GAME", MenuStyle.HeadingSize, MenuStyle.Gold);
+            MenuKit.Label(column, "JOIN WITH A CODE", MenuStyle.HeadingSize, MenuStyle.Gold);
             MenuKit.Label(column, "Room code, or host address (ip or ip:port)", MenuStyle.SmallSize, MenuStyle.Fog);
             _address = MenuKit.Field(column, _connection.Config.DefaultAddress);
             var connect = MenuKit.Button(column, "Connect", () =>

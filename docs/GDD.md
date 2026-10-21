@@ -4,7 +4,7 @@ This is the source of truth for **what** we build. The longer living design doc:
 
 ## Pitch
 
-Grace Run is a 1–4 player online co-op roguelite. Friends climb a tower of souls-style boss arenas and draft chaotic, combinable abilities between fights. Elden Ring's bosses meet Bopl Battle's ability combos, with the friend-group chaos of How to Fish.
+Boplborne is a 1–4 player online co-op roguelite. Friends climb a tower of souls-style boss arenas and draft chaotic, combinable abilities between fights. Elden Ring's bosses meet Bopl Battle's ability combos, with the friend-group chaos of How to Fish.
 
 - 2D side-view. The hub fits one screen; boss arenas are wider (and one is taller) than the 40 × 22.5 unit view, and a camera pans to follow the group. Each player sees their own view; markers on the screen edge show teammates, gravestones and the boss when they are off screen.
 - 1–4 players, each on their own PC. One hosts, the others join over Hamachi.

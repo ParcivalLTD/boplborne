@@ -1,6 +1,6 @@
 # Architecture
 
-**How** Grace Run is built: where things live, which systems exist, and how data flows. Networking ownership is in `docs/NETWORKING.md`.
+**How** Boplborne is built: where things live, which systems exist, and how data flows. Networking ownership is in `docs/NETWORKING.md`.
 
 ## Repository layout
 

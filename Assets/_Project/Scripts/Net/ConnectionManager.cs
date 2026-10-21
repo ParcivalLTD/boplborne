@@ -45,6 +45,9 @@ namespace GraceRun.Net
         /// <summary>The Relay code friends type to join this host, or null when hosting directly or not hosting.</summary>
         public string JoinCode { get; private set; }
 
+        /// <summary>True while this host's room is on the public list.</summary>
+        public bool IsPublic { get; private set; }
+
         /// <summary>Status line for the menu (connecting, refused, timed out).</summary>
         public event Action<string> StatusChanged;
 
@@ -75,6 +78,7 @@ namespace GraceRun.Net
 
             SceneManager.LoadScene(Scenes.MainMenu);
             if (args.HasConnectAddress) Join(args.ConnectAddress);
+            else GraceRun.UI.Splash.SplashScreen.PlayOnce(_config);
         }
 
         private void OnDestroy()
@@ -94,7 +98,7 @@ namespace GraceRun.Net
         /// Starts a server that also plays. Opens an online Relay room (friends join with a code);
         /// if Relay is unreachable it hosts directly by IP (LAN / Hamachi) instead.
         /// </summary>
-        public async void Host()
+        public async void Host(bool isPublic = false)
         {
             if (IsBusy) return;
             var attempt = ++_attempt;
@@ -122,9 +126,27 @@ namespace GraceRun.Net
             }
 
             SetStatus("Starting host...");
-            if (_networkManager.StartHost()) return;
+            if (_networkManager.StartHost())
+            {
+                // A public room needs a Relay code to be joinable; without one it stays unlisted.
+                IsPublic = isPublic && JoinCode != null;
+                if (IsPublic) PublisherComponent().Begin(RoomSnapshot, _config.RoomRefreshSeconds);
+                return;
+            }
+
             JoinCode = null;
             SetStatus("Could not start the host (port in use?).");
+        }
+
+        private RoomListing RoomSnapshot() => new(
+            string.IsNullOrEmpty(GameSettings.Nickname) ? "Host" : GameSettings.Nickname, JoinCode,
+            _networkManager.IsListening ? _networkManager.ConnectedClientsIds.Count : 1,
+            _config.MaxPlayers, _config.GameVersion, FightInProgress);
+
+        private PublicRoomPublisher PublisherComponent()
+        {
+            var publisher = GetComponent<PublicRoomPublisher>();
+            return publisher != null ? publisher : gameObject.AddComponent<PublicRoomPublisher>();
         }
 
         /// <summary>Starts a server with no local player (command line -server).</summary>
@@ -210,6 +232,8 @@ namespace GraceRun.Net
             _attempt++;
             _starting = false;
             JoinCode = null;
+            if (IsPublic) PublisherComponent().Stop();
+            IsPublic = false;
             StopTimeout();
             FightInProgress = false;
             // Shutdown finishes a frame later and can report our own disconnect, which is not

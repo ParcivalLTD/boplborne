@@ -67,10 +67,10 @@ namespace GraceRun.Editor
         public static BuildReport BuildWindows()
         {
             var version = ReadGameVersion();
-            var folderName = $"GraceRun_v{version}";
+            var folderName = $"Boplborne_v{version}";
             var outputDir = Path.Combine(BuildFolderRoot, folderName);
             Directory.CreateDirectory(outputDir);
-            var exePath = Path.Combine(outputDir, "GraceRun.exe");
+            var exePath = Path.Combine(outputDir, "Boplborne.exe");
 
             var scenes = EditorBuildSettings.scenes
                 .Where(s => s.enabled)
@@ -114,7 +114,7 @@ namespace GraceRun.Editor
 
         /// <summary>
         /// Menu item "Grace Run → Build Windows (Single EXE)": builds the Windows client and packages it
-        /// into a single self-extracting executable at Builds/Release/GraceRun_v{version}_SingleFile.exe.
+        /// into a single self-extracting executable at Builds/Release/Boplborne_v{version}_SingleFile.exe.
         /// </summary>
         [MenuItem("Grace Run/Build Windows (Single EXE)")]
         public static void BuildWindowsSingleExe()
@@ -150,7 +150,7 @@ namespace GraceRun.Editor
             if (proc.ExitCode == 0)
             {
                 Debug.Log($"[BuildMenu] Single-EXE packaged successfully:\n{stdout.Trim()}");
-                EditorUtility.RevealInFinder(Path.GetFullPath($"Builds/Release/GraceRun_v{version}_SingleFile.exe"));
+                EditorUtility.RevealInFinder(Path.GetFullPath($"Builds/Release/Boplborne_v{version}_SingleFile.exe"));
             }
             else
             {

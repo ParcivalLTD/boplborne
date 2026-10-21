@@ -15,11 +15,11 @@ if ([string]::IsNullOrWhiteSpace($Version)) {
     }
 }
 
-$buildDir = "Builds/Windows/GraceRun_v$Version"
-if (-not (Test-Path "$buildDir/GraceRun.exe")) {
-    $found = Get-ChildItem -Path "Builds" -Filter "GraceRun.exe" -Recurse -ErrorAction SilentlyContinue | Select-Object -First 1
+$buildDir = "Builds/Windows/Boplborne_v$Version"
+if (-not (Test-Path "$buildDir/Boplborne.exe")) {
+    $found = Get-ChildItem -Path "Builds" -Filter "Boplborne.exe" -Recurse -ErrorAction SilentlyContinue | Select-Object -First 1
     if (-not $found) {
-        throw "Build not found at '$buildDir/GraceRun.exe'. Run 'Grace Run -> Build Windows' in Unity first."
+        throw "Build not found at '$buildDir/Boplborne.exe'. Run 'Grace Run -> Build Windows' in Unity first."
     }
     $buildDir = $found.Directory.FullName
 }
@@ -27,9 +27,9 @@ if (-not (Test-Path "$buildDir/GraceRun.exe")) {
 $fullBuildDir = (Resolve-Path $buildDir).Path
 New-Item -ItemType Directory -Force -Path "Builds/Release" | Out-Null
 $releaseDir = (Resolve-Path "Builds/Release").Path
-$singleExe = Join-Path $releaseDir "GraceRun_v${Version}_SingleFile.exe"
-$portableZip = Join-Path $releaseDir "GraceRun_v${Version}_Portable.zip"
-$payloadZip = Join-Path $env:TEMP "GraceRun_payload_${Version}.zip"
+$singleExe = Join-Path $releaseDir "Boplborne_v${Version}_SingleFile.exe"
+$portableZip = Join-Path $releaseDir "Boplborne_v${Version}_Portable.zip"
+$payloadZip = Join-Path $env:TEMP "Boplborne_payload_${Version}.zip"
 
 Write-Host "Compressing Unity build '$fullBuildDir'..."
 if (Test-Path $payloadZip) { Remove-Item $payloadZip -Force }
@@ -50,7 +50,7 @@ $csproj = @"
     <TargetFramework>net8.0-windows</TargetFramework>
     <PublishSingleFile>true</PublishSingleFile>
     <SelfContained>false</SelfContained>
-    <AssemblyName>GraceRun_SingleFile</AssemblyName>
+    <AssemblyName>Boplborne_SingleFile</AssemblyName>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>disable</Nullable>
   </PropertyGroup>
@@ -74,9 +74,9 @@ class Program
         string version = "$Version";
         string extractRoot = Path.Combine(
             Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
-            "GraceRun",
+            "Boplborne",
             "Runtime_" + version);
-        string exePath = Path.Combine(extractRoot, "GraceRun.exe");
+        string exePath = Path.Combine(extractRoot, "Boplborne.exe");
         string stampPath = Path.Combine(extractRoot, ".build_stamp");
 
         var asm = Assembly.GetExecutingAssembly();
@@ -127,7 +127,7 @@ if ($LASTEXITCODE -ne 0) {
     throw "dotnet publish failed with exit code $LASTEXITCODE"
 }
 
-Copy-Item -Path (Join-Path $pubOut "GraceRun_SingleFile.exe") -Destination $singleExe -Force
+Copy-Item -Path (Join-Path $pubOut "Boplborne_SingleFile.exe") -Destination $singleExe -Force
 Remove-Item $payloadZip -Force -ErrorAction SilentlyContinue
 Remove-Item $launcherDir -Recurse -Force -ErrorAction SilentlyContinue
 

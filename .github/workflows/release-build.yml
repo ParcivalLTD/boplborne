@@ -72,35 +72,35 @@ jobs:
           targetPlatform: StandaloneWindows64
           buildMethod: GraceRun.Editor.BuildMenu.BuildWindowsCli
           buildsPath: Builds
-          buildName: GraceRun
+          buildName: Boplborne
 
-      - name: Package into single self-extracting GraceRun.exe
+      - name: Package into single self-extracting Boplborne.exe
         id: package
         shell: pwsh
         run: |
           $version = "${{ steps.version.outputs.game_version }}"
           pwsh -NoProfile -ExecutionPolicy Bypass -File .github/scripts/Pack-SingleExe.ps1 -Version $version
-          echo "single_exe=Builds/Release/GraceRun_v${version}_SingleFile.exe" >> $env:GITHUB_OUTPUT
-          echo "portable_zip=Builds/Release/GraceRun_v${version}_Portable.zip" >> $env:GITHUB_OUTPUT
+          echo "single_exe=Builds/Release/Boplborne_v${version}_SingleFile.exe" >> $env:GITHUB_OUTPUT
+          echo "portable_zip=Builds/Release/Boplborne_v${version}_Portable.zip" >> $env:GITHUB_OUTPUT
 
       - name: Upload Single-EXE Artifact
         uses: actions/upload-artifact@v4
         with:
-          name: GraceRun-v${{ steps.version.outputs.game_version }}-SingleFile
+          name: Boplborne-v${{ steps.version.outputs.game_version }}-SingleFile
           path: ${{ steps.package.outputs.single_exe }}
 
       - name: Publish to GitHub Releases
         uses: softprops/action-gh-release@v2
         with:
           tag_name: ${{ steps.version.outputs.tag_name }}
-          name: Grace Run ${{ steps.version.outputs.tag_name }}
+          name: Boplborne ${{ steps.version.outputs.tag_name }}
           body: |
-            ## Grace Run ${{ steps.version.outputs.tag_name }}
+            ## Boplborne ${{ steps.version.outputs.tag_name }}
             Automated build from commit `${{ github.sha }}`.
 
             ### Downloads
-            - **`GraceRun_v${{ steps.version.outputs.game_version }}_SingleFile.exe`**: Single-file executable — download and double-click to play immediately (also forwards command-line flags like `-screen-fullscreen 0 -screen-width 1280 -screen-height 720` or `-connect <ip>`).
-            - **`GraceRun_v${{ steps.version.outputs.game_version }}_Portable.zip`**: Standard portable folder archive.
+            - **`Boplborne_v${{ steps.version.outputs.game_version }}_SingleFile.exe`**: Single-file executable — download and double-click to play immediately (also forwards command-line flags like `-screen-fullscreen 0 -screen-width 1280 -screen-height 720` or `-connect <ip>`).
+            - **`Boplborne_v${{ steps.version.outputs.game_version }}_Portable.zip`**: Standard portable folder archive.
           draft: false
           prerelease: false
           make_latest: true

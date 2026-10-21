@@ -29,7 +29,7 @@ namespace GraceRun.UI.Menus
             var scaler = go.GetComponent<CanvasScaler>();
             scaler.uiScaleMode = CanvasScaler.ScaleMode.ScaleWithScreenSize;
             scaler.referenceResolution = new Vector2(1920f, 1080f);
-            scaler.matchWidthOrHeight = 0.5f;
+            scaler.screenMatchMode = CanvasScaler.ScreenMatchMode.Expand;
             return canvas;
         }
 
@@ -126,7 +126,7 @@ namespace GraceRun.UI.Menus
             var row = Row<MenuOptionRow>(parent, text, out var label, ToonTint.Cream, 0f, UiKit.BodyNormal, 0f, false);
             label.alignment = TextAnchor.MiddleLeft;
             label.rectTransform.offsetMin = new Vector2(28f, label.rectTransform.offsetMin.y);
-            label.rectTransform.offsetMax = new Vector2(-(ValueWidth + ArrowWidth * 2f + 50f), label.rectTransform.offsetMax.y);
+            label.rectTransform.offsetMax = new Vector2(-(LeftArrowFromRight + ArrowWidth + 16f), label.rectTransform.offsetMax.y);
             label.resizeTextForBestFit = true;
             label.resizeTextMinSize = UiKit.BodySmall - 4;
             label.resizeTextMaxSize = UiKit.BodyNormal;
@@ -134,28 +134,36 @@ namespace GraceRun.UI.Menus
             value.resizeTextForBestFit = true;
             value.resizeTextMinSize = UiKit.BodySmall - 8;
             value.resizeTextMaxSize = MenuStyle.BodySize;
-            SideRect(value.rectTransform, ValueWidth, ArrowWidth + 34f);
-            Arrow(row, -1, ValueWidth + ArrowWidth + 34f);
-            Arrow(row, 1, 30f);
+            SideRect(value.rectTransform, ValueWidth, ValueFromRight);
+            Arrow(row, -1, LeftArrowFromRight);
+            Arrow(row, 1, RightArrowFromRight);
             row.Bind(value, read, adjust);
             return row;
         }
 
-        private const float ArrowWidth = 28f;
-        private const float ValueWidth = 340f;
+        private const float ArrowWidth = 68f;
+        private const float ArrowHeight = 62f;
+        private const float ValueWidth = 230f;
+        private const float RightArrowFromRight = 20f;
+        private const float ValueFromRight = RightArrowFromRight + ArrowWidth + 10f;
+        private const float LeftArrowFromRight = ValueFromRight + ValueWidth + 10f;
 
-        /// <summary>A clickable arrow at the right end of an option row; a click steps the value by <paramref name="delta"/>.</summary>
+        /// <summary>A candy arrow button at the right end of an option row; a click steps the value by <paramref name="delta"/>.</summary>
         private static void Arrow(MenuOptionRow row, int delta, float fromRight)
         {
             var rect = Rect(row.transform, delta < 0 ? "ArrowLeft" : "ArrowRight");
             var image = rect.gameObject.AddComponent<Image>();
-            image.sprite = UiTheme.Current != null ? UiTheme.Current.Arrow : null;
-            image.preserveAspect = true;
             image.raycastTarget = true;
-            if (image.sprite == null) image.color = Color.clear;
+            if (ToonKit.Available) UiKit.Slice(image, ToonTheme.Current.Button(ToonTint.Orange), ToonKit.Scale);
+            else UiKit.Slice(image, UiTheme.Current != null ? UiTheme.Current.Button : null);
             SideRect(rect, ArrowWidth, fromRight);
-            rect.sizeDelta = new Vector2(ArrowWidth, 0f);
-            rect.localScale = new Vector3(delta < 0 ? 1f : -1f, 1f, 1f);
+            rect.anchorMin = new Vector2(1f, 0.5f);
+            rect.anchorMax = new Vector2(1f, 0.5f);
+            rect.sizeDelta = new Vector2(ArrowWidth, ArrowHeight);
+            var glyph = Label(rect, delta < 0 ? "<" : ">", UiKit.DisplayMedium, UiPalette.Ink, TextAnchor.MiddleCenter, true);
+            glyph.raycastTarget = false;
+            glyph.GetComponent<LayoutElement>().ignoreLayout = true;
+            Stretch(glyph.rectTransform, new Vector2(0f, 6f), Vector2.zero);
             rect.gameObject.AddComponent<OptionArrow>().Setup(row, delta);
         }
 

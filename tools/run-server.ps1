@@ -1,19 +1,19 @@
 <#
 .SYNOPSIS
-    Runs a Grace Run dedicated server and starts it again whenever it exits.
+    Runs a Boplborne dedicated server and starts it again whenever it exits.
 
 .DESCRIPTION
-    Starts GraceRun.exe headless (-batchmode -nographics -server), writes one log file per run
+    Starts Boplborne.exe headless (-batchmode -nographics -server), writes one log file per run
     and a status.json that a monitor can read, and restarts the server after a crash or a quit.
     A server that dies within seconds, over and over, backs off instead of spinning.
     Stop it with Ctrl+C (the running server is stopped too).
     See docs/SERVER.md for hosting, port forwarding and running it at startup.
 
 .EXAMPLE
-    .\tools\run-server.ps1 -Exe C:\GraceRun\GraceRun.exe -Port 7777
+    .\tools\run-server.ps1 -Exe C:\Boplborne\Boplborne.exe -Port 7777
 #>
 param(
-    [string]$Exe = (Join-Path $PSScriptRoot "..\GraceRun.exe"),
+    [string]$Exe = (Join-Path $PSScriptRoot "..\Boplborne.exe"),
     [int]$Port = 7777,
     [string]$LogDir = (Join-Path $PSScriptRoot "..\server-logs"),
     [int]$RestartDelaySeconds = 5,
@@ -25,7 +25,7 @@ param(
 
 $ErrorActionPreference = "Stop"
 
-if (-not (Test-Path -LiteralPath $Exe)) { throw "GraceRun.exe not found at '$Exe'. Pass -Exe <path>." }
+if (-not (Test-Path -LiteralPath $Exe)) { throw "Boplborne.exe not found at '$Exe'. Pass -Exe <path>." }
 $Exe = (Resolve-Path -LiteralPath $Exe).Path
 New-Item -ItemType Directory -Force -Path $LogDir | Out-Null
 $LogDir = (Resolve-Path -LiteralPath $LogDir).Path

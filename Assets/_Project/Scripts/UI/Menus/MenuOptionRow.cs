@@ -7,8 +7,8 @@ namespace GraceRun.UI.Menus
 {
     /// <summary>
     /// One settings row: a label, a value and two arrow buttons. Left / right (keys, stick, d-pad) or a
-    /// click on an arrow change the value; up / down move between rows as usual; a click on the row
-    /// or submit steps it forward. Built by <see cref="MenuKit.Option"/>.
+    /// click on an arrow change the value; up / down move between rows as usual; submit (Enter / A)
+    /// steps it forward. Clicking the row itself does nothing. Built by <see cref="MenuKit.Option"/>.
     /// </summary>
     public class MenuOptionRow : Button
     {
@@ -30,6 +30,11 @@ namespace GraceRun.UI.Menus
         public void Refresh()
         {
             if (_value != null && _read != null) _value.text = _read();
+        }
+
+        /// <summary>A mouse click on the row itself does nothing: only the arrows change the value.</summary>
+        public override void OnPointerClick(PointerEventData eventData)
+        {
         }
 
         public override void OnMove(AxisEventData eventData)

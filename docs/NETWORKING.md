@@ -1,6 +1,6 @@
 # Networking
 
-Grace Run uses **Netcode for GameObjects** with **Unity Transport**. The normal way to play is **Unity Relay**: the host gets a 6-character **room code**, friends type it, and nobody needs Hamachi, port forwarding or the same network. If Relay is unreachable the host falls back to a direct connection by IP (LAN or **Hamachi**, still supported). Relay is only a packet forwarder: the host still runs the server (decision 3, amended 2026-10-21).
+Boplborne uses **Netcode for GameObjects** with **Unity Transport**. The normal way to play is **Unity Relay**: the host gets a 6-character **room code**, friends type it, and nobody needs Hamachi, port forwarding or the same network. If Relay is unreachable the host falls back to a direct connection by IP (LAN or **Hamachi**, still supported). Relay is only a packet forwarder: the host still runs the server (decision 3, amended 2026-10-21).
 
 **One-time setup (the project owner):** in Unity, open Edit → Project Settings → Services, sign in, and link the project to a Unity Cloud project (free). Relay is on by default for it. Players need nothing; the build talks to Relay anonymously. Without the link, Host quietly falls back to direct IP and logs "Relay unavailable".
 
@@ -10,9 +10,19 @@ Grace Run uses **Netcode for GameObjects** with **Unity Transport**. The normal 
 | --- | --- | --- |
 | **Host** | The friend hosting, who also plays | Main menu → Host. A room code appears (Esc menu → "Room code"), and it is copied to the clipboard. Runs the server and a player in one game. Recommended. |
 | **Client** | Everyone else | Main menu → Join → type the room code (or the host's IP, `ip:port`) → Connect. |
-| **Server only** | Optional, a PC that just runs the server | `GraceRun.exe -server -port 7777`. Add `-batchmode -nographics` for no window. A Windows Dedicated Server build profile works too. |
+| **Server only** | Optional, a PC that just runs the server | `Boplborne.exe -server -port 7777`. Add `-batchmode -nographics` for no window. A Windows Dedicated Server build profile works too. |
 
 Command-line arguments (read by `CommandLineArgs` in `Bootstrap`): `-server`, `-port <n>`, `-connect <ip>` (client auto-join, handy for testing), `-statusfile <path>` (server only: a status file for monitoring). Running a server around the clock is covered in `docs/SERVER.md`.
+
+## Public and private rooms
+
+Main menu → **Host game** asks for **Private** or **Public** (default Private).
+
+- **Private:** only people with the room code can join (type it under **Join code**).
+- **Public:** the host also publishes a Lobby entry (`LobbyConnector`, kept alive by `PublicRoomPublisher` every `GameConfig.RoomRefreshSeconds`, removed when the host leaves). Anyone sees it under **Rooms** with the host's name, players (n/4) and a status: Open, In a fight, Full or Other version (`RoomRules`). Clicking an open room joins it with the Relay code stored in the entry.
+- The hub shows the code and whether the room is public under the **START THE SHOW!** button (top left, host only).
+- If the Lobby service is unreachable the room is simply not listed; the code still works. Lobby entries expire about 30 s after the host disappears, so a crashed host vanishes from the list on its own.
+- The Lobby service must be enabled for the project in the Unity Cloud dashboard (same place as Relay).
 
 ## Who decides what (authority table)
 
@@ -55,7 +65,7 @@ Everyone is a friend, so we trust clients where it makes the game feel better.
 
 ## Playing with friends over Relay (no setup for players)
 
-1. Host starts Grace Run and clicks **Host**. The room code is copied to the clipboard; press Esc in game to see it again.
+1. Host starts Boplborne and clicks **Host**. The room code is copied to the clipboard; press Esc in game to see it again.
 2. Friends click **Join game**, type the code, press **Connect**.
 3. "Room not found": wrong code, or the host left. Everyone must run the same version.
 
@@ -72,21 +82,21 @@ Use this when Relay is down or the project is not linked. The host's Join field 
 ### Every session
 
 1. Everyone turns Hamachi on and checks they see each other online (green dot).
-2. The host starts Grace Run and clicks **Host**.
+2. The host starts Boplborne and clicks **Host**.
 3. The host reads their **Hamachi IPv4 address** at the top of the Hamachi window and shares it.
-4. Friends start Grace Run, click **Join**, enter that address, and join.
+4. Friends start Boplborne, click **Join**, enter that address, and join.
 5. Everyone must run the **same version** of the game.
 
 ### The first time on each PC
 
-Windows Firewall asks whether to allow Grace Run. Allow it on **both private and public networks**: Windows often classifies the Hamachi adapter as public.
+Windows Firewall asks whether to allow Boplborne. Allow it on **both private and public networks**: Windows often classifies the Hamachi adapter as public.
 
 ### Troubleshooting
 
 | Problem | Fix |
 | --- | --- |
 | "Version mismatch" | Everyone downloads the same release from GitHub. |
-| Join times out | Ping the host's Hamachi IP from a terminal (`ping 25.x.x.x`). No reply: Hamachi problem (both online? same network?). Reply but no join: firewall on the host, allow Grace Run on public networks. |
+| Join times out | Ping the host's Hamachi IP from a terminal (`ping 25.x.x.x`). No reply: Hamachi problem (both online? same network?). Reply but no join: firewall on the host, allow Boplborne on public networks. |
 | Works for some friends, not others | Hamachi shows a yellow triangle or "relayed" connection for them: restart Hamachi on both PCs. |
 | Port already in use | Another program uses 7777. Host with `-port 7778` and tell friends (Join field accepts `ip:port`). |
 | Rubber-banding | Check Hamachi latency (hover over the friend). Over 150 ms, the friend with the best connection should host. |

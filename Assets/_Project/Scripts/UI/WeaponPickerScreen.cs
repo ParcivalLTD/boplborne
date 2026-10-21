@@ -152,9 +152,13 @@ namespace GraceRun.UI
             var lr = label.rectTransform;
             lr.anchorMin = lr.anchorMax = new Vector2(0.5f, 0f);
             lr.pivot = new Vector2(0.5f, 1f);
-            lr.sizeDelta = new Vector2(150f, 40f);
+            // As wide as the slot plus its gap, so neighbouring names never run into each other.
+            lr.sizeDelta = new Vector2(RackSlot + RackGap - 6f, 40f);
             lr.anchoredPosition = new Vector2(0f, -2f);
-            label.horizontalOverflow = HorizontalWrapMode.Overflow;
+            label.horizontalOverflow = HorizontalWrapMode.Wrap;
+            label.resizeTextForBestFit = true;
+            label.resizeTextMinSize = 16;
+            label.resizeTextMaxSize = UiKit.DisplaySmall;
 
             var button = go.GetComponent<Button>();
             button.targetGraphic = frame;
@@ -209,7 +213,7 @@ namespace GraceRun.UI
             var scaler = gameObject.AddComponent<CanvasScaler>();
             scaler.uiScaleMode = CanvasScaler.ScaleMode.ScaleWithScreenSize;
             scaler.referenceResolution = new Vector2(1920, 1080);
-            scaler.matchWidthOrHeight = 0.5f;
+            scaler.screenMatchMode = CanvasScaler.ScreenMatchMode.Expand;
             gameObject.AddComponent<GraphicRaycaster>();
         }
     }

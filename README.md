@@ -1,4 +1,4 @@
-# Grace Run (working title)
+# Boplborne (working title)
 
 A 2D online co-op boss-rush roguelite for 1–4 friends. Climb a tower of souls-style bosses, draft abilities between fights, and combine them in ways that break the game.
 

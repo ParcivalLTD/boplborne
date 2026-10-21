@@ -1,6 +1,6 @@
 # Art pipeline: pixel art in a 1930s rubber-hose cartoon style
 
-Grace Run is **pixel art that looks like an old cartoon**: rubber-hose limbs, pie-cut eyes, white gloves, big round shoes, bouncy squash-and-stretch, warm vintage colours and a film-reel finish (grain, vignette, dust). The mood is inspired by Cuphead, but drawn in pixels and built from the **1930s cartoon tradition**, not from Cuphead itself.
+Boplborne is **pixel art that looks like an old cartoon**: rubber-hose limbs, pie-cut eyes, white gloves, big round shoes, bouncy squash-and-stretch, warm vintage colours and a film-reel finish (grain, vignette, dust). The mood is inspired by Cuphead, but drawn in pixels and built from the **1930s cartoon tradition**, not from Cuphead itself.
 
 AI pixel art looks bad when it's generated one image at a time with no style anchor, no fixed palette and no cleanup. It looks good when you **lock one style first**, generate everything from that anchor, force it into one palette, and clean every frame by hand.
 

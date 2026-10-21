@@ -1,6 +1,6 @@
 # AGENTS.md — rules for the AI agent
 
-You are building **Grace Run**, a 2D side-view online co-op (1–4 players) boss-rush roguelite in **Unity 6**, using **Netcode for GameObjects**. You are connected to the running Unity Editor through the **Unity MCP server** (and the `unity` CLI, if installed). Use them: never hand-edit `.unity`, `.prefab` or `.asset` YAML while the Editor is reachable.
+You are building **Boplborne**, a 2D side-view online co-op (1–4 players) boss-rush roguelite in **Unity 6**, using **Netcode for GameObjects**. You are connected to the running Unity Editor through the **Unity MCP server** (and the `unity` CLI, if installed). Use them: never hand-edit `.unity`, `.prefab` or `.asset` YAML while the Editor is reachable.
 
 ## Read before any work
 

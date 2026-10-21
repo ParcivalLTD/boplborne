@@ -14,6 +14,12 @@ namespace GraceRun.Core
         [SerializeField] private string _gameVersion;
         [SerializeField] private string _defaultAddress;
         [SerializeField, Min(1f)] private float _connectTimeoutSeconds = 10f;
+        [SerializeField, Min(5f), Tooltip("How often a public room tells the Lobby service it is alive and updates its player count (the service drops rooms after 30 s of silence).")]
+        private float _roomRefreshSeconds = 15f;
+        [SerializeField, Min(0.5f), Tooltip("How long the start-up splash stays up before it fades away on its own.")]
+        private float _splashSeconds = 3f;
+        [SerializeField, Min(0f), Tooltip("Fade time of the splash: black lifting at the start, the splash fading at the end.")]
+        private float _splashFadeSeconds = 0.5f;
         [SerializeField] private Color[] _playerColors;
         [SerializeField, Tooltip("Body shades per player; the sprite shader swaps P1's ramp for these.")]
         private PlayerRamp[] _playerRamps;
@@ -27,6 +33,12 @@ namespace GraceRun.Core
         public ushort Port => (ushort)_port;
         public string GameVersion => _gameVersion;
         public string DefaultAddress => _defaultAddress;
+
+        public float SplashSeconds => _splashSeconds;
+        public float SplashFadeSeconds => _splashFadeSeconds;
+
+        /// <summary>Seconds between a public room's heartbeats / player-count updates.</summary>
+        public float RoomRefreshSeconds => _roomRefreshSeconds;
 
         /// <summary>Defaults for the player-facing settings (volumes, shake, display).</summary>
         public global::GraceRun.Core.Settings.SettingsData Settings => _settings;
