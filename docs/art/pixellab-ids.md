@@ -175,3 +175,7 @@ Delivered to `Assets/_Project/Art/Story/` (2026-10-21). All scenes are `create_i
 | `lantern.png` (marker) | `999b408e-1332-4bbd-a067-1026ad566c1c` | 54 | Round lantern with a glow. |
 
 Not PixelLab: `tower.png` (160x480), `window_lit.png`, `window_dark.png` (24x24) and `tower_windows.txt` are drawn procedurally with `scratch/art/story/mktower.py` (git-ignored), so the window centres are exact. The tower is a straight-sided stone cylinder with a conical roof, the same family as the one in the intro cards.
+
+## App icon (2026-10-21)
+
+- Boplborne icon, concept 1 "Bopped Bell": `create_image_pro` 64×64, job `475d7a53-2389-4496-96f4-8016523fb4ab`, 16 candidates, **candidate 2** picked by the agent (clear dent, star burst, bold plume). Candidate 15 is the runner-up. Palette: game palette plus plum `#7A3B5C` / `#5A2744`. Files: `Art/Icon/boplborne_icon_64.png` (source), `boplborne_icon.png` (4× nearest, 256 px, the Player Settings default icon).
