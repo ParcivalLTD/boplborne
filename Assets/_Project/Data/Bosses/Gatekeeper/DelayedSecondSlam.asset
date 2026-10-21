@@ -13,11 +13,11 @@ MonoBehaviour:
   m_Name: DelayedSecondSlam
   m_EditorClassIdentifier: GraceRun.Runtime::GraceRun.Bosses.AttackData
   _id: delayed_second_slam
-  _windup: 0.8
+  _windup: 0.6
   _active: 0.15
-  _recovery: 1.4
+  _recovery: 1.1
   _punishWindow: 1.2
-  _damage: 30
+  _damage: 35
   _knockback: {x: 9, y: 7}
   _hitboxOffset: {x: 2.25, y: -1.4}
   _hitboxSize: {x: 3, y: 3.2}

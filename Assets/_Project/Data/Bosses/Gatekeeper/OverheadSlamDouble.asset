@@ -13,11 +13,11 @@ MonoBehaviour:
   m_Name: OverheadSlamDouble
   m_EditorClassIdentifier: GraceRun.Runtime::GraceRun.Bosses.AttackData
   _id: overhead_slam_double
-  _windup: 0.9
+  _windup: 0.75
   _active: 0.15
   _recovery: 0.2
   _punishWindow: 0
-  _damage: 30
+  _damage: 35
   _knockback: {x: 9, y: 7}
   _hitboxOffset: {x: 2.25, y: -1.4}
   _hitboxSize: {x: 3, y: 3.2}

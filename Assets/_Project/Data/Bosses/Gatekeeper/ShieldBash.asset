@@ -13,11 +13,11 @@ MonoBehaviour:
   m_Name: ShieldBash
   m_EditorClassIdentifier: GraceRun.Runtime::GraceRun.Bosses.AttackData
   _id: shield_bash
-  _windup: 0.55
+  _windup: 0.45
   _active: 0.35
-  _recovery: 1
+  _recovery: 0.8
   _punishWindow: 0.8
-  _damage: 25
+  _damage: 30
   _knockback: {x: 14, y: 5}
   _hitboxOffset: {x: 2.1, y: -0.8}
   _hitboxSize: {x: 2.3, y: 4.4}

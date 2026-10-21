@@ -16,7 +16,7 @@ MonoBehaviour:
   _displayName: The Gatekeeper
   _floor: 1
   _accentColor: {r: 0.6039216, g: 0.6392157, b: 0.70980394, a: 1}
-  _baseHP: 500
+  _baseHP: 600
   _hpScalePerExtraPlayer: 0.6
   _phase2Threshold: 0.5
   _phase1Attacks:
@@ -28,9 +28,11 @@ MonoBehaviour:
   - {fileID: 11400000, guid: b531b4e7ac3f13043a94e5c46bc61408, type: 2}
   - {fileID: 11400000, guid: 0324fcc9ab5935f48b3f3c139f911e5e, type: 2}
   - {fileID: 11400000, guid: 18f7c4067b8f03445a8f8cc78eaddf4b, type: 2}
-  _idleTime: 0.7
+  _idleTime: 0.45
   _targetSwitchInterval: 8
-  _walkSpeed: 3.5
+  _walkSpeed: 4.2
+  _chaseDistance: 12
+  _chaseSpeedMultiplier: 2
   _attackStartLead: 0.1
   _despawnDelay: 1.5
   _prefab: {fileID: 6321937765397557630, guid: 8339ee51facf69f43b8ab05af6b455cd, type: 3}
