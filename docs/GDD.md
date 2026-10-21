@@ -129,7 +129,7 @@ Statuses: Frost Bolt slows, Shrink Ray shrinks (smaller body, half damage dealt)
 
 Rules for every boss:
 
-1. Every attack: clear wind-up (pose, red glow, sound cue) → strike → recovery window where a gold weak point shows.
+1. Every attack: clear wind-up (pose, red ground zone, sound cue; no red glow overlay on boss art) → strike → recovery window where a gold weak point shows.
 2. One idea per boss.
 3. Phase 2 at 50% HP remixes known attacks.
 4. The boss switches targets regularly.

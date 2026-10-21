@@ -28,3 +28,21 @@ All from `animate_image_pixminimax` on `player_body.png` padded to 64×64 (uploa
 | `attack3` | `3e0f223d-fe1b-44e3-9640-798ecf5c151f` | 2, 3, 7, 8 |
 | `hurt` | `a9cb2237-af6b-41dc-a712-c00d0c0ddf84` | 3–4 |
 | `ghost` | `e1f3291f-3a09-4524-84f2-53311a4031f0` | 4–7 |
+
+## Bosses (8.4)
+
+| Asset | Job id | Index | Tool | Notes |
+| --- | --- | --- | --- | --- |
+| The Gatekeeper anchor | `12bcadad-d81e-4a51-a18e-814f2a9325bc` | 3 | `create_image_pro`, 170×170, palette ink + stone ramp + steel + accent + bone + white + sepia | Picked 2026-10-21 (star shield). Raw copy: `scratch/art/gatekeeper/gatekeeper_anchor_raw.png`; the user does the hand pass in Aseprite before poses are generated. |
+
+Gatekeeper poses (8.4), all from `animate_image_pixminimax` on the cleaned anchor (upload of `scratch/art/gatekeeper/gatekeeper_anchor.png`), 170×170, direction west, then `cleanup.py --kind anim --canvas 170` on the picked frames (not `--kind boss`: it re-centres each frame).
+
+| Pose | Job id | Frames used (job index) |
+| --- | --- | --- |
+| idle | `a804ed7a-8baf-45cb-a40c-d628e996efe0` | 1–4 |
+| slam wind-up | `fd86f0c0-3605-426f-99c2-6dfc1e74ac97` | 3 |
+| slam strike, recovery | `03a40f03-bd3b-4aa7-9bc3-c076db26bffe` | 4, 6 |
+| shield bash | `0f841fe1-bd65-452a-b093-23a2742568af` | 2, 5, 8 |
+| sweep | `c43799fd-5e62-468b-aebe-f23f3139bd31` | 2, 4, 6 |
+| stagger | `afacb10d-8ada-4383-beff-9687db47c755` | 2 |
+| death | `e98ff883-f43b-4ddd-8beb-106116f5caca` | 5–8 |

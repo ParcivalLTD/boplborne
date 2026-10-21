@@ -19,14 +19,15 @@ MonoBehaviour:
   _punishWindow: 0.8
   _damage: 25
   _knockback: {x: 14, y: 5}
-  _hitboxOffset: {x: 2.75, y: -0.25}
-  _hitboxSize: {x: 1.5, y: 5.5}
+  _hitboxOffset: {x: 2.1, y: -0.8}
+  _hitboxSize: {x: 2.3, y: 4.4}
   _telegraphType: 1
   _glowPart: 2
   _weakPointOffset: {x: -0.8, y: 1.2}
   _lungeDistance: 5
   _lungeTime: 0.2
   _followUp: {fileID: 0}
+  _behaviour: {fileID: 0}
   _windupCue: {fileID: 11400000, guid: 0c9557f333af17a4d99b2b2f0816f664, type: 2}
   _weight: 1
   _cooldown: 2.5

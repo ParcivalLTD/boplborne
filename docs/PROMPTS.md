@@ -313,7 +313,7 @@ Follow `docs/ART_PIPELINE.md` (pixel art in a 1930s rubber-hose cartoon style, d
 
 ### 8.4 The Gatekeeper poses
 ```
-8.4: Make The Gatekeeper's art with the PixelLab MCP per docs/ART_PIPELINE.md step 4: one anchor still (show candidates, wait for my pick and hand pass), then idle, per-attack wind-up / strike / recovery poses (slams, shield bash, sweep), stagger and death. Show the boss pose that matches each attack phase from AttackData, and keep the red telegraph glow on the striking part.
+8.4: Make The Gatekeeper's art with the PixelLab MCP per docs/ART_PIPELINE.md step 4: one anchor still (show candidates, wait for my pick and hand pass), then idle, per-attack wind-up / strike / recovery poses (slams, shield bash, sweep), stagger and death. Show the boss pose that matches each attack phase from AttackData, with no red glow on the art (the pose, the red ground zone and the sound are the telegraph); then tune each attack's hitbox and range to the drawn pose.
 ```
 **Done when:** every attack's telegraph reads clearly in a solo fight and the hitboxes still match the poses.
 
