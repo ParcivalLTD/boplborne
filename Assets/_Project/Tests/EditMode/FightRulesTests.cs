@@ -80,5 +80,28 @@ namespace GraceRun.Tests
         [Test]
         public void NobodyConnectedHasNoLeader() =>
             Assert.AreEqual(FightRules.NoLeader, FightRules.Leader(false, 0, new ulong[0]));
+
+        [Test]
+        public void StoryWaitsForEveryConnectedPlayer() =>
+            Assert.IsFalse(FightRules.StoryFinished(new ulong[] { 0, 1, 2 }, new System.Collections.Generic.HashSet<ulong> { 0, 2 }, 5d, 90d));
+
+        [Test]
+        public void StoryEndsWhenEveryoneIsDone() =>
+            Assert.IsTrue(FightRules.StoryFinished(new ulong[] { 0, 1 }, new System.Collections.Generic.HashSet<ulong> { 1, 0 }, 5d, 90d));
+
+        [Test]
+        public void StoryIgnoresPlayersWhoLeft() =>
+            Assert.IsTrue(FightRules.StoryFinished(new ulong[] { 0 }, new System.Collections.Generic.HashSet<ulong> { 0, 3 }, 5d, 90d));
+
+        [Test]
+        public void StoryTimeoutReleasesAStuckPlayer() =>
+            Assert.IsTrue(FightRules.StoryFinished(new ulong[] { 0, 1 }, new System.Collections.Generic.HashSet<ulong> { 0 }, 90d, 90d));
+
+        [Test]
+        public void StoryWithNobodyConnectedDoesNotFinish() =>
+            Assert.IsFalse(FightRules.StoryFinished(new ulong[0], new System.Collections.Generic.HashSet<ulong>(), 5d, 90d));
+
+        [Test]
+        public void StoryBlocksJoining() => Assert.IsTrue(FightRules.BlocksJoining(FightPhase.Story));
     }
 }

@@ -1,6 +1,6 @@
 namespace GraceRun.Run
 {
-    /// <summary>Where the run/fight loop is: waiting (hub), countdown, fighting, victory, defeat, draft, or rest stop. Synced from the server by <see cref="FightLoop"/>.</summary>
+    /// <summary>Where the run/fight loop is: waiting (hub), countdown, fighting, victory, defeat, draft, rest stop, or the full-screen story that every PC must finish before the countdown. Synced from the server by <see cref="FightLoop"/>.</summary>
     public enum FightPhase : byte
     {
         Waiting,
@@ -9,6 +9,7 @@ namespace GraceRun.Run
         Victory,
         Defeat,
         Draft,
-        RestStop
+        RestStop,
+        Story
     }
 }

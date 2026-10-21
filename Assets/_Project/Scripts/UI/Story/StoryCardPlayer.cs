@@ -10,7 +10,7 @@ namespace GraceRun.UI.Story
     /// <summary>
     /// Plays a list of story cards one after another with held-frame slide-in / hold / slide-out. Enter, a click or
     /// the gamepad's top button skips the current card; Backspace or the gamepad's east button skips them all.
-    /// Cosmetic: the canvas never takes clicks and nothing here touches the game or the network.
+    /// Full screen: an opaque ink backdrop fades in behind the cards. Cosmetic: the canvas never takes clicks and nothing here touches the game or the network.
     /// </summary>
     public class StoryCardPlayer : MonoBehaviour
     {
@@ -23,6 +23,9 @@ namespace GraceRun.UI.Story
         private float _time;
         private int _shown = -1;
 
+        /// <summary>Raised when the cards ran out or were skipped (not when <see cref="Stop"/> cuts them off).</summary>
+        public event System.Action Completed;
+
         /// <summary>True while cards are on screen.</summary>
         public static bool IsPlaying { get; private set; }
 
@@ -34,7 +37,7 @@ namespace GraceRun.UI.Story
             var canvas = MenuKit.CreateCanvas("StoryCardCanvas", SortingOrder);
             canvas.transform.SetParent(transform, false);
             Destroy(canvas.GetComponent<GraphicRaycaster>());
-            _dim = MenuKit.Fill(canvas.transform, "Dim", UiPalette.Dim).GetComponent<Image>();
+            _dim = MenuKit.Fill(canvas.transform, "Dim", UiPalette.Ink).GetComponent<Image>();
             _dim.raycastTarget = false;
             _panel.Build(canvas.transform);
         }
@@ -51,6 +54,7 @@ namespace GraceRun.UI.Story
             if (p.done)
             {
                 Stop();
+                Completed?.Invoke();
                 return;
             }
             if (p.card != _shown)
@@ -61,7 +65,7 @@ namespace GraceRun.UI.Story
             }
             _panel.Pose(p.enter, p.exit);
             var dim = _dim.color;
-            dim.a = UiPalette.Dim.a * Mathf.Clamp01(_time / 0.25f);
+            dim.a = Mathf.Clamp01(_time / 0.25f);
             _dim.color = dim;
         }
 

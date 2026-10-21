@@ -13,10 +13,13 @@ namespace GraceRun.Run
         [SerializeField, Min(0f)] private float _countdownSeconds = 3f;
         [SerializeField, Min(0f), Tooltip("How long the \"FIGHT!\" banner stays after the countdown.")]
         private float _fightBannerSeconds = 1f;
+        [SerializeField, Min(1f), Tooltip("Longest the full-screen story may hold the party, so one stuck PC cannot freeze the run.")]
+        private float _storyTimeoutSeconds = 90f;
         [SerializeField] private BossData _boss;
 
         public float CountdownSeconds => _countdownSeconds;
         public float FightBannerSeconds => _fightBannerSeconds;
+        public float StoryTimeoutSeconds => _storyTimeoutSeconds;
         public BossData Boss => _boss;
     }
 }

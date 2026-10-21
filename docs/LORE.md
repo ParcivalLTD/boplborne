@@ -28,9 +28,13 @@ The Hollow was a pilgrim like the players. Hints, in order, so nothing is spoile
 4. Final intro card shows the Hollow's silhouette wearing the party's own hat colours.
 5. After the win, the Hollow's crown falls off and a plain small pilgrim is left, who hands over the clapper. Then the bell rings.
 
-## Opening (lobby, about 10 s, skippable with Enter / click)
+## How the story is shown (decision 28)
 
-Five held-frame story cards in title-card style (the existing `TitleCardView` look: plum marquee, orange ribbon caption). Played once when a run's Hub first loads for a host or client, never again until the Hub is re-entered from the main menu.
+The story is a full-screen scene, not an overlay. When the leader presses Start in the hub (or Next floor at a rest stop, or a draft ends into the next floor) the server enters the `Story` phase. Every PC plays the story full screen, tells the server when it is through (or skips), and waits on a "Waiting for the others..." screen. The countdown and the boss fight start only when every connected player is through (timeout `FightData.StoryTimeoutSeconds`, 90 s, so a stuck PC cannot freeze the run). Floor 1 plays the opening and then the ascent; later floors play the ascent only. Joining is refused during the story.
+
+## Opening (floor 1 only, about 10 s, skippable with Enter / click, Backspace skips all)
+
+Five held-frame story cards in title-card style (the existing `TitleCardView` look: plum marquee, orange ribbon caption). Played after the leader presses Start in the hub, right before the ascent into floor 1.
 
 | # | Picture | Caption |
 | --- | --- | --- |
@@ -40,9 +44,9 @@ Five held-frame story cards in title-card style (the existing `TitleCardView` lo
 | 4 | The party squeezes through a cat-flap beside the door | "There is always a smaller way in." |
 | 5 | The door swings shut behind them; the Hub (ground floor) behind | "No way back but up." |
 
-## Ascent screen (between floors, about 3 s, skippable)
+## Ascent screen (before every floor, about 3 s, skippable)
 
-One reusable screen: a tall tower cross-section, one window per floor, a lantern marker that climbs from the old floor to the new one. Beaten floors go dark with a small trophy (a bell shard, a web scrap, ...). Shown on every PC when the run advances; cosmetic only, never blocks the game or the draft.
+One reusable full-screen scene: a tall tower cross-section, one window per floor, a lantern marker that climbs from the old floor to the new one. Beaten floors go dark with a small trophy (a bell shard, a web scrap, ...). Shown on every PC in the story phase of every floor.
 
 | Going to floor | Caption |
 | --- | --- |

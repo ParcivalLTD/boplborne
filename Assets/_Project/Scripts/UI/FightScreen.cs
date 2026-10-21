@@ -83,6 +83,9 @@ namespace GraceRun.UI
                 case FightPhase.Waiting:
                     Set(HubTitle, leader ? WaitingLeaderText : WaitingOtherText, leader, StartRunLabel);
                     break;
+                case FightPhase.Story:
+                    Set(string.Empty, string.Empty, false, null);
+                    break;
                 case FightPhase.Countdown:
                     Set(string.Empty, floorBanner, false, null);
                     break;

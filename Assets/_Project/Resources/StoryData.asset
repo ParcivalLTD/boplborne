@@ -1,0 +1,83 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d883560cba93c3d44b016bfd113fc032, type: 3}
+  m_Name: StoryData
+  m_EditorClassIdentifier: GraceRun.Runtime::GraceRun.UI.Story.StoryData
+  _opening:
+  - Title: BOPLBORNE
+    Caption: The bell has been quiet a long time.
+    Picture: {fileID: 21300000, guid: 52e994072dba3ea4ab72919545ca9a66, type: 3}
+  - Title: THE GATE
+    Caption: Nobody remembers who took the clapper.
+    Picture: {fileID: 21300000, guid: 423ed7bf64b574b4d99fc59eb9ef7a9b, type: 3}
+  - Title: THE KEY-RING
+    Caption: Locked. Naturally.
+    Picture: {fileID: 21300000, guid: 00761ec2906a04342b616d3119310ee0, type: 3}
+  - Title: A SMALLER WAY
+    Caption: There is always a smaller way in.
+    Picture: {fileID: 21300000, guid: f3f1c78b0cbc4274cafe2e7b3009fba5, type: 3}
+  - Title: THE HUB
+    Caption: No way back but up.
+    Picture: {fileID: 21300000, guid: 6195d1d6c89870d43bc21e4b376dd26d, type: 3}
+  _ascentCaptions:
+  - Floor 1. The key-holder is awake.
+  - Floor 2. Something up here is knitting. A lost hat lies on the stairs.
+  - Floor 3. Do you hear that? Neither do the bells.
+  - Floor 4. The weather is indoors.
+  - Floor 5. Everyone looks like somebody up here.
+  - Floor 6. Tick. Tock. Tick. Tick. Tock.
+  - Floor 7. Someone has been up here before you. Someone with a lot of hats.
+  _finalAscentCaption: The top. The crown is waiting.
+  _twistLine: It wears every hat it ever found. Some of them look familiar.
+  _ending:
+  - Title: THE CROWN COMES OFF
+    Caption: 'Under all those hats: one small pilgrim, who hands over the clapper.'
+    Picture: {fileID: 21300000, guid: 6cdc40049b0439a45b019bc16542efef, type: 3}
+  - Title: THE BELL RINGS
+    Caption: Every hat that climbed, in a row.
+    Picture: {fileID: 21300000, guid: 2631f4acc18370340a1fbdc3718334af, type: 3}
+  _defeat:
+    Title: TO BE CONTINUED...
+    Caption: The lantern goes out. The tower closes over.
+    Picture: {fileID: 21300000, guid: 3675aacd4f2c94243aa321499a9b7554, type: 3}
+  _hollowSilhouette: {fileID: 21300000, guid: 10b8408301b05a544a3e4214ce54fae4, type: 3}
+  _tower: {fileID: 21300000, guid: 7170e8fac6c867d4598dc9466d28a2a9, type: 3}
+  _windowLit: {fileID: 21300000, guid: e09a07baf3e17194989c019fa71eb3a0, type: 3}
+  _windowDark: {fileID: 21300000, guid: 3018323e2401ae841ab8e86367beac10, type: 3}
+  _lantern: {fileID: 21300000, guid: 05e884f7ba5f4ad47ab7f5d2d657d54e, type: 3}
+  _trophies:
+  - {fileID: 21300000, guid: 71231bee4a5e03647858253fdcbcf72f, type: 3}
+  - {fileID: 21300000, guid: 34d3cc1af608baf429a5a4db9c4bcf89, type: 3}
+  - {fileID: 21300000, guid: 3665482a87b2a664f8034bbc20b9a81f, type: 3}
+  - {fileID: 21300000, guid: 161e14f235a74ff43a54cc45aa4c32ba, type: 3}
+  - {fileID: 21300000, guid: 54c7c84fc4d82214bacbc256361c12f5, type: 3}
+  - {fileID: 21300000, guid: 09c70051d119b184d916dd6dea2b8abb, type: 3}
+  - {fileID: 21300000, guid: 36640e3f2bb1a0541bf143c8728de0d8, type: 3}
+  _windowCentres:
+  - {x: 80, y: 446}
+  - {x: 80, y: 401}
+  - {x: 80, y: 356}
+  - {x: 80, y: 311}
+  - {x: 80, y: 266}
+  - {x: 80, y: 221}
+  - {x: 80, y: 176}
+  - {x: 80, y: 131}
+  - {x: 80, y: 89}
+  _cardSlideIn: 0.3
+  _cardHold: 1.4
+  _cardSlideOut: 0.3
+  _framesPerSecond: 12
+  _ascentSlideIn: 0.3
+  _ascentHold: 2.4
+  _ascentSlideOut: 0.3
+  _lanternDelay: 0.5
+  _lanternTravel: 1.5

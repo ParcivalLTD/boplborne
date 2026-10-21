@@ -1,0 +1,10 @@
+# floor window centres (x,y) in pixels from the top-left of tower.png (160x480); 0 = hub (ground), 1..7 = floors, 8 = Final (top)
+0: 80,446
+1: 80,401
+2: 80,356
+3: 80,311
+4: 80,266
+5: 80,221
+6: 80,176
+7: 80,131
+8: 80,89

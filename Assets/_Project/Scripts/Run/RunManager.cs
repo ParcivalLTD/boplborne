@@ -229,7 +229,7 @@ namespace GraceRun.Run
             if (boss != null && boss.ArenaPrefab != null) SwapArena(boss.ArenaPrefab);
 
             PreparePlayersForFloor(firstFloor);
-            _fightLoop.ServerBeginCountdown(boss);
+            _fightLoop.ServerBeginStory(boss);
         }
 
         /// <summary>Server only: awards currency to the group total (e.g. for defeating a boss).</summary>

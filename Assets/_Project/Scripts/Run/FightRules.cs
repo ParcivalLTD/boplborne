@@ -24,11 +24,24 @@ namespace GraceRun.Run
         }
 
         /// <summary>
-        /// New players are refused from the countdown until the fight ends (docs/NETWORKING.md);
+        /// New players are refused from the story until the fight ends (docs/NETWORKING.md);
         /// the waiting room and the victory or defeat screen let them in.
         /// </summary>
         public static bool BlocksJoining(FightPhase phase) =>
-            phase == FightPhase.Countdown || phase == FightPhase.Fighting;
+            phase == FightPhase.Story || phase == FightPhase.Countdown || phase == FightPhase.Fighting;
+
+        /// <summary>
+        /// True when the story phase may end: every connected player has reported finishing it, or the timeout
+        /// ran out (a stuck PC must never hold the others forever). Nobody connected is never "finished".
+        /// </summary>
+        public static bool StoryFinished(IReadOnlyList<ulong> connected, ICollection<ulong> done, double elapsed, double timeout)
+        {
+            if (elapsed >= timeout) return true;
+            if (connected == null || connected.Count == 0) return false;
+            for (var i = 0; i < connected.Count; i++)
+                if (!done.Contains(connected[i])) return false;
+            return true;
+        }
 
         /// <summary>
         /// Phases the leader may start a fight from: the waiting room and the defeat screen.

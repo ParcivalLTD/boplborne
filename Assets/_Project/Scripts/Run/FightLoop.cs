@@ -33,7 +33,9 @@ namespace GraceRun.Run
 
         private readonly Dictionary<ulong, Health> _healthById = new();
         private readonly Dictionary<ulong, ReviveSystem> _reviveById = new();
+        private readonly HashSet<ulong> _storyDone = new();
         private BossData _currentBoss;
+        private double _storyStart;
         private double _fightStartTime;
         private bool _hadDeathsThisFight;
 
@@ -75,7 +77,8 @@ namespace GraceRun.Run
             if (!IsServer || !IsSpawned) return;
             UpdateLeader();
             if (FightRules.BlocksJoining(_phase.Value) && CheckAbandoned()) return;
-            if (_phase.Value == FightPhase.Countdown && CountdownRemaining <= 0d) BeginFight();
+            if (_phase.Value == FightPhase.Story) CheckStory();
+            else if (_phase.Value == FightPhase.Countdown && CountdownRemaining <= 0d) BeginFight();
             else if (_phase.Value == FightPhase.Fighting) CheckOutcome();
         }
 
@@ -97,6 +100,33 @@ namespace GraceRun.Run
             _bossSpawner.ServerDespawnCurrent();
             ResetPlayers();
             ServerBeginCountdown(_data.Boss);
+        }
+
+        /// <summary>
+        /// Server only: starts the full-screen story for the floor about to begin. The countdown for
+        /// <paramref name="boss"/> starts once every connected PC has reported <see cref="StoryDoneRpc"/>.
+        /// </summary>
+        public void ServerBeginStory(BossData boss)
+        {
+            if (!IsServer) return;
+            _currentBoss = boss;
+            _storyDone.Clear();
+            _storyStart = NetworkManager.ServerTime.Time;
+            SetPhase(FightPhase.Story);
+        }
+
+        /// <summary>Any client: this PC has finished (or skipped) the story.</summary>
+        [Rpc(SendTo.Server)]
+        public void StoryDoneRpc(RpcParams rpcParams = default)
+        {
+            if (_phase.Value == FightPhase.Story) _storyDone.Add(rpcParams.Receive.SenderClientId);
+        }
+
+        private void CheckStory()
+        {
+            var elapsed = NetworkManager.ServerTime.Time - _storyStart;
+            if (FightRules.StoryFinished(NetworkManager.ConnectedClientsIds, _storyDone, elapsed, _data.StoryTimeoutSeconds))
+                ServerBeginCountdown(_currentBoss);
         }
 
         /// <summary>Server only: starts the countdown for <paramref name="boss"/>.</summary>

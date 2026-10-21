@@ -149,3 +149,29 @@ Scripts (git-ignored): scratch/art/weaponbody/{fetch2,select2,mkghost,apply_bala
 | env broodmother backdrop | create_image_pro | 102bdc2e-7a87-45c6-8294-8fdcdc62eaba |
 | env belltwins backdrop | create_image_pro | a99b20b4-ed2e-4a92-8f32-1ea695f781db |
 | env hub tile test (unused) | create_tiles_pro | a5bae08c-4f50-4d39-a502-78911e54747e |
+
+## Story art (Boplborne)
+
+Delivered to `Assets/_Project/Art/Story/` (2026-10-21). All scenes are `create_image_pro`, 480x270, `no_background` false, 23-colour palette taken from `grace-run.gpl`, palette-snapped with `cleanup.snap` (no re-centring). Style reference for intro_2..5 and the endings: the intro_1 job. Candidate sheets and raw copies: `scratch/art/story/` (git-ignored; `sheet.py` builds the contact sheets).
+
+| File | Job id | Index | Notes |
+| --- | --- | --- | --- |
+| `intro_1.png` | `577026a0-755c-45e6-89a7-dd990951ae77` | 0 | Second try; first try `2e334aa2-7a06-4389-a6da-a98f63e44cbf` had baked-in title text and is the style anchor's ancestor only. |
+| `intro_2.png` | `9b4c9b5b-abbb-4cec-84c9-88eec97f8f5e` | 0 | Empty bell, no clapper. |
+| `intro_3.png` | `656f4ffd-4da5-4fe8-afbd-1376748126ec` | 0 | Key-ring on the wall, orange pilgrim jumping. |
+| `intro_4.png` | `c1092fec-d872-4b8d-beed-417f74c78b42` | 0 | Third try (seed 3, style ref = intro_2). Rejected: `daa27ba3-8780-4a59-8e95-db6ed9a942ae` (door ajar, five pilgrims), `d8ba93f6-4df9-485a-9696-7917bfdbca01` and its `edit_image` `911ca84c-9988-4565-9a62-13fb7adc447f` (no cat-flap). |
+| `intro_5.png` | `9b3309c8-ebc3-4026-a66b-61a40eb2540b` | 0 | Interior of the hub, door shutting. |
+| `ending_1.png` | `7f05bed7-7213-41a1-a730-3f60ed954884` | 0 | Bare-headed pilgrim with clapper, fallen crown. |
+| `ending_2.png` | `63641393-563f-4530-9d42-8043e0784ba4` | 0 | Four hats before the bell, light returning. |
+| `defeat_1.png` | `d6a85394-6c70-4056-867b-5d358f47d97c` | 0 | Dark tower, lantern going out; 17-colour dark palette. |
+| `hollow_silhouette.png` (96x128) | `34182226-08a4-4d46-917c-d3b4b027678b` | 0 | `create_image_pro` 96x128, 4 candidates, palette of Hollow + the four player ramps. |
+| `trophy_1` key | `a7e76779-61af-42ee-a2ef-5cfa6e44bc33` | 54 | 16x16, 64 candidates. |
+| `trophy_2` web scrap | `c3fd3bf3-0357-4e90-b75e-838f03b28b69` | 54 | A yarn ball (`02524b25-dabc-4747-b096-47bf16c62ff0`) came out muddy and was dropped. |
+| `trophy_3` bell shard | `efbe9afe-426f-4dd5-bf2b-72e3ac05a8ea` | 18 | |
+| `trophy_4` lightning bolt | `0c49b878-3210-4ecc-adc9-9ddcba9cb731` | 32 | |
+| `trophy_5` mirror shard | `c7155b3a-3def-4b07-a72e-478d4b47da3b` | 24 | |
+| `trophy_6` gear | `83404a0d-1ad3-479a-81dc-0d1a830d1828` | 8 | |
+| `trophy_7` lantern | `999b408e-1332-4bbd-a067-1026ad566c1c` | 4 | |
+| `lantern.png` (marker) | `999b408e-1332-4bbd-a067-1026ad566c1c` | 54 | Round lantern with a glow. |
+
+Not PixelLab: `tower.png` (160x480), `window_lit.png`, `window_dark.png` (24x24) and `tower_windows.txt` are drawn procedurally with `scratch/art/story/mktower.py` (git-ignored), so the window centres are exact. The tower is a straight-sided stone cylinder with a conical roof, the same family as the one in the intro cards.
