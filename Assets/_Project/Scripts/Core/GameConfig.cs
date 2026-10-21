@@ -25,6 +25,12 @@ namespace GraceRun.Core
         [SerializeField, Min(0f)] private float _loadingFadeSeconds = 0.25f;
         [SerializeField, Min(1f), Tooltip("How long each tip on the loading window stays before the next one.")]
         private float _loadingTipSeconds = 4f;
+        [SerializeField, Tooltip("GitHub repository (owner/name) whose latest release the game updates itself from.")]
+        private string _updateRepository = "ParcivalLTD/boplborne";
+        [SerializeField, Min(1f), Tooltip("How long the start-up update check waits for GitHub before giving up quietly.")]
+        private float _updateCheckTimeoutSeconds = 8f;
+        [SerializeField, Range(0.5f, 0.95f), Tooltip("Share of the update bar used by the download; the rest is unpacking.")]
+        private float _updateDownloadShare = 0.8f;
         [SerializeField] private Color[] _playerColors;
         [SerializeField, Tooltip("Body shades per player; the sprite shader swaps P1's ramp for these.")]
         private PlayerRamp[] _playerRamps;
@@ -42,6 +48,9 @@ namespace GraceRun.Core
         public float LoadingMinSeconds => _loadingMinSeconds;
         public float LoadingFadeSeconds => _loadingFadeSeconds;
         public float LoadingTipSeconds => _loadingTipSeconds;
+        public string UpdateRepository => _updateRepository;
+        public float UpdateCheckTimeoutSeconds => _updateCheckTimeoutSeconds;
+        public float UpdateDownloadShare => _updateDownloadShare;
         public float SplashSeconds => _splashSeconds;
         public float SplashFadeSeconds => _splashFadeSeconds;
 

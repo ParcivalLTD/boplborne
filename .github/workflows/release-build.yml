@@ -5,6 +5,10 @@ on:
     branches:
       - main
       - master
+    paths-ignore:
+      - 'docs/**'
+      - '**.md'
+      - 'tools/**'
     tags:
       - 'v*'
   workflow_dispatch:
@@ -17,6 +21,11 @@ on:
 permissions:
   contents: write
 
+# A newer push supersedes a running build of the same ref.
+concurrency:
+  group: build-${{ github.ref }}
+  cancel-in-progress: true
+
 jobs:
   build:
     # game-ci runs Unity in Docker, which windows-latest cannot do (no daemon).
@@ -24,13 +33,26 @@ jobs:
     name: Build Unity Windows player
     runs-on: ubuntu-latest
     timeout-minutes: 60
+    outputs:
+      version: ${{ steps.version.outputs.version }}
 
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
         with:
-          fetch-depth: 0
           lfs: true
+
+      # Every build gets its own version (base major.minor + run number) so the in-game updater can tell
+      # builds apart and the network version check keeps mismatched builds apart.
+      - name: Stamp build version
+        id: version
+        run: |
+          asset=Assets/_Project/Data/Config/GameConfig.asset
+          base=$(grep -m1 '_gameVersion:' "$asset" | sed 's/.*: *//' | tr -d '\r"')
+          version="${base%.*}.${{ github.run_number }}"
+          sed -i "s/^\( *_gameVersion:\).*/\1 $version/" "$asset"
+          echo "version=$version" >> "$GITHUB_OUTPUT"
+          echo "Building $version"
 
       - name: Cache Unity Library
         uses: actions/cache@v4
@@ -57,8 +79,9 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: windows-player
-          path: Builds/StandaloneWindows64
+          path: Builds/Windows
           if-no-files-found: error
+          compression-level: 0
 
   release:
     name: Package Single EXE & Publish
@@ -74,27 +97,15 @@ jobs:
         uses: actions/download-artifact@v4
         with:
           name: windows-player
-          path: Builds/StandaloneWindows64
+          path: Builds/Windows
 
       - name: Read game version from GameConfig.asset
         id: version
         shell: pwsh
         run: |
-          $assetPath = "Assets/_Project/Data/Config/GameConfig.asset"
-          $version = "0.1.0"
-          if (Test-Path $assetPath) {
-            $match = Select-String -Path $assetPath -Pattern "_gameVersion:\s*(.+)"
-            if ($match) {
-              $version = $match.Matches[0].Groups[1].Value.Trim().Trim('"').Trim("'")
-            }
-          }
-          if ("${{ github.ref_type }}" -eq "tag") {
-            $tagName = "${{ github.ref_name }}"
-          } elseif ("${{ inputs.release_tag }}" -ne "" -and "${{ inputs.release_tag }}" -ne "latest") {
-            $tagName = "${{ inputs.release_tag }}"
-          } else {
-            $tagName = "v$version"
-          }
+          $version = "${{ needs.build.outputs.version }}"
+          # The tag is always v<stamped version>: the in-game updater compares it with the running build's version.
+          $tagName = "v$version"
           echo "game_version=$version" >> $env:GITHUB_OUTPUT
           echo "tag_name=$tagName" >> $env:GITHUB_OUTPUT
           Write-Host "Detected GameVersion: $version (Release Tag: $tagName)"

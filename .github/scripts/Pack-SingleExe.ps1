@@ -79,6 +79,30 @@ class Program
         string exePath = Path.Combine(extractRoot, "Boplborne.exe");
         string stampPath = Path.Combine(extractRoot, ".build_stamp");
 
+        // The in-game updater installs newer versions next to this one; start the newest instead of unpacking an old one.
+        string newest = null;
+        Version newestVersion = Version.Parse(version);
+        string installRoot = Path.GetDirectoryName(extractRoot);
+        if (Directory.Exists(installRoot))
+        {
+            foreach (var dir in Directory.GetDirectories(installRoot, "Runtime_*"))
+            {
+                if (!Version.TryParse(Path.GetFileName(dir).Substring("Runtime_".Length), out var v) || v <= newestVersion) continue;
+                if (!File.Exists(Path.Combine(dir, ".ready")) || !File.Exists(Path.Combine(dir, "Boplborne.exe"))) continue;
+                newest = dir;
+                newestVersion = v;
+            }
+        }
+        if (newest != null)
+        {
+            extractRoot = newest;
+            exePath = Path.Combine(extractRoot, "Boplborne.exe");
+            var update = new ProcessStartInfo { FileName = exePath, WorkingDirectory = extractRoot, UseShellExecute = false };
+            foreach (var a in args) update.ArgumentList.Add(a);
+            using var started = Process.Start(update);
+            return 0;
+        }
+
         var asm = Assembly.GetExecutingAssembly();
         string currentStamp = asm.ManifestModule.ModuleVersionId.ToString();
 

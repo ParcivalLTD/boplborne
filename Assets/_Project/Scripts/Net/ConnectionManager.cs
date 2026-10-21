@@ -82,7 +82,11 @@ namespace GraceRun.Net
             GraceRun.UI.Splash.LoadingScreen.Create(this, _config);
             SceneManager.LoadScene(Scenes.MainMenu);
             if (args.HasConnectAddress) Join(args.ConnectAddress);
-            else GraceRun.UI.Splash.SplashScreen.PlayOnce(_config);
+            else
+            {
+                GraceRun.UI.Splash.SplashScreen.PlayOnce(_config);
+                GraceRun.Update.GameUpdater.CheckOnce(_config);
+            }
         }
 
         private void OnDestroy()
