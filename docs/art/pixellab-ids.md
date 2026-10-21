@@ -11,3 +11,20 @@ Ids of picked assets, so later hats, animations and tilesets are made from the s
 | Hat: wizard, P4 (`hat_wizard.png`) | `51d917df-a5df-4765-a385-b9302e649afd` | 28 | `2aa29615-edc2-50c1-b242-e44145f7bae2` | `create_image_pro`, 24×24, palette ink + lavender + fog + stone light + bone | Picked 2026-10-20. Overlap 3 px. |
 
 Hats generated at 48×48 come out as big as the whole canvas; generate them at **24×24** (64 candidates per call) and place them on a 48×64 canvas.
+
+## Player animations (8.3)
+
+All from `animate_image_pixminimax` on `player_body.png` padded to 64×64 (upload of `scratch/art/anim/anchor64.png`), direction east, view side, subject "a small round blue bean-shaped cartoon knight with white gloves and big black shoes". Index 0 of each job is the input frame. Download with `python tools/art/fetch_anim.py <clip> <job id> <frame count> --keep-first`, clean with `python tools/art/cleanup.py <folder> --kind anim`, then **Grace Run → Build Player Animations**. `animate_image` was tried for idle and run and drifted off-model; PixMiniMax stays on-model.
+
+| Clip | Job id | Frames used (job index) |
+| --- | --- | --- |
+| `idle` | `fa4e8620-d60b-4785-8fe0-b2e12dd32ddb` | 1–8 |
+| `run` | `79796573-b0c9-4d53-b469-b32b25dc56cf` | 1–8 |
+| `jump` | `f9ab06b3-01aa-4980-9da2-2d5d852645e1` | 3–4 |
+| `fall` | `381974a4-60a8-4867-9fa1-dd903de25db0` | 2–3 |
+| `dodge` | `86c2429a-ecd8-4813-8980-67f99fe3d67a` | 3–7 |
+| `attack1` | `9f9ef6ba-0f04-4cbf-8816-cef24666c393` | 4–7 |
+| `attack2` | `7a61c6f8-aaee-4c80-80cf-7995d8d08c42` | 4–8 |
+| `attack3` | `3e0f223d-fe1b-44e3-9640-798ecf5c151f` | 2, 3, 7, 8 |
+| `hurt` | `a9cb2237-af6b-41dc-a712-c00d0c0ddf84` | 3–4 |
+| `ghost` | `e1f3291f-3a09-4524-84f2-53311a4031f0` | 4–7 |
