@@ -1,13 +1,15 @@
 # Networking
 
-Grace Run uses **Netcode for GameObjects** with **Unity Transport**, connecting directly by IP. Friends reach each other over a **Hamachi** network, which makes their PCs act like they are on the same LAN. No Unity cloud services, relays or matchmaking.
+Grace Run uses **Netcode for GameObjects** with **Unity Transport**. The normal way to play is **Unity Relay**: the host gets a 6-character **room code**, friends type it, and nobody needs Hamachi, port forwarding or the same network. If Relay is unreachable the host falls back to a direct connection by IP (LAN or **Hamachi**, still supported). Relay is only a packet forwarder: the host still runs the server (decision 3, amended 2026-10-21).
+
+**One-time setup (the project owner):** in Unity, open Edit → Project Settings → Services, sign in, and link the project to a Unity Cloud project (free). Relay is on by default for it. Players need nothing; the build talks to Relay anonymously. Without the link, Host quietly falls back to direct IP and logs "Relay unavailable".
 
 ## Ways to run the game
 
 | Mode | Who | How |
 | --- | --- | --- |
-| **Host** | The friend hosting, who also plays | Main menu → Host. Runs the server and a player in one game. Recommended. |
-| **Client** | Everyone else | Main menu → Join → type the host's Hamachi IPv4 → Join. |
+| **Host** | The friend hosting, who also plays | Main menu → Host. A room code appears (Esc menu → "Room code"), and it is copied to the clipboard. Runs the server and a player in one game. Recommended. |
+| **Client** | Everyone else | Main menu → Join → type the room code (or the host's IP, `ip:port`) → Connect. |
 | **Server only** | Optional, a PC that just runs the server | `GraceRun.exe -server -port 7777`. Add `-batchmode -nographics` for no window. A Windows Dedicated Server build profile works too. |
 
 Command-line arguments (read by `CommandLineArgs` in `Bootstrap`): `-server`, `-port <n>`, `-connect <ip>` (client auto-join, handy for testing), `-statusfile <path>` (server only: a status file for monitoring). Running a server around the clock is covered in `docs/SERVER.md`.
@@ -51,7 +53,15 @@ Everyone is a friend, so we trust clients where it makes the game feel better.
 2. **Fake lag:** use the Network Simulator from the Multiplayer Tools package. Test with about 100 ms latency and a little packet loss; Hamachi between friends is usually in this range or better.
 3. Every networked step in `docs/PROMPTS.md` lists exactly what to test this way.
 
-## Playing with friends over Hamachi
+## Playing with friends over Relay (no setup for players)
+
+1. Host starts Grace Run and clicks **Host**. The room code is copied to the clipboard; press Esc in game to see it again.
+2. Friends click **Join game**, type the code, press **Connect**.
+3. "Room not found": wrong code, or the host left. Everyone must run the same version.
+
+## Playing with friends over Hamachi (fallback)
+
+Use this when Relay is down or the project is not linked. The host's Join field entry is the Hamachi IPv4 instead of a code.
 
 ### Once
 

@@ -6,7 +6,7 @@ Settled. Don't re-open these unless the user explicitly asks. New decisions get 
 | --- | --- | --- |
 | 1 | 2D side-view, one screen per arena (**superseded by 22**) | Bopl-style physics chaos, readable bosses, every player always sees the whole fight; 2D is far easier for AI to build and debug. |
 | 2 | Online co-op with Netcode for GameObjects, built in from day one | Players are on separate PCs. Adding networking later would mean rewriting most systems. |
-| 3 | Direct IP over Hamachi; the host (or a server-only build) runs the server | Free, no cloud services or accounts; 4 friends fit the free Hamachi plan. |
+| 3 | The host (or a server-only build) runs the server. Players connect through Unity Relay with a join code; direct IP (Hamachi / LAN) is the fallback. *(Amended 2026-10-21 at the user's request: Hamachi alone was too much setup.)* | Relay needs no port forwarding or VPN and is free at this scale; the host stays authoritative, Relay only forwards packets. |
 | 4 | Owner-authoritative player movement; server-authoritative everything that matters | Controls feel instant; HP, bosses, draft and run state stay consistent. Friends don't cheat. |
 | 5 | Player attacks detected attacker-side, boss hits detected victim-side | What you see on your screen is what counts, so dodges always feel fair. |
 | 6 | One networked `Game` scene; arenas are prefabs | Only one scene to keep in sync; swapping arenas is simple. |

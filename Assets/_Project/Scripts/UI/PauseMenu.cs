@@ -21,6 +21,7 @@ namespace GraceRun.UI
         private MenuPages _pages;
         private GameObject _canvas;
         private GameObject _root;
+        private UnityEngine.UI.Text _roomCode;
 
         /// <summary>True while the menu is on screen.</summary>
         public bool IsOpen => _canvas != null && _canvas.activeSelf;
@@ -67,6 +68,7 @@ namespace GraceRun.UI
             var column = MenuKit.Column(canvas.transform, "Pause", MenuStyle.PanelWidth - 160f);
             MenuKit.Label(column, "PAUSED", MenuStyle.HeadingSize, MenuStyle.Gold);
             MenuKit.Label(column, "The fight goes on while this is open.", MenuStyle.SmallSize, MenuStyle.Fog);
+            _roomCode = MenuKit.Label(column, "", MenuStyle.BodySize, MenuStyle.Bone);
             var resume = MenuKit.Button(column, "Resume", Close);
             MenuKit.Button(column, "Settings", () => _pages.Open(settings));
             MenuKit.Button(column, "Controls", () => _pages.Open(controls));
@@ -89,6 +91,8 @@ namespace GraceRun.UI
         private void Open()
         {
             _canvas.SetActive(true);
+            var code = ConnectionManager.Instance != null ? ConnectionManager.Instance.JoinCode : null;
+            _roomCode.text = string.IsNullOrEmpty(code) ? "" : $"Room code: {code}";
             _pages.Reset(_root);
             PlayerInputReader.GameplayBlocked = true;
         }

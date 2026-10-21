@@ -27,6 +27,8 @@ namespace GraceRun.Net
 
         private Coroutine _timeout;
         private bool _leaving;
+        private bool _starting;
+        private int _attempt;
         private readonly Dictionary<ulong, string> _nicknames = new();
 
         public static ConnectionManager Instance { get; private set; }
@@ -38,7 +40,10 @@ namespace GraceRun.Net
         public bool FightInProgress { get; set; }
 
         public GameConfig Config => _config;
-        public bool IsBusy => _networkManager != null && _networkManager.IsListening;
+        public bool IsBusy => _starting || (_networkManager != null && _networkManager.IsListening);
+
+        /// <summary>The Relay code friends type to join this host, or null when hosting directly or not hosting.</summary>
+        public string JoinCode { get; private set; }
 
         /// <summary>Status line for the menu (connecting, refused, timed out).</summary>
         public event Action<string> StatusChanged;
@@ -85,13 +90,41 @@ namespace GraceRun.Net
         /// <summary>Server only: the cleaned, unique nickname <paramref name="clientId"/> joined with, or empty for none (shown as P1-P4).</summary>
         public string NicknameOf(ulong clientId) => _nicknames.TryGetValue(clientId, out var name) ? name : string.Empty;
 
-        /// <summary>Starts a server that also plays (the normal way to play with friends).</summary>
-        public void Host()
+        /// <summary>
+        /// Starts a server that also plays. Opens an online Relay room (friends join with a code);
+        /// if Relay is unreachable it hosts directly by IP (LAN / Hamachi) instead.
+        /// </summary>
+        public async void Host()
         {
             if (IsBusy) return;
+            var attempt = ++_attempt;
+            _starting = true;
+            SetStatus("Opening an online room...");
+
+            RelayRoom? room = null;
+            try
+            {
+                room = await RelayConnector.CreateRoomAsync(_config.MaxPlayers);
+            }
+            catch (Exception e)
+            {
+                Debug.LogWarning($"Relay unavailable, hosting directly: {e.Message}");
+            }
+
+            if (attempt != _attempt) return;
+            _starting = false;
             Configure(ListenAddress, _config.Port);
+            if (room.HasValue)
+            {
+                _networkManager.GetComponent<UnityTransport>().SetRelayServerData(room.Value.Data);
+                JoinCode = room.Value.Code;
+                GUIUtility.systemCopyBuffer = JoinCode;
+            }
+
             SetStatus("Starting host...");
-            if (!_networkManager.StartHost()) SetStatus("Could not start the host (port in use?).");
+            if (_networkManager.StartHost()) return;
+            JoinCode = null;
+            SetStatus("Could not start the host (port in use?).");
         }
 
         /// <summary>Starts a server with no local player (command line -server).</summary>
@@ -110,10 +143,16 @@ namespace GraceRun.Net
             Debug.Log($"[Server] Listening on port {port}, game version {_config.GameVersion}.");
         }
 
-        /// <summary>Joins a host typed as "ip" or "ip:port".</summary>
+        /// <summary>Joins a host typed as a Relay code ("K7M2QX"), "ip" or "ip:port".</summary>
         public void Join(string addressText)
         {
             if (IsBusy) return;
+            if (JoinCodeRules.LooksLikeCode(addressText))
+            {
+                JoinByCode(addressText);
+                return;
+            }
+
             if (!AddressParser.TryParse(addressText, _config.Port, out var address, out var port))
             {
                 SetStatus("That address does not look right.");
@@ -131,9 +170,46 @@ namespace GraceRun.Net
             _timeout = StartCoroutine(FailAfterTimeout());
         }
 
+        private async void JoinByCode(string code)
+        {
+            var attempt = ++_attempt;
+            _starting = true;
+            SetStatus($"Looking for room {JoinCodeRules.Normalize(code)}...");
+
+            Unity.Networking.Transport.Relay.RelayServerData data;
+            try
+            {
+                data = await RelayConnector.JoinRoomAsync(code);
+            }
+            catch (Exception e)
+            {
+                Debug.LogWarning($"Could not join room {code}: {e.Message}");
+                if (attempt != _attempt) return;
+                _starting = false;
+                SetStatus("Room not found. Check the code and that the host is still online.");
+                return;
+            }
+
+            if (attempt != _attempt) return;
+            _starting = false;
+            Configure(ListenAddress, _config.Port);
+            _networkManager.GetComponent<UnityTransport>().SetRelayServerData(data);
+            SetStatus("Connecting...");
+            if (!_networkManager.StartClient())
+            {
+                SetStatus("Could not start the client.");
+                return;
+            }
+
+            _timeout = StartCoroutine(FailAfterTimeout());
+        }
+
         /// <summary>Leaves the session and returns to the main menu.</summary>
         public void Leave(string message = null)
         {
+            _attempt++;
+            _starting = false;
+            JoinCode = null;
             StopTimeout();
             FightInProgress = false;
             // Shutdown finishes a frame later and can report our own disconnect, which is not

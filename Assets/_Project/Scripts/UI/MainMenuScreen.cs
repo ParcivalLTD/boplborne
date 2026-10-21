@@ -146,7 +146,7 @@ namespace GraceRun.UI
         {
             var column = MenuKit.Column(parent, "Join", MenuStyle.PanelWidth);
             MenuKit.Label(column, "JOIN A GAME", MenuStyle.HeadingSize, MenuStyle.Gold);
-            MenuKit.Label(column, "Host address (ip or ip:port)", MenuStyle.SmallSize, MenuStyle.Fog);
+            MenuKit.Label(column, "Room code, or host address (ip or ip:port)", MenuStyle.SmallSize, MenuStyle.Fog);
             _address = MenuKit.Field(column, _connection.Config.DefaultAddress);
             var connect = MenuKit.Button(column, "Connect", () =>
             {
