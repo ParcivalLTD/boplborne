@@ -3,6 +3,7 @@
     "rootNamespace": "GraceRun.Tests",
     "references": [
         "GraceRun.Runtime",
+        "GraceRun.Editor",
         "UnityEngine.TestRunner",
         "UnityEditor.TestRunner"
     ],

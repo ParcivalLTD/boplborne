@@ -50,6 +50,8 @@ Keys and mouse are never mixed in combat. **Settings → Controls setup** has th
 
 ## Weapons
 
+> **Combat roles (2026-10-22, decision 32):** weapon swings deal 50% of the damage in the tables below and ability hits deal 3x theirs (`CombatData`). Weapons are the builder: they chip poise and (next) charge abilities; abilities are the main damage.
+
 Every player carries one weapon (Brawlhalla-style), Fists until they pick another. A weapon is a move set, all numbers in its `WeaponData` asset (`Data/Weapons`):
 
 - **Light combo**: the light button chains the weapon's hits (3 for Sword and Spear, 2 for Hammer, 3 for Fists); the last one hits harder and knocks back.

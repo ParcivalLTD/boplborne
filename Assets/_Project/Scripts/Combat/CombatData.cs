@@ -15,6 +15,12 @@ namespace GraceRun.Combat
         [SerializeField, Range(0f, 1f)] private float _friendlyFireDamageMultiplier = 0.1f;
         [SerializeField, Min(0)] private int _friendlyFireMinHP = 1;
 
+        [Header("Damage roles (docs/GDD.md: abilities are the main way to fight)")]
+        [SerializeField, Min(0f), Tooltip("Players' weapon swings deal this share of their authored damage to enemies. Weapons build the ability meter and chip poise; they are not the main damage.")]
+        private float _weaponDamageMultiplier = 0.5f;
+        [SerializeField, Min(0f), Tooltip("Ability hits deal this many times their authored damage to enemies.")]
+        private float _abilityDamageMultiplier = 3f;
+
         [Header("Status effects")]
         [SerializeField, Range(0f, 1f), Tooltip("A shrunk attacker's hits deal this share of their damage.")]
         private float _shrunkDamageMultiplier = 0.5f;
@@ -33,6 +39,13 @@ namespace GraceRun.Combat
 
         /// <summary>A teammate's hit can never take you below this HP.</summary>
         public int FriendlyFireMinHP => _friendlyFireMinHP;
+
+        public float WeaponDamageMultiplier => _weaponDamageMultiplier;
+        public float AbilityDamageMultiplier => _abilityDamageMultiplier;
+
+        /// <summary>Multiplier for a player hit from <paramref name="source"/> (<see cref="DamageSource"/>): weapon swings (unknown or melee) or abilities.</summary>
+        public float DamageMultiplierFor(ushort source) =>
+            source <= DamageSource.Melee ? _weaponDamageMultiplier : _abilityDamageMultiplier;
 
         /// <summary>Share of the damage a shrunk attacker deals.</summary>
         public float ShrunkDamageMultiplier => _shrunkDamageMultiplier;
