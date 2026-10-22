@@ -15,8 +15,11 @@ namespace GraceRun.Run
         private float _fightBannerSeconds = 1f;
         [SerializeField, Min(1f), Tooltip("Longest the full-screen story may hold the party, so one stuck PC cannot freeze the run.")]
         private float _storyTimeoutSeconds = 90f;
+        [SerializeField, Min(0f), Tooltip("Hub: seconds between the last player readying up and the run starting. Anyone un-readying cancels it.")]
+        private float _readyStartDelaySeconds = 2.5f;
         [SerializeField] private BossData _boss;
 
+        public float ReadyStartDelaySeconds => _readyStartDelaySeconds;
         public float CountdownSeconds => _countdownSeconds;
         public float FightBannerSeconds => _fightBannerSeconds;
         public float StoryTimeoutSeconds => _storyTimeoutSeconds;

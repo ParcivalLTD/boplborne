@@ -28,6 +28,18 @@ namespace GraceRun.Combat
         [SerializeField, Min(0f), Tooltip("Your heavy hit lands on something.")] private float _heavyHitShake = 0.5f;
         [SerializeField, Min(0f), Tooltip("Your player takes a hit.")] private float _hurtShake = 0.7f;
 
+        [Header("Crits (a player hit while a boss's gold weak point shows)")]
+        [SerializeField, Min(0f)] private float _critHitstop = 0.2f;
+        [SerializeField, Min(0f), Tooltip("Your own crit shakes the screen this hard.")] private float _critShake = 1.1f;
+        [SerializeField] private Color _critTextColor = new(1f, 0.79f, 0.29f);
+        [SerializeField, Tooltip("Played on top of the normal sparks; falls back to playing the sparks twice.")]
+        private ParticleSystem _critSparks;
+        [SerializeField] private AudioCue _critCue;
+        [SerializeField] private string _critText = "CRIT!";
+        [SerializeField, Min(1)] private int _critTextSize = 64;
+        [SerializeField, Min(0f)] private float _critTextLifetime = 0.8f;
+        [SerializeField, Min(0f), Tooltip("Units the text rises over its lifetime.")] private float _critTextRise = 1.6f;
+
         [Header("Particles and sounds")]
         [SerializeField] private ParticleSystem _sparks;
         [SerializeField] private AudioCue _hitCue;
@@ -42,6 +54,15 @@ namespace GraceRun.Combat
         public float FlashDuration => _flashDuration;
         public float HeavyHitShake => _heavyHitShake;
         public float HurtShake => _hurtShake;
+        public float CritHitstop => _critHitstop;
+        public float CritShake => _critShake;
+        public Color CritTextColor => _critTextColor;
+        public ParticleSystem CritSparks => _critSparks != null ? _critSparks : _sparks;
+        public AudioCue CritCue => _critCue != null ? _critCue : _heavyHitCue;
+        public string CritText => _critText;
+        public int CritTextSize => _critTextSize;
+        public float CritTextLifetime => _critTextLifetime;
+        public float CritTextRise => _critTextRise;
         public ParticleSystem Sparks => _sparks;
         public AudioCue HitCue => _hitCue;
         public AudioCue HeavyHitCue => _heavyHitCue;

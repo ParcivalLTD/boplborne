@@ -18,8 +18,6 @@ namespace GraceRun.UI
         private const string RunVictoryText = "RUN VICTORY";
         private const string RestStopText = "REST STOP";
         private const string DefeatText = "DEFEAT";
-        private const string WaitingLeaderText = "Press Start when everyone has joined.";
-        private const string WaitingOtherText = "Waiting for the host to start the run.";
         private const string VictorySubText = "The boss falls. The draft is coming.";
         private const string RunVictoryLeaderText = "All floors cleared!";
         private const string RunVictoryOtherText = "All floors cleared! Waiting for the host.";
@@ -27,7 +25,9 @@ namespace GraceRun.UI
         private const string RestOtherText = "Flasks refilled. Waiting for the host to continue.";
         private const string DefeatSubText = "Everyone is down.";
         private const string RestartOtherText = "Waiting for the host.";
-        private const string StartRunLabel = "START THE SHOW!";
+        private const string ReadyLabel = "READY!";
+        private const string UnreadyLabel = "NOT READY";
+        private const string StartNowLabel = "START NOW";
         private const string NextFloorLabel = "NEXT FLOOR!";
         private const string ReturnHubLabel = "BACK TO THE HUB";
 
@@ -66,6 +66,7 @@ namespace GraceRun.UI
             var phase = loop.Phase;
             var leader = loop.IsLocalLeader;
             if (phase != _shownPhase || leader != _shownLeader || floor != _shownFloor) Show(phase, leader, run);
+            if (phase == FightPhase.Waiting) ShowHubReady(leader);
             if (phase == FightPhase.Countdown) ShowCountdown(loop.CountdownRemaining);
             if (phase == FightPhase.Fighting && Time.time - _fightShownAt >= loop.Data.FightBannerSeconds) _root.SetActive(false);
             if (phase == FightPhase.Draft || phase == FightPhase.RestStop || (run != null && run.IsSpawned && run.RunResult.IsValid)) _root.SetActive(false);
@@ -87,7 +88,7 @@ namespace GraceRun.UI
             switch (phase)
             {
                 case FightPhase.Waiting:
-                    Set(HubTitle, leader ? WaitingLeaderText : WaitingOtherText, leader, StartRunLabel);
+                    ShowHubReady(leader);
                     break;
                 case FightPhase.Story:
                     Set(string.Empty, string.Empty, false, null);
@@ -131,6 +132,19 @@ namespace GraceRun.UI
             var bossName = boss != null ? $": {boss.DisplayName}" : string.Empty;
             var label = run.IsFinalFloor ? $"Final Floor ({run.Floor}/{run.TotalFloors})" : $"Floor {run.Floor}/{run.TotalFloors}";
             return label + bossName;
+        }
+
+        private void ShowHubReady(bool leader)
+        {
+            var ready = HubReady.Instance;
+            if (ready == null || !ready.IsSpawned) return;
+            var subtitle = ready.IsStarting
+                ? $"Starting in {Mathf.Max(1, Mathf.CeilToInt((float)ready.StartRemaining))}..."
+                : $"Ready {ready.ReadyCount}/{ready.PlayerCount}. Press E or the button.";
+            var label = !ready.LocalReady ? ReadyLabel
+                : leader && !ready.IsStarting ? StartNowLabel
+                : UnreadyLabel;
+            Set(HubTitle, subtitle, true, label);
         }
 
         private void ShowCountdown(double remaining)

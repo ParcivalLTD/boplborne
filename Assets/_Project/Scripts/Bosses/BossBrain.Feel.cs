@@ -298,6 +298,9 @@ namespace GraceRun.Bosses
             return dealt;
         }
 
+        /// <summary>True on every PC while the gold weak point shows; a player hit now is a crit.</summary>
+        public bool IsWeakPointOpen => InWeakPointWindow();
+
         private bool InWeakPointWindow() =>
             _runner.Phase == AttackPhase.Recovery && _runner.Attack != null &&
             BossFeelMath.InWeakPointWindow(true, _runner.SinceRecovery, _runner.Attack.PunishWindow, Feel.WeakPointGrace);

@@ -281,6 +281,9 @@ namespace GraceRun.Run
             return revive != null;
         }
 
+        /// <summary>True when <paramref name="clientId"/> is the current leader (host, or the first client on a server-only build).</summary>
+        public bool IsLeader(ulong clientId) => _leader.Value == clientId;
+
         private void UpdateLeader()
         {
             var leader = FightRules.Leader(IsHost, NetworkManager.LocalClientId, NetworkManager.ConnectedClientsIds);

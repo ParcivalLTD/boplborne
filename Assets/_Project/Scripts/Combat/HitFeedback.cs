@@ -1,3 +1,4 @@
+using GraceRun.Bosses;
 using GraceRun.Core.Audio;
 using GraceRun.Core.Juice;
 using GraceRun.Player;
@@ -23,10 +24,12 @@ namespace GraceRun.Combat
         private Collider2D _hitArea;
 
         private Health _health;
+        private BossBrain _boss;
 
         private void Awake()
         {
             _health = GetComponent<Health>();
+            _boss = GetComponent<BossBrain>();
         }
 
         private void OnEnable() => _health.HitTaken += OnHitTaken;
@@ -36,7 +39,8 @@ namespace GraceRun.Combat
         private void OnHitTaken(DamageInfo info)
         {
             var heavy = HitFeel.IsHeavy(info.Knockback, _data.HeavyKnockback);
-            var stop = heavy ? _data.HeavyHitstop : _data.LightHitstop;
+            var crit = HitFeel.IsCrit(info.AttackerTeam, _boss != null, _boss != null && _boss.IsWeakPointOpen);
+            var stop = crit ? _data.CritHitstop : heavy ? _data.HeavyHitstop : _data.LightHitstop;
             var attacker = FindAttacker(info.AttackerId);
 
             _flash.Flash(Mathf.Max(_data.FlashDuration, stop));
@@ -53,6 +57,12 @@ namespace GraceRun.Combat
                 position.x = direction > 0f ? bounds.min.x : bounds.max.x;
             }
             Particles.Play(_data.Sparks, position, direction);
+            if (crit)
+            {
+                Particles.Play(_data.CritSparks, position, direction);
+                CritPopup.Spawn(_data.CritText, position + Vector3.up * 1.2f, _data.CritTextColor,
+                    _data.CritTextSize, _data.CritTextLifetime, _data.CritTextRise);
+            }
 
             var victimIsLocal = _health.NetworkObject.IsLocalPlayer;
             var cue = _health.NetworkObject.IsPlayerObject ? _data.PlayerHurtCue
@@ -60,8 +70,10 @@ namespace GraceRun.Combat
             var weaponCue = WeaponHitCue(attacker, heavy);
             if (weaponCue != null && !_health.NetworkObject.IsPlayerObject) cue = weaponCue;
             if (cue != null) cue.Play();
+            if (crit && _data.CritCue != null) _data.CritCue.Play();
 
             if (victimIsLocal) Shake.Play(_data.HurtShake);
+            else if (crit && hasAttacker && attacker.IsLocalPlayer) Shake.Play(_data.CritShake);
             else if (heavy && hasAttacker && attacker.IsLocalPlayer) Shake.Play(_data.HeavyHitShake);
         }
 

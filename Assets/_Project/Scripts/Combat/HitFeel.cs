@@ -9,6 +9,10 @@ namespace GraceRun.Combat
         public static bool IsHeavy(Vector2 knockback, float threshold) =>
             threshold > 0f && knockback.sqrMagnitude >= threshold * threshold;
 
+        /// <summary>A crit is a player's hit on a boss while its gold weak point shows.</summary>
+        public static bool IsCrit(Team attackerTeam, bool targetIsBoss, bool weakPointOpen) =>
+            attackerTeam == Team.Player && targetIsBoss && weakPointOpen;
+
         /// <summary>
         /// +1 or -1: the knockback's x direction, else away from the attacker, else right.
         /// </summary>

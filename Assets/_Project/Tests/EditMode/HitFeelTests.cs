@@ -44,5 +44,14 @@ namespace GraceRun.Tests
         {
             Assert.AreEqual(1f, HitFeel.Direction(Vector2.zero, 9f, 0f, false));
         }
+
+        [Test]
+        public void CritNeedsPlayerHitOnBossWithOpenWeakPoint()
+        {
+            Assert.IsTrue(HitFeel.IsCrit(Team.Player, true, true));
+            Assert.IsFalse(HitFeel.IsCrit(Team.Player, true, false));
+            Assert.IsFalse(HitFeel.IsCrit(Team.Player, false, true));
+            Assert.IsFalse(HitFeel.IsCrit(Team.Boss, true, true));
+        }
     }
 }
