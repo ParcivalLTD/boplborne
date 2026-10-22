@@ -96,6 +96,14 @@ namespace GraceRun.Abilities
         [SerializeField, Min(0f), Tooltip("Seconds a visual takes: the wall rising, the explosion ring, the grapple rope after a yank.")]
         private float _visualTime = 0.25f;
 
+        [Header("Cast animation")]
+        [SerializeField, Tooltip("The body poses the caster shows: wind-up, release, recovery. Empty: no cast pose.")]
+        private CastPoseSet _castPose;
+        [SerializeField, Min(0f), Tooltip("Seconds between the button press and the effect appearing (the wind-up pose). 0 = at once; keep it under about 0.15 for quick abilities.")]
+        private float _castWindup;
+        [SerializeField, Min(0f), Tooltip("Seconds the recovery pose holds after the release.")]
+        private float _castRecovery = 0.2f;
+
         [Header("Level 2")]
         [SerializeField, Min(0f)] private float _level2CooldownMultiplier = 0.8f;
         [SerializeField, Min(0f)] private float _level2PowerMultiplier = 1.25f;
@@ -140,6 +148,9 @@ namespace GraceRun.Abilities
         public float Range => _range;
         public Vector2 Size => _size;
         public float VisualTime => _visualTime;
+        public CastPoseSet CastPose => _castPose;
+        public float CastWindup => _castWindup;
+        public float CastRecovery => _castRecovery;
         public float Level2CooldownMultiplier => _level2CooldownMultiplier;
         public float Level2PowerMultiplier => _level2PowerMultiplier;
     }

@@ -26,6 +26,8 @@ MonoBehaviour:
   _effectLifetime: 2
   _effectRadius: 5
   _casterAction: {fileID: 0}
+  _spawnMode: 0
+  _dropHeight: 12
   _count: 1
   _spread: 0
   _launchAngle: 0
@@ -38,7 +40,20 @@ MonoBehaviour:
   _forceSpeed: 12
   _forceRate: 60
   _range: 0
+  _tickInterval: 0.5
+  _steerRate: 0
+  _turnTime: 0.5
+  _piercing: 0
+  _status: 0
+  _statusDuration: 0
+  _statusStrength: 1
+  _childEffect: {fileID: 0}
+  _childCount: 1
+  _childSpread: 0
   _size: {x: 1, y: 1}
   _visualTime: 0.25
+  _castPose: {fileID: 11400000, guid: 5707d55b901f5ed498dcaacc9f3634f6, type: 2}
+  _castWindup: 0.12
+  _castRecovery: 0.3
   _level2CooldownMultiplier: 0.8
   _level2PowerMultiplier: 1.25

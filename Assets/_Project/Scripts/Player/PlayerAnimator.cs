@@ -1,3 +1,4 @@
+using GraceRun.Abilities;
 using GraceRun.Combat;
 using UnityEngine;
 
@@ -37,9 +38,19 @@ namespace GraceRun.Player
         [SerializeField, Tooltip("The hat, moved with the head in each pose.")] private Transform _hat;
         [SerializeField] private Health _health;
         [SerializeField] private Ghost _ghost;
+        [SerializeField, Tooltip("Raises the cast poses (every PC).")] private AbilityRunner _abilities;
 
         /// <summary>Not an Animator state: a weapon's held pose, set straight on the body sprite.</summary>
         private const int PosedState = -1;
+
+        /// <summary>Not an Animator state: an ability cast pose, set straight on the body sprite.</summary>
+        private const int CastState = -2;
+
+        private WeaponBodyPoses.MovePoses _cast;
+        private float _castStart = float.NegativeInfinity;
+        private float _castWindup;
+        private float _castRecovery;
+        private float _castSide = 1f;
 
         private int _current;
         private int _attackState = Attack1Id;
@@ -54,6 +65,7 @@ namespace GraceRun.Player
             _dodge.RollStarted += OnRollStarted;
             _health.Changed += OnHealthChanged;
             _weapon.Changed += OnWeaponChanged;
+            if (_abilities != null) _abilities.CastStarted += OnCastStarted;
             OnWeaponChanged(_weapon.Current);
         }
 
@@ -63,6 +75,17 @@ namespace GraceRun.Player
             _dodge.RollStarted -= OnRollStarted;
             _health.Changed -= OnHealthChanged;
             _weapon.Changed -= OnWeaponChanged;
+            if (_abilities != null) _abilities.CastStarted -= OnCastStarted;
+        }
+
+        private void OnCastStarted(AbilityData ability, Vector2 aim)
+        {
+            if (ability.CastPose == null) return;
+            _cast = ability.CastPose.Poses;
+            _castWindup = ability.CastWindup;
+            _castRecovery = ability.CastRecovery;
+            _castSide = AbilityMath.SideOf(aim.x);
+            _castStart = Time.time;
         }
 
         /// <summary>A weapon with its own idle, run, jump and fall holds it in hand; the controller swap restarts the clip.</summary>
@@ -81,9 +104,14 @@ namespace GraceRun.Player
             var swinging = _attack.IsSwinging;
             var state = PickState(swinging);
             var attackLike = state == _attackState || state == PosedState;
-            var facing = swinging && attackLike ? _attackSide : _sync.Facing;
+            var facing = state == CastState ? _castSide : swinging && attackLike ? _attackSide : _sync.Facing;
             _rig.localScale = new Vector3(facing, 1f, 1f);
 
+            if (state == CastState)
+            {
+                ShowCastPose();
+                return;
+            }
             if (state == PosedState)
             {
                 ShowPose();
@@ -108,6 +136,7 @@ namespace GraceRun.Player
             if (_ghost.IsGhost) return GhostId;
             if (_hurtLeft > 0f) return HurtId;
             if (_dodgeLeft > 0f) return DodgeId;
+            if (CastPoseMath.PhaseAt(Time.time - _castStart, _castWindup, _castRecovery) != CastPhase.None) return CastState;
             if (swinging) return _weapon.Current.BodyPoses != null ? PosedState : _attackState;
 
             return _sync.Locomotion switch
@@ -127,6 +156,17 @@ namespace GraceRun.Player
             var sprite = WeaponBodyPoses.SpriteFor(poses, _attack.Phase);
             if (sprite != null) _body.sprite = sprite;
             _hat.localPosition = WeaponBodyPoses.HatFor(poses, _attack.Phase);
+        }
+
+        /// <summary>The cast pose of the current phase (wind-up, release, recovery) drawn straight on the body sprite.</summary>
+        private void ShowCastPose()
+        {
+            _animator.enabled = false;
+            var phase = CastPoseMath.PhaseAt(Time.time - _castStart, _castWindup, _castRecovery);
+            var swing = phase == CastPhase.Windup ? SwingPhase.Startup : phase == CastPhase.Release ? SwingPhase.Active : SwingPhase.Recovery;
+            var sprite = WeaponBodyPoses.SpriteFor(_cast, swing);
+            if (sprite != null) _body.sprite = sprite;
+            _hat.localPosition = WeaponBodyPoses.HatFor(_cast, swing);
         }
 
         private void OnSwingStarted(int hitIndex, float side)

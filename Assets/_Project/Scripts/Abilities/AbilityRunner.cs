@@ -128,6 +128,7 @@ namespace GraceRun.Abilities
             if (ability.CasterAction != null && !ability.CasterAction.OwnerUse(this, ability, aim)) return;
 
             _predictedReadyAt[slot] = AbilityCooldown.NextReadyAt(Now, CooldownFor(slot, ability));
+            if (ability.CastPose != null) CastStarted?.Invoke(ability, aim);
             UseAbilityRpc((byte)slot, aim, cursorAimed, aimDistance);
         }
 
@@ -149,7 +150,28 @@ namespace GraceRun.Abilities
 
             _loadout.ServerStartCooldown(slot, AbilityCooldown.NextReadyAt(Now, CooldownFor(slot, ability)));
             var power = _loadout.Level(slot) >= 2 ? ability.Level2PowerMultiplier : 1f;
-            if (ability.EffectPrefab != null) SpawnEffect(ability, AbilityMath.SafeAim(aim), cursorAimed, aimDistance, power);
+            if (ability.CastPose != null) CastPlayedRpc(slot, aim);
+            if (ability.EffectPrefab == null) return;
+            var safeAim = AbilityMath.SafeAim(aim);
+            if (ability.CastWindup > 0f) StartCoroutine(SpawnAfterWindup(ability, safeAim, cursorAimed, aimDistance, power));
+            else SpawnEffect(ability, safeAim, cursorAimed, aimDistance, power);
+        }
+
+        /// <summary>Raised on every PC when this player starts casting an ability with a cast pose (the owner at once, the others through <see cref="CastPlayedRpc"/>).</summary>
+        public event Action<AbilityData, Vector2> CastStarted;
+
+        /// <summary>Server to everyone but the owner (who played it on the press): show this player's cast pose.</summary>
+        [Rpc(SendTo.NotOwner)]
+        private void CastPlayedRpc(byte slot, Vector2 aim)
+        {
+            var ability = _loadout.Get(slot);
+            if (ability != null) CastStarted?.Invoke(ability, AbilityMath.SafeAim(aim));
+        }
+
+        private System.Collections.IEnumerator SpawnAfterWindup(AbilityData ability, Vector2 aim, bool cursorAimed, float aimDistance, float power)
+        {
+            yield return new WaitForSeconds(ability.CastWindup);
+            if (IsSpawned && enabled) SpawnEffect(ability, aim, cursorAimed, aimDistance, power);
         }
 
         /// <summary>

@@ -1,0 +1,21 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cf283ec645eb1414290ea6a6e4999108, type: 3}
+  m_Name: BombCast
+  m_EditorClassIdentifier: GraceRun.Runtime::GraceRun.Abilities.CastPoseSet
+  _poses:
+    Windup: {fileID: 21300000, guid: c5ec5b0ed958b9547a5a15a5bd93f960, type: 3}
+    Strike: {fileID: 21300000, guid: 9644a80f7626c2642b544225fec03376, type: 3}
+    Recovery: {fileID: 21300000, guid: 9e276c842b229794f85a73e5f07bd95b, type: 3}
+    HatWindup: {x: -0.47916666, y: 0}
+    HatStrike: {x: 0.29166666, y: -0.083333336}
+    HatRecovery: {x: 0.20833333, y: -0.083333336}

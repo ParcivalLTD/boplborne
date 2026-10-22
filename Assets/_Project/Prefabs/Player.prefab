@@ -2116,3 +2116,4 @@ MonoBehaviour:
   _hat: {fileID: 3179496416960478923}
   _health: {fileID: 2285578246583526149}
   _ghost: {fileID: 4886432173965129126}
+  _abilities: {fileID: 6459800373725729568}
