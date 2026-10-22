@@ -1,4 +1,5 @@
 using System;
+using GraceRun.Core.Settings;
 using GraceRun.Net;
 using GraceRun.UI.Skin;
 using GraceRun.UI.Toon;
@@ -16,7 +17,21 @@ namespace GraceRun.UI.Menus
         private const string PrivateHint = "Only friends with your room code can join.";
         private const string PublicHint = "Anyone can find your room in the public list.";
 
+        private static readonly string[] ModeNames = { "Run", "Boss practice", "Team arena" };
+        private static readonly string[] ModeHints =
+        {
+            "Run: climb the tower.",
+            "Practice: one boss, endless tries.",
+            "Arena: teams fight, first to 3 rounds.",
+        };
+
         private static bool _public;
+
+        private static string ModeName(int mode) => ModeNames[Mathf.Clamp(mode, 0, ModeNames.Length - 1)];
+
+        private static string HintText() => (_public ? PublicHint : PrivateHint) + " " + ModeHint();
+
+        private static string ModeHint() => ModeHints[Mathf.Clamp(GameSettings.HostMode, 0, ModeHints.Length - 1)];
 
         public static GameObject Build(Transform parent, MenuPages pages, ConnectionManager connection, Action beforeHost, out Selectable first)
         {
@@ -26,9 +41,14 @@ namespace GraceRun.UI.Menus
             MenuKit.Option(column, "Room", () => _public ? "Public" : "Private", delta =>
             {
                 _public = !_public;
-                hint.text = _public ? PublicHint : PrivateHint;
+                hint.text = HintText();
             });
-            hint.text = _public ? PublicHint : PrivateHint;
+            hint.text = HintText();
+            MenuKit.Option(column, "Game mode", () => ModeName(GameSettings.HostMode), delta =>
+            {
+                GameSettings.SetHostMode(((GameSettings.HostMode + (delta >= 0 ? 1 : -1)) % 3 + 3) % 3);
+                hint.text = HintText();
+            });
             var start = MenuKit.Button(column, "Open the room", () =>
             {
                 beforeHost?.Invoke();

@@ -21,6 +21,15 @@ namespace GraceRun.Tests
         }
 
         [Test]
+        public void SelectionForPicksTheFirstEntryOfAMode()
+        {
+            Assert.AreEqual(0, ModeRules.SelectionFor(GameMode.Run, 5));
+            Assert.AreEqual(1, ModeRules.SelectionFor(GameMode.Practice, 5));
+            Assert.AreEqual(6, ModeRules.SelectionFor(GameMode.Arena, 5));
+            Assert.AreEqual(0, ModeRules.SelectionFor(GameMode.Practice, 0));
+        }
+
+        [Test]
         public void StepWrapsBothWays()
         {
             Assert.AreEqual(1, ModeRules.Step(0, 1, 5));

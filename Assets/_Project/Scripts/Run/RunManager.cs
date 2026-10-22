@@ -160,6 +160,8 @@ namespace GraceRun.Run
             if (!_hubInitialized)
             {
                 _hubInitialized = true;
+                // The host picked the game mode on the Host page; the leader can still change it in the hub.
+                if (IsHost) _selection.Value = ModeRules.SelectionFor((GameMode)Core.Settings.GameSettings.HostMode, PracticeBossCount);
                 ServerEnterHub();
             }
             if (IsArena) ServerTickArena();

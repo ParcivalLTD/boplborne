@@ -28,6 +28,7 @@ namespace GraceRun.Core.Settings
         private const string CustomSliceKey = "settings.custom.slice";
         private const string CustomMouseKey = "settings.custom.mouse";
         private const string AimAssistKey = "settings.aimAssist";
+        private const string HostModeKey = "settings.hostMode";
         private const string HoldToAimKey = "settings.holdToAim.v2";
 
         private static readonly List<Vector2Int> ResolutionList = new();
@@ -58,6 +59,9 @@ namespace GraceRun.Core.Settings
 
         /// <summary>Keyboard and gamepad abilities fire when the button is released, with an aim line while held.</summary>
         public static bool HoldToAim { get; private set; } = true;
+
+        /// <summary>What a game you host starts as: 0 Run, 1 Boss practice, 2 Team arena (see GameMode). The leader can still change it in the hub.</summary>
+        public static int HostMode { get; private set; }
 
         /// <summary>The player's own picks, used while <see cref="Scheme"/> is Custom (kept for later when it is not).</summary>
         public static CustomControls Custom { get; private set; } = CustomControls.Default;
@@ -101,6 +105,7 @@ namespace GraceRun.Core.Settings
             Nickname = GraceRun.Net.NicknameRules.Sanitize(PlayerPrefs.GetString(NicknameKey, string.Empty));
             AimAssist = PlayerPrefs.GetInt(AimAssistKey, 1) == 1;
             HoldToAim = PlayerPrefs.GetInt(HoldToAimKey, 1) == 1;
+            HostMode = Mathf.Clamp(PlayerPrefs.GetInt(HostModeKey, 0), 0, 2);
             LoadControls();
             Apply(true);
         }
@@ -119,6 +124,7 @@ namespace GraceRun.Core.Settings
             Change(() => Nickname = GraceRun.Net.NicknameRules.Sanitize(value));
 
         public static void SetAimAssist(bool on) => Change(() => AimAssist = on);
+        public static void SetHostMode(int mode) => Change(() => HostMode = Mathf.Clamp(mode, 0, 2));
         public static void SetHoldToAim(bool on) => Change(() => HoldToAim = on);
 
         public static void SetScheme(ControlScheme scheme) => Change(() => Scheme = scheme);
@@ -200,6 +206,7 @@ namespace GraceRun.Core.Settings
             PlayerPrefs.SetInt(CustomMouseKey, Custom.Mouse ? 1 : 0);
             PlayerPrefs.SetInt(AimAssistKey, AimAssist ? 1 : 0);
             PlayerPrefs.SetInt(HoldToAimKey, HoldToAim ? 1 : 0);
+            PlayerPrefs.SetInt(HostModeKey, HostMode);
             PlayerPrefs.Save();
         }
 

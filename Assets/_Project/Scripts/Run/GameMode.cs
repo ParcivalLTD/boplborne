@@ -34,6 +34,14 @@ namespace GraceRun.Run
         public static int BossIndexOf(int selection, int bossCount) =>
             ModeOf(selection, bossCount) == GameMode.Practice ? selection - 1 : -1;
 
+        /// <summary>The first list entry of <paramref name="mode"/> (the first boss for Practice).</summary>
+        public static int SelectionFor(GameMode mode, int bossCount) => mode switch
+        {
+            GameMode.Practice => bossCount > 0 ? 1 : 0,
+            GameMode.Arena => OptionCount(bossCount) - 1,
+            _ => 0,
+        };
+
         /// <summary>The selection <paramref name="delta"/> steps away, wrapping around the list.</summary>
         public static int Step(int selection, int delta, int bossCount)
         {
