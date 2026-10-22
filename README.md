@@ -68,6 +68,10 @@ The host clicks **Host game** in the main menu, picks **Private** or **Public** 
 - Tune numbers yourself in the Inspector. Everything tunable lives in data assets under `Assets/_Project/Data`.
 - Use one agent at a time. Switching between Claude Code and Antigravity is fine between steps (after a commit), never in the middle of one.
 
+## Licence
+
+MIT, see `LICENSE`. Generated art and voice follow the terms of the services that made them (see Credits).
+
 ## Credits
 
 - Pixel art (characters, bosses, weapons, arenas, icons, the app icon) is made with PixelLab (pixellab.ai), used under PixelLab's terms for subscriber output (https://pixellab.ai/termsofservice), then palette-cleaned and edited for this game.
