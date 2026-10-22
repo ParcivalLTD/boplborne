@@ -43,6 +43,10 @@ if (Test-Path $launcherDir) { Remove-Item $launcherDir -Recurse -Force }
 New-Item -ItemType Directory -Force -Path $launcherDir | Out-Null
 Copy-Item -Path $payloadZip -Destination (Join-Path $launcherDir "payload.zip") -Force
 
+$iconSource = "docs/art/brand/boplborne.ico"
+if (-not (Test-Path $iconSource)) { throw "Icon not found at '$iconSource'." }
+Copy-Item -Path $iconSource -Destination (Join-Path $launcherDir "boplborne.ico") -Force
+
 $csproj = @"
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
@@ -51,6 +55,13 @@ $csproj = @"
     <PublishSingleFile>true</PublishSingleFile>
     <SelfContained>false</SelfContained>
     <AssemblyName>Boplborne_SingleFile</AssemblyName>
+    <ApplicationIcon>boplborne.ico</ApplicationIcon>
+    <AssemblyTitle>Boplborne</AssemblyTitle>
+    <Product>Boplborne</Product>
+    <Company>Boplborne</Company>
+    <Version>$Version</Version>
+    <FileVersion>$Version.0</FileVersion>
+    <GenerateDocumentationFile>false</GenerateDocumentationFile>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>disable</Nullable>
   </PropertyGroup>

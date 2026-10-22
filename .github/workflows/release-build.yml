@@ -1,4 +1,4 @@
-name: Build & Release Windows Single-EXE
+name: Build & Release Windows
 
 on:
   push:
@@ -127,20 +127,30 @@ jobs:
           name: Boplborne-v${{ steps.version.outputs.game_version }}-SingleFile
           path: ${{ steps.package.outputs.single_exe }}
 
+      - name: Write release notes
+        shell: pwsh
+        run: |
+          $v = "${{ steps.version.outputs.game_version }}"
+          $notes = @(
+            "## Boplborne v$v",
+            "Automated build from commit ``${{ github.sha }}``.",
+            "",
+            "### Downloads",
+            "- **``Boplborne_v${v}_SingleFile.exe``**: single file, download and double-click to play (also takes flags like ``-screen-fullscreen 0 -screen-width 1280 -screen-height 720`` or ``-connect <ip>``).",
+            "- **``Boplborne_v${v}_Portable.zip``**: the same game as a folder; unzip anywhere and run ``Boplborne.exe``.",
+            "",
+            "---",
+            ""
+          ) -join "`n"
+          $howTo = Get-Content docs/HOW_TO_PLAY.md -Raw
+          Set-Content -Path release-notes.md -Value ($notes + "`n" + $howTo) -Encoding utf8
+
       - name: Publish to GitHub Releases
         uses: softprops/action-gh-release@v2
         with:
           tag_name: ${{ steps.version.outputs.tag_name }}
           name: Boplborne ${{ steps.version.outputs.tag_name }}
-          body: |
-            ## Boplborne ${{ steps.version.outputs.tag_name }}
-            Automated build from commit `${{ github.sha }}`.
-
-            Climb the tower. Bop the bosses. To play with friends: press **Host game**, then send them the room code (or make the room public). Everyone must run the same version.
-
-            ### Downloads
-            - **`Boplborne_v${{ steps.version.outputs.game_version }}_SingleFile.exe`**: Single-file executable — download and double-click to play immediately (also forwards command-line flags like `-screen-fullscreen 0 -screen-width 1280 -screen-height 720` or `-connect <ip>`).
-            - **`Boplborne_v${{ steps.version.outputs.game_version }}_Portable.zip`**: Standard portable folder archive.
+          body_path: release-notes.md
           draft: false
           prerelease: false
           make_latest: true
