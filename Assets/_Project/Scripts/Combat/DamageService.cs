@@ -15,6 +15,16 @@ namespace GraceRun.Combat
             DamageMath.IsDropped(target.Combat.FriendlyFireEnabled,
                 DamageMath.IsFriendlyFire(info.AttackerTeam, info.AttackerId, target.Team, target.NetworkObjectId));
 
+        /// <summary>A weapon hit that landed shaves the attacker's ability cooldowns: weapons build the abilities.</summary>
+        private static void ChargeAbilities(Health target, DamageInfo info, CombatData combat)
+        {
+            var seconds = combat.CooldownShave(info.Amount);
+            if (seconds <= 0f) return;
+            var spawned = target.NetworkManager.SpawnManager.SpawnedObjects;
+            if (spawned.TryGetValue(info.AttackerId, out var attacker) && attacker.TryGetComponent(out Abilities.AbilityRunner runner))
+                runner.ServerShaveCooldowns(seconds);
+        }
+
         /// <summary>Server only. Ignores hits on dead targets. <paramref name="reporterClientId"/> already played the feedback.</summary>
         public static void Apply(Health target, DamageInfo info, ulong reporterClientId)
         {
@@ -41,6 +51,8 @@ namespace GraceRun.Combat
                 knockback.PushRpc(info.Knockback);
 
             target.ServerBroadcastHit(info, reporterClientId);
+            if (!friendly && dealt > 0 && info.AttackerTeam == Team.Player && info.Source <= DamageSource.Melee)
+                ChargeAbilities(target, info, combat);
 
             var run = Run.RunManager.Instance;
             if (run != null && run.IsSpawned)

@@ -152,6 +152,31 @@ namespace GraceRun.Abilities
             if (ability.EffectPrefab != null) SpawnEffect(ability, AbilityMath.SafeAim(aim), cursorAimed, aimDistance, power);
         }
 
+        /// <summary>
+        /// Server only: takes <paramref name="seconds"/> off every running cooldown (a weapon hit landed)
+        /// and tells the owner, whose predicted cooldowns shrink by the same amount.
+        /// </summary>
+        public void ServerShaveCooldowns(float seconds)
+        {
+            if (!IsServer || seconds <= 0f) return;
+            var shaved = false;
+            for (var slot = 0; slot < AbilityLoadout.SlotCount; slot++)
+            {
+                var readyAt = _loadout.ReadyAt(slot);
+                if (_loadout.Get(slot) == null || readyAt <= Now) continue;
+                _loadout.ServerStartCooldown(slot, Math.Max(Now, readyAt - seconds));
+                shaved = true;
+            }
+            if (shaved) CooldownShavedRpc(seconds);
+        }
+
+        [Rpc(SendTo.Owner)]
+        private void CooldownShavedRpc(float seconds)
+        {
+            for (var slot = 0; slot < _predictedReadyAt.Length; slot++)
+                _predictedReadyAt[slot] = Math.Max(0d, _predictedReadyAt[slot] - seconds);
+        }
+
         /// <summary>Server to owner: the use was refused, so drop the predicted cooldown.</summary>
         [Rpc(SendTo.Owner)]
         private void RejectedRpc(byte slot) => _predictedReadyAt[slot] = 0d;

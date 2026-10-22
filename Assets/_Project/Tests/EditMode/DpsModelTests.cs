@@ -32,6 +32,16 @@ namespace GraceRun.Tests
         }
 
         [Test]
+        public void CooldownShaveScalesWithDamageAndCaps()
+        {
+            var combat = UnityEngine.ScriptableObject.CreateInstance<CombatData>();
+            Assert.AreEqual(0f, combat.CooldownShave(0));
+            Assert.AreEqual(7 * 0.025f, combat.CooldownShave(7), 0.0001f);
+            Assert.AreEqual(0.6f, combat.CooldownShave(100), 0.0001f);
+            UnityEngine.Object.DestroyImmediate(combat);
+        }
+
+        [Test]
         public void DamageMultiplierPicksWeaponOrAbility()
         {
             var combat = UnityEngine.ScriptableObject.CreateInstance<CombatData>();

@@ -21,6 +21,11 @@ namespace GraceRun.Combat
         [SerializeField, Min(0f), Tooltip("Ability hits deal this many times their authored damage to enemies.")]
         private float _abilityDamageMultiplier = 3f;
 
+        [SerializeField, Min(0f), Tooltip("Seconds a weapon hit that lands on an enemy shaves off every ability cooldown of the attacker, per point of the hit's authored damage.")]
+        private float _cooldownShavePerDamage = 0.025f;
+        [SerializeField, Min(0f), Tooltip("Most seconds one weapon hit can shave off each ability cooldown.")]
+        private float _maxCooldownShavePerHit = 0.6f;
+
         [Header("Status effects")]
         [SerializeField, Range(0f, 1f), Tooltip("A shrunk attacker's hits deal this share of their damage.")]
         private float _shrunkDamageMultiplier = 0.5f;
@@ -46,6 +51,10 @@ namespace GraceRun.Combat
         /// <summary>Multiplier for a player hit from <paramref name="source"/> (<see cref="DamageSource"/>): weapon swings (unknown or melee) or abilities.</summary>
         public float DamageMultiplierFor(ushort source) =>
             source <= DamageSource.Melee ? _weaponDamageMultiplier : _abilityDamageMultiplier;
+
+        /// <summary>Seconds a weapon hit of <paramref name="authoredDamage"/> takes off each ability cooldown (the weapon builds the abilities).</summary>
+        public float CooldownShave(int authoredDamage) =>
+            Mathf.Min(_maxCooldownShavePerHit, Mathf.Max(0, authoredDamage) * _cooldownShavePerDamage);
 
         /// <summary>Share of the damage a shrunk attacker deals.</summary>
         public float ShrunkDamageMultiplier => _shrunkDamageMultiplier;
