@@ -16,9 +16,12 @@ namespace GraceRun.Abilities
         private AbilityData[] _abilities;
         [SerializeField, Min(0f), Tooltip("Seconds early the server still accepts a use; covers clock drift between PCs.")]
         private float _cooldownTolerance = 0.15f;
+        [SerializeField, Tooltip("Cone, range and preview look for keyboard and gamepad aim.")]
+        private AimAssistData _aimAssist;
 
         public int Count => _abilities.Length;
         public float CooldownTolerance => _cooldownTolerance;
+        public AimAssistData AimAssist => _aimAssist;
 
         /// <summary>The ability with network id <paramref name="id"/>, or null (empty or unknown).</summary>
         public AbilityData Get(int id) => id >= 0 && id < _abilities.Length ? _abilities[id] : null;

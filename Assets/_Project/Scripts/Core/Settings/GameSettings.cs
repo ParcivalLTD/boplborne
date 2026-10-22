@@ -27,6 +27,8 @@ namespace GraceRun.Core.Settings
         private const string CustomAbilityKey = "settings.custom.ability";
         private const string CustomSliceKey = "settings.custom.slice";
         private const string CustomMouseKey = "settings.custom.mouse";
+        private const string AimAssistKey = "settings.aimAssist";
+        private const string HoldToAimKey = "settings.holdToAim";
 
         private static readonly List<Vector2Int> ResolutionList = new();
         private static SettingsData _defaults;
@@ -50,6 +52,12 @@ namespace GraceRun.Core.Settings
         public static string Nickname { get; private set; } = string.Empty;
 
         public static ControlScheme Scheme { get; private set; } = ControlScheme.KeyboardOnly;
+
+        /// <summary>Keyboard and gamepad abilities snap onto the enemy nearest to your aim (see AimAssistData).</summary>
+        public static bool AimAssist { get; private set; } = true;
+
+        /// <summary>Keyboard and gamepad abilities fire when the button is released, with an aim line while held.</summary>
+        public static bool HoldToAim { get; private set; }
 
         /// <summary>The player's own picks, used while <see cref="Scheme"/> is Custom (kept for later when it is not).</summary>
         public static CustomControls Custom { get; private set; } = CustomControls.Default;
@@ -91,6 +99,8 @@ namespace GraceRun.Core.Settings
             VSync = PlayerPrefs.GetInt(VSyncKey, defaults.VSync ? 1 : 0) == 1;
             Resolution = new Vector2Int(PlayerPrefs.GetInt(WidthKey, 0), PlayerPrefs.GetInt(HeightKey, 0));
             Nickname = GraceRun.Net.NicknameRules.Sanitize(PlayerPrefs.GetString(NicknameKey, string.Empty));
+            AimAssist = PlayerPrefs.GetInt(AimAssistKey, 1) == 1;
+            HoldToAim = PlayerPrefs.GetInt(HoldToAimKey, 0) == 1;
             LoadControls();
             Apply(true);
         }
@@ -107,6 +117,9 @@ namespace GraceRun.Core.Settings
         /// <summary>Sets the nickname (cleaned up; empty means "shown as P1-P4"). Takes effect the next time you join.</summary>
         public static void SetNickname(string value) =>
             Change(() => Nickname = GraceRun.Net.NicknameRules.Sanitize(value));
+
+        public static void SetAimAssist(bool on) => Change(() => AimAssist = on);
+        public static void SetHoldToAim(bool on) => Change(() => HoldToAim = on);
 
         public static void SetScheme(ControlScheme scheme) => Change(() => Scheme = scheme);
 
@@ -140,6 +153,8 @@ namespace GraceRun.Core.Settings
                 Resolution = Vector2Int.zero;
                 Scheme = ControlScheme.KeyboardOnly;
                 Custom = CustomControls.Default;
+                AimAssist = true;
+                HoldToAim = false;
             }, true);
         }
 
@@ -183,6 +198,8 @@ namespace GraceRun.Core.Settings
             for (var i = 0; i < Custom.Abilities.Length; i++) PlayerPrefs.SetInt(CustomAbilityKey + i, Custom.Abilities[i]);
             PlayerPrefs.SetInt(CustomSliceKey, Custom.Slice);
             PlayerPrefs.SetInt(CustomMouseKey, Custom.Mouse ? 1 : 0);
+            PlayerPrefs.SetInt(AimAssistKey, AimAssist ? 1 : 0);
+            PlayerPrefs.SetInt(HoldToAimKey, HoldToAim ? 1 : 0);
             PlayerPrefs.Save();
         }
 

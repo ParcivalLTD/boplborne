@@ -40,9 +40,13 @@ namespace GraceRun.UI.Menus
             }
             rows.Add(MenuKit.Option(column, "Slice (drag)", SliceText,
                 delta => GameSettings.EditCustom(c => c.Slice = ControlSchemeRules.CycleSlice(c.Slice, delta))));
+            rows.Add(MenuKit.Option(column, "Aim assist", () => SettingsRules.OnOff(GameSettings.AimAssist),
+                _ => GameSettings.SetAimAssist(!GameSettings.AimAssist)));
+            rows.Add(MenuKit.Option(column, "Hold to aim abilities", () => SettingsRules.OnOff(GameSettings.HoldToAim),
+                _ => GameSettings.SetHoldToAim(!GameSettings.HoldToAim)));
 
             MenuKit.Button(column, "Back", pages.Back);
-            MenuKit.Label(column, "Left / right to change. Mouse buttons fire on release and aim at the cursor. Hold up / down with Attack to swing up / down. Keys and mouse can't be mixed.", MenuStyle.SmallSize, MenuStyle.Fog);
+            MenuKit.Label(column, "Left / right to change. Mouse buttons fire on release and aim at the cursor. Hold up / down with Attack to swing up / down. Hold up / down with an ability key to aim it; aim assist pulls it onto the boss. Keys and mouse can't be mixed.", MenuStyle.SmallSize, MenuStyle.Fog);
             MenuKit.ChainVertical(column);
 
             column.gameObject.AddComponent<ControlsSettingsView>().Setup(hint, rows);

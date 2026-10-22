@@ -33,6 +33,7 @@ namespace GraceRun.Player
         private InputAction _aim;
         private Camera _camera;
         private PointerPressTracker _pointer;
+        private readonly bool[] _holding = new bool[ControlLayout.AbilitySlots];
         private Action<int> _onPointerPressed;
         private Action<int> _onPointerReleased;
         private Action<int> _onPointerFire;
@@ -53,6 +54,10 @@ namespace GraceRun.Player
         public event Action<int, bool> AbilityPressed;
         /// <summary>A mouse ability button went down (not over UI): slot 0, 1 or 2.</summary>
         public event Action<int> PointerAbilityPressed;
+        /// <summary>With Hold to aim on: a key or gamepad ability button went down (slot 0-2); the ability fires on <see cref="AbilityHoldReleased"/>.</summary>
+        public event Action<int> AbilityHoldStarted;
+        /// <summary>With Hold to aim on: that button came back up; fire the ability now.</summary>
+        public event Action<int> AbilityHoldReleased;
         /// <summary>That mouse button came back up; handlers may still claim the hold.</summary>
         public event Action<int> PointerAbilityReleased;
         public event Action FlaskPressed;
@@ -241,12 +246,22 @@ namespace GraceRun.Player
         {
             if (GameplayBlocked) return;
             if (context.control.device is Pointer) _pointer.QueueDown(slot);
+            else if (GameSettings.HoldToAim)
+            {
+                _holding[slot] = true;
+                AbilityHoldStarted?.Invoke(slot);
+            }
             else AbilityPressed?.Invoke(slot, false);
         }
 
         private void OnAbilityUp(int slot, InputAction.CallbackContext context)
         {
             if (context.control.device is Pointer) _pointer.QueueUp(slot);
+            else if (_holding[slot])
+            {
+                _holding[slot] = false;
+                AbilityHoldReleased?.Invoke(slot);
+            }
         }
         private void OnFlask(InputAction.CallbackContext _) { if (!GameplayBlocked) FlaskPressed?.Invoke(); }
         private void OnInteractPerformed(InputAction.CallbackContext _) { if (!GameplayBlocked) InteractPressed?.Invoke(); }

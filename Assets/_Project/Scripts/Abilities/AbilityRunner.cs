@@ -1,4 +1,5 @@
 using System;
+using GraceRun.Core.Settings;
 using GraceRun.Player;
 using Unity.Netcode;
 using UnityEngine;
@@ -31,12 +32,20 @@ namespace GraceRun.Abilities
         {
             if (!IsOwner) return;
             _input.AbilityPressed += OnAbilityPressed;
+            _input.AbilityHoldStarted += OnAbilityHoldStarted;
+            _input.AbilityHoldReleased += OnAbilityHoldReleased;
             _loadout.SlotReplaced += ClearPrediction;
+            if (!Application.isBatchMode) gameObject.AddComponent<AimPreviewView>().Setup(this, _loadout);
         }
 
         public override void OnNetworkDespawn()
         {
-            if (_input != null) _input.AbilityPressed -= OnAbilityPressed;
+            if (_input != null)
+            {
+                _input.AbilityPressed -= OnAbilityPressed;
+                _input.AbilityHoldStarted -= OnAbilityHoldStarted;
+                _input.AbilityHoldReleased -= OnAbilityHoldReleased;
+            }
             if (_loadout != null) _loadout.SlotReplaced -= ClearPrediction;
         }
 
@@ -46,6 +55,14 @@ namespace GraceRun.Abilities
             var ability = _loadout.Get(slot);
             if (ability == null || !IsSpawned) return 0f;
             return AbilityCooldown.Remaining01(ReadyAt(slot), CooldownFor(slot, ability), Now);
+        }
+
+        /// <summary>Seconds of cooldown left in <paramref name="slot"/> (0 when ready).</summary>
+        public float CooldownSecondsRemaining(int slot)
+        {
+            var ability = _loadout.Get(slot);
+            if (ability == null || !IsSpawned) return 0f;
+            return CooldownRemaining01(slot) * CooldownFor(slot, ability);
         }
 
         private float CooldownFor(int slot, AbilityData ability)
@@ -60,6 +77,33 @@ namespace GraceRun.Abilities
             return IsOwner ? Math.Max(synced, _predictedReadyAt[slot]) : synced;
         }
 
+        /// <summary>The slot being held to aim (Hold to aim on), or -1.</summary>
+        public int HoldingSlot { get; private set; } = -1;
+
+        /// <summary>The aim a key or stick press would use right now (for the aim preview).</summary>
+        public KeyAimResult PreviewAim() => ResolveKeyAim();
+
+        private void Update()
+        {
+            if (HoldingSlot >= 0 && (!enabled || _dodge.IsDodging)) HoldingSlot = -1;
+        }
+
+        private KeyAimResult ResolveKeyAim() =>
+            KeyAim.Resolve(transform.position, _input.Move, _movement.Facing, _loadout.Catalog.AimAssist, GameSettings.AimAssist);
+
+        private void OnAbilityHoldStarted(int slot)
+        {
+            if (!enabled || _dodge.IsDodging || _loadout.Get(slot) == null) return;
+            if (AbilityCooldown.IsReady(ReadyAt(slot), Now)) HoldingSlot = slot;
+        }
+
+        private void OnAbilityHoldReleased(int slot)
+        {
+            if (HoldingSlot != slot) return;
+            HoldingSlot = -1;
+            OnAbilityPressed(slot, false);
+        }
+
         private void OnAbilityPressed(int slot, bool atCursor)
         {
             if (!enabled || _dodge.IsDodging) return;
@@ -69,9 +113,18 @@ namespace GraceRun.Abilities
             var cursor = Vector2.zero;
             var cursorAimed = atCursor && _input.TryGetCursorWorld(out cursor);
             var aimDistance = cursorAimed ? Vector2.Distance(transform.position, cursor) : 0f;
-            var aim = cursorAimed
-                ? AbilityMath.CursorAim(transform.position, cursor, _movement.Facing)
-                : AbilityMath.CasterAim(_movement.Facing, _input.Move.y);
+            Vector2 aim;
+            if (cursorAimed)
+            {
+                aim = AbilityMath.CursorAim(transform.position, cursor, _movement.Facing);
+            }
+            else
+            {
+                var keyAim = ResolveKeyAim();
+                aim = keyAim.Aim;
+                cursorAimed = keyAim.Directed;
+                aimDistance = keyAim.Distance;
+            }
             if (ability.CasterAction != null && !ability.CasterAction.OwnerUse(this, ability, aim)) return;
 
             _predictedReadyAt[slot] = AbilityCooldown.NextReadyAt(Now, CooldownFor(slot, ability));

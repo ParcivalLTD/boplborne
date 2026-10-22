@@ -41,3 +41,4 @@ MonoBehaviour:
   - {fileID: 11400000, guid: c95f5cf951961b746b16536189ec6c1b, type: 2}
   - {fileID: 11400000, guid: 0da76adbe1c3a114da33f165b7d909e6, type: 2}
   _cooldownTolerance: 0.15
+  _aimAssist: {fileID: 11400000, guid: ac9eff9c77033af4db769f64beeaa68b, type: 2}
