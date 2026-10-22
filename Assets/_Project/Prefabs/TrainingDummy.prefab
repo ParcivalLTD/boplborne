@@ -456,6 +456,7 @@ GameObject:
   - component: {fileID: 8050882961274295411}
   - component: {fileID: 2893526863342725014}
   - component: {fileID: 7337170793809353869}
+  - component: {fileID: 363673268661647328}
   m_Layer: 11
   m_Name: TrainingDummy
   m_TagString: Untagged
@@ -790,6 +791,22 @@ MonoBehaviour:
   - {fileID: 21300000, guid: 9f53861d96b535143836198a1c5fed81, type: 3}
   - {fileID: 21300000, guid: 0659ce507604fba468bcfbba7f888455, type: 3}
   - {fileID: 21300000, guid: 7959f5a00246a224587f92a95481079e, type: 3}
+--- !u!114 &363673268661647328
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5053195406287751259}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 80c86cdeb8cd3654586d2a0461b06a66, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: GraceRun.Runtime::GraceRun.Core.Environment.GroundShadow
+  _data: {fileID: 11400000, guid: e2a83eb1934aeee4b90a3b28fd2894ae, type: 2}
+  _width: 1.7
+  _body: {fileID: 3890963771802129751}
+  _reference: {fileID: 8832951378157866332}
 --- !u!1 &7453521252568706224
 GameObject:
   m_ObjectHideFlags: 0

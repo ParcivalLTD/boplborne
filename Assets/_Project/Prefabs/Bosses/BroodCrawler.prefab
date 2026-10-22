@@ -347,6 +347,7 @@ GameObject:
   - component: {fileID: 1351398764293778096}
   - component: {fileID: 5326499937253843904}
   - component: {fileID: 1922827579968983546}
+  - component: {fileID: 6016939892555934785}
   m_Layer: 11
   m_Name: BroodCrawler
   m_TagString: Untagged
@@ -671,6 +672,22 @@ MonoBehaviour:
   _art: {fileID: 11400000, guid: b1d6677e25c66154098d66c0b5ac880d, type: 2}
   _health: {fileID: 6382658113173550853}
   _body: {fileID: 4708605903914487507}
+--- !u!114 &6016939892555934785
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6963891940113717650}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 80c86cdeb8cd3654586d2a0461b06a66, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: GraceRun.Runtime::GraceRun.Core.Environment.GroundShadow
+  _data: {fileID: 11400000, guid: e2a83eb1934aeee4b90a3b28fd2894ae, type: 2}
+  _width: 1.5
+  _body: {fileID: 8717632594102803040}
+  _reference: {fileID: 4708605903914487507}
 --- !u!1 &7084284767800240864
 GameObject:
   m_ObjectHideFlags: 0

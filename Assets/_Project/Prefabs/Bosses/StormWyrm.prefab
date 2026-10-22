@@ -556,6 +556,7 @@ GameObject:
   - component: {fileID: 8629797115525869312}
   - component: {fileID: 7337053355222369297}
   - component: {fileID: 7459712887726963045}
+  - component: {fileID: 7578971467608343211}
   m_Layer: 11
   m_Name: StormWyrm
   m_TagString: Untagged
@@ -954,6 +955,22 @@ MonoBehaviour:
   _brain: {fileID: 567727933339146324}
   _health: {fileID: 2064235778255174346}
   _body: {fileID: 8527133255235575793}
+--- !u!114 &7578971467608343211
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6321937765397557630}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 80c86cdeb8cd3654586d2a0461b06a66, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: GraceRun.Runtime::GraceRun.Core.Environment.GroundShadow
+  _data: {fileID: 11400000, guid: e2a83eb1934aeee4b90a3b28fd2894ae, type: 2}
+  _width: 5.8
+  _body: {fileID: 6073900404923158160}
+  _reference: {fileID: 8527133255235575793}
 --- !u!1 &7268459512519744398
 GameObject:
   m_ObjectHideFlags: 0

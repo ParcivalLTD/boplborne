@@ -187,6 +187,7 @@ GameObject:
   - component: {fileID: 3790242488107136382}
   - component: {fileID: 5597013283252351391}
   - component: {fileID: 4002641904622283378}
+  - component: {fileID: 3023547063738679909}
   m_Layer: 11
   m_Name: BroodMother
   m_TagString: Untagged
@@ -583,6 +584,22 @@ MonoBehaviour:
   _brain: {fileID: 1842018238237054013}
   _health: {fileID: 4631374513983895298}
   _body: {fileID: 163945553253531931}
+--- !u!114 &3023547063738679909
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3440983392624793474}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 80c86cdeb8cd3654586d2a0461b06a66, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: GraceRun.Runtime::GraceRun.Core.Environment.GroundShadow
+  _data: {fileID: 11400000, guid: e2a83eb1934aeee4b90a3b28fd2894ae, type: 2}
+  _width: 4.6
+  _body: {fileID: 5508650609931163932}
+  _reference: {fileID: 163945553253531931}
 --- !u!1 &3690280810417295591
 GameObject:
   m_ObjectHideFlags: 0

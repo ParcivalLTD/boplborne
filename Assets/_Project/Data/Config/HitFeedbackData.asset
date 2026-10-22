@@ -19,6 +19,15 @@ MonoBehaviour:
   _flashDuration: 0.08
   _heavyHitShake: 0.5
   _hurtShake: 0.7
+  _critHitstop: 0.2
+  _critShake: 1.1
+  _critTextColor: {r: 1, g: 0.79, b: 0.29, a: 1}
+  _critSparks: {fileID: 2440934937971166020, guid: 64318486d9445a842909361eb2a1d2a7, type: 3}
+  _critCue: {fileID: 0}
+  _critText: CRIT!
+  _critTextSize: 64
+  _critTextLifetime: 0.8
+  _critTextRise: 1.6
   _sparks: {fileID: 2440934937971166020, guid: 4e128ca4d39dd3c47aa7d479633411c6, type: 3}
   _hitCue: {fileID: 11400000, guid: b1ec340df4e9be44f823603ba8de481c, type: 2}
   _heavyHitCue: {fileID: 11400000, guid: 69f241abf38a76f4a932a5547f93bc6e, type: 2}

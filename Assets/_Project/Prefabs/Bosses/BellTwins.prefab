@@ -451,6 +451,7 @@ GameObject:
   - component: {fileID: 4188153084636779005}
   - component: {fileID: 8150666540647883984}
   - component: {fileID: 2045381189447172994}
+  - component: {fileID: 5491032514902104054}
   m_Layer: 11
   m_Name: BellTwins
   m_TagString: Untagged
@@ -992,6 +993,22 @@ MonoBehaviour:
   _link: {fileID: 6907028792279783466}
   _view: {fileID: 8150666540647883984}
   _body: {fileID: 1409799089228609137}
+--- !u!114 &5491032514902104054
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5488232915260887801}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 80c86cdeb8cd3654586d2a0461b06a66, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: GraceRun.Runtime::GraceRun.Core.Environment.GroundShadow
+  _data: {fileID: 11400000, guid: e2a83eb1934aeee4b90a3b28fd2894ae, type: 2}
+  _width: 3.8
+  _body: {fileID: 96908858964930547}
+  _reference: {fileID: 1409799089228609137}
 --- !u!1 &5941306798649959956
 GameObject:
   m_ObjectHideFlags: 0

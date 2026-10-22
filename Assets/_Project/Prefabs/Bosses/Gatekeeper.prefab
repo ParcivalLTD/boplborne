@@ -371,6 +371,7 @@ GameObject:
   - component: {fileID: 3753177132908193066}
   - component: {fileID: 5959446102672346228}
   - component: {fileID: 8869090624388229853}
+  - component: {fileID: 7879011167760942559}
   m_Layer: 11
   m_Name: Gatekeeper
   m_TagString: Untagged
@@ -767,6 +768,22 @@ MonoBehaviour:
   _brain: {fileID: 567727933339146324}
   _health: {fileID: 2064235778255174346}
   _body: {fileID: 6335422748707335687}
+--- !u!114 &7879011167760942559
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6321937765397557630}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 80c86cdeb8cd3654586d2a0461b06a66, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: GraceRun.Runtime::GraceRun.Core.Environment.GroundShadow
+  _data: {fileID: 11400000, guid: e2a83eb1934aeee4b90a3b28fd2894ae, type: 2}
+  _width: 4.2
+  _body: {fileID: 6073900404923158160}
+  _reference: {fileID: 6335422748707335687}
 --- !u!1 &7157961589271565418
 GameObject:
   m_ObjectHideFlags: 0

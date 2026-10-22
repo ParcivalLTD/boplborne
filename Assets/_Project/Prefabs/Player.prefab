@@ -1376,6 +1376,7 @@ GameObject:
   - component: {fileID: 4231046611271713449}
   - component: {fileID: 1578395796415342261}
   - component: {fileID: 6063815576682744589}
+  - component: {fileID: 5898857560167284273}
   m_Layer: 9
   m_Name: Player
   m_TagString: Untagged
@@ -2117,3 +2118,19 @@ MonoBehaviour:
   _health: {fileID: 2285578246583526149}
   _ghost: {fileID: 4886432173965129126}
   _abilities: {fileID: 6459800373725729568}
+--- !u!114 &5898857560167284273
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9178268518804516864}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 80c86cdeb8cd3654586d2a0461b06a66, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: GraceRun.Runtime::GraceRun.Core.Environment.GroundShadow
+  _data: {fileID: 11400000, guid: e2a83eb1934aeee4b90a3b28fd2894ae, type: 2}
+  _width: 1.5
+  _body: {fileID: 2545447858009808820}
+  _reference: {fileID: 4279113817888160496}

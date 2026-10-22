@@ -743,6 +743,7 @@ GameObject:
   - component: {fileID: 7157474787261438303}
   - component: {fileID: 7395442656837800322}
   - component: {fileID: 5443037050571040163}
+  - component: {fileID: 4081128658974861139}
   m_Layer: 11
   m_Name: MirrorDuelist
   m_TagString: Untagged
@@ -1223,6 +1224,22 @@ MonoBehaviour:
     Glass: {fileID: 21300000, guid: 641d74aecf475994b80c93042e78359c, type: 3}
   - Body: {fileID: 21300000, guid: 0f8b0b2da28ac3e488d52ed9ae1cf720, type: 3}
     Glass: {fileID: 21300000, guid: a3ec56f71eabb73418a82ab5548e7352, type: 3}
+--- !u!114 &4081128658974861139
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6321937765397557630}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 80c86cdeb8cd3654586d2a0461b06a66, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: GraceRun.Runtime::GraceRun.Core.Environment.GroundShadow
+  _data: {fileID: 11400000, guid: e2a83eb1934aeee4b90a3b28fd2894ae, type: 2}
+  _width: 3
+  _body: {fileID: 6073900404923158160}
+  _reference: {fileID: 889864248771358848}
 --- !u!1 &7268459512519744398
 GameObject:
   m_ObjectHideFlags: 0

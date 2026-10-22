@@ -14,10 +14,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: GraceRun.Runtime::GraceRun.Player.SliceData
   _startDistance: 0.6
   _maxStrokeTime: 0.6
-  _cooldown: 0.2
-  _reach: 3.5
-  _damage: 10
-  _staminaCost: 12
+  _cooldown: 0.3
+  _reach: 3
+  _damage: 8
+  _staminaCost: 14
   _knockback: 6
   _knockbackLift: 3
   _maxTrailPoints: 24
