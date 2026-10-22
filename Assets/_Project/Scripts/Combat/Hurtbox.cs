@@ -17,6 +17,9 @@ namespace GraceRun.Combat
         private IInvulnerability _invulnerability;
         private Collider2D _collider;
 
+        /// <summary>Every live hurtbox on this PC (for the debug overlay).</summary>
+        public static Dictionary<Collider2D, Hurtbox>.ValueCollection All => ByCollider.Values;
+
         public Health Health => _health;
         public bool IsInvulnerable => _invulnerability != null && _invulnerability.IsInvulnerable;
 

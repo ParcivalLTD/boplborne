@@ -31,7 +31,7 @@ namespace GraceRun.DebugTools
         public static DebugMenu Instance { get; private set; }
         public bool IsVisible { get; private set; }
 
-        /// <summary>Hitboxes draw a translucent box while armed (see HitboxDebugView).</summary>
+        /// <summary>Armed attack boxes draw translucent (HitboxDebugView) and hurtboxes get a blue outline (HurtboxOverlay).</summary>
         public bool ShowHitboxes { get; private set; }
 
         private void Awake()
@@ -44,6 +44,7 @@ namespace GraceRun.DebugTools
 
             Instance = this;
             DontDestroyOnLoad(gameObject);
+            gameObject.AddComponent<HurtboxOverlay>();
             _actions = Instantiate(_controls);
             _toggle = _actions.FindActionMap(MapName, true).FindAction(ToggleActionName, true);
         }

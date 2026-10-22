@@ -19,6 +19,14 @@ namespace GraceRun.Bosses
 
         private float _staggerUntil;
         private float _deadSince = -1f;
+        private BoxCollider2D _hurtbox;
+        private float _fittedFacing;
+
+        private void Awake()
+        {
+            var hurtbox = _health.GetComponentInChildren<Hurtbox>(true);
+            if (hurtbox != null) hurtbox.TryGetComponent(out _hurtbox);
+        }
 
         private void OnEnable() => _brain.PhaseChanged += OnPhaseChanged;
 
@@ -67,7 +75,19 @@ namespace GraceRun.Bosses
 
         private void Show(Sprite sprite)
         {
-            if (sprite != null) _body.sprite = sprite;
+            if (sprite == null) return;
+            var facing = _body.transform.lossyScale.x < 0f ? -1f : 1f;
+            if (_body.sprite != sprite || facing != _fittedFacing) FitHurtbox(sprite, facing);
+            _body.sprite = sprite;
+        }
+
+        /// <summary>Moves the hurtbox to the body of the pose; the stored box faces right, so x mirrors with the facing.</summary>
+        private void FitHurtbox(Sprite sprite, float facing)
+        {
+            _fittedFacing = facing;
+            if (_hurtbox == null || !_poses.TryGetHurtbox(sprite, out var offset, out var size)) return;
+            _hurtbox.offset = new Vector2(offset.x * facing, offset.y);
+            _hurtbox.size = size;
         }
     }
 }

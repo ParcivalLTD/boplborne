@@ -19,8 +19,8 @@ MonoBehaviour:
   _punishWindow: 0.75
   _damage: 25
   _knockback: {x: 11, y: 5}
-  _hitboxOffset: {x: 2.1, y: -1.1}
-  _hitboxSize: {x: 2.9, y: 3.8}
+  _hitboxOffset: {x: 2.1, y: -0.8}
+  _hitboxSize: {x: 2.9, y: 4.4}
   _telegraphType: 1
   _glowPart: 1
   _weakPointOffset: {x: 0.7, y: 0.8}
@@ -30,6 +30,8 @@ MonoBehaviour:
   _behaviour: {fileID: 0}
   _windupCue: {fileID: 11400000, guid: 0d25a716a20279d4e99562e30a3fc127, type: 2}
   _strikeCue: {fileID: 11400000, guid: 12b37509470d7b54e91eca8857cab789, type: 2}
+  _interruptDamage: 0
+  _interruptContributors: 1
   _weight: 1.2
   _cooldown: 0
   _minRange: 0
