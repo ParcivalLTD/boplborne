@@ -20,7 +20,7 @@ MonoBehaviour:
   _tags: 4
   _rarity: 0
   _minFloor: 1
-  _cooldown: 6
+  _cooldown: 5
   _effectPrefab: {fileID: 168531874401449154, guid: 36fb587486489274bb21113020b8506d, type: 3}
   _spawnOffset: {x: 1, y: 0.2}
   _effectLifetime: 0.6

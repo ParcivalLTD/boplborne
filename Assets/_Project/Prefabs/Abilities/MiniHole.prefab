@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 2920814486917280234}
   - component: {fileID: 7857870800596397219}
   - component: {fileID: 3322204417810069720}
+  - component: {fileID: 1178976143279364602}
   m_Layer: 14
   m_Name: MiniHole
   m_TagString: Untagged
@@ -103,6 +104,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7b4c1540325788544867cfe9ca9d6b65, type: 3}
   m_Name: 
   m_EditorClassIdentifier: GraceRun.Runtime::GraceRun.Abilities.Effects.PullField
+--- !u!114 &1178976143279364602
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1204188856402593854}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9c4cabc20486d8f43b066f14d831b57a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: GraceRun.Runtime::GraceRun.Abilities.Effects.SpawnOnExpire
 --- !u!1 &8742708977637539715
 GameObject:
   m_ObjectHideFlags: 0

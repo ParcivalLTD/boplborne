@@ -52,5 +52,8 @@ MonoBehaviour:
   _childSpread: 0
   _size: {x: 0.35, y: 1}
   _visualTime: 0.25
+  _castPose: {fileID: 11400000, guid: ff0e00e7accea6043aaefb7b5cb3a6fe, type: 2}
+  _castWindup: 0
+  _castRecovery: 0.2
   _level2CooldownMultiplier: 0.8
   _level2PowerMultiplier: 1.25

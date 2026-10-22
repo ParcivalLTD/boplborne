@@ -21,6 +21,8 @@ namespace GraceRun.Combat
         [SerializeField, Min(0f), Tooltip("Ability hits deal this many times their authored damage to enemies.")]
         private float _abilityDamageMultiplier = 3f;
 
+        [SerializeField, Min(1f), Tooltip("Chill: enemies slowed by Frost Bolt (any slow) take this much more damage from players, so cold sets up the next ability.")]
+        private float _chilledDamageTakenMultiplier = 1.2f;
         [SerializeField, Min(0f), Tooltip("Arena: a hit on a player of the other team deals this share of its authored damage (weapons and abilities alike). 1 = the numbers in the asset.")]
         private float _pvpDamageMultiplier = 1f;
         [SerializeField, Min(0f), Tooltip("Seconds a weapon hit that lands on an enemy shaves off every ability cooldown of the attacker, per point of the hit's authored damage.")]
@@ -49,6 +51,7 @@ namespace GraceRun.Combat
 
         public float WeaponDamageMultiplier => _weaponDamageMultiplier;
         public float AbilityDamageMultiplier => _abilityDamageMultiplier;
+        public float ChilledDamageTakenMultiplier => _chilledDamageTakenMultiplier;
         public float PvpDamageMultiplier => _pvpDamageMultiplier;
 
         /// <summary>Multiplier for a player hit from <paramref name="source"/> (<see cref="DamageSource"/>): weapon swings (unknown or melee) or abilities.</summary>

@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Text;
 using GraceRun.Abilities;
+using GraceRun.Abilities.Effects;
 using GraceRun.Combat;
 using GraceRun.Player;
 using UnityEditor;
@@ -18,6 +19,8 @@ namespace GraceRun.Editor.Content
         private const string CombatPath = "Assets/_Project/Data/Config/CombatData.asset";
         private const string StatsPath = "Assets/_Project/Data/Player/PlayerStatsData.asset";
         private const float Horizon = 60f;
+        private const float ZoneUptime = 0.5f;
+        private const float TurretUptime = 0.8f;
 
         /// <summary>Extra direct hits per cast beyond <see cref="AbilityData.Count"/> (boomerang return, bomblets, spikes).</summary>
         private static readonly Dictionary<string, int> HitsPerCast = new() { { "boomerang", 2 }, { "cluster_bomb", 4 } };
@@ -44,7 +47,10 @@ namespace GraceRun.Editor.Content
             DpsModel.SustainedWeaponDps(Combo(weapon), combat.WeaponDamageMultiplier, stats.MaxStamina,
                 stats.StaminaRegenPerSecond, stats.RegenDelay, Horizon);
 
-        /// <summary>DPS of every ability that deals direct damage, by ability id.</summary>
+        /// <summary>
+        /// Expected damage per second of every ability that can hurt an enemy, by ability id (all hits land;
+        /// a zone is assumed to touch its target half the time it is up).
+        /// </summary>
         public static List<KeyValuePair<string, float>> AbilityDpsList(CombatData combat)
         {
             var catalog = AssetDatabase.LoadAssetAtPath<AbilityCatalog>(CatalogPath);
@@ -52,11 +58,53 @@ namespace GraceRun.Editor.Content
             for (var i = 0; i < catalog.Count; i++)
             {
                 var ability = catalog.Get(i);
-                if (ability == null || ability.Damage <= 0) continue;
-                var hits = HitsPerCast.TryGetValue(ability.Id, out var extra) ? extra : ability.Count;
-                list.Add(new(ability.Id, DpsModel.AbilityDps(ability.Damage, hits, ability.Cooldown, combat.AbilityDamageMultiplier)));
+                if (ability == null) continue;
+                var damage = ExpectedDamagePerCast(ability, combat.AbilityDamageMultiplier);
+                if (damage <= 0f || ability.Cooldown <= 0f) continue;
+                list.Add(new(ability.Id, damage / ability.Cooldown));
             }
             return list;
+        }
+
+        /// <summary>A zone that keeps hurting (spike trap, fire pool, blade ring), not a mine or a dash strike that hits once.</summary>
+        private static bool IsRepeatingZone(GameObject prefab)
+        {
+            var zone = prefab.GetComponent<ContactZone>();
+            if (zone == null) return false;
+            var so = new SerializedObject(zone);
+            return !so.FindProperty("_detonateOnce").boolValue && !so.FindProperty("_hitEachTargetOnce").boolValue;
+        }
+
+        /// <summary>Authored damage times the multiplier, summed over what one cast puts out: shots, zone ticks, child effects, turret bolts.</summary>
+        public static float ExpectedDamagePerCast(AbilityData ability, float multiplier)
+        {
+            var prefab = ability.EffectPrefab;
+            var total = 0f;
+            var direct = (float)DamageMath.Scaled(ability.Damage, multiplier);
+            if (prefab != null && IsRepeatingZone(prefab.gameObject))
+            {
+                var ticks = ability.TickInterval > 0f ? ability.EffectLifetime / ability.TickInterval : 1f;
+                total += direct * Mathf.Max(1f, ticks) * ZoneUptime;
+            }
+            else
+            {
+                var hits = HitsPerCast.TryGetValue(ability.Id, out var extra) ? extra : Mathf.Max(1, ability.Count);
+                total += direct * hits;
+            }
+
+            var child = ability.ChildEffect;
+            if (child != null && child.Ability != null)
+            {
+                var childAbility = child.Ability;
+                var childDamage = (float)DamageMath.Scaled(childAbility.Damage, multiplier);
+                if (prefab != null && prefab.GetComponent<Turret>() != null)
+                    total += childDamage * Mathf.Max(0f, ability.EffectLifetime / Mathf.Max(0.1f, ability.TickInterval)) * TurretUptime;
+                else if (IsRepeatingZone(child.gameObject))
+                    total += childDamage * Mathf.Max(1f, childAbility.EffectLifetime / Mathf.Max(0.1f, childAbility.TickInterval)) * ZoneUptime * Mathf.Max(1, ability.ChildCount);
+                else
+                    total += childDamage * Mathf.Max(1, ability.ChildCount);
+            }
+            return total;
         }
 
         private static List<SwingStat> Combo(WeaponData weapon)

@@ -51,6 +51,10 @@ namespace GraceRun.Combat
             var amount = Run.RestStopRules.BuffedDamage(info.Amount, friendly, info.AttackerTeam, buffMult);
             if (amount > 0 && !friendly && info.AttackerTeam == Team.Player)
                 amount = DamageMath.Scaled(amount, pvp ? combat.PvpDamageMultiplier : combat.DamageMultiplierFor(info.Source));
+            // Chill: slowed enemies take extra damage from players.
+            if (amount > 0 && !friendly && !pvp && info.AttackerTeam == Team.Player &&
+                target.TryGetComponent(out StatusEffects chill) && chill.IsSlowed)
+                amount = DamageMath.Scaled(amount, combat.ChilledDamageTakenMultiplier);
             if (amount > 0 && StatusEffects.TryFind(info.AttackerId, out var attackerStatus))
                 amount = DamageMath.Scaled(amount, attackerStatus.OutgoingDamageMultiplier);
 

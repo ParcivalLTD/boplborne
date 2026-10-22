@@ -34,7 +34,7 @@ MonoBehaviour:
   _launchSpeed: 0
   _maxFlightTime: 0.02
   _gravityScale: 0
-  _damage: 6
+  _damage: 14
   _knockback: 18
   _knockbackLift: 8
   _forceSpeed: 0
@@ -52,5 +52,8 @@ MonoBehaviour:
   _childSpread: 0
   _size: {x: 1, y: 1}
   _visualTime: 0.3
+  _castPose: {fileID: 11400000, guid: 5707d55b901f5ed498dcaacc9f3634f6, type: 2}
+  _castWindup: 0.08
+  _castRecovery: 0.25
   _level2CooldownMultiplier: 0.8
   _level2PowerMultiplier: 1.25

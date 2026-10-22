@@ -1,0 +1,59 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ae72a50294d856e4ebc19f3baf4b55e5, type: 3}
+  m_Name: TornadoBlast
+  m_EditorClassIdentifier: GraceRun.Runtime::GraceRun.Abilities.AbilityData
+  _id: tornado_blast
+  _displayName: TornadoBlast
+  _description: 
+  _comboHook: 
+  _icon: {fileID: 0}
+  _tags: 4
+  _rarity: 0
+  _minFloor: 1
+  _cooldown: 6
+  _effectPrefab: {fileID: 4425594299571611141, guid: 1ff52155c6d646d4fa9eabc53caef1d1, type: 3}
+  _spawnOffset: {x: 0, y: 0}
+  _effectLifetime: 0.6
+  _effectRadius: 3.2
+  _casterAction: {fileID: 0}
+  _spawnMode: 0
+  _dropHeight: 12
+  _count: 1
+  _spread: 0
+  _launchAngle: 0
+  _launchSpeed: 0
+  _maxFlightTime: 3
+  _gravityScale: 1
+  _damage: 16
+  _knockback: 10
+  _knockbackLift: 5
+  _forceSpeed: 0
+  _forceRate: 0
+  _range: 0
+  _tickInterval: 0.1
+  _steerRate: 0
+  _turnTime: 0.5
+  _piercing: 0
+  _status: 0
+  _statusDuration: 0
+  _statusStrength: 1
+  _childEffect: {fileID: 0}
+  _childCount: 1
+  _childSpread: 0
+  _size: {x: 1, y: 1}
+  _visualTime: 0.35
+  _castPose: {fileID: 0}
+  _castWindup: 0
+  _castRecovery: 0.2
+  _level2CooldownMultiplier: 0.8
+  _level2PowerMultiplier: 1.25

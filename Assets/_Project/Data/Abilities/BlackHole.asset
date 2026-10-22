@@ -47,7 +47,7 @@ MonoBehaviour:
   _status: 0
   _statusDuration: 0
   _statusStrength: 1
-  _childEffect: {fileID: 0}
+  _childEffect: {fileID: 4425594299571611141, guid: b49d71ebba04e1b4f991cff603875060, type: 3}
   _childCount: 1
   _childSpread: 0
   _size: {x: 1, y: 1}

@@ -27,6 +27,9 @@ namespace GraceRun.Abilities.Effects
         private Vector2 _pendingAim;
         private float _pendingPowerMultiplier = 1f;
 
+        /// <summary>Server only: raised when the effect runs out its lifetime, just before it despawns (a collapse, a last blast).</summary>
+        public event System.Action<AbilityEffect> Expired;
+
         public AbilityData Ability => _ability;
         public AbilityTags Tags => _ability.Tags;
         public ComboRules Combos => _combos;
@@ -66,7 +69,11 @@ namespace GraceRun.Abilities.Effects
         {
             if (!IsSpawned) return;
             _age += Time.deltaTime;
-            if (IsServer && _ability.EffectLifetime > 0f && _age >= _ability.EffectLifetime) NetworkObject.Despawn();
+            if (IsServer && _ability.EffectLifetime > 0f && _age >= _ability.EffectLifetime)
+            {
+                Expired?.Invoke(this);
+                NetworkObject.Despawn();
+            }
         }
 
         /// <summary>Server only, before Spawn: who cast it (player NetworkObjectId), where it points and its power scale.</summary>

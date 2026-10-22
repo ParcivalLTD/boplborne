@@ -47,10 +47,13 @@ MonoBehaviour:
   _status: 0
   _statusDuration: 0
   _statusStrength: 1
-  _childEffect: {fileID: 0}
+  _childEffect: {fileID: 4425594299571611141, guid: 033fc1cd3f5f99041ac50cc6bc82f578, type: 3}
   _childCount: 1
   _childSpread: 0
   _size: {x: 0.8, y: 1}
   _visualTime: 0.25
+  _castPose: {fileID: 0}
+  _castWindup: 0
+  _castRecovery: 0.2
   _level2CooldownMultiplier: 0.8
   _level2PowerMultiplier: 1.25
