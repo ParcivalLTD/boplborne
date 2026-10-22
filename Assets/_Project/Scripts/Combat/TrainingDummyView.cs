@@ -25,8 +25,9 @@ namespace GraceRun.Combat
         private void LateUpdate()
         {
             var sinceHit = Time.time - _hitStart;
-            var hitIndex = Mathf.FloorToInt(sinceHit * _data.HitFps);
-            if (hitIndex < _hit.Length)
+            // Before the first hit sinceHit is infinite and FloorToInt overflows to a negative index.
+            var hitIndex = float.IsInfinity(sinceHit) ? -1 : Mathf.FloorToInt(sinceHit * _data.HitFps);
+            if (hitIndex >= 0 && hitIndex < _hit.Length)
             {
                 _body.sprite = _hit[hitIndex];
                 return;

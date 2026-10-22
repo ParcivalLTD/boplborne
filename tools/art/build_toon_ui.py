@@ -71,6 +71,19 @@ def poster(w, h, fill=CREAM, border=SEPIA):
     return img
 
 
+def hud_plate(w=36, h=30):
+    """A slim HUD plate (9-slice border 7): thin ink outline, cream face with a lit top edge, a darker lip
+    under it and a small offset shadow. Lighter than the poster, so four of them do not wall the screen."""
+    img = Image.new('RGBA', (w, h), CLEAR)
+    d = ImageDraw.Draw(img)
+    rrect(d, (2, 2, w - 1, h - 1), 5, INK)                       # offset shadow
+    rrect(d, (0, 0, w - 3, h - 3), 5, INK)                       # outline
+    rrect(d, (1, 1, w - 4, h - 4), 4, (201, 182, 148, 255))      # lip colour
+    rrect(d, (1, 1, w - 4, h - 6), 4, CREAM)                     # face
+    d.line([(5, 2), (w - 9, 2)], fill=(255, 250, 236, 255))      # top light
+    return img
+
+
 def ticket(w, h):
     """A cinema ticket: cream, ink outline, round notches in the left and right edges."""
     img = Image.new('RGBA', (w, h), CLEAR)
@@ -227,6 +240,34 @@ def bar_frame(w=40, h=16):
     return img
 
 
+def bar_frame_thin(w=40, h=7):
+    """The same pill frame, short enough for a stamina strip (9-slice border 3)."""
+    img = Image.new('RGBA', (w, h), CLEAR)
+    d = ImageDraw.Draw(img)
+    rrect(d, (0, 0, w - 1, h - 1), h // 2, INK)
+    rrect(d, (2, 2, w - 3, h - 3), max(1, h // 2 - 2), (59, 42, 30, 255))
+    return img
+
+
+def flask(liquid=(255, 95, 140, 255)):
+    """A round potion bottle (14 x 17): cork, thin neck, glass belly with a pink drink and a shine."""
+    glass = (246, 240, 226, 255)
+    cork = (184, 124, 70, 255)
+    img = Image.new('RGBA', (14, 17), CLEAR)
+    d = ImageDraw.Draw(img)
+    d.ellipse((0, 5, 13, 16), fill=INK)              # belly outline
+    d.rectangle((4, 1, 9, 6), fill=INK)              # neck outline
+    d.rectangle((3, 0, 10, 2), fill=INK)             # cork outline
+    d.rectangle((4, 1, 9, 1), fill=cork)             # cork face
+    d.rectangle((5, 3, 8, 6), fill=glass)            # neck glass
+    d.ellipse((1, 6, 12, 15), fill=glass)            # belly glass
+    d.pieslice((1, 6, 12, 15), 0, 180, fill=liquid)  # drink fills the lower half
+    d.rectangle((2, 10, 11, 10), fill=(255, 150, 180, 255))  # liquid surface
+    d.point((3, 8), fill=WHITE)                      # shine
+    d.point((3, 9), fill=WHITE)
+    return img
+
+
 def main():
     for tint in TINTS:
         save(candy(48, 28, tint), f'btn_{tint}')
@@ -251,6 +292,9 @@ def main():
     save(stripes(), 'stripes')
     save(bar_frame(), 'bar_frame')
     save(bar_frame(24, 14), 'bar_frame_small')
+    save(bar_frame_thin(), 'bar_frame_thin')
+    save(hud_plate(), 'hud_plate')
+    save(flask(), 'flask')
     print('toon sprites:', len(os.listdir(OUT)))
 
 

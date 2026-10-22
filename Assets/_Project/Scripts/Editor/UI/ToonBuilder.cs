@@ -151,6 +151,8 @@ namespace GraceRun.Editor.UI
             if (name.StartsWith("poster")) return new Vector4(9f, 11f, 11f, 9f);
             if (name == "ticket") return new Vector4(12f, 12f, 12f, 12f);
             if (name.StartsWith("ribbon_")) return new Vector4(13f, 0f, 13f, 0f);
+            if (name == "hud_plate") return new Vector4(7f, 8f, 7f, 6f);
+            if (name == "bar_frame_thin") return new Vector4(3f, 3f, 3f, 3f);
             if (name.StartsWith("bar_frame")) return new Vector4(7f, 7f, 7f, 7f);
             return Vector4.zero;
         }

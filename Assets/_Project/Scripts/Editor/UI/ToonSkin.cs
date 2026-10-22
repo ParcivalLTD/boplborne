@@ -253,11 +253,30 @@ namespace GraceRun.Editor.UI
         private static readonly Color HpFill = new Color32(60, 203, 127, 255);
         private static readonly Color StaminaFill = new Color32(255, 154, 60, 255);
 
+        // Panel layout, UI px. The slim plate's border eats about 14 px at the top and 18 at the bottom.
+        private const float PanelWidth = 340f;
+        private const float PanelHeight = 86f;
+        private const float Margin = 14f;
+        private const float BadgeSize = 56f;
+        private const float ColumnLeft = Margin + BadgeSize + 10f;
+        private const float ColumnWidth = 132f;
+        private const float SlotSize = 32f;
+        private const float SlotGap = 4f;
+        private const float BarHeight = 32f;
+        private const float StaminaStrip = 6f;
+
         public static void PlayerPanel(Transform panel)
         {
             var theme = ToonTheme.Current;
-            UiKit.Slice(panel.GetComponent<Image>(), theme.Poster, S);
+            UiKit.Slice(panel.GetComponent<Image>(), LoadSprite("hud_plate"), S);
             panel.GetComponent<Image>().color = Color.white;
+            var element = panel.GetComponent<LayoutElement>();
+            if (element != null)
+            {
+                element.preferredWidth = element.minWidth = PanelWidth;
+                element.preferredHeight = element.minHeight = PanelHeight;
+            }
+            ((RectTransform)panel).sizeDelta = new Vector2(PanelWidth, PanelHeight);
 
             var strip = Find(panel, "ColorStrip");
             var stripImage = strip.GetComponent<Image>();
@@ -267,24 +286,62 @@ namespace GraceRun.Editor.UI
             var stripRect = (RectTransform)strip;
             stripRect.anchorMin = stripRect.anchorMax = new Vector2(0f, 0.5f);
             stripRect.pivot = new Vector2(0f, 0.5f);
-            stripRect.sizeDelta = new Vector2(72f, 72f);
-            stripRect.anchoredPosition = new Vector2(20f, 8f);
+            stripRect.sizeDelta = new Vector2(BadgeSize, BadgeSize);
+            stripRect.anchoredPosition = new Vector2(Margin, 2f);
             var hat = (RectTransform)Find(strip, "Hat");
             hat.anchorMin = hat.anchorMax = new Vector2(0.5f, 0.5f);
-            hat.sizeDelta = new Vector2(52f, 52f);
-            hat.anchoredPosition = Vector2.zero;
+            // The hat art is only ~20 px wide inside a 48 x 64 body-sized frame, sitting above its middle:
+            // blow the frame up and slide it down so the hat itself fills the badge.
+            hat.pivot = new Vector2(0.5f, 0.5f);
+            hat.sizeDelta = new Vector2(104f, 139f);
+            hat.anchoredPosition = new Vector2(0f, -25f);
 
-            Style(TextAt(panel, "Content/Name"), true, UiKit.DisplaySmall, UiPalette.Ink, 0f, true, 16);
-            Place((RectTransform)Find(panel, "Content/Name"), new Vector2(110f, -10f), new Vector2(150f, 34f));
-            Bar(panel, "Content/HPBar", -50f, 28f, HpFill);
-            Bar(panel, "Content/StaminaBar", -82f, 18f, StaminaFill);
-            Place((RectTransform)Find(panel, "Content/FlaskPips"), new Vector2(110f, -106f), new Vector2(150f, 26f));
+            var name = TextAt(panel, "Content/Name");
+            Style(name, true, 18, UiPalette.Ink, 0f, true, 11);
+            Place((RectTransform)Find(panel, "Content/Name"), new Vector2(ColumnLeft, -14f), new Vector2(72f, 20f));
+
+            // One frame, two fills: the HP fill on top, the stamina strip fused under it.
+            var hpBar = Bar(panel, "Content/HPBar", -38f, theme.BarFrame);
+            var hpFill = (RectTransform)Find(hpBar, "Fill");
+            hpFill.offsetMin = new Vector2(9f, StaminaStrip + 7f);
+            hpFill.offsetMax = new Vector2(-9f, -5f);
+            ImageAt(hpBar, "Fill").color = HpFill;
+            var staminaBar = Bar(panel, "Content/StaminaBar", -38f, null);
+            var staminaFill = (RectTransform)Find(staminaBar, "Fill");
+            staminaFill.offsetMin = new Vector2(9f, 5f);
+            staminaFill.offsetMax = new Vector2(-9f, -(BarHeight - StaminaStrip - 5f));
+            ImageAt(staminaBar, "Fill").color = StaminaFill;
+
+            // Flasks sit at the right end of the name row.
+            Place((RectTransform)Find(panel, "Content/FlaskPips"), new Vector2(ColumnLeft + 76f, -15f), new Vector2(56f, 20f));
+            var pip = ImageAt(panel, "Content/FlaskPips/PipTemplate");
+            if (pip != null)
+            {
+                pip.sprite = LoadSprite("flask");
+                pip.preserveAspect = true;
+                pip.rectTransform.sizeDelta = new Vector2(17f, 20f);
+            }
+            var pips = Find(panel, "Content/FlaskPips").GetComponent<HorizontalLayoutGroup>();
+            if (pips != null) pips.spacing = 3f;
+            var view = panel.GetComponent<GraceRun.UI.PlayerPanel>();
+            if (view != null)
+            {
+                var so = new SerializedObject(view);
+                so.FindProperty("_flaskFull").colorValue = Color.white;
+                so.FindProperty("_flaskEmpty").colorValue = new Color(0.3f, 0.26f, 0.32f, 0.45f);
+                so.FindProperty("_hpLabelBottomInset").floatValue = StaminaStrip + 5f;
+                so.ApplyModifiedPropertiesWithoutUndo();
+            }
 
             var slots = (RectTransform)Find(panel, "Content/AbilitySlots");
-            Place(slots, new Vector2(-18f, 0f), new Vector2(156f, 48f));
+            slots.anchorMin = slots.anchorMax = slots.pivot = new Vector2(1f, 1f);
+            Place(slots, new Vector2(-Margin, -16f), new Vector2(SlotSize * 3f + SlotGap * 2f, SlotSize));
+            var slotLayout = slots.GetComponent<HorizontalLayoutGroup>();
+            if (slotLayout != null) slotLayout.spacing = SlotGap;
             for (var i = 1; i <= 3; i++)
             {
                 var slot = Find(panel, $"Content/AbilitySlots/Slot{i}");
+                ((RectTransform)slot).sizeDelta = new Vector2(SlotSize, SlotSize);
                 var image = slot.GetComponent<Image>();
                 UiKit.Slice(image, theme.Badge, S);
                 image.type = Image.Type.Simple;
@@ -292,23 +349,29 @@ namespace GraceRun.Editor.UI
                 image.color = Color.white;
                 var empty = Find(slot, "Empty");
                 empty.GetComponent<Image>().color = new Color(0.8f, 0.72f, 0.6f, 0.0f);
-                ((RectTransform)empty).offsetMin = new Vector2(7f, 7f);
-                ((RectTransform)empty).offsetMax = new Vector2(-7f, -7f);
+                ((RectTransform)empty).offsetMin = new Vector2(4f, 4f);
+                ((RectTransform)empty).offsetMax = new Vector2(-4f, -4f);
             }
             var down = (RectTransform)Find(panel, "DownLabel");
-            down.anchoredPosition = new Vector2(110f, 0f);
+            down.anchoredPosition = new Vector2(ColumnLeft, 0f);
         }
 
-        private static void Bar(Transform panel, string path, float y, float height, Color fill)
+        private static Sprite LoadSprite(string name) =>
+            AssetDatabase.LoadAssetAtPath<Sprite>($"Assets/_Project/Art/UI/Toon/{name}.png");
+
+        /// <summary>Puts a bar in the column; <paramref name="frame"/> null hides its own frame (it shares another bar's).</summary>
+        private static Transform Bar(Transform panel, string path, float y, Sprite frame)
         {
             var bar = Find(panel, path);
-            UiKit.Slice(bar.GetComponent<Image>(), ToonTheme.Current.BarFrame, S);
-            bar.GetComponent<Image>().color = Color.white;
-            Place((RectTransform)bar, new Vector2(110f, y), new Vector2(150f, height));
-            var fillRect = (RectTransform)Find(bar, "Fill");
-            fillRect.offsetMin = new Vector2(7f, 5f);
-            fillRect.offsetMax = new Vector2(-7f, -5f);
-            ImageAt(bar, "Fill").color = fill;
+            var image = bar.GetComponent<Image>();
+            if (frame != null)
+            {
+                UiKit.Slice(image, frame, S);
+                image.color = Color.white;
+            }
+            image.enabled = frame != null;
+            Place((RectTransform)bar, new Vector2(ColumnLeft, y), new Vector2(ColumnWidth, BarHeight));
+            return bar;
         }
 
         public static void BossBar(Transform canvas)

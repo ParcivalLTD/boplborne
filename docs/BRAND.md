@@ -92,5 +92,5 @@ PixelLab for the pixel art (palette-cleaned and edited here), the in-house synth
 ## Still open
 
 - No code-signing certificate, so Windows SmartScreen will warn on the first run of a release.
-- No licence file yet: pick one before the repository goes public (that is the owner's call).
-- A privacy line is needed on the release page: online play uses Unity's anonymous sign-in for Relay and Lobby and stores a random id, nothing personal.
+- Licence: MIT (`LICENSE`, 2026 Julian Gabriel). It covers the code and what you made yourself. Generated art and voice (PixelLab, ElevenLabs) follow those services' terms, and Unity packages keep their own licences.
+- The privacy line (anonymous Unity sign-in for Relay and Lobby, a random id, nothing personal) is in `docs/HOW_TO_PLAY.md`; paste that file into the release notes.

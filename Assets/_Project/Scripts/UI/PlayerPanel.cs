@@ -1,6 +1,7 @@
 using GraceRun.Abilities;
 using GraceRun.Combat;
 using GraceRun.Player;
+using GraceRun.UI.Skin;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -31,6 +32,18 @@ namespace GraceRun.UI
         private CanvasGroup _content;
         [SerializeField, Range(0f, 1f)] private float _downAlpha = 0.4f;
         [SerializeField] private GameObject _downLabel;
+        [SerializeField, Range(0f, 1f), Tooltip("Stamina bar opacity while it is full, so it only grabs the eye when spent.")]
+        private float _staminaIdleAlpha = 0.6f;
+        [SerializeField, Tooltip("Keyboard keys shown under the three ability slots of your own panel (the default bindings).")]
+        private string[] _keyHints = { "K", "L", ";" };
+        [SerializeField, Tooltip("Keyboard key shown after the flasks on your own panel.")]
+        private string _flaskKey = "R";
+        [SerializeField, Tooltip("Space under the HP number when the stamina strip shares the HP bar frame.")]
+        private float _hpLabelBottomInset;
+        [SerializeField, Range(0.5f, 1f), Tooltip("Other players' panels are drawn this much smaller than your own.")]
+        private float _teammateScale = 0.9f;
+        [SerializeField, Range(0f, 0.3f), Tooltip("How much the badge swells with each heartbeat at critical HP.")]
+        private float _badgePulse = 0.08f;
 
         private PlayerIdentity _player;
         private Health _health;
@@ -43,12 +56,18 @@ namespace GraceRun.UI
         private string _shownName = string.Empty;
         private Image[] _pips = new Image[0];
         private bool _bound;
+        private HealthBarView _hpBar;
+        private CanvasGroup _staminaGroup;
+        private Text _flaskCount;
 
         public PlayerIdentity Player => _player;
 
         private void Awake()
         {
             _flaskPipTemplate.gameObject.SetActive(false);
+            _hpBar = HealthBarView.Attach(_hpFill, _hpLabelBottomInset);
+            _staminaGroup = _staminaFill.parent.gameObject.AddComponent<CanvasGroup>();
+            _flaskCount = MakeFlaskCount();
         }
 
         /// <summary>Shows <paramref name="player"/> in this panel, or hides the panel for null.</summary>
@@ -82,13 +101,20 @@ namespace GraceRun.UI
             _content.alpha = down ? _downAlpha : 1f;
             _downLabel.SetActive(down);
 
-            SetFill(_hpFill, _health != null && _health.IsSpawned ? _health.Normalized : 0f);
-            SetFill(_staminaFill, _stamina != null && !down ? _stamina.Normalized : 0f);
+            var hasHealth = _health != null && _health.IsSpawned;
+            SetFill(_hpFill, hasHealth ? _health.Normalized : 0f);
+            _hpBar.Show(hasHealth ? _health.Current : 0, hasHealth ? _health.Max : 0);
+            _colorStrip.rectTransform.localScale = Vector3.one * (1f + _badgePulse * _hpBar.Pulse01);
+            transform.localScale = Vector3.one * (_player.IsOwner ? 1f : _teammateScale);
+            var stamina = _stamina != null && !down ? _stamina.Normalized : 0f;
+            SetFill(_staminaFill, stamina);
+            _staminaGroup.alpha = stamina >= 0.999f ? _staminaIdleAlpha : 1f;
 
             RefreshAbilities();
 
             var charges = _flask != null ? _flask.Charges : 0;
             for (var i = 0; i < _pips.Length; i++) _pips[i].color = i < charges ? _flaskFull : _flaskEmpty;
+            _flaskCount.text = _player.IsOwner ? _flaskKey : string.Empty;
         }
 
         private void ShowIdentity(int index)
@@ -110,7 +136,9 @@ namespace GraceRun.UI
                 var ability = _loadout.Get(i);
                 var cooldown = _abilities != null ? _abilities.CooldownRemaining01(i) : 0f;
                 var level = _loadout.Level(i);
-                _abilitySlots[i].Show(ability != null ? ability.Icon : null, cooldown, level);
+                var seconds = _abilities != null ? _abilities.CooldownSecondsRemaining(i) : 0f;
+                var key = _player.IsOwner && i < _keyHints.Length ? _keyHints[i] : null;
+                _abilitySlots[i].Show(ability != null ? ability.Icon : null, cooldown, level, seconds, key);
             }
         }
 
@@ -124,6 +152,20 @@ namespace GraceRun.UI
                 _pips[i] = Instantiate(_flaskPipTemplate, _flaskPipRoot);
                 _pips[i].gameObject.SetActive(true);
             }
+            _flaskCount.transform.SetAsLastSibling();
+        }
+
+        private Text MakeFlaskCount()
+        {
+            var go = new GameObject("FlaskCount", typeof(RectTransform), typeof(Text));
+            go.transform.SetParent(_flaskPipRoot, false);
+            ((RectTransform)go.transform).sizeDelta = new Vector2(16f, 20f);
+            var text = go.GetComponent<Text>();
+            text.horizontalOverflow = HorizontalWrapMode.Overflow;
+            UiKit.StyleText(text, true, 16, UiPalette.Ink);
+            text.alignment = TextAnchor.MiddleLeft;
+            text.raycastTarget = false;
+            return text;
         }
 
         private static void SetFill(RectTransform fill, float value) =>
