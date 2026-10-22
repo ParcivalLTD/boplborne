@@ -53,6 +53,29 @@ namespace GraceRun.Bosses
             var instance = Instantiate(boss.Prefab, _spawnPoint.position, Quaternion.identity);
             if (seed.HasValue && instance.TryGetComponent<BossBrain>(out var brain)) brain.ServerSetSeed(seed.Value);
             instance.GetComponent<NetworkObject>().Spawn(true);
+            SpawnEscorts(boss, seed);
+        }
+
+        /// <summary>Server only: fields the boss's miniboss escorts (smaller, weaker bodies) around the spawn point.</summary>
+        private void SpawnEscorts(BossData boss, int? seed)
+        {
+            var index = 0;
+            foreach (var escort in boss.Escorts)
+            {
+                if (escort.Boss == null || escort.Boss.Prefab == null) continue;
+                for (var i = 0; i < Mathf.Max(1, escort.Count); i++, index++)
+                {
+                    var side = index % 2 == 0 ? 1f : -1f;
+                    var offset = new Vector3(escort.Offset.x * side * (1 + index / 2), escort.Offset.y, 0f);
+                    var body = Instantiate(escort.Boss.Prefab, _spawnPoint.position + offset, Quaternion.identity);
+                    if (body.TryGetComponent<BossBrain>(out var brain))
+                    {
+                        brain.ServerSetEscort(escort.HpScale, escort.SizeScale, escort.DamageScale);
+                        if (seed.HasValue) brain.ServerSetSeed(seed.Value + 101 * (index + 1));
+                    }
+                    body.GetComponent<NetworkObject>().Spawn(true);
+                }
+            }
         }
 
         /// <summary>Server only: removes all active boss bodies (and any boss-spawned minions or hazard zones).</summary>

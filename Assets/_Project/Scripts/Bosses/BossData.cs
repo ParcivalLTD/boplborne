@@ -44,6 +44,10 @@ namespace GraceRun.Bosses
         [Header("Fight feel")]
         [SerializeField] private BossFeelSettings _feel = new();
 
+        [Header("Escorts")]
+        [SerializeField, Tooltip("Minibosses that fight alongside this boss on its floor.")]
+        private EscortSpec[] _escorts = System.Array.Empty<EscortSpec>();
+
         [Header("Prefabs")]
         [SerializeField] private GameObject _prefab;
         [SerializeField, Tooltip("Arena prefab; empty until arenas exist (M4/M6).")]
@@ -64,6 +68,7 @@ namespace GraceRun.Bosses
         public float AttackStartLead => _attackStartLead;
         public float DespawnDelay => _despawnDelay;
         public BossFeelSettings Feel => _feel ??= new BossFeelSettings();
+        public EscortSpec[] Escorts => _escorts ?? System.Array.Empty<EscortSpec>();
         public GameObject Prefab => _prefab;
         public GameObject ArenaPrefab => _arenaPrefab;
 

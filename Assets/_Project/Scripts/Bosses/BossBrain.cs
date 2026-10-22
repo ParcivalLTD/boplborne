@@ -70,7 +70,7 @@ namespace GraceRun.Bosses
             {
                 var sum = 0;
                 for (var i = 0; i < AllActive.Count; i++)
-                    if (AllActive[i] != null && AllActive[i]._health.IsSpawned) sum += Mathf.Max(0, AllActive[i]._health.Current);
+                    if (AllActive[i] != null && !AllActive[i]._isEscort.Value && AllActive[i]._health.IsSpawned) sum += Mathf.Max(0, AllActive[i]._health.Current);
                 return sum;
             }
         }
@@ -83,7 +83,7 @@ namespace GraceRun.Bosses
                 if (Active != null && Active._encounterMaxHP.Value > 0) return Active._encounterMaxHP.Value;
                 var sum = 0;
                 for (var i = 0; i < AllActive.Count; i++)
-                    if (AllActive[i] != null && AllActive[i]._health.IsSpawned) sum += AllActive[i]._health.Max;
+                    if (AllActive[i] != null && !AllActive[i]._isEscort.Value && AllActive[i]._health.IsSpawned) sum += AllActive[i]._health.Max;
                 return Mathf.Max(1, sum);
             }
         }

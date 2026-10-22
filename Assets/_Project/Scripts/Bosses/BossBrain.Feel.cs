@@ -74,21 +74,51 @@ namespace GraceRun.Bosses
         public ushort AdaptedSource => _adaptedSource.Value;
 
         /// <summary>Multiplier for this boss's attack damage (the Brutal variant).</summary>
-        public float DamageScale => BossFeelMath.DamageScale(Variant);
+        public float DamageScale => BossFeelMath.DamageScale(Variant) * _escortDamage.Value;
 
         private BossFeelSettings Feel => _data.Feel;
 
         /// <summary>Server only: a hazard (web) slows this boss while it stands in it. Call every physics step.</summary>
         public void ServerApplyEnvironmentSlow(float multiplier) => _motor.ServerApplyEnvironmentSlow(multiplier);
 
+        private readonly NetworkVariable<bool> _isEscort = new(
+            false, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Server);
+        private readonly NetworkVariable<float> _sizeScale = new(
+            1f, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Server);
+        private readonly NetworkVariable<float> _escortDamage = new(
+            1f, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Server);
+        private float _escortHp = 1f;
+
+        /// <summary>True for a miniboss that fights alongside the main boss (see <see cref="EscortSpec"/>).</summary>
+        public bool IsEscort => _isEscort.Value;
+
+        /// <summary>
+        /// Server only, before the boss spawns: makes this body a miniboss with <paramref name="hp"/> of its HP,
+        /// <paramref name="size"/> of its size and <paramref name="damage"/> of its damage.
+        /// </summary>
+        public void ServerSetEscort(float hp, float size, float damage)
+        {
+            _escortHp = Mathf.Max(0.05f, hp);
+            _isEscort.Value = true;
+            _sizeScale.Value = Mathf.Clamp(size, 0.3f, 1f);
+            _escortDamage.Value = Mathf.Clamp(damage, 0.1f, 1f);
+        }
+
+        private void ApplySize() => transform.localScale = Vector3.one * _sizeScale.Value;
+
+        private void OnSizeChanged(float previous, float current) => ApplySize();
+
         private void FeelNetworkSpawn()
         {
+            _sizeScale.OnValueChanged += OnSizeChanged;
+            ApplySize();
             _transitioning.OnValueChanged += OnTransitioningChanged;
             _staggered.OnValueChanged += OnStaggeredChanged;
         }
 
         private void FeelNetworkDespawn()
         {
+            _sizeScale.OnValueChanged -= OnSizeChanged;
             _transitioning.OnValueChanged -= OnTransitioningChanged;
             _staggered.OnValueChanged -= OnStaggeredChanged;
         }
@@ -119,7 +149,7 @@ namespace GraceRun.Bosses
             _adaptedSource.Value = 0;
             ApplySpeed();
             SetGauge(Feel.PoiseMax > 0f ? BossGaugeKind.Poise : BossGaugeKind.None, 0f);
-            return BossFeelMath.HpScale(variant);
+            return BossFeelMath.HpScale(variant) * _escortHp;
         }
 
         private void ApplySpeed() =>

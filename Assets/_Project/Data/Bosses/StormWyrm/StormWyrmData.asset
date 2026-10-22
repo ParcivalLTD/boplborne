@@ -66,5 +66,12 @@ MonoBehaviour:
     _adaptMinHits: 6
     _adaptShare: 0.6
     _adaptResistance: 0.7
+  _escorts:
+  - Boss: {fileID: 11400000, guid: c7f2ca7f6abf2da45bf895e68b2c8be6, type: 2}
+    Count: 1
+    HpScale: 0.2
+    SizeScale: 0.65
+    DamageScale: 0.6
+    Offset: {x: 10, y: 0}
   _prefab: {fileID: 6321937765397557630, guid: fddb5fab75c968e41b74593fe265fc06, type: 3}
   _arenaPrefab: {fileID: 7121268250761901515, guid: 74c3590847407464c83ad6882b49d22e, type: 3}
