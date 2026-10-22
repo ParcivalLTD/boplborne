@@ -68,7 +68,11 @@ namespace GraceRun.Run
             if (Instance == this) Instance = null;
             _ready.OnListChanged -= OnListChanged;
             _startAt.OnValueChanged -= OnStartChanged;
-            if (_input != null) _input.InteractPressed -= OnInteract;
+            if (_input != null)
+            {
+                _input.InteractPressed -= OnInteract;
+                _input.FlaskPressed -= OnFlask;
+            }
             _input = null;
             if (IsServer && NetworkManager != null) NetworkManager.OnClientDisconnectCallback -= OnServerClientGone;
         }
@@ -142,9 +146,27 @@ namespace GraceRun.Run
             var player = local != null ? local.PlayerObject : null;
             if (player == null || !player.TryGetComponent(out _input)) return;
             _input.InteractPressed += OnInteract;
+            _input.FlaskPressed += OnFlask;
         }
 
-        private void OnInteract() => ToggleLocal();
+        private void OnInteract()
+        {
+            var run = RunManager.Instance;
+            var over = _loop.Phase == FightPhase.Defeat || _loop.Phase == FightPhase.Victory;
+            if (run != null && run.IsSpawned && run.IsPractice && over)
+            {
+                run.LeavePracticeRpc();
+                return;
+            }
+            ToggleLocal();
+        }
+
+        /// <summary>The leader changes the hub mode with the flask key; everyone else keeps the key for the flask.</summary>
+        private void OnFlask()
+        {
+            var run = RunManager.Instance;
+            if (IsActive && run != null && run.IsSpawned && _loop.IsLocalLeader) run.CycleSelectionRpc(1);
+        }
 
         private void OnListChanged(NetworkListEvent<ulong> _) => Changed?.Invoke();
 

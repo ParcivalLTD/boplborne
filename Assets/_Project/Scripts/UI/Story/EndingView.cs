@@ -63,7 +63,8 @@ namespace GraceRun.UI.Story
             if (net == null || !net.IsClient) return;
             var run = RunManager.Instance;
             var final = run != null && run.IsSpawned && run.IsFinalFloor;
-            if ((phase == FightPhase.Victory && final) || phase == FightPhase.Defeat)
+            var session = run != null && run.IsSpawned && (run.IsPractice || run.IsArena);
+            if (!session && ((phase == FightPhase.Victory && final) || phase == FightPhase.Defeat))
             {
                 _victory = phase == FightPhase.Victory;
                 _waiting = true;

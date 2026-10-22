@@ -25,6 +25,9 @@ namespace GraceRun.UI
         private const string RestOtherText = "Flasks refilled. Waiting for the host to continue.";
         private const string DefeatSubText = "Everyone is down.";
         private const string RestartOtherText = "Waiting for the host.";
+        private const string PracticeClearedText = "Practice cleared! Back to the hub to pick another boss.";
+        private const string PracticeDefeatText = "Everyone is down. Press the button to try again, or E to leave.";
+        private const string TryAgainLabel = "TRY AGAIN";
         private const string ReadyLabel = "READY!";
         private const string UnreadyLabel = "NOT READY";
         private const string StartNowLabel = "START NOW";
@@ -100,7 +103,15 @@ namespace GraceRun.UI
                     Set(FightText, floorBanner, false, null);
                     break;
                 case FightPhase.Victory:
-                    if (finalFloor)
+                    if (run != null && run.IsSpawned && run.IsArena)
+                    {
+                        var arena = run.Arena;
+                        if (arena.MatchOver) Set("MATCH OVER", ArenaSummary(arena, true), leader, ReturnHubLabel);
+                        else Set("ROUND OVER", ArenaSummary(arena, false), false, null);
+                    }
+                    else if (run != null && run.IsSpawned && run.IsPractice)
+                        Set(VictoryText, PracticeClearedText, leader, ReturnHubLabel);
+                    else if (finalFloor)
                         Set(RunVictoryText, leader ? RunVictoryLeaderText : RunVictoryOtherText, leader, ReturnHubLabel);
                     else
                         Set(VictoryText, VictorySubText, false, null);
@@ -109,7 +120,10 @@ namespace GraceRun.UI
                     Set(RestStopText, leader ? RestLeaderText : RestOtherText, leader, NextFloorLabel);
                     break;
                 case FightPhase.Defeat:
-                    Set(DefeatText, leader ? DefeatSubText : $"{DefeatSubText} {RestartOtherText}", leader, ReturnHubLabel);
+                    if (run != null && run.IsSpawned && run.IsPractice)
+                        Set(DefeatText, leader ? PracticeDefeatText : $"{DefeatSubText} {RestartOtherText}", leader, TryAgainLabel);
+                    else
+                        Set(DefeatText, leader ? DefeatSubText : $"{DefeatSubText} {RestartOtherText}", leader, ReturnHubLabel);
                     break;
             }
         }
@@ -129,18 +143,50 @@ namespace GraceRun.UI
         {
             if (run == null || !run.IsSpawned || run.InHub) return string.Empty;
             var boss = run.CurrentBoss;
+            if (run.IsPractice) return boss != null ? $"Practice: {boss.DisplayName}" : "Practice";
+            if (run.IsArena) return $"Round {run.Arena.Round}:  Team A {run.Arena.ScoreA} - {run.Arena.ScoreB} Team B  (P1, P3 vs P2, P4)";
             var bossName = boss != null ? $": {boss.DisplayName}" : string.Empty;
             var label = run.IsFinalFloor ? $"Final Floor ({run.Floor}/{run.TotalFloors})" : $"Floor {run.Floor}/{run.TotalFloors}";
             return label + bossName;
+        }
+
+        /// <summary>"Team A takes the round (2 - 1)" or, at the end, "Team B wins the match 3 - 1".</summary>
+        private static string ArenaSummary(ArenaState arena, bool matchOver)
+        {
+            var winner = arena.LastRound switch
+            {
+                ArenaRound.TeamA => "Team A",
+                ArenaRound.TeamB => "Team B",
+                _ => null,
+            };
+            var score = $"{arena.ScoreA} - {arena.ScoreB}";
+            if (matchOver) return winner != null ? $"{winner} wins the match {score}" : $"The match ends {score}";
+            return winner != null ? $"{winner} takes round {arena.Round} ({score}). Next round soon..." : $"Round {arena.Round} is a draw ({score}). Next round soon...";
+        }
+
+        /// <summary>"Mode: Run", "Mode: Practice - The Gatekeeper", "Mode: Team arena", plus the key hint for the leader.</summary>
+        private static string ModeLabel(RunManager run, bool leader)
+        {
+            if (run == null || !run.IsSpawned) return string.Empty;
+            var text = run.SelectedMode switch
+            {
+                GameMode.Practice => run.PracticeBoss != null ? $"Practice: {run.PracticeBoss.DisplayName}" : "Practice",
+                GameMode.Arena => HubReady.Instance != null && HubReady.Instance.PlayerCount < 2
+                    ? "Team arena (needs a second player)"
+                    : "Team arena",
+                _ => "Run",
+            };
+            return leader ? $"[Mode: {text} - R to change]" : $"[Mode: {text}]";
         }
 
         private void ShowHubReady(bool leader)
         {
             var ready = HubReady.Instance;
             if (ready == null || !ready.IsSpawned) return;
+            var mode = ModeLabel(RunManager.Instance, leader);
             var subtitle = ready.IsStarting
-                ? $"Starting in {Mathf.Max(1, Mathf.CeilToInt((float)ready.StartRemaining))}..."
-                : $"Ready {ready.ReadyCount}/{ready.PlayerCount}. Press E or the button.";
+                ? $"Starting in {Mathf.Max(1, Mathf.CeilToInt((float)ready.StartRemaining))}...  {mode}"
+                : $"Ready {ready.ReadyCount}/{ready.PlayerCount}. Press E or the button.  {mode}";
             var label = !ready.LocalReady ? ReadyLabel
                 : leader && !ready.IsStarting ? StartNowLabel
                 : UnreadyLabel;

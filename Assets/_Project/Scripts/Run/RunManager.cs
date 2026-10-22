@@ -39,6 +39,17 @@ namespace GraceRun.Run
         private readonly NetworkVariable<BuffStacks> _buffs = new(
             default, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Server);
 
+        private readonly NetworkVariable<int> _selection = new(
+            0, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Server);
+
+        private readonly NetworkVariable<ArenaState> _arena = new(
+            default, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Server);
+
+        private double _arenaNextRoundAt = -1d;
+
+        private readonly NetworkVariable<bool> _sessionActive = new(
+            false, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Server);
+
         private readonly NetworkVariable<RunResultData> _runResult = new(
             default, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Server);
 
@@ -76,11 +87,39 @@ namespace GraceRun.Run
         public BuffStacks Buffs => _buffs.Value;
         public RunResultData RunResult => _runResult.Value;
 
-        /// <summary>The boss chosen for the current floor, or null in the hub.</summary>
+        /// <summary>The hub's mode choice: an index into the list Run, each practice boss, Arena (see <see cref="ModeRules"/>).</summary>
+        public int Selection => _selection.Value;
+
+        /// <summary>The mode the leader has picked in the hub.</summary>
+        public GameMode SelectedMode => ModeRules.ModeOf(_selection.Value, PracticeBossCount);
+
+        /// <summary>True from the start of a Boss practice session until it returns to the hub.</summary>
+        public bool IsPractice => _sessionActive.Value && SelectedMode == GameMode.Practice;
+
+        /// <summary>True from the start of an Arena match until it returns to the hub.</summary>
+        public bool IsArena => _sessionActive.Value && SelectedMode == GameMode.Arena;
+
+        /// <summary>The Arena match: round wins, round number and last round's winner.</summary>
+        public ArenaState Arena => _arena.Value;
+
+        private int PracticeBossCount => _config != null ? _config.PracticeBosses.Length : 0;
+
+        /// <summary>The boss the leader has picked for practice, or null.</summary>
+        public BossData PracticeBoss
+        {
+            get
+            {
+                var index = ModeRules.BossIndexOf(_selection.Value, PracticeBossCount);
+                return index >= 0 ? _config.PracticeBosses[index] : null;
+            }
+        }
+
+        /// <summary>The boss chosen for the current floor (the practice boss in Boss practice), or null in the hub.</summary>
         public BossData CurrentBoss
         {
             get
             {
+                if (IsPractice) return PracticeBoss;
                 var floor = _floor.Value;
                 if (floor <= RunRules.HubFloor || floor > TotalFloors) return null;
                 var pool = _config.Floors[floor - 1].Bosses;
@@ -123,6 +162,7 @@ namespace GraceRun.Run
                 _hubInitialized = true;
                 ServerEnterHub();
             }
+            if (IsArena) ServerTickArena();
         }
 
         /// <summary>
@@ -131,9 +171,28 @@ namespace GraceRun.Run
         /// </summary>
         public void ServerAdvance()
         {
-            if (!IsServer || !RunRules.CanAdvance(_fightLoop.Phase, _floor.Value, TotalFloors)) return;
+            if (!IsServer) return;
+            var phase = _fightLoop.Phase;
+            if (_sessionActive.Value && IsPractice)
+            {
+                if (phase == FightPhase.Defeat) ServerStartPractice();
+                else if (phase == FightPhase.Victory) ServerEnterHub(true);
+                return;
+            }
+            if (_sessionActive.Value && IsArena)
+            {
+                if (phase == FightPhase.Victory && _arena.Value.MatchOver) ServerEnterHub(true);
+                return;
+            }
+            if (phase == FightPhase.Waiting && SelectedMode == GameMode.Arena)
+            {
+                ServerStartArena();
+                return;
+            }
+            if (!RunRules.CanAdvance(phase, _floor.Value, TotalFloors)) return;
 
-            if (_fightLoop.Phase == FightPhase.Waiting) ServerStartFloor(1);
+            if (phase == FightPhase.Waiting && SelectedMode == GameMode.Practice) ServerStartPractice();
+            else if (phase == FightPhase.Waiting) ServerStartFloor(1);
             else if (_fightLoop.Phase == FightPhase.RestStop) ServerStartFloor(_floor.Value + 1);
             else ServerEnterHub();
         }
@@ -163,9 +222,10 @@ namespace GraceRun.Run
         }
 
         /// <summary>Server only: enters the hub for a new run, resets loadouts, HP and flasks, and deals starter cards.</summary>
-        public void ServerEnterHub()
+        public void ServerEnterHub(bool keepKit = false)
         {
             if (!IsServer) return;
+            _sessionActive.Value = false;
             _seed.Value = Environment.TickCount;
             _floor.Value = RunRules.HubFloor;
             _bossPoolIndex.Value = 0;
@@ -177,12 +237,176 @@ namespace GraceRun.Run
             SwapArena(_config.HubArenaPrefab);
             if (TrainingDummySpawner.Instance != null) TrainingDummySpawner.Instance.ServerSpawn();
 
+            if (keepKit)
+            {
+                RestorePlayersForHub();
+                _fightLoop.ServerSetPhase(FightPhase.Waiting);
+                return;
+            }
             ResetPlayersForRun();
             _draft.ServerStartRun(_seed.Value);
             if (NetworkManager.ConnectedClientsIds.Count > 0)
                 _draft.ServerOpen(RunRules.HubFloor);
             else
                 _fightLoop.ServerSetPhase(FightPhase.Waiting);
+        }
+
+        /// <summary>Leader only, in the hub: moves the mode choice <paramref name="delta"/> entries along the list.</summary>
+        [Rpc(SendTo.Server)]
+        public void CycleSelectionRpc(int delta, RpcParams rpcParams = default)
+        {
+            if (_fightLoop.Phase != FightPhase.Waiting || !_fightLoop.IsLeader(rpcParams.Receive.SenderClientId)) return;
+            _selection.Value = ModeRules.Step(_selection.Value, delta, PracticeBossCount);
+        }
+
+        /// <summary>Leader only, after a Boss practice fight ends: back to the hub with the same abilities.</summary>
+        [Rpc(SendTo.Server)]
+        public void LeavePracticeRpc(RpcParams rpcParams = default)
+        {
+            var phase = _fightLoop.Phase;
+            if (!IsPractice || (phase != FightPhase.Defeat && phase != FightPhase.Victory)) return;
+            if (!_fightLoop.IsLeader(rpcParams.Receive.SenderClientId)) return;
+            ServerEnterHub(true);
+        }
+
+        /// <summary>
+        /// Server only: starts (or restarts after a defeat) a Boss practice fight: the chosen boss in its arena,
+        /// everyone at full health with a filled kit, straight into the countdown. No story, draft or run progress.
+        /// </summary>
+        private void ServerStartPractice()
+        {
+            var boss = PracticeBoss;
+            if (boss == null) return;
+            _sessionActive.Value = true;
+            _floor.Value = 1;
+            _isRunActive = false;
+            _runResult.Value = default;
+
+            _bossSpawner.ServerDespawnCurrent();
+            AbilityEffect.ServerDespawnAll();
+            if (TrainingDummySpawner.Instance != null) TrainingDummySpawner.Instance.ServerDespawn();
+            if (boss.ArenaPrefab != null) SwapArena(boss.ArenaPrefab);
+
+            PreparePlayersForFloor(true);
+            FillModeKit();
+            _fightLoop.ServerBeginCountdown(boss);
+        }
+
+        /// <summary>Server only: starts an Arena match. Needs at least one player on each team.</summary>
+        private void ServerStartArena()
+        {
+            if (!ArenaRules.HasBothTeams(ConnectedSlots())) return;
+            _sessionActive.Value = true;
+            _floor.Value = 1;
+            _isRunActive = false;
+            _runResult.Value = default;
+            _arena.Value = new ArenaState { Round = 1 };
+            _bossSpawner.ServerDespawnCurrent();
+            if (TrainingDummySpawner.Instance != null) TrainingDummySpawner.Instance.ServerDespawn();
+            ServerBeginArenaRound();
+        }
+
+        /// <summary>Server only: resets the arena and everyone's health, puts the teams on opposite sides and starts the countdown.</summary>
+        private void ServerBeginArenaRound()
+        {
+            _arenaNextRoundAt = -1d;
+            AbilityEffect.ServerDespawnAll();
+            SwapArena(_config.HubArenaPrefab);
+            RestorePlayersForHub(true);
+            FillModeKit();
+            _fightLoop.ServerBeginCountdown(null);
+        }
+
+        /// <summary>Server only, each frame during an Arena match: ends the round when a team has nobody standing, and starts the next one after the intermission.</summary>
+        private void ServerTickArena()
+        {
+            var state = _arena.Value;
+            if (_fightLoop.Phase == FightPhase.Fighting)
+            {
+                CountArenaTeams(out var livingA, out var livingB);
+                var result = ArenaRules.RoundResult(livingA, livingB);
+                if (result == ArenaRound.Undecided) return;
+                if (result == ArenaRound.TeamA) state.ScoreA++;
+                else if (result == ArenaRound.TeamB) state.ScoreB++;
+                state.LastRound = result;
+                state.MatchOver = ArenaRules.MatchWinner(state.ScoreA, state.ScoreB, _config.ArenaWinsNeeded) >= 0;
+                _arena.Value = state;
+                _arenaNextRoundAt = state.MatchOver ? -1d : NetworkManager.ServerTime.Time + _config.ArenaIntermission;
+                _fightLoop.ServerSetPhase(FightPhase.Victory);
+            }
+            else if (_fightLoop.Phase == FightPhase.Victory && !state.MatchOver && _arenaNextRoundAt > 0d &&
+                     NetworkManager.ServerTime.Time >= _arenaNextRoundAt)
+            {
+                state.Round++;
+                _arena.Value = state;
+                ServerBeginArenaRound();
+            }
+        }
+
+        private void CountArenaTeams(out int livingA, out int livingB)
+        {
+            livingA = 0;
+            livingB = 0;
+            foreach (var client in NetworkManager.ConnectedClientsList)
+            {
+                var player = client.PlayerObject;
+                if (player == null || !player.TryGetComponent<Health>(out var health) || health.IsDead) continue;
+                if (ArenaRules.TeamOf(player.GetComponent<PlayerIdentity>().PlayerIndex) == 0) livingA++;
+                else livingB++;
+            }
+        }
+
+        private System.Collections.Generic.List<int> ConnectedSlots()
+        {
+            var slots = new System.Collections.Generic.List<int>();
+            foreach (var client in NetworkManager.ConnectedClientsList)
+                if (client.PlayerObject != null) slots.Add(client.PlayerObject.GetComponent<PlayerIdentity>().PlayerIndex);
+            return slots;
+        }
+
+        /// <summary>Server only: puts each configured kit ability into the player's empty slots.</summary>
+        private void FillModeKit()
+        {
+            var kit = _config.ModeKit;
+            foreach (var client in NetworkManager.ConnectedClientsList)
+            {
+                var player = client.PlayerObject;
+                if (player == null || !player.TryGetComponent<AbilityLoadout>(out var loadout)) continue;
+                for (var slot = 0; slot < AbilityLoadout.SlotCount && slot < kit.Length; slot++)
+                    if (loadout.Get(slot) == null && kit[slot] != null) loadout.ServerSet(slot, kit[slot]);
+            }
+        }
+
+        /// <summary>Server only: back in the hub with the same abilities: full health, revived, flasks refilled, at the spawn points.</summary>
+        private void RestorePlayersForHub(bool arenaSpawns = false)
+        {
+            foreach (var client in NetworkManager.ConnectedClientsList)
+            {
+                var player = client.PlayerObject;
+                if (player == null) continue;
+                if (player.TryGetComponent<Health>(out var health))
+                {
+                    health.ServerSetMax(0);
+                    health.ServerRestoreFull();
+                }
+                if (player.TryGetComponent<ReviveSystem>(out var revive))
+                {
+                    revive.ServerReviveNow();
+                    revive.ServerResetForFloor();
+                }
+                if (player.TryGetComponent<PlayerFlask>(out var flask)) flask.ServerRefill();
+                if (arenaSpawns) TeleportToArenaSpawn(player);
+                else TeleportToSpawn(player);
+            }
+        }
+
+        /// <summary>Team A starts on the left, team B on the right, at the height of the normal spawn points.</summary>
+        private void TeleportToArenaSpawn(NetworkObject player)
+        {
+            var slot = player.GetComponent<PlayerIdentity>().PlayerIndex;
+            var at = _playerSpawner.SpawnPointFor(0);
+            at.x = ArenaRules.SpawnX(slot, _config.ArenaSpawnEdge, 2.5f);
+            player.GetComponent<PlayerRespawn>().TeleportRpc(at);
         }
 
         private void ServerEnterRestStop()

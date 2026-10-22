@@ -173,7 +173,7 @@ namespace GraceRun.Run
         private void OnServerPhaseChanged(FightPhase phase)
         {
             var run = RunManager.Instance;
-            var shouldDraft = phase == FightPhase.Victory && (run == null || !run.IsFinalFloor);
+            var shouldDraft = phase == FightPhase.Victory && (run == null || (!run.IsFinalFloor && !run.IsPractice && !run.IsArena));
             _openAt = shouldDraft ? Now + _config.DraftOpenDelay : -1d;
             if (phase != FightPhase.Draft && _hands.Count > 0) _hands.Clear();
         }

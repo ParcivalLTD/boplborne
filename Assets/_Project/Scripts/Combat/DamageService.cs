@@ -15,6 +15,18 @@ namespace GraceRun.Combat
             DamageMath.IsDropped(target.Combat.FriendlyFireEnabled,
                 DamageMath.IsFriendlyFire(info.AttackerTeam, info.AttackerId, target.Team, target.NetworkObjectId));
 
+        /// <summary>True during an Arena match when attacker and target are players on opposing teams.</summary>
+        private static bool IsArenaOpponent(Health target, DamageInfo info)
+        {
+            var run = Run.RunManager.Instance;
+            if (run == null || !run.IsSpawned || !run.IsArena) return false;
+            var spawned = target.NetworkManager.SpawnManager.SpawnedObjects;
+            if (!spawned.TryGetValue(info.AttackerId, out var attacker)) return false;
+            return attacker.TryGetComponent(out Player.PlayerIdentity attackerId) &&
+                   target.TryGetComponent(out Player.PlayerIdentity targetId) &&
+                   Run.ArenaRules.IsOpposing(attackerId.PlayerIndex, targetId.PlayerIndex);
+        }
+
         /// <summary>A weapon hit that landed shaves the attacker's ability cooldowns: weapons build the abilities.</summary>
         private static void ChargeAbilities(Health target, DamageInfo info, CombatData combat)
         {
@@ -32,10 +44,13 @@ namespace GraceRun.Combat
 
             var combat = target.Combat;
             var friendly = DamageMath.IsFriendlyFire(info.AttackerTeam, info.AttackerId, target.Team, target.NetworkObjectId);
+            // Arena: a hit on a player of the other team is a real hit, not friendly fire.
+            var pvp = friendly && IsArenaOpponent(target, info);
+            if (pvp) friendly = false;
             var buffMult = Run.PartyBuffTuning.TryGetActive(out var buffs, out var stacks) ? buffs.DamageMultiplier(stacks) : 1f;
             var amount = Run.RestStopRules.BuffedDamage(info.Amount, friendly, info.AttackerTeam, buffMult);
             if (amount > 0 && !friendly && info.AttackerTeam == Team.Player)
-                amount = DamageMath.Scaled(amount, combat.DamageMultiplierFor(info.Source));
+                amount = DamageMath.Scaled(amount, pvp ? combat.PvpDamageMultiplier : combat.DamageMultiplierFor(info.Source));
             if (amount > 0 && StatusEffects.TryFind(info.AttackerId, out var attackerStatus))
                 amount = DamageMath.Scaled(amount, attackerStatus.OutgoingDamageMultiplier);
 

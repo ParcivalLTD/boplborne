@@ -25,6 +25,16 @@ MonoBehaviour:
   - _bosses:
     - {fileID: 11400000, guid: c7f2ca7f6abf2da45bf895e68b2c8be6, type: 2}
   _restAfterFloors: 020000000400000006000000i
+  _practiceBosses:
+  - {fileID: 11400000, guid: 243d465cef93a004d8ad3e878cf6e71b, type: 2}
+  - {fileID: 11400000, guid: 36077fc37a74ede43bc151b97fadadac, type: 2}
+  - {fileID: 11400000, guid: 7d87600d87eb06f45859113eb7f202bf, type: 2}
+  - {fileID: 11400000, guid: a9f46d0be797280458007ab83984f18e, type: 2}
+  - {fileID: 11400000, guid: c7f2ca7f6abf2da45bf895e68b2c8be6, type: 2}
+  _modeKit:
+  - {fileID: 11400000, guid: ba85103ff52b74541a1091a514974a36, type: 2}
+  - {fileID: 11400000, guid: 93affec10b9f2c14e95202afd56311e4, type: 2}
+  - {fileID: 11400000, guid: cf5c2982eb00ccb4ba5093b63dc5b379, type: 2}
   _currencyPerBoss: 100
   _bonusNoDeaths: 50
   _bonusFastKill: 50
@@ -37,6 +47,8 @@ MonoBehaviour:
     _empoweredDamageMultiplier: 1.2
     _swiftstrideMoveMultiplier: 1.15
     _swiftstrideStaminaRegenMultiplier: 1.25
+    _maxStacks: 3
+    _stackCostStep: 25
   _cardsOffered: 3
   _rerollsPerRun: 1
   _legendaryMinFloor: 4

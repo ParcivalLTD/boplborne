@@ -153,9 +153,17 @@ namespace GraceRun.Run
 
         private void BeginFight()
         {
+            var run = RunManager.Instance;
+            if (run != null && run.IsSpawned && run.IsArena)
+            {
+                // The Arena has no boss: players fight each other, RunManager decides the rounds.
+                _fightStartTime = NetworkManager.ServerTime.Time;
+                _hadDeathsThisFight = false;
+                SetPhase(FightPhase.Fighting);
+                return;
+            }
             var boss = _currentBoss != null ? _currentBoss : _data.Boss;
             if (boss == null) Debug.LogError("No boss configured for fight.", this);
-            var run = RunManager.Instance;
             _bossSpawner.ServerSpawn(boss, run != null && run.IsSpawned ? run.FloorSeed : (int?)null);
             _fightStartTime = NetworkManager.ServerTime.Time;
             _hadDeathsThisFight = false;
@@ -164,6 +172,8 @@ namespace GraceRun.Run
 
         private void CheckOutcome()
         {
+            var arenaRun = RunManager.Instance;
+            if (arenaRun != null && arenaRun.IsSpawned && arenaRun.IsArena) return;
             var bossDefeated = BossBrain.AreAllDefeated;
             CountPlayers(out var players, out var living);
             if (living < players) _hadDeathsThisFight = true;
@@ -173,7 +183,7 @@ namespace GraceRun.Run
                 var run = RunManager.Instance;
                 if (outcome == FightPhase.Victory)
                 {
-                    if (run != null && run.IsSpawned)
+                    if (run != null && run.IsSpawned && !run.IsPractice && !run.IsArena)
                     {
                         run.ServerConsumeBuff();
                         var config = run.Config;
@@ -191,7 +201,7 @@ namespace GraceRun.Run
                 }
                 else if (outcome == FightPhase.Defeat)
                 {
-                    if (run != null && run.IsSpawned) run.ServerFinalizeRunResult(false);
+                    if (run != null && run.IsSpawned && !run.IsPractice && !run.IsArena) run.ServerFinalizeRunResult(false);
                 }
                 SetPhase(outcome);
             }

@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using GraceRun.Abilities;
+using GraceRun.Bosses;
 using UnityEngine;
 
 namespace GraceRun.Run
@@ -18,6 +19,19 @@ namespace GraceRun.Run
         private FloorPool[] _floors;
         [SerializeField, Tooltip("1-based floor numbers followed by a rest stop after their draft (GDD: 2, 4, 6).")]
         private int[] _restAfterFloors = { 2, 4, 6 };
+
+        [Header("Modes")]
+        [SerializeField, Tooltip("Bosses the leader can pick for Boss practice, in hub order.")]
+        private BossData[] _practiceBosses;
+        [SerializeField, Tooltip("Abilities dealt into empty slots at the start of Boss practice and the Arena, one per slot.")]
+        private AbilityData[] _modeKit;
+
+        [SerializeField, Min(1), Tooltip("Arena: round wins a team needs to take the match.")]
+        private int _arenaWinsNeeded = 3;
+        [SerializeField, Min(0f), Tooltip("Arena: seconds between a round ending and the next countdown.")]
+        private float _arenaIntermission = 3.5f;
+        [SerializeField, Min(1f), Tooltip("Arena: distance from the middle of the arena at which each team starts.")]
+        private float _arenaSpawnEdge = 7f;
 
         [Header("Currency")]
         [SerializeField, Min(0)] private int _currencyPerBoss = 100;
@@ -64,6 +78,11 @@ namespace GraceRun.Run
         public int RerollsPerRun => _rerollsPerRun;
         public int LegendaryMinFloor => _legendaryMinFloor;
         public RarityWeights RarityWeights => _rarityWeights;
+        public int ArenaWinsNeeded => _arenaWinsNeeded;
+        public float ArenaIntermission => _arenaIntermission;
+        public float ArenaSpawnEdge => _arenaSpawnEdge;
+        public BossData[] PracticeBosses => _practiceBosses ?? System.Array.Empty<BossData>();
+        public AbilityData[] ModeKit => _modeKit ?? System.Array.Empty<AbilityData>();
         public AbilityData[] DraftPool => _draftPool;
         public float DraftOpenDelay => _draftOpenDelay;
         public float DraftCloseDelay => _draftCloseDelay;
