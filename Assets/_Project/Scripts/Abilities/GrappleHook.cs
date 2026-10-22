@@ -130,7 +130,7 @@ namespace GraceRun.Abilities
             if (_loadout == null || ability == null) return 1f;
             for (var i = 0; i < AbilityLoadout.SlotCount; i++)
                 if (_loadout.Get(i) == ability && _loadout.Level(i) >= 2)
-                    return ability.Level2PowerMultiplier;
+                    return ability.PowerMultiplierAt(_loadout.Level(i));
             return 1f;
         }
 

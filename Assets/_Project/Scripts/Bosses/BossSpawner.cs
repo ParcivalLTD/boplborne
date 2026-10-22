@@ -54,6 +54,39 @@ namespace GraceRun.Bosses
             if (seed.HasValue && instance.TryGetComponent<BossBrain>(out var brain)) brain.ServerSetSeed(seed.Value);
             instance.GetComponent<NetworkObject>().Spawn(true);
             SpawnEscorts(boss, seed);
+            _swarm = boss.Swarm;
+            _nextWaveAt = _swarm.Crawler != null ? Time.time + _swarm.FirstDelay : float.MaxValue;
+        }
+
+        private SwarmSpec _swarm;
+        private float _nextWaveAt = float.MaxValue;
+
+        private void Update()
+        {
+            if (!IsServer || _swarm.Crawler == null || Time.time < _nextWaveAt) return;
+            if (BossBrain.All.Count == 0 || BossBrain.AreAllDefeated)
+            {
+                _swarm = default;
+                return;
+            }
+            _nextWaveAt = Time.time + _swarm.Interval;
+            SendWave();
+        }
+
+        /// <summary>Server only: drops a wave of crawlers in from both edges (the nearer edge first), up to the cap.</summary>
+        private void SendWave()
+        {
+            var toSpawn = Behaviours.BroodMotherMath.CrawlersToSpawn(_swarm.PerWave, Behaviours.BroodCrawler.ActiveCount, _swarm.MaxAlive);
+            var half = Core.Framing.ArenaBounds.WidenedHalfWidth(_swarm.ArenaHalfWidth);
+            for (var i = 0; i < toSpawn; i++)
+            {
+                var side = (sbyte)(i % 2 == 0 ? 1 : -1);
+                var x = Behaviours.BroodMotherMath.ClampArenaX(side * half, half);
+                var at = new Vector3(x, _spawnPoint.position.y + _swarm.SpawnHeight, 0f);
+                var crawler = Instantiate(_swarm.Crawler, at, Quaternion.identity);
+                crawler.GetComponent<NetworkObject>().Spawn(true);
+                crawler.ServerLaunch(new Vector2(-side * 3f, 1f), (sbyte)-side);
+            }
         }
 
         /// <summary>Server only: fields the boss's miniboss escorts (smaller, weaker bodies) around the spawn point.</summary>
@@ -82,6 +115,7 @@ namespace GraceRun.Bosses
         public void ServerDespawnCurrent()
         {
             if (!IsServer) return;
+            _swarm = default;
             Behaviours.BroodCrawler.ServerDespawnAll();
             Behaviours.WebZone.ServerDespawnAll();
             Behaviours.BellShockwave.ServerDespawnAll();

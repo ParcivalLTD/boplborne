@@ -151,6 +151,12 @@ namespace GraceRun.Abilities
         public CastPoseSet CastPose => _castPose;
         public float CastWindup => _castWindup;
         public float CastRecovery => _castRecovery;
+        /// <summary>Cooldown multiplier at <paramref name="level"/> (1 = none; each level above 1 applies the Level 2 factor once more).</summary>
+        public float CooldownMultiplierAt(int level) => Mathf.Pow(_level2CooldownMultiplier, Mathf.Max(0, level - 1));
+
+        /// <summary>Power multiplier at <paramref name="level"/> (1 = none; each level above 1 applies the Level 2 factor once more).</summary>
+        public float PowerMultiplierAt(int level) => Mathf.Pow(_level2PowerMultiplier, Mathf.Max(0, level - 1));
+
         public float Level2CooldownMultiplier => _level2CooldownMultiplier;
         public float Level2PowerMultiplier => _level2PowerMultiplier;
     }

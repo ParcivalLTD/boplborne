@@ -10,6 +10,7 @@ namespace GraceRun.Core.Environment
     public class GroundShadow : MonoBehaviour
     {
         private const int Pixels = 32;
+        private const int MinOrder = -4;
         private static Sprite _sprite;
 
         [SerializeField] private ShadowData _data;
@@ -23,6 +24,7 @@ namespace GraceRun.Core.Environment
         private readonly RaycastHit2D[] _hits = new RaycastHit2D[1];
         private SpriteRenderer _renderer;
         private ContactFilter2D _filter;
+        private Player.PlayerIdentity _identity;
 
         private void Awake()
         {
@@ -33,6 +35,7 @@ namespace GraceRun.Core.Environment
             }
             if (_body == null) _body = GetComponentInChildren<Collider2D>();
             _filter = new ContactFilter2D { useLayerMask = true, layerMask = Layers.StandableMask, useTriggers = false };
+            _identity = GetComponentInParent<Player.PlayerIdentity>();
 
             var go = new GameObject("GroundShadow");
             go.transform.SetParent(null);
@@ -41,7 +44,8 @@ namespace GraceRun.Core.Environment
             if (_reference != null)
             {
                 _renderer.sortingLayerID = _reference.sortingLayerID;
-                _renderer.sortingOrder = _reference.sortingOrder - 2;
+                // Bosses are drawn at -10, behind the arena floor art: keep the shadow above that art (-3 to 0 is floor and trim).
+                _renderer.sortingOrder = Mathf.Max(_reference.sortingOrder - 2, MinOrder);
             }
         }
 
@@ -81,9 +85,19 @@ namespace GraceRun.Core.Environment
             // Most of the ellipse sits above the ground line: the floor art draws over anything below it.
             _renderer.transform.position = new Vector3(origin.x, _hits[0].point.y + shadowHeight * 0.4f, 0f);
             _renderer.transform.localScale = new Vector3(scale, shadowHeight, 1f);
-            var color = _data.Color;
+            var color = TeamTint(_data.Color);
             color.a *= strength;
             _renderer.color = color;
+        }
+
+        /// <summary>In an Arena match a player's shadow takes its team colour, so the teams read at a glance.</summary>
+        private Color TeamTint(Color color)
+        {
+            if (_identity == null) return color;
+            var run = Run.RunManager.Instance;
+            if (run == null || !run.IsSpawned || !run.IsArena) return color;
+            var team = Run.ArenaRules.TeamOf(_identity.PlayerIndex) == 0 ? _data.TeamAColor : _data.TeamBColor;
+            return team;
         }
 
         /// <summary>The sprite is a unit-wide ellipse, so its height is width times this.</summary>

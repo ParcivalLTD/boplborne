@@ -59,3 +59,7 @@ desktop.ini
 
 # Python bytecode (tools/audio, tools/art)
 __pycache__/
+
+# Unity scene recovery
+/Assets/_Recovery/
+/Assets/_Recovery.meta

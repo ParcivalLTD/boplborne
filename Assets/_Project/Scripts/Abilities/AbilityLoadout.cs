@@ -47,7 +47,7 @@ namespace GraceRun.Abilities
         /// <summary>Upgrade level of ability in <paramref name="slot"/> (1 = normal, 2 = upgraded).</summary>
         public int Level(int slot) => IsValid(slot) ? _slots[slot].Level : 1;
 
-        /// <summary>True when ability in <paramref name="slot"/> can be upgraded to Level 2.</summary>
+        /// <summary>True when the ability in <paramref name="slot"/> can go up another level (up to level 3).</summary>
         public bool CanUpgrade(int slot) =>
             IsValid(slot) && _slots[slot].AbilityId != AbilityCatalog.None && _slots[slot].Level < RestStopRules.MaxAbilityLevel;
 
@@ -58,11 +58,11 @@ namespace GraceRun.Abilities
             _slots[slot] = new AbilitySlotState(_catalog.IdOf(ability), 0d, 1);
         }
 
-        /// <summary>Server only: upgrades ability in <paramref name="slot"/> to Level 2.</summary>
+        /// <summary>Server only: raises the ability in <paramref name="slot"/> by one level.</summary>
         public void ServerUpgrade(int slot)
         {
             if (!IsServer || !CanUpgrade(slot)) return;
-            _slots[slot] = new AbilitySlotState(_slots[slot].AbilityId, _slots[slot].ReadyAt, 2);
+            _slots[slot] = new AbilitySlotState(_slots[slot].AbilityId, _slots[slot].ReadyAt, (byte)(_slots[slot].Level + 1));
             SlotReplaced?.Invoke(slot);
         }
 

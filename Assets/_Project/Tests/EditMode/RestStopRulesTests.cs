@@ -14,11 +14,19 @@ namespace GraceRun.Tests
         }
 
         [Test]
-        public void CannotUpgradeWhenEmptyOrLevel2OrCannotAfford()
+        public void CannotUpgradeWhenEmptyOrMaxedOrCannotAfford()
         {
             Assert.IsFalse(RestStopRules.CanUpgradeAbility(false, 1, 100, 100));
-            Assert.IsFalse(RestStopRules.CanUpgradeAbility(true, 2, 100, 100));
+            Assert.IsFalse(RestStopRules.CanUpgradeAbility(true, RestStopRules.MaxAbilityLevel, 1000, 100));
+            Assert.IsTrue(RestStopRules.CanUpgradeAbility(true, 2, 200, 200));
             Assert.IsFalse(RestStopRules.CanUpgradeAbility(true, 1, 99, 100));
+        }
+
+        [Test]
+        public void UpgradeCostRisesWithTheLevel()
+        {
+            Assert.AreEqual(100, RestStopRules.UpgradeCost(100, 1));
+            Assert.AreEqual(200, RestStopRules.UpgradeCost(100, 2));
         }
 
         [Test]

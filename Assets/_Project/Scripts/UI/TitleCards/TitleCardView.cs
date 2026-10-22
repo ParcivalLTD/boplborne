@@ -88,7 +88,9 @@ namespace GraceRun.UI.TitleCards
         {
             var net = NetworkManager.Singleton;
             if (net == null || !net.IsClient) return;
-            if (phase == FightPhase.Countdown || phase == FightPhase.Victory || phase == FightPhase.Defeat) _pending = phase;
+            var session = RunManager.Instance;
+            if (session != null && session.IsSpawned && session.IsArena) Hide();
+            else if (phase == FightPhase.Countdown || phase == FightPhase.Victory || phase == FightPhase.Defeat) _pending = phase;
             else Hide();
         }
 
@@ -97,7 +99,7 @@ namespace GraceRun.UI.TitleCards
             var run = RunManager.Instance;
             var boss = run != null && run.IsSpawned ? run.CurrentBoss : null;
             var id = boss != null ? boss.Id : null;
-            var floor = run != null && run.IsSpawned ? run.Floor : 0;
+            var floor = run != null && run.IsSpawned && !run.IsPractice ? run.Floor : 0;
             var final = run != null && run.IsSpawned && run.IsFinalFloor;
             switch (phase)
             {

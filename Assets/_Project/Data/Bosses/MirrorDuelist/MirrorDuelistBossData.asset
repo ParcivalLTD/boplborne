@@ -64,5 +64,14 @@ MonoBehaviour:
     _adaptMinHits: 6
     _adaptShare: 0.6
     _adaptResistance: 0.7
+  _escorts: []
+  _swarm:
+    Crawler: {fileID: 1351398764293778096, guid: a363a5f6111d2c740aca4b01b1389eda, type: 3}
+    PerWave: 2
+    MaxAlive: 4
+    Interval: 18
+    FirstDelay: 12
+    ArenaHalfWidth: 14.5
+    SpawnHeight: 3
   _prefab: {fileID: 6321937765397557630, guid: 4e48fd7270ad6ff4ca680a4101df7747, type: 3}
   _arenaPrefab: {fileID: 7121268250761901515, guid: 4890406b54ed552479f955bd9c21d3b3, type: 3}

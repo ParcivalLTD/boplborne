@@ -129,16 +129,18 @@ namespace GraceRun.UI
                 var ability = loadout != null ? loadout.Get(i) : null;
                 var level = loadout != null ? loadout.Level(i) : 1;
                 var hasAbility = ability != null;
-                var canUpgrade = loadout != null && loadout.CanUpgrade(i) && RestStopRules.CanUpgradeAbility(hasAbility, level, currency, upgradeCost);
+                var levelCost = RestStopRules.UpgradeCost(upgradeCost, level);
+                var canUpgrade = loadout != null && loadout.CanUpgrade(i) && RestStopRules.CanUpgradeAbility(hasAbility, level, currency, levelCost);
+                var maxed = level >= RestStopRules.MaxAbilityLevel;
 
                 if (_upgradeSlotNames[i] != null)
                 {
                     if (!hasAbility)
                         _upgradeSlotNames[i].text = $"Slot {i + 1}: Empty";
-                    else if (level >= 2)
-                        _upgradeSlotNames[i].text = $"Slot {i + 1}: {ability.DisplayName} <color=#{ColorUtility.ToHtmlStringRGB(CardAccent)}>[LEVEL 2 MAX]</color>";
+                    else if (maxed)
+                        _upgradeSlotNames[i].text = $"Slot {i + 1}: {ability.DisplayName} <color=#{ColorUtility.ToHtmlStringRGB(CardAccent)}>[LEVEL {level} MAX]</color>";
                     else
-                        _upgradeSlotNames[i].text = $"Slot {i + 1}: {ability.DisplayName} (Level 1)";
+                        _upgradeSlotNames[i].text = $"Slot {i + 1}: {ability.DisplayName} (Level {level})";
                 }
 
                 if (_upgradeButtons[i] != null)
@@ -146,12 +148,12 @@ namespace GraceRun.UI
                     _upgradeButtons[i].interactable = canUpgrade;
                     if (_upgradeButtonTexts[i] != null)
                     {
-                        if (level >= 2)
+                        if (hasAbility && maxed)
                             _upgradeButtonTexts[i].text = "MAX LEVEL";
                         else if (!hasAbility)
                             _upgradeButtonTexts[i].text = "No Ability";
                         else
-                            _upgradeButtonTexts[i].text = $"Upgrade to Lvl 2  ({upgradeCost} ✦)";
+                            _upgradeButtonTexts[i].text = $"Upgrade to Lvl {level + 1}  ({levelCost} ✦)";
                     }
                 }
             }
@@ -294,7 +296,7 @@ namespace GraceRun.UI
             // Card 2: Ability Upgrade (Level 2)
             var card2 = CreateCard("CardUpgrade", _root.transform, new Vector2(960, centerY), new Vector2(cardWidth, cardHeight));
             CreateText("Card2Title", card2.transform, "UPGRADE ABILITY", 32, FontStyle.Bold, TextAnchor.MiddleCenter, CardInk, new Vector2(0.5f, 0.92f), new Vector2(cardWidth - 60, 48));
-            CreateText("Card2Desc", card2.transform, "Upgrade an ability to Level 2:\n<color=#3B2A1E>Cooldown -20% | Power +25%</color>", 24, FontStyle.Normal, TextAnchor.MiddleCenter, CardSoft, new Vector2(0.5f, 0.80f), new Vector2(cardWidth - 60, 76));
+            CreateText("Card2Desc", card2.transform, "Level an ability up to 3 (price x level):\n<color=#3B2A1E>Each level: Cooldown -20% | Power +25%</color>", 24, FontStyle.Normal, TextAnchor.MiddleCenter, CardSoft, new Vector2(0.5f, 0.80f), new Vector2(cardWidth - 60, 76));
 
             var slotY = new[] { 0.60f, 0.39f, 0.18f };
             for (var i = 0; i < AbilityLoadout.SlotCount; i++)

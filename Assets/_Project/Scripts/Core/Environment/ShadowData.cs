@@ -20,6 +20,13 @@ namespace GraceRun.Core.Environment
         [SerializeField, Min(1f), Tooltip("How far down (units) the shadow looks for ground.")]
         private float _searchDistance = 12f;
 
+        [SerializeField, Tooltip("Arena: shadow tint under team A players (P1, P3).")]
+        private Color _teamAColor = new(0.3f, 0.55f, 1f, 0.6f);
+        [SerializeField, Tooltip("Arena: shadow tint under team B players (P2, P4).")]
+        private Color _teamBColor = new(1f, 0.6f, 0.24f, 0.6f);
+
+        public Color TeamAColor => _teamAColor;
+        public Color TeamBColor => _teamBColor;
         public Color Color => _color;
         public float Flatness => _flatness;
         public float FadeHeight => _fadeHeight;

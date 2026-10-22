@@ -49,7 +49,11 @@ namespace GraceRun.UI
             transform.localScale = Vector3.one * (1f + PopSize * Mathf.Sin(pop * Mathf.PI));
             _cooldownShade.enabled = shade > 0f;
             _cooldownShade.fillAmount = shade;
-            if (_levelBadge != null) _levelBadge.gameObject.SetActive(icon != null && level >= 2);
+            if (_levelBadge != null)
+            {
+                _levelBadge.gameObject.SetActive(icon != null && level >= 2);
+                _levelBadge.text = level >= 3 ? "III" : "II";
+            }
 
             _seconds.gameObject.SetActive(shade > 0f);
             if (shade > 0f) _seconds.text = CooldownLabel(cooldownSeconds);

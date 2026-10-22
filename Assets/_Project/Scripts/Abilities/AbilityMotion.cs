@@ -104,7 +104,7 @@ namespace GraceRun.Abilities
         private float PowerFor(AbilityData ability)
         {
             for (var i = 0; i < AbilityLoadout.SlotCount; i++)
-                if (_loadout.Get(i) == ability && _loadout.Level(i) >= 2) return ability.Level2PowerMultiplier;
+                if (_loadout.Get(i) == ability && _loadout.Level(i) >= 2) return ability.PowerMultiplierAt(_loadout.Level(i));
             return 1f;
         }
     }

@@ -68,7 +68,7 @@ namespace GraceRun.Abilities
         private float CooldownFor(int slot, AbilityData ability)
         {
             var level = _loadout != null ? _loadout.Level(slot) : 1;
-            return level >= 2 ? ability.Cooldown * ability.Level2CooldownMultiplier : ability.Cooldown;
+            return ability.Cooldown * ability.CooldownMultiplierAt(level);
         }
 
         private double ReadyAt(int slot)
@@ -149,7 +149,7 @@ namespace GraceRun.Abilities
             }
 
             _loadout.ServerStartCooldown(slot, AbilityCooldown.NextReadyAt(Now, CooldownFor(slot, ability)));
-            var power = _loadout.Level(slot) >= 2 ? ability.Level2PowerMultiplier : 1f;
+            var power = ability.PowerMultiplierAt(_loadout.Level(slot));
             if (ability.CastPose != null) CastPlayedRpc(slot, aim);
             if (ability.EffectPrefab == null) return;
             var safeAim = AbilityMath.SafeAim(aim);

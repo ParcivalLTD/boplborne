@@ -487,7 +487,7 @@ namespace GraceRun.Run
             _draft.ServerAddRerolls(1);
         }
 
-        /// <summary>Client upgrades one ability in <paramref name="slot"/> to Level 2 at a rest stop.</summary>
+        /// <summary>Client raises one ability in <paramref name="slot"/> by a level (to 2, then 3) at a rest stop.</summary>
         [Rpc(SendTo.Server)]
         public void BuyUpgradeRpc(byte slot, RpcParams rpcParams = default)
         {
@@ -496,8 +496,9 @@ namespace GraceRun.Run
             if (!NetworkManager.ConnectedClients.TryGetValue(clientId, out var client) || client.PlayerObject == null) return;
             var loadout = client.PlayerObject.GetComponent<AbilityLoadout>();
             if (loadout == null || !loadout.CanUpgrade(slot)) return;
-            if (!RestStopRules.CanUpgradeAbility(loadout.Get(slot) != null, loadout.Level(slot), _currency.Value, _config.UpgradeCost)) return;
-            if (!ServerTrySpendCurrency(_config.UpgradeCost)) return;
+            var upgradeCost = RestStopRules.UpgradeCost(_config.UpgradeCost, loadout.Level(slot));
+            if (!RestStopRules.CanUpgradeAbility(loadout.Get(slot) != null, loadout.Level(slot), _currency.Value, upgradeCost)) return;
+            if (!ServerTrySpendCurrency(upgradeCost)) return;
             loadout.ServerUpgrade(slot);
         }
 

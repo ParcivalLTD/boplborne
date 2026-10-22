@@ -9,11 +9,14 @@ namespace GraceRun.Run
     /// </summary>
     public static class RestStopRules
     {
-        public const int MaxAbilityLevel = 2;
+        public const int MaxAbilityLevel = 3;
 
-        /// <summary>True when ability in a slot can be upgraded to Level 2.</summary>
+        /// <summary>True when the ability in a slot can go up a level (to level 2 or 3) and the group can pay <paramref name="upgradeCost"/>.</summary>
         public static bool CanUpgradeAbility(bool hasAbility, int currentLevel, int currentCurrency, int upgradeCost) =>
-            hasAbility && currentLevel == 1 && CurrencyRules.CanAfford(currentCurrency, upgradeCost);
+            hasAbility && currentLevel >= 1 && currentLevel < MaxAbilityLevel && CurrencyRules.CanAfford(currentCurrency, upgradeCost);
+
+        /// <summary>Price of the next level: the base cost times the level the ability is at now (100 for level 2, 200 for level 3).</summary>
+        public static int UpgradeCost(int baseCost, int currentLevel) => baseCost * Mathf.Max(1, currentLevel);
 
         /// <summary>True when a team reroll can be purchased.</summary>
         public static bool CanBuyReroll(int currentCurrency, int rerollCost) =>
