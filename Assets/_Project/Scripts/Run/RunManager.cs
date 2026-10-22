@@ -36,8 +36,8 @@ namespace GraceRun.Run
         private readonly NetworkVariable<int> _currency = new(
             0, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Server);
 
-        private readonly NetworkVariable<PartyBuff> _activeBuff = new(
-            PartyBuff.None, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Server);
+        private readonly NetworkVariable<BuffStacks> _buffs = new(
+            default, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Server);
 
         private readonly NetworkVariable<RunResultData> _runResult = new(
             default, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Server);
@@ -60,7 +60,7 @@ namespace GraceRun.Run
         public event Action<int> CurrencyChanged;
 
         /// <summary>Raised on every PC when the active party buff changes.</summary>
-        public event Action<PartyBuff> ActiveBuffChanged;
+        public event Action<BuffStacks> BuffsChanged;
 
         /// <summary>Raised on every PC when the run results change (e.g. at run victory or defeat).</summary>
         public event Action<RunResultData> RunResultChanged;
@@ -73,7 +73,7 @@ namespace GraceRun.Run
         public bool InHub => _floor.Value == RunRules.HubFloor;
         public bool IsFinalFloor => RunRules.IsFinalFloor(_floor.Value, TotalFloors);
         public int SharedCurrency => _currency.Value;
-        public PartyBuff ActiveBuff => _activeBuff.Value;
+        public BuffStacks Buffs => _buffs.Value;
         public RunResultData RunResult => _runResult.Value;
 
         /// <summary>The boss chosen for the current floor, or null in the hub.</summary>
@@ -94,7 +94,7 @@ namespace GraceRun.Run
             Instance = this;
             _floor.OnValueChanged += OnFloorValueChanged;
             _currency.OnValueChanged += OnCurrencyValueChanged;
-            _activeBuff.OnValueChanged += OnBuffValueChanged;
+            _buffs.OnValueChanged += OnBuffValueChanged;
             _runResult.OnValueChanged += OnRunResultValueChanged;
             if (IsServer && _bossSpawner != null) _bossSpawner.BossSkipped += OnBossSkipped;
             if (!Application.isBatchMode)
@@ -108,7 +108,7 @@ namespace GraceRun.Run
         {
             _floor.OnValueChanged -= OnFloorValueChanged;
             _currency.OnValueChanged -= OnCurrencyValueChanged;
-            _activeBuff.OnValueChanged -= OnBuffValueChanged;
+            _buffs.OnValueChanged -= OnBuffValueChanged;
             _runResult.OnValueChanged -= OnRunResultValueChanged;
             if (_bossSpawner != null) _bossSpawner.BossSkipped -= OnBossSkipped;
             if (Instance == this) Instance = null;
@@ -250,7 +250,7 @@ namespace GraceRun.Run
         /// <summary>Server only: consumes the active one-off party buff after a boss fight.</summary>
         public void ServerConsumeBuff()
         {
-            if (IsServer) _activeBuff.Value = PartyBuff.None;
+            if (IsServer) _buffs.Value = default;
         }
 
         /// <summary>Client buys a team reroll for shared currency at a rest stop.</summary>
@@ -282,15 +282,17 @@ namespace GraceRun.Run
         public void BuyBuffRpc(PartyBuff buff, RpcParams rpcParams = default)
         {
             if (!IsServer || _fightLoop.Phase != FightPhase.RestStop) return;
-            if (!RestStopRules.CanBuyBuff(buff, _activeBuff.Value, _currency.Value, _config.BuffCost)) return;
-            if (!ServerTrySpendCurrency(_config.BuffCost)) return;
-            _activeBuff.Value = buff;
+            var tuning = _config.PartyBuffs;
+            var cost = tuning.CostOfNext(buff, _buffs.Value, _config.BuffCost);
+            if (!RestStopRules.CanBuyBuff(buff, _buffs.Value, tuning.MaxStacks, _currency.Value, cost)) return;
+            if (!ServerTrySpendCurrency(cost)) return;
+            _buffs.Value = _buffs.Value.Plus(buff);
         }
 
         private void ResetPlayersForRun()
         {
             _currency.Value = 0;
-            _activeBuff.Value = PartyBuff.None;
+            _buffs.Value = default;
             foreach (var client in NetworkManager.ConnectedClientsList)
             {
                 var player = client.PlayerObject;
@@ -319,7 +321,7 @@ namespace GraceRun.Run
                     health.ServerSetMax(0);
                     health.ServerRestoreFull();
                 }
-                var bonusMaxHp = _config.PartyBuffs.BonusMaxHp(_activeBuff.Value);
+                var bonusMaxHp = _config.PartyBuffs.BonusMaxHp(_buffs.Value);
                 if (bonusMaxHp > 0 && player.TryGetComponent<Health>(out var ironHealth))
                 {
                     ironHealth.ServerSetMax(ironHealth.Max + bonusMaxHp);
@@ -424,7 +426,7 @@ namespace GraceRun.Run
             Currency.NotifyAmountChanged(current);
         }
 
-        private void OnBuffValueChanged(PartyBuff previous, PartyBuff current) => ActiveBuffChanged?.Invoke(current);
+        private void OnBuffValueChanged(BuffStacks previous, BuffStacks current) => BuffsChanged?.Invoke(current);
 
         private void OnRunResultValueChanged(RunResultData previous, RunResultData current) => RunResultChanged?.Invoke(current);
     }

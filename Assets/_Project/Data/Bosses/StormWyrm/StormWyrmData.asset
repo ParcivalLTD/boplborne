@@ -16,7 +16,7 @@ MonoBehaviour:
   _displayName: The Storm Wyrm
   _floor: 4
   _accentColor: {r: 0.373, g: 0.722, b: 0.69, a: 1}
-  _baseHP: 720
+  _baseHP: 1010
   _hpScalePerExtraPlayer: 0.6
   _phase2Threshold: 0.5
   _phase1Attacks:

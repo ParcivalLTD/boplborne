@@ -39,7 +39,7 @@ namespace GraceRun.Abilities
         {
             var data = _loadout.Catalog.AimAssist;
             var aim = _runner.PreviewAim();
-            var show = data != null && (_runner.HoldingSlot >= 0 || aim.Tilted);
+            var show = data != null && _runner.HoldingSlot >= 0;
             var showRing = show && aim.HasTarget;
             _line.enabled = _lineOutline.enabled = show;
             _ring.enabled = _ringOutline.enabled = showRing;

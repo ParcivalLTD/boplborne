@@ -23,6 +23,10 @@ namespace GraceRun.Run
         public static bool CanBuyBuff(PartyBuff requestedBuff, PartyBuff currentBuff, int currentCurrency, int buffCost) =>
             requestedBuff != PartyBuff.None && requestedBuff != currentBuff && CurrencyRules.CanAfford(currentCurrency, buffCost);
 
+        /// <summary>True when one more <paramref name="requestedBuff"/> can be bought: under the stack cap and affordable at <paramref name="cost"/>.</summary>
+        public static bool CanBuyBuff(PartyBuff requestedBuff, BuffStacks owned, int maxStacks, int currentCurrency, int cost) =>
+            requestedBuff != PartyBuff.None && owned.Of(requestedBuff) < maxStacks && CurrencyRules.CanAfford(currentCurrency, cost);
+
         /// <summary>Applies the active party buff's damage multiplier to player hits on enemies; teammates and bosses are unaffected.</summary>
         public static int BuffedDamage(int baseDamage, bool isFriendly, Team attackerTeam, float buffDamageMultiplier)
         {

@@ -16,7 +16,7 @@ MonoBehaviour:
   _displayName: The Gatekeeper
   _floor: 1
   _accentColor: {r: 0.6039216, g: 0.6392157, b: 0.70980394, a: 1}
-  _baseHP: 600
+  _baseHP: 840
   _hpScalePerExtraPlayer: 0.6
   _phase2Threshold: 0.5
   _phase1Attacks:

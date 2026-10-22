@@ -28,7 +28,7 @@ namespace GraceRun.Core.Settings
         private const string CustomSliceKey = "settings.custom.slice";
         private const string CustomMouseKey = "settings.custom.mouse";
         private const string AimAssistKey = "settings.aimAssist";
-        private const string HoldToAimKey = "settings.holdToAim";
+        private const string HoldToAimKey = "settings.holdToAim.v2";
 
         private static readonly List<Vector2Int> ResolutionList = new();
         private static SettingsData _defaults;
@@ -57,7 +57,7 @@ namespace GraceRun.Core.Settings
         public static bool AimAssist { get; private set; } = true;
 
         /// <summary>Keyboard and gamepad abilities fire when the button is released, with an aim line while held.</summary>
-        public static bool HoldToAim { get; private set; }
+        public static bool HoldToAim { get; private set; } = true;
 
         /// <summary>The player's own picks, used while <see cref="Scheme"/> is Custom (kept for later when it is not).</summary>
         public static CustomControls Custom { get; private set; } = CustomControls.Default;
@@ -100,7 +100,7 @@ namespace GraceRun.Core.Settings
             Resolution = new Vector2Int(PlayerPrefs.GetInt(WidthKey, 0), PlayerPrefs.GetInt(HeightKey, 0));
             Nickname = GraceRun.Net.NicknameRules.Sanitize(PlayerPrefs.GetString(NicknameKey, string.Empty));
             AimAssist = PlayerPrefs.GetInt(AimAssistKey, 1) == 1;
-            HoldToAim = PlayerPrefs.GetInt(HoldToAimKey, 0) == 1;
+            HoldToAim = PlayerPrefs.GetInt(HoldToAimKey, 1) == 1;
             LoadControls();
             Apply(true);
         }
@@ -154,7 +154,7 @@ namespace GraceRun.Core.Settings
                 Scheme = ControlScheme.KeyboardOnly;
                 Custom = CustomControls.Default;
                 AimAssist = true;
-                HoldToAim = false;
+                HoldToAim = true;
             }, true);
         }
 

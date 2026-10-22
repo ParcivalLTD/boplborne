@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using GraceRun.Abilities;
 using GraceRun.Core;
 using GraceRun.Run;
@@ -103,7 +104,7 @@ namespace GraceRun.UI
 
             var config = run.Config;
             var currency = run.SharedCurrency;
-            var buff = run.ActiveBuff;
+            var stacks = run.Buffs;
 
             if (_currencyText != null)
                 _currencyText.text = $"Shared Currency:  <color=#{ColorUtility.ToHtmlStringRGB(Brass)}>✦ {currency}</color>";
@@ -160,15 +161,15 @@ namespace GraceRun.UI
             var tuning = config != null ? config.PartyBuffs : new PartyBuffTuning();
             if (_buffStatusText != null)
             {
-                if (buff == PartyBuff.None)
-                    _buffStatusText.text = "Active: None (buy one below for the next fight)";
+                if (stacks.IsEmpty)
+                    _buffStatusText.text = "Active: None (buffs stack; buy as many as you like for the next fight)";
                 else
-                    _buffStatusText.text = $"Active: <color=#{ColorUtility.ToHtmlStringRGB(CardAccent)}>{BuffName(buff, tuning)}</color>";
+                    _buffStatusText.text = $"Active: <color=#{ColorUtility.ToHtmlStringRGB(CardAccent)}>{StackSummary(stacks, tuning)}</color>";
             }
 
-            RefreshBuffButton(_buff1Button, _buff1Text, PartyBuff.EmpoweredAttacks, buff, currency, buffCost, tuning);
-            RefreshBuffButton(_buff2Button, _buff2Text, PartyBuff.IronSkin, buff, currency, buffCost, tuning);
-            RefreshBuffButton(_buff3Button, _buff3Text, PartyBuff.Swiftstride, buff, currency, buffCost, tuning);
+            RefreshBuffButton(_buff1Button, _buff1Text, PartyBuff.EmpoweredAttacks, stacks, currency, buffCost, tuning);
+            RefreshBuffButton(_buff2Button, _buff2Text, PartyBuff.IronSkin, stacks, currency, buffCost, tuning);
+            RefreshBuffButton(_buff3Button, _buff3Text, PartyBuff.Swiftstride, stacks, currency, buffCost, tuning);
 
             // 4. Advance / Next Floor Button
             var isLeader = loop != null && loop.IsLocalLeader;
@@ -176,12 +177,27 @@ namespace GraceRun.UI
             if (_waitingLeaderText != null) _waitingLeaderText.gameObject.SetActive(!isLeader);
         }
 
-        private static void RefreshBuffButton(Button button, Text label, PartyBuff offered, PartyBuff active,
-            int currency, int cost, PartyBuffTuning tuning)
+        private static void RefreshBuffButton(Button button, Text label, PartyBuff offered, BuffStacks owned,
+            int currency, int baseCost, PartyBuffTuning tuning)
         {
             if (button == null) return;
-            button.interactable = RestStopRules.CanBuyBuff(offered, active, currency, cost);
-            if (label != null) label.text = $"{BuffShortName(offered, tuning)} — {cost} ✦";
+            var cost = tuning.CostOfNext(offered, owned, baseCost);
+            var count = owned.Of(offered);
+            button.interactable = RestStopRules.CanBuyBuff(offered, owned, tuning.MaxStacks, currency, cost);
+            if (label == null) return;
+            var have = count > 0 ? $" x{count}" : string.Empty;
+            label.text = count >= tuning.MaxStacks
+                ? $"{BuffShortName(offered, tuning)}{have} (max)"
+                : $"{BuffShortName(offered, tuning)}{have} — {cost} ✦";
+        }
+
+        private static string StackSummary(BuffStacks stacks, PartyBuffTuning t)
+        {
+            var parts = new List<string>();
+            if (stacks.Empowered > 0) parts.Add($"Empowered x{stacks.Empowered} (+{stacks.Empowered * Percent(t.EmpoweredDamageMultiplier)}% Dmg)");
+            if (stacks.IronSkin > 0) parts.Add($"Iron Skin x{stacks.IronSkin} (+{stacks.IronSkin * t.IronSkinBonusMaxHp} Max HP)");
+            if (stacks.Swiftstride > 0) parts.Add($"Swiftstride x{stacks.Swiftstride} (+{stacks.Swiftstride * Percent(t.SwiftstrideMoveMultiplier)}% Spd)");
+            return string.Join(", ", parts);
         }
 
         private static string BuffName(PartyBuff buff, PartyBuffTuning t) => buff switch

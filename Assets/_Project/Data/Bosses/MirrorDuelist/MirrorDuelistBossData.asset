@@ -16,7 +16,7 @@ MonoBehaviour:
   _displayName: The Mirror Duelist
   _floor: 5
   _accentColor: {r: 0.725, g: 0.651, b: 1, a: 1}
-  _baseHP: 680
+  _baseHP: 950
   _hpScalePerExtraPlayer: 0.6
   _phase2Threshold: 0.5
   _phase1Attacks:

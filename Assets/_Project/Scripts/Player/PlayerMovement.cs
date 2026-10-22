@@ -175,7 +175,7 @@ namespace GraceRun.Player
             if (ControlSuspended || ControlLocked) return;
 
             var slow = _slowTimer > 0f ? _slowMultiplier : 1f;
-            var buffMult = Run.PartyBuffTuning.TryGetActive(out var buffs, out var buff) ? buffs.MoveMultiplier(buff) : 1f;
+            var buffMult = Run.PartyBuffTuning.TryGetActive(out var buffs, out var stacks) ? buffs.MoveMultiplier(stacks) : 1f;
             var wanted = inputX * _data.RunSpeed * SpeedMultiplier * slow * buffMult;
             var changing = Mathf.Abs(wanted) > 0.01f;
             var rate = changing ? _data.Acceleration : _data.Deceleration;
