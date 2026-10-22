@@ -28,6 +28,10 @@ THEMES = {
     "gatekeeper": dict(top="#D5D8E4", bot="#EEEFF4", mid="#C3C8D8", midrim="#D6DAE6", near="#B0B6CA", nearrim="#C8CDDD", theme="keep"),
     "broodmother": dict(top="#E6E7CC", bot="#F5F5E6", mid="#D8DAB4", midrim="#E4E6C6", near="#C6C892", nearrim="#D6D8AA", theme="grove"),
     "belltwins": dict(top="#E6D8E0", bot="#F6EEF0", mid="#D6C6D0", midrim="#E4D6DE", near="#C4AEBC", nearrim="#D8C6D2", theme="belfry"),
+    # warm storm-grey: the teal Wyrm must stand out, so no teal or blue here
+    "stormwyrm": dict(top="#CFC9C2", bot="#EDE7DD", mid="#BDB6B0", midrim="#D0CAC3", near="#ADA6A3", nearrim="#C4BDB9", theme="ruins"),
+    # warm rose-ivory ballroom: the lavender Duelist must stand out, so no violet here
+    "mirrorduelist": dict(top="#E9DAD3", bot="#F7EEE6", mid="#D9C7C0", midrim="#E8D9D1", near="#C7B1AC", nearrim="#DCC9C3", theme="hall"),
 }
 
 
@@ -222,8 +226,49 @@ def near_belfry(d, t, rng):
     d.rectangle([0, base - 8, W, base], fill=col)
 
 
-MID = dict(arches=mid_arches, keep=mid_keep, grove=mid_grove, belfry=mid_belfry)
-NEAR = dict(arches=near_arches, keep=near_keep, grove=near_grove, belfry=near_belfry)
+def near_ruins(d, t, rng):
+    """Broken terrace columns, floating rock chunks and tattered pennants, all pale warm grey."""
+    col, rim = rgb(t["near"]), rgb(t["nearrim"])
+    base = HORIZON
+    for x in (28, 150, 300, 420):  # snapped columns
+        h = rng.randrange(36, 78)
+        d.rectangle([x, base - h, x + 18, base], fill=col)
+        d.polygon([(x - 3, base - h), (x + 6, base - h - 8), (x + 12, base - h - 3), (x + 21, base - h)], fill=rim)
+        d.line([x + 5, base - h + 4, x + 5, base], fill=rim)
+    for x, y in ((90, 60), (230, 36), (380, 76)):  # floating rubble
+        r = rng.randrange(12, 20)
+        pts = [(x - r, y), (x - r // 2, y - r // 2), (x + r // 2, y - r // 2), (x + r, y), (x + 2, y + r)]
+        d.polygon(pts, fill=rim)
+        d.line(pts + [pts[0]], fill=col)
+    for x in (70, 340):  # pennant poles
+        d.rectangle([x, 20, x + 2, base], fill=col)
+        pts = [(x + 2, 22), (x + 40, 32), (x + 24, 36), (x + 38, 46), (x + 2, 44)]
+        d.polygon(pts, fill=rim)
+        d.line(pts + [pts[0]], fill=col)
+    d.rectangle([0, base - 6, W, base], fill=col)
+
+
+def near_hall(d, t, rng):
+    """Candelabra and drapes for a ballroom, in pale warm taupe."""
+    col, rim = rgb(t["near"]), rgb(t["nearrim"])
+    base = HORIZON
+    for x in (20, 190, 310, 450):  # drapes at the top
+        for k in range(3):
+            l = rng.randrange(26, 52)
+            d.polygon([(x + k * 14, 0), (x + k * 14 + 14, 0), (x + k * 14 + 11, l), (x + k * 14 + 3, l - 8)], fill=rim)
+        d.line([x - 2, 6, x + 46, 6], fill=col, width=3)
+    for x in (80, 240, 400):  # candelabra
+        d.rectangle([x, base - 64, x + 3, base], fill=col)
+        d.rectangle([x - 10, base - 4, x + 13, base], fill=col)
+        d.line([x - 14, base - 50, x + 17, base - 50], fill=col, width=2)
+        for dx in (-14, 1, 16):
+            d.rectangle([dx + x - 1, base - 62, dx + x + 3, base - 50], fill=rim)
+            d.ellipse([dx + x - 1, base - 68, dx + x + 3, base - 62], fill=rim)
+    d.rectangle([0, base - 8, W, base], fill=col)
+
+
+MID = dict(arches=mid_arches, keep=mid_keep, grove=mid_grove, belfry=mid_belfry, ruins=mid_keep, hall=mid_arches)
+NEAR = dict(arches=near_arches, keep=near_keep, grove=near_grove, belfry=near_belfry, ruins=near_ruins, hall=near_hall)
 
 
 def mirrored(im: Image.Image) -> Image.Image:

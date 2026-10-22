@@ -183,3 +183,41 @@ Not PixelLab: `tower.png` (160x480), `window_lit.png`, `window_dark.png` (24x24)
 ## Training dummy (hub)
 
 `create_image_pro` 48x64, job `bcc1e3d5-876f-43ae-a3f4-196821138539`, 16 candidates, **candidate 5** picked (stitched burlap dummy). Idle sway: `animate_image_pixminimax` job `4edb21f2-9db8-4d8f-aa2c-988737652619` (8 frames). Hit reaction: job `66cf7965-7358-4cce-b491-f5c19b518268`, frames 4-7 used (frames 1-3 have stray puff outlines). Files: `Art/Props/Dummy/idle_00-07.png`, `hit_00-03.png`; wired by Grace Run → Build Training Dummy Art.
+
+## Arena art, Storm Wyrm and Mirror Duelist
+| env stormwyrm backdrop | create_image_pro 480x270, 12-colour warm grey palette | ae76f2ec-cc77-4be3-9715-8d8378ae97f1 |
+| env mirrorduelist backdrop | create_image_pro 480x270, 12-colour warm rose-ivory palette | 4a56f5a1-336b-4d9a-9892-ef3de2c207af |
+
+## The Storm Wyrm (floor 4)
+
+Made by an agent without a user pick (other candidates: `scratch/art/stormwyrm/cand*.png`, git-ignored). Anchor = candidate 0, recoloured in Python (steel to accent #5FB8B0, stone light to #142229, belly stripes to steel), then `cleanup.snap`. All poses are `animate_image_pixminimax`, 168x112, west, side, from the uploaded cleaned anchor (`upload:d1df6a7b-6c5f-4b09-83d9-3e7bbae91adf`), then `cleanup.snap` (+ steel blotch to teal, stone light to dark teal). Scripts (git-ignored): `scratch/art/stormwyrm/{fetch,pick,mkbolt}.py`.
+
+| Asset | Job id | Frames used (job index) |
+| --- | --- | --- |
+| Anchor | `c492d74e-b850-4eed-8de4-4989fb64037d` | 0 (`create_image_pro`, 168x112, 10-colour palette from grace-run.gpl) |
+| idle | `a14af9ef-202c-4428-a5f8-bd9170478f2d` | 0, 2, 4, 6 |
+| tail sweep (wind-up, strike, recovery) | `540aa703-d69f-466e-8292-7eb772ff2ae1` | 2, 4, 6 |
+| lightning columns / flanks | `f285297c-1dd1-4666-a13f-53c2ab8deab8` | 2, 4, 7 |
+| thunder lunge | `17d2b1dc-c7f4-45fa-a555-19522ccd30f3` | 4, 6, 7 |
+| storm slam | `14c83f47-f278-4290-a5e2-3bc2e7beff02` | 3, 5, 7 (stray whisker lines above the head erased in `pick.py`) |
+| stagger | `1a15e234-f919-4c51-ba3a-0891f9b37d3e` | 3 |
+| death | `19ef2523-6b5d-4879-b980-efd8f4d1164e` | 4, 5, 6, 8 |
+
+Not PixelLab: `stormwyrm_bolt_strike.png` (44x48) and `stormwyrm_bolt_telegraph.png` (4x48), the lightning column tiles, are drawn procedurally with `scratch/art/stormwyrm/mkbolt.py` so they repeat seamlessly top to bottom.
+
+## Mirror Duelist (8.7, agent pick)
+
+Anchor: `create_image_pro` 170x170, job `2b05af70-4cf5-4817-8685-08ad531cbe55`, **candidate 1** (style ref: cleaned Bell Twin A anchor, upload `913d1a65-8c8f-4b71-8dda-099f442f6419`; palette ink, lavender #B9A6FF, fog, stone, bone, white, steel, sepia, paper). Candidates 0/2/3 are in `scratch/art/mirrorduelist/raw/`. The mirror glass was flood-filled to ghost blue #A8C8FF (upload `80eef88f-3b18-43f0-99a4-9b551a4f71c9`) so `scratch/art/mirrorduelist/{prep,split}.py` can cut it off every pose as a separate near-white, tintable sprite (`duelist_*_glass.png`; the body keeps a fog-grey disc). Snapped to a restricted palette in `prep.py` (not `cleanup.py`, whose palette includes other bosses' accents).
+
+All poses `animate_image_pixminimax`, 170x170, west, side, 8 frames (index 0 = input):
+
+| Pose | Job id | Frames used |
+| --- | --- | --- |
+| idle | `8272bdb0-1aa7-4ab9-b5a2-f8a1958599e8` | 1, 3, 5, 7 |
+| rapier lunge | `8b7ec228-2207-4912-a5f9-46ccbdf58821` | 3, 6, 7 |
+| mirror cut | `d53c299b-9212-41f9-be5f-f51c97f82973` | 3, 4, 6 |
+| mirror echo | `d953bc14-ba26-48af-abf2-e6331ab90f7d` | 1, 5, 7 |
+| stagger | `4561562f-a4fd-4491-883b-f118aae99a49` | 4 |
+| death | `8362120c-aed0-441d-b2f5-cb28646a93a2` | 1, 3, 7, 8 |
+
+Not PixelLab: shard, wave and the four echo icons are drawn by `tools/art/make_mirror_fx.py`.

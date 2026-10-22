@@ -1,0 +1,26 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 88629c4834a1846408927e0f4bdc09b8, type: 3}
+  m_Name: LightningColumnData
+  m_EditorClassIdentifier: GraceRun.Runtime::GraceRun.Bosses.Behaviours.LightningColumnData
+  _delay: 1.1
+  _strikeTime: 0.3
+  _fadeTime: 0.3
+  _width: 1.8
+  _height: 30
+  _damage: 32
+  _knockback: {x: 0, y: 10}
+  _telegraphWidth: 0.14
+  _telegraphAlpha: 0.55
+  _telegraphColor: {r: 0.7, g: 0.95, b: 0.95, a: 1}
+  _strikeColor: {r: 0.95, g: 1, b: 1, a: 1}
+  _strikeCue: {fileID: 11400000, guid: 90a83b85450e6ae448c49b091142678c, type: 2}

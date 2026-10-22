@@ -69,6 +69,7 @@ namespace GraceRun.Bosses.Behaviours
             _direction.OnValueChanged += OnDirectionChanged;
             ApplyDirection(_direction.Value);
             UpdateAlpha();
+            if (_data.SpawnCue != null) _data.SpawnCue.Play();
         }
 
         public override void OnNetworkDespawn()

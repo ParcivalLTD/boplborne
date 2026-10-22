@@ -1,0 +1,70 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bf20e1d2ce098f341ba2663937059ed5, type: 3}
+  m_Name: StormWyrmData
+  m_EditorClassIdentifier: GraceRun.Runtime::GraceRun.Bosses.BossData
+  _id: storm_wyrm
+  _displayName: The Storm Wyrm
+  _floor: 4
+  _accentColor: {r: 0.373, g: 0.722, b: 0.69, a: 1}
+  _baseHP: 720
+  _hpScalePerExtraPlayer: 0.6
+  _phase2Threshold: 0.5
+  _phase1Attacks:
+  - {fileID: 11400000, guid: 21d209d1d2b8f9f4fb8b5d4367abf70a, type: 2}
+  - {fileID: 11400000, guid: 7baff1ec785522b4e81b7183e5948e3e, type: 2}
+  - {fileID: 11400000, guid: 5e5428891d034a24ba9523db85c23e79, type: 2}
+  _phase2Attacks:
+  - {fileID: 11400000, guid: 4a5eda749be89a749bb02f5672e64f1d, type: 2}
+  - {fileID: 11400000, guid: 7baff1ec785522b4e81b7183e5948e3e, type: 2}
+  - {fileID: 11400000, guid: 6b10ba4fadadb8641b00e7b60d5466b2, type: 2}
+  - {fileID: 11400000, guid: 5e5428891d034a24ba9523db85c23e79, type: 2}
+  - {fileID: 11400000, guid: 19014caf79b623c499ca1ee6dacf3c7b, type: 2}
+  _idleTime: 0.55
+  _targetSwitchInterval: 7
+  _walkSpeed: 3.4
+  _chaseDistance: 12
+  _chaseSpeedMultiplier: 2
+  _attackStartLead: 0.1
+  _despawnDelay: 1.5
+  _feel:
+    _transitionTime: 1.6
+    _transitionShoveRadius: 9
+    _transitionShove: {x: 14, y: 7}
+    _transitionCue: {fileID: 0}
+    _weakPointMultiplier: 1.75
+    _weakPointGrace: 0.15
+    _enrageAfter: 90
+    _enrageIdleScale: 0.6
+    _enrageSpeedScale: 1.25
+    _maxRepeats: 2
+    _feintChancePhase1: 0.05
+    _feintChancePhase2: 0.2
+    _feintRecovery: 0.8
+    _repositionChance: 0.25
+    _repositionTime: 0.6
+    _repositionBackOffRange: 5
+    _poiseMax: 120
+    _poiseRegen: 8
+    _poiseRegenDelay: 2
+    _staggerTime: 3.5
+    _staggerDamageMultiplier: 1.3
+    _interruptStaggerTime: 2.5
+    _idleShrinkPerExtraPlayer: 0.08
+    _pressureChancePerPlayer: 0.1
+    _variantChance: 0.3
+    _adaptWindow: 14
+    _adaptMinHits: 6
+    _adaptShare: 0.6
+    _adaptResistance: 0.7
+  _prefab: {fileID: 6321937765397557630, guid: fddb5fab75c968e41b74593fe265fc06, type: 3}
+  _arenaPrefab: {fileID: 7121268250761901515, guid: 74c3590847407464c83ad6882b49d22e, type: 3}

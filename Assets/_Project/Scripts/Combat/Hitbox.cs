@@ -43,6 +43,9 @@ namespace GraceRun.Combat
             if (IsArmed && _detection == HitDetection.VictimSide) TryHit(other);
         }
 
+        /// <summary>Sets who this hitbox belongs to; for hitboxes built at runtime (the Mirror Duelist's reflections).</summary>
+        public void SetAttacker(NetworkObject attacker) => _attacker = attacker;
+
         /// <summary>Starts a new swing: clears the hit list and enables the collider.</summary>
         public void Arm(int amount, Vector2 knockback)
         {

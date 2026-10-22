@@ -1,0 +1,38 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cf49f4e03f190c242a10d63d36275ab9, type: 3}
+  m_Name: TailSweepSecond
+  m_EditorClassIdentifier: GraceRun.Runtime::GraceRun.Bosses.AttackData
+  _id: tail_sweep_second
+  _windup: 0.5
+  _active: 0.2
+  _recovery: 1
+  _punishWindow: 0.8
+  _damage: 30
+  _knockback: {x: 9, y: 7}
+  _hitboxOffset: {x: 0.3, y: -1.35}
+  _hitboxSize: {x: 7, y: 1.5}
+  _telegraphType: 1
+  _glowPart: 0
+  _weakPointOffset: {x: 1.6, y: 1}
+  _lungeDistance: 0
+  _lungeTime: 0.2
+  _followUp: {fileID: 0}
+  _behaviour: {fileID: 0}
+  _windupCue: {fileID: 11400000, guid: 17c9b61447013054895bde8aebd02a57, type: 2}
+  _strikeCue: {fileID: 11400000, guid: 50da4ed5873693b40b300358555b9b61, type: 2}
+  _interruptDamage: 0
+  _interruptContributors: 1
+  _weight: 1
+  _cooldown: 0
+  _minRange: 0
+  _maxRange: 5.5

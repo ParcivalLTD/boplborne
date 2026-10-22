@@ -62,6 +62,7 @@ namespace GraceRun.Bosses
             Behaviours.BroodCrawler.ServerDespawnAll();
             Behaviours.WebZone.ServerDespawnAll();
             Behaviours.BellShockwave.ServerDespawnAll();
+            Behaviours.LightningColumn.ServerDespawnAll();
             var all = BossBrain.All;
             for (var i = all.Count - 1; i >= 0; i--)
             {

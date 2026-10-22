@@ -69,6 +69,28 @@ namespace GraceRun.Editor.Content
             new Ledge("Loft", 35f, 5.5f, 6f),
         };
 
+        // The Storm Wyrm's Storm Slam removes about half of all ledges for 6 s, so there are many ledges at varied heights
+        // (some always remain), a few high perches for air control, and bare floor between stacks to run on
+        // (Lightning Columns land under every player, the Tail Sweep is a low 10-wide hit).
+        private static readonly Ledge[] StormWyrmLedges =
+        {
+            new Ledge("Drift", 0f, 3.5f, 5f),
+            new Ledge("Cloudstep", 8f, 2.5f, 5f),
+            new Ledge("Spire", 14f, 5.5f, 4f),
+            new Ledge("Terrace", 20f, 3.5f, 6f),
+            new Ledge("Arch", 26f, 5f, 4f),
+            new Ledge("Rubble", 31f, 2.5f, 3f),
+        };
+
+        // The Mirror Duelist is a duel stage: a clear middle for the reflections to cross, and mirrored low and mid ledges
+        // on both flanks (its reflections stand across the target and across the centre), none above a single jump and a half.
+        private static readonly Ledge[] MirrorDuelistLedges =
+        {
+            new Ledge("Dais", 10f, 2.5f, 5f),
+            new Ledge("Gallery", 17.5f, 4.5f, 5f),
+            new Ledge("Balcony", 25f, 3f, 5f),
+        };
+
         /// <summary>Inner half width, extra height above the standard 22.5-unit view and ledges (null = the generic grid), per arena.</summary>
         private static readonly (string Name, float HalfWidth, float ExtraHeight, Ledge[] Ledges)[] Layouts =
         {
@@ -78,8 +100,8 @@ namespace GraceRun.Editor.Content
             ("BroodMotherArena", 32f, 0f, BroodMotherLedges),
             ("BellTwinsArena", 40f, 0f, BellTwinsLedges),
             ("FinalTestBossArena", 36f, 10f, null),
-            ("StormWyrmArena", 34f, 0f, null),
-            ("MirrorDuelistArena", 30f, 0f, null),
+            ("StormWyrmArena", 34f, 0f, StormWyrmLedges),
+            ("MirrorDuelistArena", 30f, 0f, MirrorDuelistLedges),
         };
 
         /// <summary>Lays out just the arena called <paramref name="name"/> from its row in the table.</summary>

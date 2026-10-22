@@ -1,3 +1,4 @@
+using GraceRun.Core.Audio;
 using UnityEngine;
 
 namespace GraceRun.Bosses.Behaviours
@@ -23,6 +24,10 @@ namespace GraceRun.Bosses.Behaviours
         [SerializeField, Min(0f)] private float _fadeOutTime = 0.35f;
         [SerializeField, Range(0f, 1f)] private float _baseAlpha = 0.85f;
 
+        [SerializeField, Tooltip("Played on every PC when a wave or shard spawns (local only). Empty = silent.")]
+        private AudioCue _spawnCue;
+
+        public AudioCue SpawnCue => _spawnCue;
         public float Speed => _speed;
         public float Lifetime => _lifetime;
         public int Damage => _damage;

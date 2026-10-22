@@ -34,7 +34,14 @@ RAMPS = {
     "gatekeeper": ["#E6E7EE", "#CFD2DE", "#B3B8C9", "#9096AB", "#6F7590"],
     "broodmother": ["#EBEBCB", "#D6D6A4", "#BDBD82", "#9C9C66", "#767649"],
     "belltwins": ["#F2E3C0", "#E3CB9C", "#CEAF78", "#AB8C5C", "#836845"],
+    # warm storm-grey cloud stone; the teal Wyrm stands out against it
+    "stormwyrm": ["#EEEAE3", "#D9D4CC", "#BDB8B2", "#96928F", "#6E6C70"],
+    # warm rose-ivory ballroom stone; the lavender Duelist stands out against it
+    "mirrorduelist": ["#F5ECE4", "#E6D8CE", "#CDBBB2", "#A99A9A", "#82757E"],
 }
+
+# Accent of the ledge underside strip, the part players must read: Storm Wyrm teal, Mirror Duelist lavender.
+LEDGE_ACCENT = {"stormwyrm": "#5FB8B0", "mirrorduelist": "#B9A6FF"}
 
 
 class Canvas:
@@ -156,7 +163,7 @@ def make_wall(ramp, style, rng):
     return cv.img
 
 
-def make_platform(ramp, style, rng):
+def make_platform(ramp, style, rng, accent=None):
     cv = Canvas(48, 12)
     c = [hexc(x) for x in ramp]
     cv.rect(0, 0, 48, 12, c[1])
@@ -174,6 +181,19 @@ def make_platform(ramp, style, rng):
     for y in range(2, 11):  # bracket ends
         cv.put(2, y, c[3])
         cv.put(45, y, c[3])
+    if accent:  # coloured underside strip and a dark base line so the ledge reads on any backdrop
+        a = hexc(accent)
+        for y in range(1, 8):  # darker body than the backdrop so the ledge reads
+            for x in range(2, 46):
+                cv.put(x, y, c[3] if y > 2 else c[2])
+        for x in range(1, 47):
+            cv.put(x, 0, c[4])
+        for x in range(2, 46):
+            cv.put(x, 1, c[0])
+            cv.put(x, 8, c[3])
+            cv.put(x, 9, a)
+            cv.put(x, 10, a)
+            cv.put(x, 11, c[4])
     return cv.img
 
 
@@ -194,6 +214,52 @@ def make_pillar(ramp, style, rng):
     for y in (3, 4, 19, 20, 52, 53, 68, 69, 70, 71):
         for x in range(24):
             cv.put(x, y, c[3] if y in (4, 20, 53, 71) else c[2])
+    return cv.img
+
+
+def make_mirror_pillar(ramp, accent):
+    """A tall glass pane in a slim frame: lavender-tinted glass with diagonal glints."""
+    cv = Canvas(24, 72)
+    c = [hexc(x) for x in ramp]
+    a = hexc(accent)
+    cv.rect(0, 0, 24, 72, c[1])
+    glass = tuple(int(v * 0.55 + w * 0.45) for v, w in zip(c[0][:3], a[:3])) + (255,)
+    shade = tuple(int(v * 0.7 + w * 0.3) for v, w in zip(c[1][:3], a[:3])) + (255,)
+    cv.rect(5, 3, 19, 69, glass)
+    for y in range(3, 69):
+        if (y // 12) % 2 == 0:
+            for d in (0, 1):
+                cv.put(7 + (y * 5 // 12 + d) % 10, y, hexc("#FFFFFF"))
+        else:
+            cv.put(6 + (y * 5 // 12) % 12, y, shade)
+    for x in range(5, 19):
+        cv.put(x, 3, c[3])
+        cv.put(x, 68, c[3])
+    for y in range(3, 69):
+        cv.put(5, y, c[3])
+        cv.put(18, y, c[3])
+    for band in (0, 1, 2, 21, 22, 23, 48, 49, 50, 69, 70, 71):  # capital and base
+        for x in range(24):
+            cv.put(x, band, c[0])
+    for y in (20, 71):
+        for x in range(24):
+            cv.put(x, y, c[3])
+    return cv.img
+
+
+def make_checker_floor(ramp, rng):
+    """Marble ballroom floor: a checkered cap row over stone bricks."""
+    cv = Canvas(96, 48)
+    c = [hexc(x) for x in ramp]
+    y = 0
+    for i, h in enumerate([14, 12, 12, 10]):
+        brick_row(cv, y, h, pattern(rng, 96, [24, 32, 40] if i == 0 else [24, 36, 48]), ramp, rng, 1 if i == 0 else min(i + 1, 2))
+        y += h
+    for x in range(96):
+        for yy in range(0, 12):
+            cv.put(x, yy, c[0] if ((x // 12) + (yy // 6)) % 2 == 0 else c[1])
+        cv.put(x, 12, c[2])
+        cv.put(x, 13, c[3])
     return cv.img
 
 
@@ -261,10 +327,13 @@ def make_all(arena, style, out: Path, seed=7):
         "floor": make_floor(ramp, style, rng),
         "fill": make_fill(ramp, style, rng),
         "wall": make_wall(ramp, style, rng),
-        "platform": make_platform(ramp, style, rng),
+        "platform": make_platform(ramp, style, rng, LEDGE_ACCENT.get(arena)),
         "pillar": make_pillar(ramp, style, rng),
         "beam": make_beam(ramp, style, rng),
     }
+    if arena == "mirrorduelist":
+        pieces["pillar"] = make_mirror_pillar(ramp, LEDGE_ACCENT[arena])
+        pieces["floor"] = make_checker_floor(ramp, rng)
     if style == "pixellab":
         pieces["floor"], pieces["fill"], pieces["wall"] = make_from_pixellab(ramp, None)
     for name, im in pieces.items():

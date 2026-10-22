@@ -39,6 +39,9 @@ namespace GraceRun.Bosses
         public sbyte Facing => _playing.Facing;
         public ulong TargetId => _playing.TargetId;
         public int PlayingId => _playing.AttackId;
+
+        /// <summary>Counts up with every attack the server starts; identical on every PC, so it can seed shared random picks.</summary>
+        public ushort Sequence => _playing.Sequence;
         public bool IsFeint => _playing.Feint;
 
         /// <summary>Seconds since the current link's start on this PC (negative while pending).</summary>

@@ -20,6 +20,10 @@ MonoBehaviour:
     - {fileID: 11400000, guid: 36077fc37a74ede43bc151b97fadadac, type: 2}
   - _bosses:
     - {fileID: 11400000, guid: 7d87600d87eb06f45859113eb7f202bf, type: 2}
+  - _bosses:
+    - {fileID: 11400000, guid: a9f46d0be797280458007ab83984f18e, type: 2}
+  - _bosses:
+    - {fileID: 11400000, guid: c7f2ca7f6abf2da45bf895e68b2c8be6, type: 2}
   _restAfterFloors: 020000000400000006000000i
   _currencyPerBoss: 100
   _bonusNoDeaths: 50

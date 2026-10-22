@@ -1,7 +1,7 @@
 """Renders the six Grace Run music loops into Assets/_Project/Audio/Music (22.05 kHz mono 16-bit WAV).
 
 Run:  python tools/audio/make_music.py [track ...]
-Tracks: hub, gatekeeper, brood, bell, victory, rest. Deterministic; needs numpy + scipy.
+Tracks: hub, gatekeeper, brood, bell, victory, rest, wyrm, duelist. Deterministic; needs numpy + scipy.
 """
 import os
 import sys
@@ -100,7 +100,33 @@ REST = dict(
         sec("A2", R_A, bass="walk", comp="sparse", lead="clarinet", harmony="clarinet", drums="brush", melody_id="A"),
     ])
 
-TRACKS = dict(hub=HUB, gatekeeper=GATEKEEPER, brood=BROOD, bell=BELL, victory=VICTORY, rest=REST)
+# ---- Storm Wyrm: stormy minor-key swing in E, 126 bpm -------------------------------------
+SW_A = ["Em", "Em|B7", "Am", "B7", "Em", "C|B7", "Am|Dm", "Em|B7"]
+SW_B = ["C", "G|B7", "Em", "Em|B7", "Am", "Dm|B7", "Em|C", "B7"]
+SW_C = ["Am", "B7", "Em|C", "B7"]
+WYRM = dict(
+    name="wyrm", bpm=126, swing=0.64, tonic=64, scale="harmonic", rhythm="swing", range=(62, 88), rest=0.1,
+    gains=dict(bass=1.0, comp=0.75, lead=0.95, brass=0.85, drums=1.0, extra=0.7), rt=0.8, wet=0.22, rms_db=-19,
+    sections=[
+        sec("A", SW_A, bass="walk", comp="offbeat", lead="clarinet", drums="swing", extra="arp", brass="march"),
+        sec("B", SW_B, bass="march", comp="charleston", lead="trumpet", drums="bright", brass="fanfare"),
+        sec("A2", SW_A, bass="walk", comp="offbeat", lead="trumpet", harmony="clarinet", drums="swing", extra="arp", brass="charleston", melody_id="A"),
+        sec("C", SW_C, bass="walk", comp="stride", lead="clarinet", drums="bright", brass="fanfare"),
+    ])
+
+# ---- Mirror Duelist: glassy lilting swing in D lydian, 104 bpm, heavy swing ----------------
+MD_A = ["D", "Dmaj7|Bm7", "Em7", "A7", "D", "F#m7|B7", "Em7", "A7|D"]
+MD_B = ["G", "Gm6", "D|Bm7", "Em7|A7", "G", "Gm6", "D|B7", "Em7|A7"]
+DUELIST = dict(
+    name="duelist", bpm=104, swing=0.7, tonic=62, scale="lydian", rhythm="rag", range=(69, 93), rest=0.14,
+    gains=dict(bass=0.85, comp=0.95, lead=0.95, brass=0.45, drums=0.6, extra=0.9), rt=0.9, wet=0.28, rms_db=-20, pizz=True,
+    sections=[
+        sec("A", MD_A, bass="walk", comp="sparse", lead="celesta", drums="brush", extra="bells"),
+        sec("B", MD_B, bass="walk", comp="stride", lead="vibes", drums="brush", extra="arp", brass="afterbeat"),
+        sec("A2", MD_A, bass="walk", comp="sparse", lead="vibes", harmony="celesta", drums="swing", extra="bells", melody_id="A"),
+    ])
+
+TRACKS = dict(hub=HUB, gatekeeper=GATEKEEPER, brood=BROOD, bell=BELL, victory=VICTORY, rest=REST, wyrm=WYRM, duelist=DUELIST)
 
 
 def main():

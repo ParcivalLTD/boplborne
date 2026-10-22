@@ -1,0 +1,46 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5c8eee4c924d6104080ad550ea7f9512, type: 3}
+  m_Name: MirrorDuelistPoses
+  m_EditorClassIdentifier: GraceRun.Runtime::GraceRun.Bosses.BossPoseSet
+  _idle:
+  - {fileID: 21300000, guid: d958a8f794bbc9640835e4ca14ed4a33, type: 3}
+  - {fileID: 21300000, guid: f17bfbe5378c99345a0021f2fdc20854, type: 3}
+  - {fileID: 21300000, guid: 283e326f05de27e4fa9e8c500fab6d34, type: 3}
+  - {fileID: 21300000, guid: aa7a5b064cab27e44970075652e033ce, type: 3}
+  _idleFps: 6
+  _stagger: {fileID: 21300000, guid: 405ee963646559f449860e7aad5b62d7, type: 3}
+  _staggerTime: 0.8
+  _death:
+  - {fileID: 21300000, guid: 8b6ae33e1dd885741a909c26bf398a7a, type: 3}
+  - {fileID: 21300000, guid: beaa4268a3550984d9207625cf1b1089, type: 3}
+  - {fileID: 21300000, guid: 3a3f316b53983e6488a303ac50c7a545, type: 3}
+  - {fileID: 21300000, guid: ab88f32855f07c943a80897170ae6f74, type: 3}
+  _deathFps: 5
+  _attacks:
+  - AttackIds:
+    - rapier_lunge
+    Windup: {fileID: 21300000, guid: f2cf6dd6f0d7c8d4bab83c50ff44a1d6, type: 3}
+    Strike: {fileID: 21300000, guid: ec14614fcacae4945b3e1e517aadbe79, type: 3}
+    Recovery: {fileID: 21300000, guid: 6150dc955373cf64382b8451b0166eaa, type: 3}
+  - AttackIds:
+    - mirror_cut
+    - mirror_cut_second
+    - mirror_cut_double
+    Windup: {fileID: 21300000, guid: c789724ea6d741d498e4b7fbd50bcfea, type: 3}
+    Strike: {fileID: 21300000, guid: 9335d225ec4abca4187d45338ad08e8e, type: 3}
+    Recovery: {fileID: 21300000, guid: 81c14a87ee2435a40920a7a896fe4c6f, type: 3}
+  - AttackIds:
+    - mirror_echo
+    Windup: {fileID: 21300000, guid: 6614f3588af27964b9d7de471214d397, type: 3}
+    Strike: {fileID: 21300000, guid: fa4d9b20b0958574abbb7cd1d9f3e59c, type: 3}
+    Recovery: {fileID: 21300000, guid: 0f8b0b2da28ac3e488d52ed9ae1cf720, type: 3}

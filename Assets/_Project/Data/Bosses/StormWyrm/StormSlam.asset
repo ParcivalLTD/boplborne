@@ -1,0 +1,38 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cf49f4e03f190c242a10d63d36275ab9, type: 3}
+  m_Name: StormSlam
+  m_EditorClassIdentifier: GraceRun.Runtime::GraceRun.Bosses.AttackData
+  _id: storm_slam
+  _windup: 1.25
+  _active: 0.25
+  _recovery: 1.3
+  _punishWindow: 1
+  _damage: 30
+  _knockback: {x: 8, y: 8}
+  _hitboxOffset: {x: 2.4, y: -1.4}
+  _hitboxSize: {x: 3.6, y: 1.4}
+  _telegraphType: 1
+  _glowPart: 0
+  _weakPointOffset: {x: 2.2, y: -1.2}
+  _lungeDistance: 0
+  _lungeTime: 0.2
+  _followUp: {fileID: 0}
+  _behaviour: {fileID: 11400000, guid: e169bb85e964f7c40946b8acbcd3ad91, type: 2}
+  _windupCue: {fileID: 11400000, guid: 6b8c25f3625466946a90e8d87dc78b39, type: 2}
+  _strikeCue: {fileID: 11400000, guid: b16ae03f11f5ef44eab5d7ae5ef96ed1, type: 2}
+  _interruptDamage: 0
+  _interruptContributors: 1
+  _weight: 1
+  _cooldown: 10
+  _minRange: 0
+  _maxRange: 7

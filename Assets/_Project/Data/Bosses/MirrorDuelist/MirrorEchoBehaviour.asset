@@ -1,0 +1,19 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 741907f73a592444b9518281a8313d44, type: 3}
+  m_Name: MirrorEchoBehaviour
+  m_EditorClassIdentifier: GraceRun.Runtime::GraceRun.Bosses.Behaviours.MirrorEchoBehaviour
+  _data: {fileID: 11400000, guid: b45f2bd93b9aef64ab9913baa247c868, type: 2}
+  _shardPrefab: {fileID: 3276919370767169605, guid: 40600635c3fd94a4eadfce4797528c23, type: 3}
+  _wavePrefab: {fileID: 3276919370767169605, guid: 42b5871e80b2efe4d9e9ffa1712efdf9, type: 3}
+  _floorY: -5
+  _waveHeight: 0.8

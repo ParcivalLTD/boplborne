@@ -36,6 +36,7 @@ namespace GraceRun.Editor.Content
             WireFeedback(cues);
             WireWeapons(cues);
             WireAttacks();
+            WireBossExtras();
             var sounds = BuildGameAudio(cues);
             var music = BuildMusic();
             WireSettings(mixer);
@@ -144,6 +145,21 @@ namespace GraceRun.Editor.Content
             }
         }
 
+        private static void WireBossExtras()
+        {
+            foreach (var (asset, field, cueName, clip, volume, pitch, minInterval) in AudioCueTable.BossExtras)
+            {
+                var data = AssetDatabase.LoadAssetAtPath<Object>($"Assets/_Project/Data/Bosses/{asset}.asset");
+                if (data == null)
+                {
+                    Debug.LogWarning($"[AudioBuilder] {asset} not found, cue {cueName} skipped.");
+                    continue;
+                }
+                var cue = WriteCue(BossCueFolder, new AudioCueTable.CueSpec(cueName, clip, volume, pitch, minInterval));
+                Apply(data, so => SerializedFields.Set(so, field, cue));
+            }
+        }
+
         private static GameAudioData BuildGameAudio(Dictionary<string, AudioCue> cues)
         {
             var sounds = LoadOrCreate<GameAudioData>($"{CueFolder}/GameAudioData.asset");
@@ -188,20 +204,34 @@ namespace GraceRun.Editor.Content
                 SetTrack(so.FindProperty("_victory"), Track("victory"), 0.4f);
                 SetTrack(so.FindProperty("_defeat"), null, 0f);
                 SetTrack(so.FindProperty("_defaultBoss"), Track("gatekeeper"), 0.4f);
-                var bosses = new[]
+                var bosses = new List<(BossData boss, string track)>();
+                foreach (var (folder, track) in AudioCueTable.BossMusic)
                 {
-                    ("Gatekeeper/GatekeeperData", "gatekeeper"), ("BroodMother/BroodMotherData", "brood"), ("BellTwins/BellTwinsData", "bell"),
-                };
+                    var boss = FindBoss(folder);
+                    if (boss != null && Track(track) != null) bosses.Add((boss, track));
+                    else Debug.LogWarning($"[AudioBuilder] No BossData or music_{track}.wav for {folder}, arena track skipped.");
+                }
                 var list = so.FindProperty("_bosses");
-                list.arraySize = bosses.Length;
-                for (var i = 0; i < bosses.Length; i++)
+                list.arraySize = bosses.Count;
+                for (var i = 0; i < bosses.Count; i++)
                 {
                     var element = list.GetArrayElementAtIndex(i);
-                    element.FindPropertyRelative("Boss").objectReferenceValue = Load<BossData>($"Assets/_Project/Data/Bosses/{bosses[i].Item1}.asset");
-                    SetTrack(element.FindPropertyRelative("Track"), Track(bosses[i].Item2), 0.4f);
+                    element.FindPropertyRelative("Boss").objectReferenceValue = bosses[i].boss;
+                    SetTrack(element.FindPropertyRelative("Track"), Track(bosses[i].track), 0.4f);
                 }
             });
             return music;
+        }
+
+        /// <summary>The BossData in a boss folder (found by type, so a renamed asset still works).</summary>
+        private static BossData FindBoss(string folder)
+        {
+            foreach (var guid in AssetDatabase.FindAssets("t:BossData", new[] { $"Assets/_Project/Data/Bosses/{folder}" }))
+            {
+                var boss = AssetDatabase.LoadAssetAtPath<BossData>(AssetDatabase.GUIDToAssetPath(guid));
+                if (boss != null) return boss;
+            }
+            return null;
         }
 
         private static void SetTrack(SerializedProperty track, AudioClip clip, float volume)

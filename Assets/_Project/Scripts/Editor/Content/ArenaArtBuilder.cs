@@ -33,7 +33,34 @@ namespace GraceRun.Editor.Content
             ("GatekeeperArena", "gatekeeper", false),
             ("BroodMotherArena", "broodmother", false),
             ("BellTwinsArena", "belltwins", false),
+            ("StormWyrmArena", "stormwyrm", false),
+            ("MirrorDuelistArena", "mirrorduelist", false),
         };
+
+        // Arenas whose ledges can vanish mid-fight (BreakablePlatform hides every Renderer under the ledge object),
+        // so their ledge art is parented to the ledge instead of the shared EnvArt child.
+        private static readonly string[] LedgeArtOnLedge = { "StormWyrmArena", "MirrorDuelistArena" };
+
+        /// <summary>Grace Run → Build New Arena Art: builds only the Storm Wyrm and Mirror Duelist arenas.</summary>
+        [MenuItem("Grace Run/Build New Arena Art (Wyrm + Duelist)")]
+        public static void RunNew()
+        {
+            var only = new[] { "StormWyrmArena", "MirrorDuelistArena" };
+            AssetDatabase.Refresh();
+            AssetDatabase.StartAssetEditing();
+            try
+            {
+                foreach (var a in Arenas) if (System.Array.IndexOf(only, a.Prefab) >= 0) ImportSprites(a.Folder);
+            }
+            finally
+            {
+                AssetDatabase.StopAssetEditing();
+                AssetDatabase.Refresh();
+            }
+            foreach (var a in Arenas) if (System.Array.IndexOf(only, a.Prefab) >= 0) Build(a.Prefab, a.Folder, a.Gate);
+            AssetDatabase.SaveAssets();
+            Debug.Log("New arena art built.");
+        }
 
         private static readonly (string Name, float Follow, int Order)[] Layers =
         {
@@ -107,7 +134,7 @@ namespace GraceRun.Editor.Content
 
                 var art = new GameObject("EnvArt").transform;
                 art.SetParent(root.transform, false);
-                BuildSolids(root.transform, art, folder);
+                BuildSolids(root.transform, art, folder, System.Array.IndexOf(LedgeArtOnLedge, prefabName) >= 0);
                 BuildPillars(root.transform, art, folder, gate);
                 BuildBackdrop(root, folder);
                 PrefabUtility.SaveAsPrefabAsset(root, path);
@@ -118,7 +145,7 @@ namespace GraceRun.Editor.Content
             }
         }
 
-        private static void BuildSolids(Transform arena, Transform art, string folder)
+        private static void BuildSolids(Transform arena, Transform art, string folder, bool ledgeArtOnLedge)
         {
             var floor = arena.Find("Floor");
             if (floor != null)
@@ -144,6 +171,19 @@ namespace GraceRun.Editor.Content
             {
                 if (!child.name.StartsWith("Platform")) continue;
                 var r = Rect(child);
+                if (ledgeArtOnLedge)
+                {
+                    // Art is a child of the ledge; the placeholder keeps its renderer (re-enabled by BreakablePlatform) but draws nothing.
+                    var old = child.Find("LedgeArt");
+                    if (old != null) Object.DestroyImmediate(old.gameObject);
+                    var tile = Tile(child, "LedgeArt", Load(folder, "platform"), new Rect(r.xMin, r.yMax - 0.5f, r.width, 0.5f), OrderPlatform);
+                    var ls = child.lossyScale;
+                    tile.transform.localScale = new Vector3(1f / ls.x, 1f / ls.y, 1f);
+                    tile.transform.position = new Vector3(r.center.x, r.yMax - 0.25f, 0f);
+                    var placeholder = child.GetComponent<SpriteRenderer>();
+                    if (placeholder != null) placeholder.sprite = null;
+                    continue;
+                }
                 Tile(art, child.name + "Art", Load(folder, "platform"), new Rect(r.xMin, r.yMax - 0.5f, r.width, 0.5f), OrderPlatform);
                 Disable(child);
             }

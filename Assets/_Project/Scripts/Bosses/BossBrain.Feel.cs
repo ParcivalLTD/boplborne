@@ -273,11 +273,15 @@ namespace GraceRun.Bosses
         /// <summary>Server: true when attack <paramref name="attackId"/> would be a third repeat in a row.</summary>
         private bool FeelIsRepeat(int attackId) => _memory.IsBlocked(attackId, Feel.MaxRepeats);
 
+        /// <summary>Server only: raised for every player hit the boss actually takes (not while it roars). The Mirror Duelist reads it.</summary>
+        public event Action<DamageInfo> HitTaken;
+
         /// <inheritdoc />
         public int ModifyIncoming(int amount, DamageInfo info)
         {
             if (!IsServer || State == BossState.Dead) return amount;
             if (_transitioning.Value) return 0;
+            HitTaken?.Invoke(info);
 
             var scale = 1f;
             if (InWeakPointWindow()) scale *= Feel.WeakPointMultiplier;

@@ -46,8 +46,41 @@ namespace GraceRun.Editor.Content
             ("BellTwins", "EnragedRingingToll", "bt_toll_enraged", "st_bt_toll"),
             ("BellTwins", "EnragedRingingEcho", "bt_echo_enraged", "st_bt_toll"),
             ("BellTwins", "VaultingDash", "bt_vault_dash", "st_bt_dash"),
+            ("StormWyrm", "TailSweep", "sw_tail_sweep", "st_sw_tail"),
+            ("StormWyrm", "TailSweepDouble", "sw_tail_double", "st_sw_tail"),
+            ("StormWyrm", "TailSweepSecond", "sw_tail_second", "st_sw_tail"),
+            ("StormWyrm", "ThunderLunge", "sw_thunder_lunge", "st_sw_lunge"),
+            ("StormWyrm", "StormSlam", "sw_storm_slam", "st_sw_slam"),
+            ("StormWyrm", "LightningColumns", "sw_lightning_columns", "st_sw_bolt"),
+            ("StormWyrm", "LightningFlanks", "sw_lightning_flanks", "st_sw_bolt"),
+            ("MirrorDuelist", "RapierLunge", "md_rapier_lunge", "st_md_lunge"),
+            ("MirrorDuelist", "MirrorCut", "md_mirror_cut", "st_md_rapier"),
+            ("MirrorDuelist", "MirrorCutDouble", "md_mirror_double", "st_md_rapier"),
+            ("MirrorDuelist", "MirrorCutSecond", "md_mirror_second", "st_md_rapier"),
+            ("MirrorDuelist", "MirrorEcho", "md_mirror_echo", "st_md_echo"),
             ("TestBoss", "TestSlam", "test_slam", "st_test"),
             ("TestBoss", "TestSlamFast", "test_slam_fast", "st_test"),
+        };
+
+        /// <summary>
+        /// Extra boss cues (under Data/Audio/Boss) that live in a data asset instead of an attack: asset path, serialized
+        /// cue field, the cue's name, clip, volume, pitch spread and minimum interval. A missing asset is skipped.
+        /// </summary>
+        public static readonly (string asset, string field, string cue, string clip, double volume, double pitch, double minInterval)[] BossExtras =
+        {
+            ("StormWyrm/LightningColumnData", "_strikeCue", "WyrmColumnBolt", "st_sw_column", 0.7, 0.05, 0.02),
+            ("MirrorDuelist/MirrorDuelistData", "_reflectionAppearCue", "MirrorReflectionAppear", "md_reflection_appear", 0.65, 0.0, 0.2),
+            ("MirrorDuelist/MirrorDuelistData", "_reflectionStrikeCue", "MirrorReflectionStrike", "md_reflection_strike", 0.7, 0.03, 0.1),
+            ("MirrorDuelist/MirrorDuelistData", "_memoryChangeCue", "MirrorMemoryChange", "md_memory_change", 0.6, 0.02, 0.15),
+            ("MirrorDuelist/MirrorShardData", "_spawnCue", "MirrorShardFly", "md_shard", 0.7, 0.05, 0.1),
+            ("MirrorDuelist/MirrorWaveData", "_spawnCue", "MirrorWaveFly", "md_wave", 0.75, 0.03, 0.1),
+        };
+
+        /// <summary>Boss data folder to its music loop name (<c>music_&lt;name&gt;.wav</c>); the folder's one BossData asset is found by type.</summary>
+        public static readonly (string folder, string track)[] BossMusic =
+        {
+            ("Gatekeeper", "gatekeeper"), ("BroodMother", "brood"), ("BellTwins", "bell"),
+            ("StormWyrm", "wyrm"), ("MirrorDuelist", "duelist"),
         };
 
         /// <summary>Ability asset name to its special sound clip (everything else uses the cue for its tag).</summary>

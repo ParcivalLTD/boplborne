@@ -1,0 +1,38 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cf49f4e03f190c242a10d63d36275ab9, type: 3}
+  m_Name: LightningFlanks
+  m_EditorClassIdentifier: GraceRun.Runtime::GraceRun.Bosses.AttackData
+  _id: lightning_flanks
+  _windup: 1.2
+  _active: 0.3
+  _recovery: 1.3
+  _punishWindow: 1
+  _damage: 0
+  _knockback: {x: 8, y: 6}
+  _hitboxOffset: {x: 0, y: -40}
+  _hitboxSize: {x: 0.2, y: 0.2}
+  _telegraphType: 1
+  _glowPart: 0
+  _weakPointOffset: {x: 1.4, y: 1.1}
+  _lungeDistance: 0
+  _lungeTime: 0.2
+  _followUp: {fileID: 0}
+  _behaviour: {fileID: 11400000, guid: 2fd4d16194e53e14d97c5901f273198d, type: 2}
+  _windupCue: {fileID: 11400000, guid: ffa6f991e0a61cc4594811e2ab0ce0f0, type: 2}
+  _strikeCue: {fileID: 11400000, guid: b3b02a77b0c31404fb976b86f83a2cb7, type: 2}
+  _interruptDamage: 0
+  _interruptContributors: 1
+  _weight: 1.3
+  _cooldown: 5
+  _minRange: 0
+  _maxRange: 40

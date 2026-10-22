@@ -29,6 +29,12 @@ MonoBehaviour:
   - BossId: final_test_boss
     Tagline: The big finish, rehearsed.
     VictoryTagline: A flawless rehearsal.
+  - BossId: storm_wyrm
+    Tagline: Keep moving. The sky has aim.
+    VictoryTagline: The clouds part.
+  - BossId: mirror_duelist
+    Tagline: Every trick you show, it keeps.
+    VictoryTagline: The glass goes quiet.
   _victoryTitle: THAT'S A WRAP
   _fallbackVictoryTagline: Scene cleared. Take a bow.
   _finalVictoryTitle: CURTAIN CALL

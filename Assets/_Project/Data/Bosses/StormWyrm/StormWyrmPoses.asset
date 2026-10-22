@@ -1,0 +1,52 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5c8eee4c924d6104080ad550ea7f9512, type: 3}
+  m_Name: StormWyrmPoses
+  m_EditorClassIdentifier: GraceRun.Runtime::GraceRun.Bosses.BossPoseSet
+  _idle:
+  - {fileID: 21300000, guid: 457a42240fa6a6b49af28cdb9aa437f1, type: 3}
+  - {fileID: 21300000, guid: 8d2c16b9fecbfd548860e06a1f8514ae, type: 3}
+  - {fileID: 21300000, guid: cb9abbe9828ce9145897b805f876cf95, type: 3}
+  - {fileID: 21300000, guid: 9cfa929bbb616294dbdb4b0e8aea2cb8, type: 3}
+  _idleFps: 6
+  _stagger: {fileID: 21300000, guid: 2ef2468739c8dae4f867c16e1dc0e895, type: 3}
+  _staggerTime: 0.8
+  _death:
+  - {fileID: 21300000, guid: 06670eb8409df98478766319048187d8, type: 3}
+  - {fileID: 21300000, guid: 7cc86d184aadc9e4f9f847b757a8e9f0, type: 3}
+  - {fileID: 21300000, guid: 4783146d0a6f2044785ccb17b87b6203, type: 3}
+  - {fileID: 21300000, guid: be7bbc626fcf63543912dea18d05ed54, type: 3}
+  _deathFps: 5
+  _attacks:
+  - AttackIds:
+    - tail_sweep
+    - tail_sweep_double
+    - tail_sweep_second
+    Windup: {fileID: 21300000, guid: c48189334fe0ecd4b81e0e98fec7f1a8, type: 3}
+    Strike: {fileID: 21300000, guid: 3c6c65af01997b6489f572b52b82fca9, type: 3}
+    Recovery: {fileID: 21300000, guid: 6025f643191ca734e84978d67dc83ce9, type: 3}
+  - AttackIds:
+    - lightning_columns
+    - lightning_flanks
+    Windup: {fileID: 21300000, guid: 460088d4c98263b4abb9e76b3fad27e2, type: 3}
+    Strike: {fileID: 21300000, guid: 144127118e775274e85bb8a64ab927ef, type: 3}
+    Recovery: {fileID: 21300000, guid: 66df2d30a105b5342a7c574ae894c091, type: 3}
+  - AttackIds:
+    - thunder_lunge
+    Windup: {fileID: 21300000, guid: 9734224f96ca6404d9cd61bfb38bc727, type: 3}
+    Strike: {fileID: 21300000, guid: 26c615522ff4f75468cfaebaa211ef46, type: 3}
+    Recovery: {fileID: 21300000, guid: 869d95fcba5e27946af9212335ebb8d0, type: 3}
+  - AttackIds:
+    - storm_slam
+    Windup: {fileID: 21300000, guid: ad116b92ff78fce4c9e73687289972cd, type: 3}
+    Strike: {fileID: 21300000, guid: 73d1fc3b12c2f5e43a5d3991f055cf4f, type: 3}
+    Recovery: {fileID: 21300000, guid: b8e95351a8a94df4f9d06f37e148310b, type: 3}
