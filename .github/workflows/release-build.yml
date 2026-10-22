@@ -71,6 +71,8 @@ jobs:
           UNITY_PASSWORD: ${{ secrets.UNITY_PASSWORD }}
         with:
           targetPlatform: StandaloneWindows64
+          # The stamp step above dirties GameConfig.asset on purpose; skip game-ci's git-based versioning.
+          versioning: None
           buildMethod: GraceRun.Editor.BuildMenu.BuildWindowsCli
           buildsPath: Builds
           buildName: Boplborne
