@@ -13,9 +13,9 @@ MonoBehaviour:
   m_Name: BombCast
   m_EditorClassIdentifier: GraceRun.Runtime::GraceRun.Abilities.CastPoseSet
   _poses:
-    Windup: {fileID: 21300000, guid: c5ec5b0ed958b9547a5a15a5bd93f960, type: 3}
-    Strike: {fileID: 21300000, guid: 9644a80f7626c2642b544225fec03376, type: 3}
-    Recovery: {fileID: 21300000, guid: 9e276c842b229794f85a73e5f07bd95b, type: 3}
-    HatWindup: {x: -0.47916666, y: 0}
-    HatStrike: {x: 0.29166666, y: -0.083333336}
-    HatRecovery: {x: 0.20833333, y: -0.083333336}
+    Windup: {fileID: 21300000, guid: 4b1df58a5834e1443b1ec425fda4f008, type: 3}
+    Strike: {fileID: 21300000, guid: 0994210214d7d3243836a4878d982b16, type: 3}
+    Recovery: {fileID: 21300000, guid: d761a60e50f828c4f90fd9f799022308, type: 3}
+    HatWindup: {x: -0.14583333, y: -0.125}
+    HatStrike: {x: -0.041666668, y: -0.083333336}
+    HatRecovery: {x: 0.041666668, y: 0.041666668}

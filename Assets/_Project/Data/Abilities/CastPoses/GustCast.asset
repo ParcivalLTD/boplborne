@@ -13,9 +13,9 @@ MonoBehaviour:
   m_Name: GustCast
   m_EditorClassIdentifier: GraceRun.Runtime::GraceRun.Abilities.CastPoseSet
   _poses:
-    Windup: {fileID: 21300000, guid: 69f57c2ceacb4ed41ad281c88ae066f6, type: 3}
-    Strike: {fileID: 21300000, guid: c0bb9f1163e704447ae0721410ed663b, type: 3}
-    Recovery: {fileID: 21300000, guid: 7ab8400409c950147bb25dc56af3325b, type: 3}
-    HatWindup: {x: -0.041666668, y: 0.083333336}
-    HatStrike: {x: 0.20833333, y: -0.083333336}
-    HatRecovery: {x: 0, y: 0}
+    Windup: {fileID: 21300000, guid: a78ab5df03c7f6247acbe9ccb47958fb, type: 3}
+    Strike: {fileID: 21300000, guid: 63371b96d0f147a4495cedabdf2b5eb4, type: 3}
+    Recovery: {fileID: 21300000, guid: 2e123d22c2b11a34ca508256a9b01c66, type: 3}
+    HatWindup: {x: 0, y: 0}
+    HatStrike: {x: 0, y: 0}
+    HatRecovery: {x: 0.20833333, y: -0.083333336}

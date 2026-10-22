@@ -13,9 +13,9 @@ MonoBehaviour:
   m_Name: StoneWallCast
   m_EditorClassIdentifier: GraceRun.Runtime::GraceRun.Abilities.CastPoseSet
   _poses:
-    Windup: {fileID: 21300000, guid: 163c99da02c242b49a9e4bd670c12ce4, type: 3}
-    Strike: {fileID: 21300000, guid: f3b60c1d6d166334f99139b07dd7a120, type: 3}
-    Recovery: {fileID: 21300000, guid: 706afeda18820064ea5df5aa06322465, type: 3}
-    HatWindup: {x: 0, y: 0.125}
-    HatStrike: {x: 0.33333334, y: -0.20833333}
-    HatRecovery: {x: 0, y: 0}
+    Windup: {fileID: 21300000, guid: 20e125f2fb723124eabf145d4ec3da3f, type: 3}
+    Strike: {fileID: 21300000, guid: cad6ce6c02d474643846f8344299384c, type: 3}
+    Recovery: {fileID: 21300000, guid: 7d8b4111148e54044b687bd03737ffdb, type: 3}
+    HatWindup: {x: 0.25, y: -0.33333334}
+    HatStrike: {x: 0.20833333, y: -0.45833334}
+    HatRecovery: {x: 0.083333336, y: -0.083333336}

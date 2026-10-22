@@ -13,9 +13,9 @@ MonoBehaviour:
   m_Name: ArrowVolleyCast
   m_EditorClassIdentifier: GraceRun.Runtime::GraceRun.Abilities.CastPoseSet
   _poses:
-    Windup: {fileID: 21300000, guid: 51b7f13e791cf4549af12c81e13c3833, type: 3}
-    Strike: {fileID: 21300000, guid: 0b36e96276ed2a94aa0403407c386fa4, type: 3}
-    Recovery: {fileID: 21300000, guid: 0f440ae9d37cf3d4686d0e11886cbdb4, type: 3}
-    HatWindup: {x: 0, y: -0.041666668}
-    HatStrike: {x: 0.375, y: -0.083333336}
-    HatRecovery: {x: 0.125, y: -0.041666668}
+    Windup: {fileID: 21300000, guid: 3a6d20dbe26393247ae4774007813b75, type: 3}
+    Strike: {fileID: 21300000, guid: b924bbfe3f3ef354d98775a7e6624519, type: 3}
+    Recovery: {fileID: 21300000, guid: e6a8bd1dd00c13b4eb1c4c4aa9b9f56e, type: 3}
+    HatWindup: {x: -0.20833333, y: 0.041666668}
+    HatStrike: {x: -0.20833333, y: 0.041666668}
+    HatRecovery: {x: 0, y: 0.083333336}

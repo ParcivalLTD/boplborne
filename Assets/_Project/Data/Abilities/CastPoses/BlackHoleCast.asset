@@ -13,9 +13,9 @@ MonoBehaviour:
   m_Name: BlackHoleCast
   m_EditorClassIdentifier: GraceRun.Runtime::GraceRun.Abilities.CastPoseSet
   _poses:
-    Windup: {fileID: 21300000, guid: 6b92e97ee399d8f45bfcc81d506154ea, type: 3}
-    Strike: {fileID: 21300000, guid: 9666c24f53af67d47b7f282fe8e4410c, type: 3}
-    Recovery: {fileID: 21300000, guid: 64ea25a247ec60b4c8e6ada9afeb0630, type: 3}
-    HatWindup: {x: 0.3125, y: -0.29166666}
-    HatStrike: {x: 0.020833334, y: 0.20833333}
-    HatRecovery: {x: 0, y: 0}
+    Windup: {fileID: 21300000, guid: e70880fa0e2f643429724615cacef315, type: 3}
+    Strike: {fileID: 21300000, guid: 37ab11491e7894042a775372f30a7b7c, type: 3}
+    Recovery: {fileID: 21300000, guid: abbf94e9cfb570944bbd84cb6d66497e, type: 3}
+    HatWindup: {x: 0, y: 0.083333336}
+    HatStrike: {x: 0, y: 0}
+    HatRecovery: {x: 0, y: 0.083333336}

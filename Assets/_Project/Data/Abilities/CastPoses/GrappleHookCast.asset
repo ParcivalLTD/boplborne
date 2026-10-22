@@ -13,9 +13,9 @@ MonoBehaviour:
   m_Name: GrappleHookCast
   m_EditorClassIdentifier: GraceRun.Runtime::GraceRun.Abilities.CastPoseSet
   _poses:
-    Windup: {fileID: 21300000, guid: a04246573d5e80a4f80df4aaf97d52c6, type: 3}
-    Strike: {fileID: 21300000, guid: 8fa0c6c4bad70074ba021ff8532e3cf0, type: 3}
-    Recovery: {fileID: 21300000, guid: bfa131581ee747240b1ca506f48cc232, type: 3}
-    HatWindup: {x: -0.29166666, y: 0.041666668}
-    HatStrike: {x: 0.125, y: 0}
-    HatRecovery: {x: 0, y: 0}
+    Windup: {fileID: 21300000, guid: fd5c5cd27254dfc47b387bed2db64955, type: 3}
+    Strike: {fileID: 21300000, guid: 64b5ded977cfa1e4cbee9178e99878ba, type: 3}
+    Recovery: {fileID: 21300000, guid: af8349efb90b2964cbb15ed9a30f121c, type: 3}
+    HatWindup: {x: 0, y: 0.041666668}
+    HatStrike: {x: 0, y: 0}
+    HatRecovery: {x: 0, y: 0.041666668}

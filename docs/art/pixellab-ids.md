@@ -221,3 +221,18 @@ All poses `animate_image_pixminimax`, 170x170, west, side, 8 frames (index 0 = i
 | death | `8362120c-aed0-441d-b2f5-cb28646a93a2` | 1, 3, 7, 8 |
 
 Not PixelLab: shard, wave and the four echo icons are drawn by `tools/art/make_mirror_fx.py`.
+
+## Ability cast poses (2026-10-22)
+
+All `animate_image_pixminimax`, 64x64, east, side, 8 frames, from `scratch/art/anim/anchor64.png` (upload `7f1440b6-8ab5-4ab4-a5f8-7e3bf635794e`), subject "a small round blue bean-shaped cartoon knight with white gloves and big black shoes". Fetch with `tools/art/fetch_anim.py cast_<x> <job> 8 --keep-first`, pick and clean with `scratch/art/cast/select.py` (git-ignored; frame numbers are job indexes), then **Grace Run > Build Cast Art** (imports `Art/Characters/Casts/*.png` and fills `Data/Abilities/CastPoses`, hat offsets from the head position).
+
+| Ability | Job id | Seed | Frames (windup, strike, recovery) |
+| --- | --- | --- | --- |
+| Arrow Volley (bow draw, shot) | `90ace5f6-4a49-40c8-ba8c-7c612af01886` | 101 | 6, 8, 2 |
+| Bomb (overhand throw) | `e3528e70-ce50-49a1-adaf-5363fbcd0c60` | 102 | 7, 8, 2 |
+| Gust (two-palm shove) | `92b60610-dde8-4e4b-83d9-0135e054d21c` | 103 | 5, 7, 8 |
+| Black Hole (arms up, fists down) | `94815488-8413-4562-ac85-793fd270253e` | 104 | 4, 6, 8 |
+| Stone Wall (crouch, slam) | `53516090-09c5-411d-9dea-6339723dabd6` | 105 | 4, 6, 8 |
+| Grapple Hook (reach, flick) | `7a21b59a-0413-4ee4-a12b-abde767178f1` | 106 | 3, 5, 7 |
+
+The bow (orange) and hook (gold) in the Arrow Volley and Grapple poses are drawn by the model and snapped to the palette; cleanup notes list a few outline gaps and stray pixels for the user's Aseprite pass.
