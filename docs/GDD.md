@@ -29,7 +29,7 @@ Boplborne is a 1–4 player online co-op roguelite. Friends climb a tower of sou
 | Light attack (the weapon's combo; hold up / down for an up / down swing; in the air an aerial swing) | West (X / Square), facing way | J, aimed the way you face |
 | Heavy attack (slow, hard hitting; same in the air) | Right trigger, facing way | U, aimed the way you face |
 | Slice (Mouse only scheme) | — | Hold the slice button (left mouse by default) and drag the cursor across a target (within reach of your player) |
-| Ability 1 / 2 / 3 | North / LB / RB | K / L / ; fire on press, aimed by facing (Mouse only scheme: left / middle / right mouse, fired on release toward the cursor; a left-mouse drag is a slice and fires nothing) |
+| Ability 1 / 2 / 3 | North / LB / RB | K / L / ; fire on press. Aim: facing, or the side you hold; hold up / down (or a diagonal) to aim that way; aim assist (on by default) pulls the aim onto the enemy nearest your aim line within a cone. Option "Hold to aim abilities": hold the key to see an aim line, release to fire (Mouse only scheme: left / middle / right mouse, fired on release toward the cursor; a left-mouse drag is a slice and fires nothing) |
 | Flask (heal) | D-pad up | R |
 | Interact (revive) | D-pad down | E |
 
