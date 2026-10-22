@@ -1,0 +1,561 @@
+fileFormatVersion: 2
+guid: b93f9596d06e8a74984b4a695e4c0496
+TextureImporter:
+  internalIDToNameTable:
+  - first:
+      213: 8728437618552991123
+    second: fx_gust_0
+  - first:
+      213: 5466151807842315085
+    second: fx_gust_1
+  - first:
+      213: -238215251708681362
+    second: fx_gust_2
+  - first:
+      213: 3742987109580408207
+    second: fx_gust_3
+  - first:
+      213: -1901154853808267620
+    second: fx_gust_4
+  - first:
+      213: -3338494093562480864
+    second: fx_gust_5
+  - first:
+      213: 8736568082710481806
+    second: fx_gust_6
+  - first:
+      213: 2151820338196807351
+    second: fx_gust_7
+  - first:
+      213: 3198574707266370513
+    second: fx_gust_8
+  - first:
+      213: 151391202214231081
+    second: fx_gust_9
+  - first:
+      213: 2642941177685634581
+    second: fx_gust_10
+  - first:
+      213: 3472935340104914770
+    second: fx_gust_11
+  - first:
+      213: 3032636592445101288
+    second: fx_gust_12
+  - first:
+      213: 3241446551378232737
+    second: fx_gust_13
+  - first:
+      213: 519077173102489896
+    second: fx_gust_14
+  - first:
+      213: 8041789824907986610
+    second: fx_gust_15
+  - first:
+      213: -4469552768667396069
+    second: fx_gust_16
+  externalObjects: {}
+  serializedVersion: 13
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+    flipGreenChannel: 0
+  isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMipmapLimit: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: 1
+    aniso: 1
+    mipBias: 0
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 100
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationMethod: 0
+  spriteTessellationDetail: -1
+  spriteGeometrySubdivision: -1
+  textureType: 8
+  textureShape: 1
+  singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  ignorePngGamma: 0
+  applyGammaDecoding: 0
+  swizzle: 50462976
+  cookieLightType: 0
+  platformSettings:
+  - serializedVersion: 4
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: fx_gust_0
+      rect:
+        serializedVersion: 2
+        x: 120
+        y: 138
+        width: 60
+        height: 29
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 39de102d4c3a12970800000000000000
+      internalID: 8728437618552991123
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: fx_gust_1
+      rect:
+        serializedVersion: 2
+        x: 232
+        y: 162
+        width: 26
+        height: 7
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: d4beccabb1cabdb40800000000000000
+      internalID: 5466151807842315085
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: fx_gust_2
+      rect:
+        serializedVersion: 2
+        x: 350
+        y: 146
+        width: 29
+        height: 23
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e63e2dd9d70b1bcf0800000000000000
+      internalID: -238215251708681362
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: fx_gust_3
+      rect:
+        serializedVersion: 2
+        x: 15
+        y: 139
+        width: 42
+        height: 15
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: f850869e1f2c1f330800000000000000
+      internalID: 3742987109580408207
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: fx_gust_4
+      rect:
+        serializedVersion: 2
+        x: 229
+        y: 139
+        width: 72
+        height: 20
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c9e9fb3bbbdbd95e0800000000000000
+      internalID: -1901154853808267620
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: fx_gust_5
+      rect:
+        serializedVersion: 2
+        x: 375
+        y: 140
+        width: 47
+        height: 17
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 027f77c5f494ba1d0800000000000000
+      internalID: -3338494093562480864
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: fx_gust_6
+      rect:
+        serializedVersion: 2
+        x: 15
+        y: 84
+        width: 54
+        height: 28
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e8b49f502668e3970800000000000000
+      internalID: 8736568082710481806
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: fx_gust_7
+      rect:
+        serializedVersion: 2
+        x: 61
+        y: 25
+        width: 93
+        height: 76
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 7be7eae523dccdd10800000000000000
+      internalID: 2151820338196807351
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: fx_gust_8
+      rect:
+        serializedVersion: 2
+        x: 141
+        y: 90
+        width: 49
+        height: 19
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 1db392edfbe936c20800000000000000
+      internalID: 3198574707266370513
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: fx_gust_9
+      rect:
+        serializedVersion: 2
+        x: 231
+        y: 82
+        width: 62
+        height: 15
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 92c391e0f79d91200800000000000000
+      internalID: 151391202214231081
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: fx_gust_10
+      rect:
+        serializedVersion: 2
+        x: 337
+        y: 3
+        width: 92
+        height: 97
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 51e643a8ffc9da420800000000000000
+      internalID: 2642941177685634581
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: fx_gust_11
+      rect:
+        serializedVersion: 2
+        x: 13
+        y: 2
+        width: 51
+        height: 34
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 2579ada9a48523030800000000000000
+      internalID: 3472935340104914770
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: fx_gust_12
+      rect:
+        serializedVersion: 2
+        x: 137
+        y: 3
+        width: 28
+        height: 6
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 8e49a89c9e6161a20800000000000000
+      internalID: 3032636592445101288
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: fx_gust_13
+      rect:
+        serializedVersion: 2
+        x: 140
+        y: 40
+        width: 19
+        height: 6
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 1a5805de67eebfc20800000000000000
+      internalID: 3241446551378232737
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: fx_gust_14
+      rect:
+        serializedVersion: 2
+        x: 156
+        y: 17
+        width: 19
+        height: 6
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 821b9c150f1243700800000000000000
+      internalID: 519077173102489896
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: fx_gust_15
+      rect:
+        serializedVersion: 2
+        x: 175
+        y: 4
+        width: 122
+        height: 85
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 2b6cdff0d3d2a9f60800000000000000
+      internalID: 8041789824907986610
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: fx_gust_16
+      rect:
+        serializedVersion: 2
+        x: 301
+        y: 29
+        width: 55
+        height: 15
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: b1857b60075f8f1c0800000000000000
+      internalID: -4469552768667396069
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    customData: 
+    physicsShape: []
+    bones: []
+    spriteID: 
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+    spriteCustomMetadata:
+      entries: []
+    nameFileIdTable:
+      fx_gust_0: 8728437618552991123
+      fx_gust_1: 5466151807842315085
+      fx_gust_10: 2642941177685634581
+      fx_gust_11: 3472935340104914770
+      fx_gust_12: 3032636592445101288
+      fx_gust_13: 3241446551378232737
+      fx_gust_14: 519077173102489896
+      fx_gust_15: 8041789824907986610
+      fx_gust_16: -4469552768667396069
+      fx_gust_2: -238215251708681362
+      fx_gust_3: 3742987109580408207
+      fx_gust_4: -1901154853808267620
+      fx_gust_5: -3338494093562480864
+      fx_gust_6: 8736568082710481806
+      fx_gust_7: 2151820338196807351
+      fx_gust_8: 3198574707266370513
+      fx_gust_9: 151391202214231081
+  mipmapLimitGroupName: 
+  pSDRemoveMatte: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

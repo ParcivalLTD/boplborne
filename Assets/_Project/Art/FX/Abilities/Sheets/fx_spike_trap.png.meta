@@ -1,0 +1,717 @@
+fileFormatVersion: 2
+guid: 32355833482bc5f43b75610f549b1620
+TextureImporter:
+  internalIDToNameTable:
+  - first:
+      213: 7295252028798254487
+    second: fx_spike_trap_0
+  - first:
+      213: 2863352423022380134
+    second: fx_spike_trap_1
+  - first:
+      213: -7380064845573451112
+    second: fx_spike_trap_2
+  - first:
+      213: 7855479671195366213
+    second: fx_spike_trap_3
+  - first:
+      213: -6103709203853082633
+    second: fx_spike_trap_4
+  - first:
+      213: 6587789911184280974
+    second: fx_spike_trap_5
+  - first:
+      213: 5889162648655319934
+    second: fx_spike_trap_6
+  - first:
+      213: -7663847575878080041
+    second: fx_spike_trap_7
+  - first:
+      213: -2022153557805458645
+    second: fx_spike_trap_8
+  - first:
+      213: -2905643253243958537
+    second: fx_spike_trap_9
+  - first:
+      213: -4427324315924139963
+    second: fx_spike_trap_10
+  - first:
+      213: 5459287659858897265
+    second: fx_spike_trap_11
+  - first:
+      213: 7776387203577770445
+    second: fx_spike_trap_12
+  - first:
+      213: -2908831161390045624
+    second: fx_spike_trap_13
+  - first:
+      213: 1550376586054946198
+    second: fx_spike_trap_14
+  - first:
+      213: 3871827889484278219
+    second: fx_spike_trap_15
+  - first:
+      213: 6253353059402757391
+    second: fx_spike_trap_16
+  - first:
+      213: -2023799225832926440
+    second: fx_spike_trap_17
+  - first:
+      213: -5006731486151631305
+    second: fx_spike_trap_18
+  - first:
+      213: 3364585860952297632
+    second: fx_spike_trap_19
+  - first:
+      213: 1766803796487829391
+    second: fx_spike_trap_20
+  - first:
+      213: -7985907344535664821
+    second: fx_spike_trap_21
+  - first:
+      213: 2932925424671286806
+    second: fx_spike_trap_22
+  externalObjects: {}
+  serializedVersion: 13
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+    flipGreenChannel: 0
+  isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMipmapLimit: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: 1
+    aniso: 1
+    mipBias: 0
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 100
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationMethod: 0
+  spriteTessellationDetail: -1
+  spriteGeometrySubdivision: -1
+  textureType: 8
+  textureShape: 1
+  singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  ignorePngGamma: 0
+  applyGammaDecoding: 0
+  swizzle: 50462976
+  cookieLightType: 0
+  platformSettings:
+  - serializedVersion: 4
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: fx_spike_trap_0
+      rect:
+        serializedVersion: 2
+        x: 23
+        y: 213
+        width: 16
+        height: 20
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 79db77b7111fd3560800000000000000
+      internalID: 7295252028798254487
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: fx_spike_trap_1
+      rect:
+        serializedVersion: 2
+        x: 72
+        y: 208
+        width: 38
+        height: 44
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 664c009abdbacb720800000000000000
+      internalID: 2863352423022380134
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: fx_spike_trap_2
+      rect:
+        serializedVersion: 2
+        x: 120
+        y: 208
+        width: 46
+        height: 50
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 8921f3ccf1eb49990800000000000000
+      internalID: -7380064845573451112
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: fx_spike_trap_3
+      rect:
+        serializedVersion: 2
+        x: 170
+        y: 208
+        width: 52
+        height: 47
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 543f6ed0425440d60800000000000000
+      internalID: 7855479671195366213
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: fx_spike_trap_4
+      rect:
+        serializedVersion: 2
+        x: 9
+        y: 143
+        width: 45
+        height: 47
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 7fffd0461d44b4ba0800000000000000
+      internalID: -6103709203853082633
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: fx_spike_trap_5
+      rect:
+        serializedVersion: 2
+        x: 65
+        y: 143
+        width: 45
+        height: 47
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e8d8a0745088c6b50800000000000000
+      internalID: 6587789911184280974
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: fx_spike_trap_6
+      rect:
+        serializedVersion: 2
+        x: 121
+        y: 143
+        width: 45
+        height: 47
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e7359911a328ab150800000000000000
+      internalID: 5889162648655319934
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: fx_spike_trap_7
+      rect:
+        serializedVersion: 2
+        x: 177
+        y: 143
+        width: 45
+        height: 47
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 7d96c0b0c3b84a590800000000000000
+      internalID: -7663847575878080041
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: fx_spike_trap_8
+      rect:
+        serializedVersion: 2
+        x: 5
+        y: 78
+        width: 49
+        height: 57
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: b2b96b19d0edfe3e0800000000000000
+      internalID: -2022153557805458645
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: fx_spike_trap_9
+      rect:
+        serializedVersion: 2
+        x: 65
+        y: 78
+        width: 45
+        height: 47
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 7fa226e1bd41da7d0800000000000000
+      internalID: -2905643253243958537
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: fx_spike_trap_10
+      rect:
+        serializedVersion: 2
+        x: 121
+        y: 78
+        width: 45
+        height: 45
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 54074ebddfbfe82c0800000000000000
+      internalID: -4427324315924139963
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: fx_spike_trap_11
+      rect:
+        serializedVersion: 2
+        x: 177
+        y: 78
+        width: 45
+        height: 34
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 179209cb33943cb40800000000000000
+      internalID: 5459287659858897265
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: fx_spike_trap_12
+      rect:
+        serializedVersion: 2
+        x: 9
+        y: 21
+        width: 10
+        height: 9
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: dc17529e5f64beb60800000000000000
+      internalID: 7776387203577770445
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: fx_spike_trap_13
+      rect:
+        serializedVersion: 2
+        x: 11
+        y: 15
+        width: 10
+        height: 7
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 84662c96871c1a7d0800000000000000
+      internalID: -2908831161390045624
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: fx_spike_trap_14
+      rect:
+        serializedVersion: 2
+        x: 16
+        y: 20
+        width: 38
+        height: 15
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 69d43ef6a4b048510800000000000000
+      internalID: 1550376586054946198
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: fx_spike_trap_15
+      rect:
+        serializedVersion: 2
+        x: 20
+        y: 14
+        width: 10
+        height: 8
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: bc92920a3fe7bb530800000000000000
+      internalID: 3871827889484278219
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: fx_spike_trap_16
+      rect:
+        serializedVersion: 2
+        x: 65
+        y: 21
+        width: 10
+        height: 6
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: f05bdc0d97f58c650800000000000000
+      internalID: 6253353059402757391
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: fx_spike_trap_17
+      rect:
+        serializedVersion: 2
+        x: 72
+        y: 22
+        width: 31
+        height: 10
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 813948f93550ae3e0800000000000000
+      internalID: -2023799225832926440
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: fx_spike_trap_18
+      rect:
+        serializedVersion: 2
+        x: 100
+        y: 20
+        width: 10
+        height: 6
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 73e1b2a7d34848ab0800000000000000
+      internalID: -5006731486151631305
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: fx_spike_trap_19
+      rect:
+        serializedVersion: 2
+        x: 33
+        y: 13
+        width: 18
+        height: 8
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 0a01d52a30961be20800000000000000
+      internalID: 3364585860952297632
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: fx_spike_trap_20
+      rect:
+        serializedVersion: 2
+        x: 67
+        y: 15
+        width: 10
+        height: 6
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: f87f77521b2f48810800000000000000
+      internalID: 1766803796487829391
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: fx_spike_trap_21
+      rect:
+        serializedVersion: 2
+        x: 76
+        y: 14
+        width: 10
+        height: 6
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: b47c4cfc49b5c2190800000000000000
+      internalID: -7985907344535664821
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: fx_spike_trap_22
+      rect:
+        serializedVersion: 2
+        x: 89
+        y: 13
+        width: 18
+        height: 7
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 6166e3a6228d3b820800000000000000
+      internalID: 2932925424671286806
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    customData: 
+    physicsShape: []
+    bones: []
+    spriteID: 
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+    spriteCustomMetadata:
+      entries: []
+    nameFileIdTable:
+      fx_spike_trap_0: 7295252028798254487
+      fx_spike_trap_1: 2863352423022380134
+      fx_spike_trap_10: -4427324315924139963
+      fx_spike_trap_11: 5459287659858897265
+      fx_spike_trap_12: 7776387203577770445
+      fx_spike_trap_13: -2908831161390045624
+      fx_spike_trap_14: 1550376586054946198
+      fx_spike_trap_15: 3871827889484278219
+      fx_spike_trap_16: 6253353059402757391
+      fx_spike_trap_17: -2023799225832926440
+      fx_spike_trap_18: -5006731486151631305
+      fx_spike_trap_19: 3364585860952297632
+      fx_spike_trap_2: -7380064845573451112
+      fx_spike_trap_20: 1766803796487829391
+      fx_spike_trap_21: -7985907344535664821
+      fx_spike_trap_22: 2932925424671286806
+      fx_spike_trap_3: 7855479671195366213
+      fx_spike_trap_4: -6103709203853082633
+      fx_spike_trap_5: 6587789911184280974
+      fx_spike_trap_6: 5889162648655319934
+      fx_spike_trap_7: -7663847575878080041
+      fx_spike_trap_8: -2022153557805458645
+      fx_spike_trap_9: -2905643253243958537
+  mipmapLimitGroupName: 
+  pSDRemoveMatte: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

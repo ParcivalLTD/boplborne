@@ -236,3 +236,7 @@ All `animate_image_pixminimax`, 64x64, east, side, 8 frames, from `scratch/art/a
 | Grapple Hook (reach, flick) | `7a21b59a-0413-4ee4-a12b-abde767178f1` | 106 | 3, 5, 7 |
 
 The bow (orange) and hook (gold) in the Arrow Volley and Grapple poses are drawn by the model and snapped to the palette; cleanup notes list a few outline gaps and stray pixels for the user's Aseprite pass.
+
+## Ability effect art (2026-10-22)
+
+Made with `vfx_workbench` (free for subscribers, no generation spent), exported to the user's My effects as `fx_*`; the sheets are in `Assets/_Project/Art/FX/Abilities/Sheets`. Presets: explosion, heal_pillar, portal (black hole), lightning_strike (Thunderclap), shockwave, energy_orb in six ramps (frost, arcane, holy, fire, electric, nature), lava_pool part (Fire Pool), ice_spikes part with the smoke ramp (Spike Trap), wind_gusts part (Gust), and a hand-built tornado recipe (funnel shape plus a spiral curve). Solid props (arrow, spear, boomerang, bomb, flask, grenade, meteor, sentry, wall, mine, bounce pad, blade, totem) are `create_image_pixflux`, one generation each, in `Art/FX/Abilities/Props` (meteor, blade and totem are generated but unused). **Grace Run > Build Ability FX** cuts the sheets into frames, imports everything 1 unit wide and wires the prefabs (`SpriteFlipbook`, `BurstFx` frames).

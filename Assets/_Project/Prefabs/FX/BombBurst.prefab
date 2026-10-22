@@ -82,7 +82,7 @@ SpriteRenderer:
   m_SortingOrder: 45
   m_MaskInteraction: 0
   m_Sprite: {fileID: 21300000, guid: 356e73040e740ed42b6ddf7faa69e5c3, type: 3}
-  m_Color: {r: 0.92941177, g: 0.90588236, b: 0.9647059, a: 0.6666667}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -138,3 +138,17 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: GraceRun.Runtime::GraceRun.Abilities.Effects.BurstFx
   _sprite: {fileID: 3498298443915253986}
+  _frames:
+  - {fileID: 21300000, guid: 481e009ca4558164e87759edef8d8461, type: 3}
+  - {fileID: 21300000, guid: aa18d05e754bcf24f9976b7f78438c19, type: 3}
+  - {fileID: 21300000, guid: bb0f5010cf4ced94db4011db130761ed, type: 3}
+  - {fileID: 21300000, guid: 15100d92ee278fd48ae742cf03d6bb6d, type: 3}
+  - {fileID: 21300000, guid: 46727fdeea8ca09468a505a77dbd9236, type: 3}
+  - {fileID: 21300000, guid: 622b57747aa61444ebc2c115d0ca0f7e, type: 3}
+  - {fileID: 21300000, guid: 4be93d53cfe0e004eb626ca429906bd2, type: 3}
+  - {fileID: 21300000, guid: c7286a180e02459429fdc7ca8037f908, type: 3}
+  - {fileID: 21300000, guid: 18220d138cf26e84593c4aa79a699856, type: 3}
+  - {fileID: 21300000, guid: b05133b58f4df894aa0bd43e6e70a19c, type: 3}
+  - {fileID: 21300000, guid: d41ec2b73ef7d4c4b97cf24e84302b3c, type: 3}
+  - {fileID: 21300000, guid: 36921c62dab46a04787e61cdbfd3e47c, type: 3}
+  _radiusFactor: 1.5

@@ -266,6 +266,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6190028733292110645}
   - component: {fileID: 7171400939973415343}
+  - component: {fileID: 1489613135771358771}
   m_Layer: 14
   m_Name: Visual
   m_TagString: Untagged
@@ -337,8 +338,8 @@ SpriteRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 42
   m_MaskInteraction: 0
-  m_Sprite: {fileID: 21300000, guid: 356e73040e740ed42b6ddf7faa69e5c3, type: 3}
-  m_Color: {r: 0.55, g: 0.85, b: 1, a: 1}
+  m_Sprite: {fileID: 21300000, guid: a92c0a1b0f6c4ce4eacdaf34ceaac390, type: 3}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -348,3 +349,30 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_SpriteSortPoint: 0
   m_BlendShapeWeights: []
+--- !u!114 &1489613135771358771
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3781984890919743798}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8874da5cc35274c44abb18cc88ac32e0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: GraceRun.Runtime::GraceRun.Abilities.Effects.SpriteFlipbook
+  _frames:
+  - {fileID: 21300000, guid: a92c0a1b0f6c4ce4eacdaf34ceaac390, type: 3}
+  - {fileID: 21300000, guid: 09555c43611c4574391c01930c9b1845, type: 3}
+  - {fileID: 21300000, guid: 6436ef64bda70824387b2808a1fee920, type: 3}
+  - {fileID: 21300000, guid: ecea014dd542bcd4c91b45e510cb2c73, type: 3}
+  - {fileID: 21300000, guid: 62c5694293cee77449d33de24ad19369, type: 3}
+  - {fileID: 21300000, guid: cd6b8d41afa7a574eaf1b8d43d3d5168, type: 3}
+  - {fileID: 21300000, guid: fd4ae6b73039267498cf44267533f202, type: 3}
+  - {fileID: 21300000, guid: 00722eb9f86195d4e9a9dc134a488e6e, type: 3}
+  _fps: 12
+  _playback: 0
+  _fixedWidth: 1.5
+  _radiusFactor: 0
+  _fadeTail: 0
+  _spin: 0

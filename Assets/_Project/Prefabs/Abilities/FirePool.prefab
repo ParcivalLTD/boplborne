@@ -11,7 +11,6 @@ GameObject:
   - component: {fileID: 3958044226133541786}
   - component: {fileID: 2137826592603774600}
   - component: {fileID: 5431147042828427415}
-  - component: {fileID: 572521791967015841}
   - component: {fileID: 7298358865318402462}
   - component: {fileID: 3263395636584912697}
   m_Layer: 14
@@ -79,19 +78,6 @@ MonoBehaviour:
   ShowTopMostFoldoutHeaderGroup: 1
   _ability: {fileID: 11400000, guid: d5a1ca16136c2a6478df6985425fb803, type: 2}
   _combos: {fileID: 11400000, guid: cd22695927cf80c41bfac06e89384efd, type: 2}
---- !u!114 &572521791967015841
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3260314582346288493}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 512b34f7313698447a9cc46e1ab31ec1, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: GraceRun.Runtime::GraceRun.Abilities.Effects.FadeView
-  _sprite: {fileID: 3994789855313831593}
 --- !u!114 &7298358865318402462
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -130,6 +116,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7547144792745023426}
   - component: {fileID: 3994789855313831593}
+  - component: {fileID: 7714003009897814323}
   m_Layer: 14
   m_Name: Visual
   m_TagString: Untagged
@@ -201,8 +188,8 @@ SpriteRenderer:
   m_SortingLayer: 0
   m_SortingOrder: -4
   m_MaskInteraction: 0
-  m_Sprite: {fileID: 21300000, guid: 356e73040e740ed42b6ddf7faa69e5c3, type: 3}
-  m_Color: {r: 1, g: 0.4, b: 0.1, a: 0.5}
+  m_Sprite: {fileID: 21300000, guid: a5bf39575d0c9fb4ebe9a908de7c3cbb, type: 3}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -212,3 +199,34 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_SpriteSortPoint: 0
   m_BlendShapeWeights: []
+--- !u!114 &7714003009897814323
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3642183658621596123}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8874da5cc35274c44abb18cc88ac32e0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: GraceRun.Runtime::GraceRun.Abilities.Effects.SpriteFlipbook
+  _frames:
+  - {fileID: 21300000, guid: a5bf39575d0c9fb4ebe9a908de7c3cbb, type: 3}
+  - {fileID: 21300000, guid: 31831ed0e92cb5d45bc414c914d60f53, type: 3}
+  - {fileID: 21300000, guid: 60c243d02cea39a4abbcfabaea842751, type: 3}
+  - {fileID: 21300000, guid: 2e61acb2e12fd33499cd1596228c0f3b, type: 3}
+  - {fileID: 21300000, guid: 0f0758d64fe5a124583603a0a6abf5aa, type: 3}
+  - {fileID: 21300000, guid: f980d3c623c7b464983926074b7c1804, type: 3}
+  - {fileID: 21300000, guid: 9173539927e5da54f9634de79b9f8406, type: 3}
+  - {fileID: 21300000, guid: 1abc5fcd26c1b1241b8b9c9e9ee69840, type: 3}
+  - {fileID: 21300000, guid: 1842fbc8e526c1249a2124fc70972886, type: 3}
+  - {fileID: 21300000, guid: 8fd52241eea21dc45a601dae5ea3db2b, type: 3}
+  - {fileID: 21300000, guid: 9dd9423a7e80e374cbfce584b9fbd65b, type: 3}
+  - {fileID: 21300000, guid: 278f7a2c6cfd8bc46bd01c064d84ecbd, type: 3}
+  _fps: 10
+  _playback: 0
+  _fixedWidth: 1
+  _radiusFactor: 1.3
+  _fadeTail: 0.15
+  _spin: 0

@@ -234,7 +234,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: GraceRun.Runtime::GraceRun.Abilities.Effects.AreaBurst
   ShowTopMostFoldoutHeaderGroup: 1
-  _fxPrefab: {fileID: 4544726299775095483, guid: 3f56071da929f1f4ab7670f18733d7e8, type: 3}
+  _fxPrefab: {fileID: 4544726299775095483, guid: 26d7c61029caaee4b92aada4f6cf970d, type: 3}
 --- !u!1 &4689145068001219268
 GameObject:
   m_ObjectHideFlags: 0
