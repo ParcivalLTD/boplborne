@@ -331,6 +331,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: GraceRun.Runtime::GraceRun.Core.Audio.MusicPlayer
   _crossfadeSeconds: 1.6
+  _duckLevel: 0.35
+  _duckSeconds: 0.4
 --- !u!4 &917636193
 Transform:
   m_ObjectHideFlags: 0
